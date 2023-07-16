@@ -1,0 +1,45 @@
+/* Options Container */
+
+.rcb-options-container {
+	padding-top: 12px;
+	margin-left: 16px;
+	max-width: 219px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.rcb-options-offset {
+	margin-left: 50px;
+}
+
+/* Options */
+  
+.rcb-options {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 20px;
+	border-radius: 20px;
+	font-size: 14px;
+	border-width: 0.5px;
+	border-style: solid;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	animation: options-entry 0.5s ease-out;
+}
+
+@keyframes options-entry {
+	0% {
+	  transform: scale(0);
+	  opacity: 0;
+	}
+	100% {
+	  transform: scale(1);
+	  opacity: 1;
+	}
+}
+
+.rcb-options:hover {
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); 
+}

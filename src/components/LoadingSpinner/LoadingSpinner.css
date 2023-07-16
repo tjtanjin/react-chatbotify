@@ -1,0 +1,29 @@
+/* Loading Spinner Container */
+
+.rcb-spinner-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	max-height: 45px;
+}
+
+/* Loading Spinner */
+
+.rcb-spinner {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	border: 4px solid #f3f3f3;
+	animation: rcb-spin 1s linear infinite;
+}
+  
+@keyframes rcb-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

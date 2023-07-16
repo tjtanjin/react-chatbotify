@@ -1,0 +1,21 @@
+/* ChatBot Footer */
+
+.rcb-chat-footer-container {
+	padding-top: 12px;
+	padding-bottom: 8px;
+	padding-left: 10px;
+	padding-right: 16px;
+	border-top: 1px solid #ccc;
+	height: 50px;
+	max-height: 55px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	font-size: 12px;
+	background-color: #f2f2f2;
+}
+
+.rcb-chat-footer {
+	display: flex;
+	flex-direction: row;
+}

@@ -1,0 +1,57 @@
+/* ChatBot Tooltip */
+
+.rcb-chat-tooltip {
+	position: absolute;
+	padding: 16px;
+	border-radius: 20px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	white-space: nowrap;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.rcb-chat-tooltip::before {
+	position: absolute;
+	top: 50%;
+	left: 100%;
+	margin-top: -10px;
+	border-width: 10px;
+	border-style: solid;
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+	border-right-color: transparent;
+}
+
+.rcb-chat-tooltip.rcb-tooltip-hide {
+	opacity: 0;
+	visibility: hidden;
+	animation: tooltip-out 0.5s ease-in-out;
+}
+
+.rcb-chat-tooltip.rcb-tooltip-show {
+	opacity: 1;
+	visibility: visible;
+	animation: tooltip-in 0.5s ease-in-out;
+}
+
+@keyframes tooltip-in {
+	0% {
+	  opacity: 0;
+	  transform: translateY(-5px);
+	}
+	100% {
+	  opacity: 1;
+	  transform: translateY(0);
+	}
+  }
+  
+@keyframes tooltip-out {
+	0% {
+	  opacity: 1;
+	  transform: translateY(0);
+	}
+	100% {
+	  opacity: 0;
+	  transform: translateY(-5px);
+	}
+}

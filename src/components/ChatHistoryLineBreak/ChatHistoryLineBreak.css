@@ -1,0 +1,18 @@
+/* Line Break Container */
+
+.rcb-line-break-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	max-height: 45px;
+}
+
+/* Line Break Text */
+
+.rcb-line-break-text {
+	padding: 6px 12px;
+	color: #adadad;
+	font-size: 12px;
+}

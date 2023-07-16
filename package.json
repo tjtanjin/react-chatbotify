@@ -1,0 +1,60 @@
+{
+  "name": "react-chatbotify",
+  "version": "1.0.0",
+  "description": "Enrich Conversations - Power & Flexibility at Your Fingertips!",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint . --ext .tsx",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production && mv ./dist/export.d.ts ./dist/index.d.ts",
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
+    "start": "react-scripts start"
+  },
+  "author": "tjtanjin",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.2",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "ajv": "^8.12.0",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "eslint": "^8.43.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "mini-css-extract-plugin": "^2.7.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "files": [
+    "./dist"
+  ],
+  "dependencies": {
+    "@types/dom-speech-recognition": "^0.0.1"
+  }
+}

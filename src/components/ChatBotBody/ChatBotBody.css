@@ -1,0 +1,146 @@
+/* Chat Container */
+
+.rcb-chat-container {
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+	padding-bottom: 16px;
+	overflow-x: hidden; 
+}
+
+.rcb-chat-container::-webkit-scrollbar {
+	width: 8px;
+}
+
+.rcb-chat-container::-webkit-scrollbar-track {
+	background-color: #f1f1f1;
+}
+
+.rcb-chat-container::-webkit-scrollbar-thumb {
+	background-color: #dddddd;
+	border-radius: 4px;
+}
+
+.rcb-chat-container::-webkit-scrollbar-thumb:hover {
+	background-color: #cfcfcf;
+}
+
+.rcb-chat-container::-webkit-scrollbar-corner {
+	background-color: #f1f1f1;
+}
+
+/* Messages */
+
+.rcb-bot-message-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.rcb-user-message-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: right;
+}
+
+.rcb-bot-message,
+.rcb-user-message {
+	margin-top: 8px;
+	padding: 12px 16px;
+	border-radius: 22px;
+	min-height: 20px;
+	height: fit-content;
+	display: flex;
+	flex-direction: row;
+	width: fit-content;
+	font-size: 15px;
+	overflow: hidden;
+}
+
+.rcb-bot-message {
+	margin-left: 0;
+	margin-left: 16px;
+	animation: bot-entry 0.3s ease-in backwards;
+}
+
+@keyframes bot-entry {
+	0% {
+		transform: translate(-100%, 50%) scale(0);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+}
+
+.rcb-user-message {
+	margin-right: 0;
+	margin-right: 16px;
+	animation: user-entry 0.3s ease-in backwards;
+}
+
+@keyframes user-entry {
+	0% {
+		transform: translate(100%, 50%) scale(0);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+}
+
+.rcb-message-bot-avatar,
+.rcb-message-user-avatar {
+	background-size: cover;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-top: 9px;
+}
+
+.rcb-message-bot-avatar {
+	margin-left: 6px;
+	margin-right: -10px;
+}
+
+.rcb-message-user-avatar {
+	margin-left: -10px;
+	margin-right: 6px;
+}
+
+/* Bot Typing Indicator */
+
+.rcb-typing-indicator {
+	display: flex;
+	align-items: center;
+}
+
+.rcb-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #ccc;
+	margin-right: 4px;
+	animation: rcb-typing 1s infinite;
+}
+
+.rcb-dot:nth-child(2) {
+  	animation-delay: 0.2s;
+}
+
+.rcb-dot:nth-child(3) {
+  	animation-delay: 0.4s;
+}
+
+@keyframes rcb-typing {
+	0% {
+		opacity: 0.4;
+	}
+	50% {
+		opacity: 1
+	}
+	100% {
+		opacity: 0.4;
+	}
+}

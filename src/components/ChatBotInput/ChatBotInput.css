@@ -1,0 +1,41 @@
+/* ChatBot Input */
+
+.rcb-chat-input {
+	padding: 8px 16px;
+	border-top: 1px solid #ccc;
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+}
+
+.rcb-chat-input::placeholder {
+	color: #999;
+}
+
+/* ChatBot Input Text Area */
+
+.rcb-chat-input-textarea {
+	flex: 1;
+	padding: 8px;
+	border: none;
+	border-radius: 4px;
+	outline: none;
+	font-size: 16px;
+	resize: none; 
+	height: auto;
+	min-height: 38px;
+	overflow-y: scroll;
+	font-family: inherit;
+}
+
+.rcb-chat-input-textarea::-webkit-scrollbar {
+	background-color: transparent;
+}
+
+.rcb-chat-input-textarea::-webkit-scrollbar-thumb {
+	background-color: transparent;
+}
+
+.rcb-chat-input-textarea::-webkit-scrollbar-thumb:hover {
+	background-color: transparent;
+}

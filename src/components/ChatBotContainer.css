@@ -1,0 +1,75 @@
+/* Package Globals */
+
+[class^="rcb"] {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Chat Window */
+
+.rcb-chat-window {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	border-radius: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	background-color: #fff;
+	transition: all 0.3s ease;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	width: 375px;
+	height: 550px;
+}
+
+.rcb-window-embedded .rcb-chat-window {
+	position: static;
+	opacity: 1;
+	visibility: visible;
+	right: auto;
+	bottom: auto;
+}
+
+.rcb-window-open .rcb-chat-window {
+	opacity: 1;
+	visibility: visible;
+	animation: expand 0.3s ease-in-out forwards;
+}
+
+.rcb-window-close .rcb-chat-window {
+	opacity: 0;
+	visibility: hidden;
+	animation: collapse 0.3s ease-in-out forwards;
+}
+
+@keyframes expand {
+	0% {
+		transform: translate(100%, 100%) scale(0);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes collapse {
+	0% {
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+	100% {
+		transform: translate(100%, 100%) scale(0);
+		opacity: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.rcb-window-open .rcb-chat-window {
+		border-radius: 0px;
+		right: 0px !important;
+		bottom: 0px !important;
+		width: 100% !important;
+		height: 100% !important;
+	}
+}
