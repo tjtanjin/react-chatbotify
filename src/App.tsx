@@ -37,7 +37,7 @@ function App() {
 		},
 		ask_favourite_pet: {
 			message: "Interesting! Pick any 2 pets below.",
-			checkBoxes: ["Dog", "Cat", "Rabbit"],
+			checkBoxes: {items: ["Dog", "Cat", "Rabbit"], max: 1},
 			function: (params: Params) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
 			path: "ask_height",
 		},

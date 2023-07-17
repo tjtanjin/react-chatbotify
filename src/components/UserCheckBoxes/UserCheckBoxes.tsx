@@ -9,7 +9,7 @@ import "./UserCheckBoxes.css";
 /**
  * Supports showing of checkboxes for user to mark.
  * 
- * @param checkBoxes array representing checkboxes to show
+ * @param checkBoxes object representing checkboxes to show and min/max number of selections
  * @param checkedItems set representing items marked
  * @param path path associated with the current block
  * @param handleActionInput handles input (marked checkboxes) from user
@@ -20,7 +20,7 @@ const UserCheckBoxes = ({
 	path,
 	handleActionInput,
 }: {
-	checkBoxes: string[];
+	checkBoxes: {items: Array<string>, max?: number, min?: number};
 	checkedItems: Set<string>;
 	path: string;
 	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void;
@@ -35,9 +35,6 @@ const UserCheckBoxes = ({
 	// tracks which checkboxes have been marked
 	const [checkedBoxes, setCheckedBoxes] = useState<Set<string>>(new Set<string>());
 
-	// tracks if next button is hovered
-	const [isHovered, setIsHovered] = useState<boolean>(false); 
-
 	// handles state of checkboxes
 	const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -51,7 +48,7 @@ const UserCheckBoxes = ({
 
 	// styles for bot checkbox next button
 	const botCheckBoxNextStyle = {
-		cursor: disabled || (isHovered && checkedBoxes.size == 0) 
+		cursor: disabled || checkedBoxes.size < (checkBoxes.min as number) 
 			? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
@@ -80,24 +77,10 @@ const UserCheckBoxes = ({
 			setDisabled(true);
 		}
 	}, [paths]);
-
-	/**
-	 * Handles mouse enter event on next button.
-	 */
-	const handleMouseEnter = () => {
-		setIsHovered(true);
-	};
-
-	/**
-	 * Handles mouse leave event on next button.
-	 */
-	const handleMouseLeave = () => {
-		setIsHovered(false);
-	};
 	
 	// handles marking/unmarking of checkboxes
 	const handleCheckItems = (label: string) => {
-		if (disabled) {
+		if (disabled || checkedBoxes.size == checkBoxes.max) {
 			return;
 		}
 
@@ -116,7 +99,7 @@ const UserCheckBoxes = ({
 
 	return (
 		<div className={`rcb-checkbox-container ${botOptions.botBubble?.showAvatar ? "rcb-checkbox-offset" : ""}`}>
-			{checkBoxes.map((key) => {
+			{checkBoxes.items.map((key) => {
 		
 				return (
 					<div
@@ -136,13 +119,10 @@ const UserCheckBoxes = ({
 				);
 			})}
 			<button
-				onMouseEnter={handleMouseEnter}
-				onMouseLeave={handleMouseLeave} 
 				style={botCheckBoxNextStyle}
 				className="rcb-checkbox-next-button"
-				disabled={disabled}
+				disabled={disabled || checkedBoxes.size < (checkBoxes.min as number)}
 				onClick={() => {
-
 					const userInput = Array.from(checkedItems).join(", ");
 					handleActionInput(path, userInput, botOptions.chatInput?.sendCheckboxOutput as boolean);
 				}}

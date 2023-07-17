@@ -18,6 +18,26 @@ export const processCheckboxes = (block: Block, path: string,
 		return;
 	}
 
+	// nothing to render if no items present
+	if (checkBoxes.items.length == 0) {
+		return;
+	}
+
+	// defaults min value to 1 if not provided
+	if (checkBoxes.min == null) {
+		checkBoxes.min = 1;
+	}
+
+	// defaults max value to length of items if not provided
+	if (checkBoxes.max == null) {
+		checkBoxes.max = checkBoxes.items.length;
+	}
+	
+	// enforces minimum cannot be greater than maximum
+	if (checkBoxes.min > checkBoxes.max) {
+		checkBoxes.min = checkBoxes.max;
+	}
+
 	const checkedItems = new Set<string>();
 
 	const content = (
