@@ -99,9 +99,10 @@ const defaultOptions = {
 			<div style={{cursor: "pointer"}} 
 				onClick={() => window.open("https://tjtanjin.com")}
 			>
-				Powered By{" "}
+				<span>Powered By </span>
 				<span style={{fontWeight: "bold"}}>
-					<img style={{width: 10, height: 10}} src={logo}></img> React ChatBotify
+					<img style={{width: 10, height: 10}} src={logo}></img>
+					<span> React ChatBotify</span>
 				</span>
 			</div>
 		),
@@ -148,6 +149,13 @@ const defaultOptions = {
 }
 
 /**
+ * Retrieves default values for bot options.
+ */
+export const getDefaultBotOptions = () => {
+	return defaultOptions;
+}
+
+/**
  * Parses default options with user provided options to generate final bot options.
  * 
  * @param providedOptions options provided by the user to the bot
@@ -170,7 +178,6 @@ export const parseBotOptions = (providedOptions: Options | undefined) => {
  * 
  * @param defaultOptions default options for the bot
  * @param providedOptions options provided by the user to the bot
- * @returns 
  */
 function getCombinedOptions<T>(defaultOptions: T, providedOptions: T): T {
 	const mergedObj: T = {} as T;

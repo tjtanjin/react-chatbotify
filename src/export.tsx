@@ -1,4 +1,5 @@
 import ChatBot from "./components/ChatBot";
+import { getDefaultBotOptions } from "./services/BotOptionsService";
 import { useBotOptions, BotOptionsContext } from "./context/BotOptionsContext";
 import { useMessages, MessagesContext } from "./context/MessagesContext";
 import { usePaths, PathsContext } from "./context/PathsContext";
@@ -13,6 +14,7 @@ import { Params } from "./types/Params";
  */
 export {
 	ChatBot,
+	getDefaultBotOptions,
 	BotOptionsContext,
 	useBotOptions,
 	MessagesContext,

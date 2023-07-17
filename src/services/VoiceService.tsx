@@ -77,7 +77,6 @@ export const stopVoiceRecording = () => {
  * 
  * @param keepVoiceOn boolean indicating if voice was and thus is to be kept toggled on
  * @param botOptions options provided to the bot
- * @returns 
  */
 export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botOptions: Options) => {
 
