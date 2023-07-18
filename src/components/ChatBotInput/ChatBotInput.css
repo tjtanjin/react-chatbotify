@@ -26,6 +26,7 @@
 	min-height: 38px;
 	overflow-y: scroll;
 	font-family: inherit;
+	background-color: #fff;
 }
 
 .rcb-chat-input-textarea::-webkit-scrollbar {

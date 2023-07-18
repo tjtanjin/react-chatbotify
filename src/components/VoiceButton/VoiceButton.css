@@ -13,6 +13,7 @@
 	width: 32px;
 	margin-left: 8px;
     transition: all 0.3s ease;
+    background-color: #fff;
 }
 
 .rcb-voice-button-enabled {
