@@ -154,6 +154,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Handles notification count update and notification sound.
 	 */
 	const handleNotifications = () => {
+		// if embedded, no need for notifications
+		if (botOptions.theme?.embedded) {
+			return;
+		}
 		const message = messages.at(-1);
 		if (message != null && !message?.isUser && !botOptions.isOpen && !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
