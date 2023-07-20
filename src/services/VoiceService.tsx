@@ -21,6 +21,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	triggerSendVoiceInput: () => void, inputRef: RefObject<HTMLTextAreaElement>) => {
 	
 	if (!toggleOn) {
+		console.log("111");
 		toggleOn = true;
 		recognition.start();
 	}

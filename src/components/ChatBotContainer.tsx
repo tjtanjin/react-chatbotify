@@ -43,8 +43,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// references a temporarily stored user input for use in attribute params
 	const paramsInputRef = useRef<string>("");
 
-	// checks if voice should be synced to be toggled back on
-	const keepVoiceOnRef = useRef<boolean>(true);
+	// checks if voice should be toggled back on after a user input
+	const keepVoiceOnRef = useRef<boolean>(false);
 
 	// tracks if user has interacted with page
 	const [hasInteracted, setHasInteracted] = useState(false);
