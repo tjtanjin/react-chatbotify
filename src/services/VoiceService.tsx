@@ -2,7 +2,9 @@ import { RefObject } from "react";
 
 import { Options } from "../types/Options";
 
-let recognition: SpeechRecognition;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SpeechRecognition = (window as any).speechRecognition || (window as any).webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
 let inactivityTimer: ReturnType<typeof setTimeout> | null;
 let autoSendTimer: ReturnType<typeof setTimeout>;
 let toggleOn = false;
@@ -18,9 +20,6 @@ let toggleOn = false;
 export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void, inputRef: RefObject<HTMLTextAreaElement>) => {
 	
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const SpeechRecognition = (window as any).speechRecognition || (window as any).webkitSpeechRecognition;
-	recognition = new SpeechRecognition();
 	if (!toggleOn) {
 		toggleOn = true;
 		recognition.start();
@@ -29,7 +28,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	const inactivityPeriod = botOptions.voice?.timeoutPeriod;
 	const autoSendPeriod = botOptions.voice?.autoSendPeriod;
 
-	recognition.onresult = (event) => {
+	recognition.onresult = (event: SpeechRecognitionEvent) => {
 		clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
 		inactivityTimer = null;
 		clearTimeout(autoSendTimer);

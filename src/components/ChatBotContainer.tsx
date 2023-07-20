@@ -56,7 +56,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const [audioToggledOn, setAudioToggledOn] = useState<boolean>(false);
 
 	// tracks if voice is toggled on
-	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(true);
+	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(false);
 
 	// tracks if textarea is disabled
 	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(false);
