@@ -28,7 +28,8 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	const inactivityPeriod = botOptions.voice?.timeoutPeriod;
 	const autoSendPeriod = botOptions.voice?.autoSendPeriod;
 
-	recognition.onresult = (event: SpeechRecognitionEvent) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	recognition.onresult = (event: any) => {
 		clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
 		inactivityTimer = null;
 		clearTimeout(autoSendTimer);
