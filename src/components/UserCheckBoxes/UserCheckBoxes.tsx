@@ -80,7 +80,7 @@ const UserCheckBoxes = ({
 	
 	// handles marking/unmarking of checkboxes
 	const handleCheckItems = (label: string) => {
-		if (disabled || checkedBoxes.size == checkBoxes.max) {
+		if (disabled) {
 			return;
 		}
 
@@ -90,6 +90,9 @@ const UserCheckBoxes = ({
 				checkedItems.delete(label);
 				updatedCheckboxes.delete(label);
 			} else {
+				if (checkedBoxes.size == checkBoxes.max) {
+					return prevCheckedBoxes;
+				}
 				checkedItems.add(label);
 				updatedCheckboxes.add(label);
 			}
