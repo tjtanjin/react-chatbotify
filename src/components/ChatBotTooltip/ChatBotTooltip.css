@@ -10,16 +10,14 @@
 	font-size: 20px;
 }
 
-.rcb-chat-tooltip::before {
+.rcb-chat-tooltip-tail {
+	content: "";
 	position: absolute;
 	top: 50%;
-	left: 100%;
+	right: -10px;
 	margin-top: -10px;
-	border-width: 10px;
+	border-width: 10px 0 10px 10px;
 	border-style: solid;
-	border-top-color: transparent;
-	border-bottom-color: transparent;
-	border-right-color: transparent;
 }
 
 .rcb-chat-tooltip.rcb-tooltip-hide {

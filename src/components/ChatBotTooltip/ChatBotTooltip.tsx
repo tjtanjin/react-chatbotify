@@ -51,6 +51,11 @@ const ChatBotTooltip = () => {
 		color: botOptions.theme?.secondaryColor,
 		...botOptions.tooltipStyle
 	};
+
+	// styles for tooltip tail
+	const tooltipTailStyle = {
+		borderColor: `transparent transparent transparent ${tooltipStyle.backgroundColor}`
+	};
 	
 	return (
 		<>
@@ -61,6 +66,7 @@ const ChatBotTooltip = () => {
 					onClick={() => setBotOptions({...botOptions, isOpen: true})}
 				>
 					<span style={{ color: "#fff" }}>{botOptions.tooltip?.text}</span>
+					<span className="rcb-chat-tooltip-tail" style={tooltipTailStyle}></span>
 				</div>
 			}
 		</>
