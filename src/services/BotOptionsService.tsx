@@ -44,13 +44,13 @@ const defaultOptions = {
 		),
 		showAvatar: true,
 		avatarImage: botAvatarImage,
-		notificationImage: notificationImage,
 		closeChatImage: closeChatImage,
 	},
 	notification: {
 		disabled: false,
 		defaultToggledOn: true,
 		toggledOn: true,
+		notificationImage: notificationImage,
 		notificationSound: notificationSound,
 	},
 	audio: {
@@ -106,12 +106,12 @@ const defaultOptions = {
 				</span>
 			</div>
 		),
-		fileAttachmentImage: fileAttachmentImage,
 	},
 	fileAttachment: {
 		disabled: false,
 		multiple: true,
 		accept: ".png",
+		fileAttachmentImage: fileAttachmentImage,
 	},
 	emoji: {
 		disabled: false,

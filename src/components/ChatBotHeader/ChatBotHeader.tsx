@@ -38,7 +38,7 @@ const ChatBotHeader = ({
 			backgroundImage: `url(${botOptions.header?.avatarImage})`,
 		},
 		notificationIcon: {
-			backgroundImage: `url(${botOptions.header?.notificationImage})`,
+			backgroundImage: `url(${botOptions.notification?.notificationImage})`,
 		},
 		audioIcon: {
 			backgroundImage: `url(${botOptions.audio?.audioImage})`,

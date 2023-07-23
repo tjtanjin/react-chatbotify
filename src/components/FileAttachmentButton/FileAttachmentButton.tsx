@@ -93,7 +93,7 @@ const FileAttachmentButton = ({
 						accept={botOptions.fileAttachment?.accept}
 					/>
 					<span
-						style={{backgroundImage: `url(${botOptions.footer?.fileAttachmentImage})`}}
+						style={{backgroundImage: `url(${botOptions.fileAttachment?.fileAttachmentImage})`}}
 						className="rcb-attach-icon-enabled"
 					/>
 				</label>
@@ -102,7 +102,7 @@ const FileAttachmentButton = ({
 					<input disabled type="file" />
 					<span 
 						style={{
-							backgroundImage: `url(${botOptions.footer?.fileAttachmentImage})`,
+							backgroundImage: `url(${botOptions.fileAttachment?.fileAttachmentImage})`,
 							cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`,
 						}} 
 						className="rcb-attach-icon-disabled"

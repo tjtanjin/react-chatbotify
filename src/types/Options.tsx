@@ -24,13 +24,13 @@ export type Options = {
 		title?: string | JSX.Element,
 		showAvatar: boolean,
 		avatarImage?: string;
-		notificationImage?: string;
 		closeChatImage?: string;
 	},
 	notification?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
 		notificationSound?: string;
+		notificationImage?: string;
 	},
 	audio?: {
 		disabled?: boolean;
@@ -75,12 +75,12 @@ export type Options = {
 	},
 	footer?: {
 		text?: string | JSX.Element;
-		fileAttachmentImage?: string;
 	},
 	fileAttachment?: {
 		disabled?: boolean;
 		multiple?: boolean;
 		accept?: string;
+		fileAttachmentImage?: string;
 	}
 	emoji?: {
 		disabled?: boolean;
