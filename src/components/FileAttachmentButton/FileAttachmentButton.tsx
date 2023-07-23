@@ -77,8 +77,8 @@ const FileAttachmentButton = ({
 				fileNames.push(files[i].name);
 			}
 			handleActionInput(currPath, fileNames.join(", "), false);
-			fileHandler(files, {userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				injectMessage, openChat});
+			fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
+				injectMessage, openChat, files});
 		}
 	};
 

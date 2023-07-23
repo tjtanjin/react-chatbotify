@@ -15,6 +15,6 @@ export type Block = {
 
 	// post-processing attributes (runs after user input)
 	function?: ((params: Params) => void);
-	file?: ((files: FileList, params: Params) => void);
+	file?: ((params: Params) => void);
 	path?: string | null | undefined | ((params: Params) => string | null | undefined);
 }

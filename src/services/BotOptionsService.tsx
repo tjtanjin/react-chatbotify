@@ -22,9 +22,9 @@ const defaultOptions = {
 	theme: {
 		primaryColor: "#42b0c5",
 		secondaryColor: "#491d8d",
-		fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", ' +
-			'"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", ' +
-			'sans-serif',
+		fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', " +
+			"'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', " +
+			"sans-serif",
 		actionDisabledImage: actionDisabledImage,
 		embedded: false,
 	},
@@ -49,7 +49,6 @@ const defaultOptions = {
 	notification: {
 		disabled: false,
 		defaultToggledOn: true,
-		toggledOn: true,
 		notificationImage: notificationImage,
 		notificationSound: notificationSound,
 	},
@@ -87,7 +86,7 @@ const defaultOptions = {
 		avatarImage: botAvatarImage,
 	},
 	voice: {
-		disabled: false,
+		disabled: true,
 		defaultToggledOn: false,
 		timeoutPeriod: 60000,
 		autoSendDisabled: false,
@@ -116,7 +115,7 @@ const defaultOptions = {
 	emoji: {
 		disabled: false,
 		icon: "😀",
-		list: ['😀', '😃', '😄', '😊', '😍', '🥳', '🎉', '🎈', '🚀', '⭐️']
+		list: ["😀", "😃", "😄", "😊", "😍", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	advance: {
 		useCustomMessages: false,
