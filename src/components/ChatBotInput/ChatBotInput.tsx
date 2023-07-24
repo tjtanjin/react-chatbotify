@@ -51,9 +51,10 @@ const ChatBotInput = ({
 
 	// styles for chat input
 	const inputStyle = {
-		outline: isFocused ? "none" : "",
-		boxShadow: isFocused ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
+		outline: isFocused && !textAreaDisabled ? "none" : "",
+		boxShadow: isFocused && !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
 		cursor: textAreaDisabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "",
+		caretColor: textAreaDisabled ? "transparent" : ""
 	};
 
 	// styles for input placeholder
@@ -65,6 +66,9 @@ const ChatBotInput = ({
 	 * Handles focus event on chat input.
 	 */
 	const handleFocus = () => {
+		if (textAreaDisabled) {
+			return;
+		}
 		setIsFocused(true);
 	};
 
@@ -81,7 +85,7 @@ const ChatBotInput = ({
 	 * @param event keyboard event
 	 */ 
 	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-		if (event.key === "Enter" && !event.shiftKey) {
+		if (event.key === "Enter") {
 			event.preventDefault();
 			handleSubmit(event);
 		}
@@ -93,6 +97,11 @@ const ChatBotInput = ({
 	 * @param event textarea change event
 	 */
 	const handleTextareaValueChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+		if (textAreaDisabled && inputRef.current) {
+			// prevent input and keep current value
+			inputRef.current.value = "";
+			return;
+		}
 		if (inputRef.current) {
 			inputRef.current.value = event.target.value.replace(/\n/g, " ");
 		}
@@ -103,7 +112,7 @@ const ChatBotInput = ({
 	 * 
 	 * @param event form event
 	 */
-	const handleSubmit = (event: FormEvent) => {
+	const handleSubmit = (event: (FormEvent | React.MouseEvent<HTMLDivElement, MouseEvent>)) => {
 		event.preventDefault();
 		const currPath = getCurrPath();
 		if (currPath == null) {
@@ -121,12 +130,12 @@ const ChatBotInput = ({
 
 	return (
 		<div style={botOptions.chatInputStyle} className="rcb-chat-input">
+			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
 			<textarea
 				ref={inputRef}
 				style={inputStyle}
 				rows={1}
 				className="rcb-chat-input-textarea"
-				disabled={textAreaDisabled}
 				placeholder={placeholder}
 				onChange={handleTextareaValueChange}
 				onKeyDown={handleKeyDown}

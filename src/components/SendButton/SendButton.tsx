@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 
@@ -12,7 +12,7 @@ import "./SendButton.css";
 const SendButton = ({
 	handleSubmit
 }: {
-	handleSubmit: (event: FormEvent) => void;
+	handleSubmit: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }) => {
 
 	// handles options for bot
@@ -57,7 +57,7 @@ const SendButton = ({
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			style={isHovered ? sendButtonHoveredStyle : sendButtonStyle}
-			onClick={handleSubmit}
+			onMouseDown={handleSubmit}
 			className="rcb-send-button"
 		>
 			<span className="rcb-send-icon" style={sendIconStyle} />

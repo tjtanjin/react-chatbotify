@@ -77,14 +77,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const [unreadCount, setUnreadCount] = useState<number>(0);
 
 	// checks for initial interaction, whether chat history is enabled and then preprocesses start block
+	const handleFirstInteraction = () => {
+		setHasInteracted(true);
+		window.removeEventListener("click", handleFirstInteraction);
+		window.removeEventListener("keydown", handleFirstInteraction);
+		window.removeEventListener("touchstart", handleFirstInteraction);
+	};
 	useEffect(() => {
-		const handleFirstInteraction = () => {
-			setHasInteracted(true);
-			window.removeEventListener("click", handleFirstInteraction);
-			window.removeEventListener("keydown", handleFirstInteraction);
-			window.removeEventListener("touchstart", handleFirstInteraction);
-		};
-	
 		window.addEventListener("click", handleFirstInteraction);
 		window.addEventListener("keydown", handleFirstInteraction);
 		window.addEventListener("touchstart", handleFirstInteraction);
@@ -99,15 +98,15 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			const chatHistory = localStorage.getItem(botOptions.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
 				const messageContent = {
-					content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory}/>,
+					content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory} />,
 					type: "object",
 					isUser: false,
-					timestamp: null
-				}
+					timestamp: null,
+				};
 				setMessages([messageContent]);
 			}
 		}
-	
+
 		return () => {
 			window.removeEventListener("click", handleFirstInteraction);
 			window.removeEventListener("keydown", handleFirstInteraction);
@@ -267,7 +266,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		// Clear input field
 		if (inputRef.current) {
 			inputRef.current.value = "";
-			inputRef.current?.blur();
 		}
 
 		if (botOptions.chatInput?.blockSpam) {
