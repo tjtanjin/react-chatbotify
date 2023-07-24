@@ -161,7 +161,21 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (message != null && !message?.isUser && !botOptions.isOpen && !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
 			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
-				const audio = new Audio(botOptions.notification?.notificationSound);
+				let notificationSound = botOptions.notification?.notificationSound;
+
+				// convert data uri to url if it is base64, true in production
+				if (notificationSound?.startsWith("data:audio")) {
+					const binaryString = atob(notificationSound.split(',')[1]);
+					const arrayBuffer = new ArrayBuffer(binaryString.length);
+					const uint8Array = new Uint8Array(arrayBuffer);
+					for (let i = 0; i < binaryString.length; i++) {
+						uint8Array[i] = binaryString.charCodeAt(i);
+					}
+					const blob = new Blob([uint8Array], { type: 'audio/wav' });
+					notificationSound = URL.createObjectURL(blob);
+				}
+
+				const audio = new Audio(notificationSound);
 				audio.volume = 0.2;
 				audio.play();
 			}
