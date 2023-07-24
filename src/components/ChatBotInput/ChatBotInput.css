@@ -27,6 +27,7 @@
 	overflow-y: scroll;
 	font-family: inherit;
 	background-color: #fff;
+	color: #000;
 }
 
 .rcb-chat-input-textarea::-webkit-scrollbar {

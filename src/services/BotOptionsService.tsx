@@ -169,31 +169,24 @@ export const parseBotOptions = (providedOptions: Options | undefined) => {
 		providedOptions.chatInput.botDelay = 500;
 	}
 
-	return getCombinedOptions(defaultOptions as Options, providedOptions);
+	return getCombinedOptions(providedOptions);
 }
 
 /**
  * Combines default and provided options.
  * 
- * @param defaultOptions default options for the bot
  * @param providedOptions options provided by the user to the bot
  */
-function getCombinedOptions<T>(defaultOptions: T, providedOptions: T): T {
-	const mergedObj: T = {} as T;
-
-	for (const prop in defaultOptions) {
-		if (!Object.prototype.hasOwnProperty.call(providedOptions, prop)) {
-			mergedObj[prop] = defaultOptions[prop];
-		}
-	}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getCombinedOptions = (providedOptions: any): Options => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const mergedOptions: any = { ...defaultOptions };
 	for (const prop in providedOptions) {
-		if (typeof defaultOptions[prop] === "object" && typeof providedOptions[prop] === "object") {
-			mergedObj[prop] = getCombinedOptions(defaultOptions[prop], providedOptions[prop]);
+		if (typeof providedOptions[prop] === "object" && providedOptions[prop] !== null) {
+			mergedOptions[prop] = { ...mergedOptions[prop], ...providedOptions[prop] };
 		} else {
-			mergedObj[prop] = providedOptions[prop];
+			mergedOptions[prop] = providedOptions[prop];
 		}
 	}
-
-	return mergedObj;
+	return mergedOptions;
 }
