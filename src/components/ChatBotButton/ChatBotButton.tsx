@@ -34,6 +34,20 @@ const ChatBotButton = ({
 	
 	return (
 		<>
+			{/* prevents background from scrolling on mobile when chat window is open */}
+			{botOptions.isOpen &&
+				<style>
+					{`
+						@media (max-width: 768px) {
+							html, body {
+								margin: 0;
+								height: 100%;
+								overflow: hidden;
+							}
+						}
+					`}
+				</style>
+			}
 			{!botOptions.theme?.embedded &&
 				<button
 					style={chatButtonStyle}
