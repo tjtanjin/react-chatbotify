@@ -25,6 +25,7 @@ const defaultOptions = {
 		fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', " +
 			"'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', " +
 			"sans-serif",
+		mobileWidth: 768,
 		actionDisabledImage: actionDisabledImage,
 		embedded: false,
 	},
@@ -127,8 +128,9 @@ const defaultOptions = {
 	tooltipStyle: {},
 	chatButtonStyle: {},
 	notificationBadgeStyle: {},
-	headerStyle: {},
 	chatWindowStyle: {},
+	headerStyle: {},
+	bodyStyle: {},
 	chatInputStyle: {},
 	userBubbleStyle: {},
 	botBubbleStyle: {},

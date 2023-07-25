@@ -10,6 +10,7 @@ export type Options = {
 		primaryColor?: string;
 		secondaryColor?: string;
 		fontFamily?: string;
+		mobileWidth?: number;
 		actionDisabledImage?: string;
 		embedded?: boolean;
 	},
@@ -103,10 +104,13 @@ export type Options = {
 	notificationBadgeStyle?: {
 		[key: string]: string | number;
 	},
+	chatWindowStyle?: {
+		[key: string]: string | number;
+	},
 	headerStyle?: {
 		[key: string]: string | number;
 	},
-	chatWindowStyle?: {
+	bodyStyle?: {
 		[key: string]: string | number;
 	},
 	chatInputStyle?: {

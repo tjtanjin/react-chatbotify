@@ -49,8 +49,8 @@ const ChatBotInput = ({
 		handleActionInput(currPath, inputRef.current?.value as string);
 	}, [voiceInputTrigger])
 
-	// styles for chat input
-	const inputStyle = {
+	// styles for text area
+	const textAreaStyle = {
 		outline: isFocused && !textAreaDisabled ? "none" : "",
 		boxShadow: isFocused && !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
 		cursor: textAreaDisabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "",
@@ -133,7 +133,7 @@ const ChatBotInput = ({
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
 			<textarea
 				ref={inputRef}
-				style={inputStyle}
+				style={textAreaStyle}
 				rows={1}
 				className="rcb-chat-input-textarea"
 				placeholder={placeholder}

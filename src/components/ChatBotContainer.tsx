@@ -76,17 +76,35 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks count of unread messages
 	const [unreadCount, setUnreadCount] = useState<number>(0);
 
-	// checks for initial interaction, whether chat history is enabled and then preprocesses start block
+	// tracks view port height (for auto-resizing on mobile view)
+	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number 
+		|| window.innerHeight);
+
+	/**
+	 * Checks for initial user interaction (required to play audio).
+	 */
 	const handleFirstInteraction = () => {
 		setHasInteracted(true);
 		window.removeEventListener("click", handleFirstInteraction);
 		window.removeEventListener("keydown", handleFirstInteraction);
 		window.removeEventListener("touchstart", handleFirstInteraction);
 	};
+
+	/**
+	 * Handles resizing of view port (required for mobile view).
+	 */
+	const handleResize = () => {
+		setViewportHeight(window.visualViewport?.height as number);
+	};
+
+	// adds listeners and render chat history button if enabled
 	useEffect(() => {
 		window.addEventListener("click", handleFirstInteraction);
 		window.addEventListener("keydown", handleFirstInteraction);
 		window.addEventListener("touchstart", handleFirstInteraction);
+		if ("visualViewport" in window) {
+			window.visualViewport?.addEventListener('resize', handleResize);
+		}
 
 		setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
 		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
@@ -111,6 +129,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("click", handleFirstInteraction);
 			window.removeEventListener("keydown", handleFirstInteraction);
 			window.removeEventListener("touchstart", handleFirstInteraction);
+			if ("visualViewport" in window) {
+				window.visualViewport?.removeEventListener('resize', handleResize);
+			}
 		};
 	}, []);
 
@@ -328,6 +349,41 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		<div className={getChatWindowClass()}>
 			<ChatBotTooltip/>
 			<ChatBotButton unreadCount={unreadCount}/>
+			{/* prevents background from scrolling on mobile when chat window is open */}
+			{/* background-overlay is a temp workaround for scroll issues when keyboard is visible */}
+			{botOptions.isOpen &&
+				<>
+					<style>
+						{`
+							@media (max-width: ${botOptions.theme?.mobileWidth}px) {
+								html, body {
+									margin: 0;
+									overflow: hidden;
+								}
+
+								.rcb-chat-window {
+									border-radius: 0px;
+									right: 0px !important;
+									bottom: 0px !important;
+									width: 100% !important;
+									height: ${viewportHeight}px !important;
+								}
+
+								.background-overlay {
+									position: fixed;
+									top: 0;
+									left: 0;
+									width: 100%;
+									height: 100%;
+									background-color: #fff;
+									z-index: 9999;
+								}
+							}
+						`}
+					</style>
+				</>
+			}
+			<div className="background-overlay"></div>
 			<div style={botOptions.chatWindowStyle} 
 				className="rcb-chat-window"
 			>

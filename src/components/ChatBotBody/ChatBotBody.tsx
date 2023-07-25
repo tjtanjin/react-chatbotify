@@ -124,7 +124,12 @@ const ChatBotBody = ({
 	};
 	
 	return (
-		<div className="rcb-chat-container" ref={chatContainerRef} onScroll={updateScrollHeight}>
+		<div 
+			style={botOptions.bodyStyle} 
+			className="rcb-chat-container"
+			ref={chatContainerRef} 
+			onScroll={updateScrollHeight}
+		>
 			{messages.map((message, index) => {
 				if (typeof message.content !== "string") {
 					return <div key={index}>{message.content}</div>;

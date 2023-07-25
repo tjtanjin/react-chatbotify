@@ -64,13 +64,3 @@
 		opacity: 0;
 	}
 }
-
-@media (max-width: 768px) {
-	.rcb-window-open .rcb-chat-window {
-		border-radius: 0px;
-		right: 0px !important;
-		bottom: 0px !important;
-		width: 100% !important;
-		height: 100% !important;
-	}
-}
