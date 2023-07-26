@@ -1,15 +1,17 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
 
 import "./ChatBotBody.css";
+import { processAudio } from "../../services/AudioService";
 
 /**
  * Contains chat messages between the user and bot.
  * 
  * @param chatBodyRef reference to the chat body
+ * @param audioToggledOn boolean indicating if audio is toggled on
  * @param isBotTyping boolean indicating if bot is typing
  * @param isLoadingChatHistory boolean indicating is chat history is being loaded
  * @param hasVerticalOverflow boolean indicating if messages have overflowed
@@ -18,6 +20,7 @@ import "./ChatBotBody.css";
  */
 const ChatBotBody = ({
 	chatBodyRef,
+	audioToggledOn,
 	isBotTyping,
 	isLoadingChatHistory,
 	hasVerticalOverflow,
@@ -25,6 +28,7 @@ const ChatBotBody = ({
 	setPrevScrollHeight
 }: {
 	chatBodyRef: RefObject<HTMLDivElement>;
+	audioToggledOn: boolean;
 	isBotTyping: boolean;
 	isLoadingChatHistory: boolean;
 	hasVerticalOverflow: boolean;
@@ -57,6 +61,7 @@ const ChatBotBody = ({
 		backgroundColor: botOptions.theme?.secondaryColor,
 		color: "#fff",
 		maxWidth: botOptions.botBubble?.showAvatar ? "65%" : "70%",
+		cursor: botOptions.audio?.tapToPlay ? "pointer" : "",
 		...botOptions.botBubbleStyle
 	};
 
@@ -123,6 +128,10 @@ const ChatBotBody = ({
 					/>
 				}
 				<div
+					onMouseDown={(event: MouseEvent) => {
+						event.preventDefault();
+						processAudio(botOptions, audioToggledOn, message);
+					}}
 					style={botBubbleStyle}
 					className="rcb-bot-message"
 				>

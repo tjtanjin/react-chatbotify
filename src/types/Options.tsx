@@ -37,6 +37,8 @@ export type Options = {
 	audio?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
+		autoPlay?: boolean;
+		tapToPlay?: boolean;
 		language?: string;
 		voiceName?: string;
 		rate?: number;

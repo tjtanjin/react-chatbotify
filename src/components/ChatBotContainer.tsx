@@ -423,7 +423,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					handleToggleNotification={handleToggleNotification}
 					audioToggledOn={audioToggledOn} handleToggleAudio={handleToggleAudio}
 				/>
-				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
+				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping} audioToggledOn={audioToggledOn}
 					isLoadingChatHistory={isLoadingChatHistory} hasVerticalOverflow={hasVerticalOverflow}
 					prevScrollHeight={prevScrollHeight}	setPrevScrollHeight={setPrevScrollHeight}
 				/>

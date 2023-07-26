@@ -57,6 +57,8 @@ const defaultOptions = {
 	audio: {
 		disabled: true,
 		defaultToggledOn: false,
+		autoPlay: true,
+		tapToPlay: false,
 		language: "en-US",
 		voiceName: "Microsoft David - English (United States)",
 		rate: 1,
