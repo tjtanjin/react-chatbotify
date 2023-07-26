@@ -104,7 +104,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		notificationAudio.current = new Audio(notificationSound);
-		notificationAudio.current.volume = 0.2;
+		notificationAudio.current.volume = botOptions.notification?.volume as number;
 	}
 
 	/**

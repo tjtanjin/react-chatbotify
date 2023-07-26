@@ -9,11 +9,12 @@ import { Options } from "../types/Options";
  * @param voiceName voice name to use
  * @param rate speech rate
  */
-const speak = (message: string, language: string, voiceName: string, rate: number) => {
+const speak = (message: string, language: string, voiceName: string, rate: number, volume: number) => {
 	const utterance = new SpeechSynthesisUtterance();
 	utterance.text = message;
 	utterance.lang = language;
 	utterance.rate = rate;
+	utterance.volume = volume;
 
 	let foundVoice = false;
 	window.speechSynthesis.getVoices().find((voice) => {
@@ -45,5 +46,5 @@ export const processAudio = (botOptions: Options, voiceToggledOn: boolean, messa
 	}
 
 	speak(message.content, botOptions.audio?.language as string, botOptions.audio?.voiceName as string,
-		botOptions.audio?.rate as number);
+		botOptions.audio?.rate as number, botOptions.audio?.volume as number);
 }

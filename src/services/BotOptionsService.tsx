@@ -50,6 +50,7 @@ const defaultOptions = {
 	notification: {
 		disabled: false,
 		defaultToggledOn: true,
+		volume: 0.2,
 		notificationImage: notificationImage,
 		notificationSound: notificationSound,
 	},
@@ -59,6 +60,7 @@ const defaultOptions = {
 		language: "en-US",
 		voiceName: "Microsoft David - English (United States)",
 		rate: 1,
+		volume: 1,
 		audioImage: audioImage,
 	},
 	chatHistory: {

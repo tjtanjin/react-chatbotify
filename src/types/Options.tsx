@@ -30,6 +30,7 @@ export type Options = {
 	notification?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
+		volume?: number;
 		notificationSound?: string;
 		notificationImage?: string;
 	},
@@ -39,6 +40,7 @@ export type Options = {
 		language?: string;
 		voiceName?: string;
 		rate?: number;
+		volume?: number;
 		audioImage?: string;
 	},
 	chatHistory?: {
