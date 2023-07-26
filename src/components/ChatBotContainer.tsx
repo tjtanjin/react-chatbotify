@@ -46,6 +46,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// checks if voice should be toggled back on after a user input
 	const keepVoiceOnRef = useRef<boolean>(false);
 
+	// audio to play for notifications
+	const notificationAudio = useRef<HTMLAudioElement>();
+
 	// tracks if user has interacted with page
 	const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
@@ -83,11 +86,37 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// handles manual workaround for messages overflow on mobile
 	const [hasVerticalOverflow, setHasVerticalOverflow] = useState<boolean>(false);
 
+	const setUpNotifications = () => {
+		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
+	
+		let notificationSound = botOptions.notification?.notificationSound;
+
+		// convert data uri to url if it is base64, true in production
+		if (notificationSound?.startsWith("data:audio")) {
+			const binaryString = atob(notificationSound.split(",")[1]);
+			const arrayBuffer = new ArrayBuffer(binaryString.length);
+			const uint8Array = new Uint8Array(arrayBuffer);
+			for (let i = 0; i < binaryString.length; i++) {
+				uint8Array[i] = binaryString.charCodeAt(i);
+			}
+			const blob = new Blob([uint8Array], { type: "audio/wav" });
+			notificationSound = URL.createObjectURL(blob);
+		}
+
+		notificationAudio.current = new Audio(notificationSound);
+		notificationAudio.current.volume = 0.2;
+	}
+
 	/**
 	 * Checks for initial user interaction (required to play audio).
 	 */
 	const handleFirstInteraction = () => {
 		setHasInteracted(true);
+
+		// workaround for getting notification sound to play on mobile
+		notificationAudio.current?.play();
+		notificationAudio.current?.pause();  
+		
 		window.removeEventListener("click", handleFirstInteraction);
 		window.removeEventListener("keydown", handleFirstInteraction);
 		window.removeEventListener("touchstart", handleFirstInteraction);
@@ -109,8 +138,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.visualViewport?.addEventListener("resize", handleResize);
 		}
 
+		setUpNotifications();
 		setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
-		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
 		setAudioToggledOn(botOptions.audio?.defaultToggledOn as boolean);
 		setVoiceToggledOn(botOptions.voice?.defaultToggledOn as boolean);
 		if (botOptions.chatHistory?.disabled) {
@@ -191,23 +220,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (message != null && !message?.isUser && !botOptions.isOpen && !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
 			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
-				let notificationSound = botOptions.notification?.notificationSound;
-
-				// convert data uri to url if it is base64, true in production
-				if (notificationSound?.startsWith("data:audio")) {
-					const binaryString = atob(notificationSound.split(",")[1]);
-					const arrayBuffer = new ArrayBuffer(binaryString.length);
-					const uint8Array = new Uint8Array(arrayBuffer);
-					for (let i = 0; i < binaryString.length; i++) {
-						uint8Array[i] = binaryString.charCodeAt(i);
-					}
-					const blob = new Blob([uint8Array], { type: "audio/wav" });
-					notificationSound = URL.createObjectURL(blob);
-				}
-
-				const audio = new Audio(notificationSound);
-				audio.volume = 0.2;
-				audio.play();
+				notificationAudio.current?.play();
 			}
 		}
 	}
