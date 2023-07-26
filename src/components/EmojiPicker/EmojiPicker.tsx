@@ -28,7 +28,7 @@ const EmojiPicker = ({
 	const iconContainerRef = useRef<HTMLDivElement>(null);
 
 	// handles showing of emoji popup
-	const [showPopup, setShowPopup] = useState(false);
+	const [showPopup, setShowPopup] = useState<boolean>(false);
 
 	// styles emoji button when disabled
 	const emojiButtonDisabledStyle = {

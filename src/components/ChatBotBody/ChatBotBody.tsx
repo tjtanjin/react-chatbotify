@@ -1,4 +1,4 @@
-import { RefObject, Dispatch, SetStateAction, useEffect } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { useMessages } from "../../context/MessagesContext";
@@ -9,22 +9,25 @@ import "./ChatBotBody.css";
 /**
  * Contains chat messages between the user and bot.
  * 
- * @param chatContainerRef reference to the chat container
+ * @param chatBodyRef reference to the chat body
  * @param isBotTyping boolean indicating if bot is typing
  * @param isLoadingChatHistory boolean indicating is chat history is being loaded
+ * @param hasVerticalOverflow boolean indicating if messages have overflowed
  * @param prevScrollHeight number representing previously scrolled height
  * @param setPrevScrollHeight setter for tracking scroll height
  */
 const ChatBotBody = ({
-	chatContainerRef,
+	chatBodyRef,
 	isBotTyping,
 	isLoadingChatHistory,
+	hasVerticalOverflow,
 	prevScrollHeight,
 	setPrevScrollHeight
 }: {
-	chatContainerRef: RefObject<HTMLDivElement>;
+	chatBodyRef: RefObject<HTMLDivElement>;
 	isBotTyping: boolean;
 	isLoadingChatHistory: boolean;
+	hasVerticalOverflow: boolean;
 	prevScrollHeight: number;
 	setPrevScrollHeight: Dispatch<SetStateAction<number>>;
 }) => {
@@ -34,6 +37,12 @@ const ChatBotBody = ({
 
 	// handles messages between user and the chat bot
 	const { messages } = useMessages();
+
+	// styles for chat body
+	const bodyStyle: CSSProperties = {
+		overflowY: hasVerticalOverflow ? "scroll" : "hidden",
+		...botOptions?.bodyStyle
+	}
 
 	// styles for user bubble
 	const userBubbleStyle = {
@@ -53,25 +62,25 @@ const ChatBotBody = ({
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
-		if (isLoadingChatHistory && chatContainerRef.current != null) {
-			const { scrollHeight } = chatContainerRef.current;
+		if (isLoadingChatHistory && chatBodyRef.current != null) {
+			const { scrollHeight } = chatBodyRef.current;
 			const scrollDifference = scrollHeight - prevScrollHeight;
-			chatContainerRef.current.scrollTop = chatContainerRef.current.scrollTop + scrollDifference;
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
 			setPrevScrollHeight(scrollHeight);
 			return;
 		}
 
-		if (chatContainerRef.current != null) {
-			chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+		if (chatBodyRef.current != null) {
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
 	}, [messages, isBotTyping]);
 
 	/**
-	 * Updates scroll height within the chat container.
+	 * Updates scroll height within the chat body.
 	 */
 	const updateScrollHeight = () => {
-		if (chatContainerRef?.current != null) {
-			setPrevScrollHeight(chatContainerRef.current.scrollHeight);
+		if (chatBodyRef?.current != null) {
+			setPrevScrollHeight(chatBodyRef.current.scrollHeight);
 		}
 	};
 
@@ -125,9 +134,9 @@ const ChatBotBody = ({
 	
 	return (
 		<div 
-			style={botOptions.bodyStyle} 
-			className="rcb-chat-container"
-			ref={chatContainerRef} 
+			style={bodyStyle}
+			className="rcb-chat-body-container"
+			ref={chatBodyRef} 
 			onScroll={updateScrollHeight}
 		>
 			{messages.map((message, index) => {

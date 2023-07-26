@@ -6,6 +6,7 @@
 	align-items: center;
 	padding-top: 10px;
 	padding-bottom: 5px;
+	min-height: 35px;
 	max-height: 45px;
 }
 

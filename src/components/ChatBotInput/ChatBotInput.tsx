@@ -40,7 +40,7 @@ const ChatBotInput = ({
 	const [isFocused, setIsFocused] = useState<boolean>(false);
 
 	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
-	const [voiceInputTrigger, setVoiceInputTrigger] = useState(false);
+	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
 	useEffect(() => {
 		const currPath = getCurrPath();
 		if (currPath == null) {

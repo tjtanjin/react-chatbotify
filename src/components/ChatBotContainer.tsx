@@ -34,8 +34,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// handles paths of the user
 	const { paths, setPaths } = usePaths();
 
-	// references chat window for auto-scrolling
-	const chatContainerRef = useRef<HTMLDivElement>(null);
+	// references chat body for auto-scrolling
+	const chatBodyRef = useRef<HTMLDivElement>(null);
 
 	// references textarea for user input
 	const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -47,7 +47,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const keepVoiceOnRef = useRef<boolean>(false);
 
 	// tracks if user has interacted with page
-	const [hasInteracted, setHasInteracted] = useState(false);
+	const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
 	// tracks if notification is toggled on
 	const [notificationToggledOn, setNotificationToggledOn] = useState<boolean>(true);
@@ -79,6 +79,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks view port height (for auto-resizing on mobile view)
 	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number 
 		|| window.innerHeight);
+
+	// handles manual workaround for messages overflow on mobile
+	const [hasVerticalOverflow, setHasVerticalOverflow] = useState<boolean>(false);
 
 	/**
 	 * Checks for initial user interaction (required to play audio).
@@ -135,8 +138,14 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		};
 	}, []);
 
-	// triggers check for notifications upon message update
+	// checks if messages have overflowed to allow scroll and triggers check for notifications
 	useEffect(() => {
+		// manual workaround instead of using overflow: auto as using overflow: auto allows
+		// the background to scroll on mobile view as well (improve if there's a more elegant solution)
+		const element = chatBodyRef.current;
+		const hasOverflow = (element?.scrollHeight as number) > (element?.clientHeight as number);
+		setHasVerticalOverflow(hasOverflow);
+
 		handleNotifications();
 	}, [messages]);
 
@@ -368,6 +377,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 								html, body {
 									margin: 0;
 									overflow: hidden;
+									touch-action: none;
 								}
 
 								.rcb-chat-window {
@@ -400,8 +410,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					handleToggleNotification={handleToggleNotification}
 					audioToggledOn={audioToggledOn} handleToggleAudio={handleToggleAudio}
 				/>
-				<ChatBotBody chatContainerRef={chatContainerRef} isBotTyping={isBotTyping}
-					isLoadingChatHistory={isLoadingChatHistory}
+				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
+					isLoadingChatHistory={isLoadingChatHistory} hasVerticalOverflow={hasVerticalOverflow}
 					prevScrollHeight={prevScrollHeight}	setPrevScrollHeight={setPrevScrollHeight}
 				/>
 				<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
