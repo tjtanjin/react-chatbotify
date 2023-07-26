@@ -130,6 +130,9 @@ const ChatBotBody = ({
 				<div
 					onMouseDown={(event: MouseEvent) => {
 						event.preventDefault();
+						if (!botOptions.audio?.tapToPlay) {
+							return;
+						}
 						processAudio(botOptions, audioToggledOn, message);
 					}}
 					style={botBubbleStyle}
