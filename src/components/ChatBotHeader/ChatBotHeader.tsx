@@ -1,3 +1,5 @@
+import { MouseEvent } from "react";
+
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotHeader.css";
@@ -50,6 +52,8 @@ const ChatBotHeader = ({
 
 	/**
 	 * Handles closing of chat window.
+	 * 
+	 * @param event mouse event
 	 */
 	const handleCloseChat = () => {
 		setBotOptions({...botOptions, isOpen: false});
@@ -67,7 +71,10 @@ const ChatBotHeader = ({
 				{!botOptions.notification?.disabled &&
 					<div
 						style={headerImages.notificationIcon}
-						onClick={handleToggleNotification}
+						onMouseDown={(event: MouseEvent) => {
+							event.preventDefault();
+							handleToggleNotification();
+						}}
 						className={`rcb-notification-icon-${notificationToggledOn ? "on" : "off"}`}
 					>
 					</div>
@@ -75,7 +82,10 @@ const ChatBotHeader = ({
 				{!botOptions.audio?.disabled &&
 					<div
 						style={headerImages.audioIcon}
-						onClick={handleToggleAudio}
+						onMouseDown={(event: MouseEvent) => {
+							event.preventDefault();
+							handleToggleAudio();
+						}}
 						className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}
 					>
 					</div>

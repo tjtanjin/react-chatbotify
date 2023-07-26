@@ -1,5 +1,5 @@
 
-import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
 
 import SendButton from "../SendButton/SendButton";
 import VoiceButton from "../VoiceButton/VoiceButton";
@@ -112,7 +112,7 @@ const ChatBotInput = ({
 	 * 
 	 * @param event form event
 	 */
-	const handleSubmit = (event: (FormEvent | React.MouseEvent<HTMLDivElement, MouseEvent>)) => {
+	const handleSubmit = (event: (FormEvent | MouseEvent)) => {
 		event.preventDefault();
 		const currPath = getCurrPath();
 		if (currPath == null) {

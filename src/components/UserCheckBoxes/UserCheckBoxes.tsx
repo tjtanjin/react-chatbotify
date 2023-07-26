@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { usePaths } from "../../context/PathsContext";
@@ -106,7 +106,10 @@ const UserCheckBoxes = ({
 		
 				return (
 					<div
-						onClick={() => handleCheckItems(key)}
+						onMouseDown={(event: MouseEvent) => {
+							event.preventDefault();
+							handleCheckItems(key)
+						}}
 						style={botCheckBoxRowStyle}
 						key={key}
 						className="rcb-checkbox-row-container"
@@ -125,7 +128,8 @@ const UserCheckBoxes = ({
 				style={botCheckBoxNextStyle}
 				className="rcb-checkbox-next-button"
 				disabled={disabled || checkedBoxes.size < (checkBoxes.min as number)}
-				onClick={() => {
+				onMouseDown={(event: MouseEvent) => {
+					event.preventDefault();
 					const userInput = Array.from(checkedItems).join(", ");
 					handleActionInput(path, userInput, botOptions.chatInput?.sendCheckboxOutput as boolean);
 				}}

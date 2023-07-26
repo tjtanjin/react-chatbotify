@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, MouseEvent } from "react";
 
 import { startVoiceRecording, stopVoiceRecording } from "../../services/VoiceService";
 import { useBotOptions } from "../../context/BotOptionsContext";
@@ -41,15 +41,17 @@ const VoiceButton = ({
 	}, [voiceToggledOn]);
 
 	return (
-		<button
-			disabled={textAreaDisabled}
-			onClick={handleToggleVoice}
+		<div
+			onMouseDown={(event: MouseEvent) => {
+				event.preventDefault();
+				handleToggleVoice();
+			}}
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}
 		>
 			<span className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
 				style={{backgroundImage: `url(${botOptions.voice?.voiceImage})`}}
 			/>
-		</button>
+		</div>
 	);
 };
 

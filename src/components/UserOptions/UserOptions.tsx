@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { usePaths } from "../../context/PathsContext";
@@ -93,7 +93,8 @@ const UserOptions= ({
 						style={isHovered ? botOptionHoveredStyle : botOptionStyle}
 						onMouseEnter={() => handleMouseEnter(index)}
 						onMouseLeave={() => handleMouseLeave(index)}
-						onClick={() => {
+						onMouseDown={(event: MouseEvent) => {
+							event.preventDefault();
 							if (disabled) {
 								return;
 							}

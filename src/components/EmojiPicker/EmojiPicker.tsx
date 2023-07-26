@@ -74,9 +74,11 @@ const EmojiPicker = ({
 	/**
 	 * Handles clicking on emoji in popup.
 	 * 
+	 * @param event mouse event
 	 * @param emoji emoji that user selected from popup
 	 */
-	const handleEmojiClick = (emoji: string) => {
+	const handleEmojiClick = (event: React.MouseEvent, emoji: string) => {
+		event.preventDefault();
 		if (inputRef.current) {
 			inputRef.current.value = inputRef.current.value + emoji;
 			inputRef.current?.focus();
@@ -86,8 +88,11 @@ const EmojiPicker = ({
 
 	/**
 	 * Toggles showing of emoji popup (does not show popup if textarea is disabled).
+	 * 
+	 * @param event mouse event
 	 */
-	const togglePopup = () => {
+	const togglePopup = (event: React.MouseEvent) => {
+		event.preventDefault();
 		if (textAreaDisabled) {
 			setShowPopup(false);
 		} else {
@@ -96,7 +101,7 @@ const EmojiPicker = ({
 	};
 
 	return (
-		<div className="rcb-emoji-picker" onClick={togglePopup}>
+		<div className="rcb-emoji-picker" onMouseDown={togglePopup}>
 			<div
 				ref={iconContainerRef}
 				style={textAreaDisabled ? emojiButtonDisabledStyle : {}} 
@@ -110,7 +115,9 @@ const EmojiPicker = ({
 						<span
 							key={index}
 							className="rcb-emoji"
-							onClick={() => handleEmojiClick(emoji)}
+							onMouseDown={(event: React.MouseEvent) => 
+								handleEmojiClick(event, emoji)
+							}
 						>
 							{emoji}
 						</span>

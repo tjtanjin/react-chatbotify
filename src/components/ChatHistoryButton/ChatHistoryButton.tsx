@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 
@@ -51,7 +51,10 @@ const ChatHistoryButton = ({
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
 				style={isHovered ? chatHistoryButtonHoveredStyle : botOptions.chatHistoryButtonStyle}
-				onClick={() => showChatHistory(chatHistory)}
+				onMouseDown={(event: MouseEvent) => {
+					event.preventDefault();
+					showChatHistory(chatHistory);
+				}}
 				className="rcb-view-history-button"
 			>
 				{botOptions.chatHistory?.viewChatHistoryButtonText}

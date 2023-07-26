@@ -258,6 +258,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	/**
 	 * Handles toggling of notification.
+	 * 
+	 * @param event mouse event
 	 */
 	const handleToggleNotification = () => {
 		setNotificationToggledOn(prev => !prev);
@@ -265,6 +267,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	/**
 	 * Handles toggling of audio.
+	 * 
+	 * @param event mouse event
 	 */
 	const handleToggleAudio = () => {
 		setAudioToggledOn(prev => !prev);
@@ -272,8 +276,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	/**
 	 * Handles toggling of voice.
+	 * 
+	 * @param event mouse event
 	 */
 	const handleToggleVoice = () => {
+		if (textAreaDisabled) {
+			return;
+		}
 		setVoiceToggledOn(prev => !prev);
 	}
 

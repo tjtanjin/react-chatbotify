@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 
@@ -12,7 +12,7 @@ import "./SendButton.css";
 const SendButton = ({
 	handleSubmit
 }: {
-	handleSubmit: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+	handleSubmit: (event: MouseEvent) => void;
 }) => {
 
 	// handles options for bot
