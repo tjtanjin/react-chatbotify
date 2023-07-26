@@ -106,7 +106,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		window.addEventListener("keydown", handleFirstInteraction);
 		window.addEventListener("touchstart", handleFirstInteraction);
 		if ("visualViewport" in window) {
-			window.visualViewport?.addEventListener('resize', handleResize);
+			window.visualViewport?.addEventListener("resize", handleResize);
 		}
 
 		setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
@@ -133,7 +133,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("keydown", handleFirstInteraction);
 			window.removeEventListener("touchstart", handleFirstInteraction);
 			if ("visualViewport" in window) {
-				window.visualViewport?.removeEventListener('resize', handleResize);
+				window.visualViewport?.removeEventListener("resize", handleResize);
 			}
 		};
 	}, []);
@@ -141,7 +141,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// checks if messages have overflowed to allow scroll and triggers check for notifications
 	useEffect(() => {
 		// manual workaround instead of using overflow: auto as using overflow: auto allows
-		// the background to scroll on mobile view as well (improve if there's a more elegant solution)
+		// the background to scroll on mobile view as well (improve if there is a more elegant solution)
 		const element = chatBodyRef.current;
 		const hasOverflow = (element?.scrollHeight as number) > (element?.clientHeight as number);
 		setHasVerticalOverflow(hasOverflow);
@@ -195,13 +195,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 				// convert data uri to url if it is base64, true in production
 				if (notificationSound?.startsWith("data:audio")) {
-					const binaryString = atob(notificationSound.split(',')[1]);
+					const binaryString = atob(notificationSound.split(",")[1]);
 					const arrayBuffer = new ArrayBuffer(binaryString.length);
 					const uint8Array = new Uint8Array(arrayBuffer);
 					for (let i = 0; i < binaryString.length; i++) {
 						uint8Array[i] = binaryString.charCodeAt(i);
 					}
-					const blob = new Blob([uint8Array], { type: 'audio/wav' });
+					const blob = new Blob([uint8Array], { type: "audio/wav" });
 					notificationSound = URL.createObjectURL(blob);
 				}
 

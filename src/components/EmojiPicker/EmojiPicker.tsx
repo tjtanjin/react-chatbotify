@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, RefObject } from 'react';
+import { useState, useRef, useEffect, RefObject } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 
@@ -62,12 +62,12 @@ const EmojiPicker = ({
 			calculatePopupPosition();
 		};
 
-		document.addEventListener('mousedown', handleClickOutside);
-		window.addEventListener('resize', handleWindowResize);
+		document.addEventListener("mousedown", handleClickOutside);
+		window.addEventListener("resize", handleWindowResize);
 
 		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-			window.removeEventListener('resize', handleWindowResize);
+			document.removeEventListener("mousedown", handleClickOutside);
+			window.removeEventListener("resize", handleWindowResize);
 		};
 	}, []); 
 
