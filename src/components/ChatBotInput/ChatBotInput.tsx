@@ -110,7 +110,7 @@ const ChatBotInput = ({
 	/**
 	 * Handles submission of user input via enter key or send button.
 	 * 
-	 * @param event form event
+	 * @param event form event or mouse event
 	 */
 	const handleSubmit = (event: (FormEvent | MouseEvent)) => {
 		event.preventDefault();

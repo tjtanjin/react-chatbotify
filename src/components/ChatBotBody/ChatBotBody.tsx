@@ -1,11 +1,11 @@
 import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
+import { processAudio } from "../../services/AudioService";
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
 
 import "./ChatBotBody.css";
-import { processAudio } from "../../services/AudioService";
 
 /**
  * Contains chat messages between the user and bot.

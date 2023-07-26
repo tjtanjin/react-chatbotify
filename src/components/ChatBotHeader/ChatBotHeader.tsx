@@ -52,8 +52,6 @@ const ChatBotHeader = ({
 
 	/**
 	 * Handles closing of chat window.
-	 * 
-	 * @param event mouse event
 	 */
 	const handleCloseChat = () => {
 		setBotOptions({...botOptions, isOpen: false});

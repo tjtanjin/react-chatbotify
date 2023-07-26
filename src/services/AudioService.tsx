@@ -8,6 +8,7 @@ import { Options } from "../types/Options";
  * @param language language to listen for
  * @param voiceName voice name to use
  * @param rate speech rate
+ * @param volume play volume
  */
 const speak = (message: string, language: string, voiceName: string, rate: number, volume: number) => {
 	const utterance = new SpeechSynthesisUtterance();

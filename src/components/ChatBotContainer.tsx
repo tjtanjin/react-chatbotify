@@ -86,49 +86,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// handles manual workaround for messages overflow on mobile
 	const [hasVerticalOverflow, setHasVerticalOverflow] = useState<boolean>(false);
 
-	const setUpNotifications = () => {
-		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
-	
-		let notificationSound = botOptions.notification?.notificationSound;
-
-		// convert data uri to url if it is base64, true in production
-		if (notificationSound?.startsWith("data:audio")) {
-			const binaryString = atob(notificationSound.split(",")[1]);
-			const arrayBuffer = new ArrayBuffer(binaryString.length);
-			const uint8Array = new Uint8Array(arrayBuffer);
-			for (let i = 0; i < binaryString.length; i++) {
-				uint8Array[i] = binaryString.charCodeAt(i);
-			}
-			const blob = new Blob([uint8Array], { type: "audio/wav" });
-			notificationSound = URL.createObjectURL(blob);
-		}
-
-		notificationAudio.current = new Audio(notificationSound);
-		notificationAudio.current.volume = botOptions.notification?.volume as number;
-	}
-
-	/**
-	 * Checks for initial user interaction (required to play audio).
-	 */
-	const handleFirstInteraction = () => {
-		setHasInteracted(true);
-
-		// workaround for getting notification sound to play on mobile
-		notificationAudio.current?.play();
-		notificationAudio.current?.pause();  
-		
-		window.removeEventListener("click", handleFirstInteraction);
-		window.removeEventListener("keydown", handleFirstInteraction);
-		window.removeEventListener("touchstart", handleFirstInteraction);
-	};
-
-	/**
-	 * Handles resizing of view port (required for mobile view).
-	 */
-	const handleResize = () => {
-		setViewportHeight(window.visualViewport?.height as number);
-	};
-
 	// adds listeners and render chat history button if enabled
 	useEffect(() => {
 		window.addEventListener("click", handleFirstInteraction);
@@ -198,6 +155,52 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths, setTimeoutId, 
 			handleActionInput);
 	}, [paths]);
+
+	/**
+	 * Sets up the notifications feature (initial toggle status and sound).
+	 */
+	const setUpNotifications = () => {
+		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
+	
+		let notificationSound = botOptions.notification?.notificationSound;
+
+		// convert data uri to url if it is base64, true in production
+		if (notificationSound?.startsWith("data:audio")) {
+			const binaryString = atob(notificationSound.split(",")[1]);
+			const arrayBuffer = new ArrayBuffer(binaryString.length);
+			const uint8Array = new Uint8Array(arrayBuffer);
+			for (let i = 0; i < binaryString.length; i++) {
+				uint8Array[i] = binaryString.charCodeAt(i);
+			}
+			const blob = new Blob([uint8Array], { type: "audio/wav" });
+			notificationSound = URL.createObjectURL(blob);
+		}
+
+		notificationAudio.current = new Audio(notificationSound);
+		notificationAudio.current.volume = botOptions.notification?.volume as number;
+	}
+
+	/**
+	 * Checks for initial user interaction (required to play audio).
+	 */
+	const handleFirstInteraction = () => {
+		setHasInteracted(true);
+
+		// workaround for getting notification sound to play on mobile
+		notificationAudio.current?.play();
+		notificationAudio.current?.pause();  
+		
+		window.removeEventListener("click", handleFirstInteraction);
+		window.removeEventListener("keydown", handleFirstInteraction);
+		window.removeEventListener("touchstart", handleFirstInteraction);
+	};
+
+	/**
+	 * Handles resizing of view port (required for mobile view).
+	 */
+	const handleResize = () => {
+		setViewportHeight(window.visualViewport?.height as number);
+	};
 
 	/**
 	 * Modifies botoptions to open/close the chat window.

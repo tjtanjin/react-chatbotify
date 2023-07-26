@@ -12,7 +12,7 @@ import "./FileAttachmentButton.css";
  * @param inputRef reference to the textarea
  * @param flow conversation flow for the bot
  * @param injectMessage utility function for injecting a message into the messages array
-* @param openChat utility function to open/close chat window
+ * @param openChat utility function to open/close chat window
  * @param getCurrPath retrieves current path for the user
  * @param getPrevPath retrieves previous path for the user
  * @param handleActionInput handles action input from user 
