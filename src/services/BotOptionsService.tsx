@@ -57,7 +57,7 @@ const defaultOptions = {
 		disabled: true,
 		defaultToggledOn: false,
 		language: "en-US",
-		voiceName: "Google US English Male",
+		voiceName: "Microsoft David - English (United States)",
 		rate: 1,
 		audioImage: audioImage,
 	},

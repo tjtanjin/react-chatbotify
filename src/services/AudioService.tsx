@@ -14,14 +14,21 @@ const speak = (message: string, language: string, voiceName: string, rate: numbe
 	utterance.text = message;
 	utterance.lang = language;
 	utterance.rate = rate;
-	const voice = window.speechSynthesis.getVoices().find(
-		voice => voice.name === voiceName
-	);
-	if (voice) {
-		utterance.voice = voice;
-	}
 
-	window.speechSynthesis.speak(utterance);
+	let foundVoice = false;
+	window.speechSynthesis.getVoices().find((voice) => {
+		if (voice.name === voiceName) {
+			utterance.voice = voice;
+			window.speechSynthesis.speak(utterance);
+			foundVoice = true;
+			return;
+		}
+	});
+	
+	// if cannot find voice, use default
+	if (!foundVoice) {
+		window.speechSynthesis.speak(utterance);
+	}
 }
 
 /**
