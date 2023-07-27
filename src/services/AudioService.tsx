@@ -42,7 +42,7 @@ const speak = (message: string, language: string, voiceName: string, rate: numbe
  */
 export const processAudio = (botOptions: Options, voiceToggledOn: boolean, message: Message) => {
 	if (botOptions.audio?.disabled || message.isUser || typeof message.content !== "string"
-		|| !botOptions?.isOpen || !voiceToggledOn) {
+		|| (!botOptions?.isOpen && !botOptions.theme?.embedded) || !voiceToggledOn) {
 		return;
 	}
 
