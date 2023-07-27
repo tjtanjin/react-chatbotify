@@ -144,12 +144,17 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			setUnreadCount(0);
 			if (window.innerWidth <= (botOptions.theme?.mobileWidth as number)) {
 				setWindowScrollPos(window.scrollY);
+				window.addEventListener("scroll", handleScroll);
 			}
 		} else {
 			if (window.innerWidth <= (botOptions.theme?.mobileWidth as number)) {
-				window.scrollTo({top: windowScrollPos, behavior: "smooth"});
+				window.scrollTo({top: windowScrollPos, behavior: "instant"});
 			}
 		}
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		 };
 	}, [botOptions.isOpen]);
 
 	// performs pre-processing when paths change
@@ -166,14 +171,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			handleActionInput);
 	}, [paths]);
 
-	// scrolls to top if view port height changed and chat window is open
-	useEffect(() => {
-		if (!botOptions.isOpen) {
-			return;
-		}
-		window.scrollTo({top: 0, behavior: "smooth"});
-	}, [viewportHeight]);
-
 	/**
 	 * Handles resizing of view port (required and only for mobile view).
 	 */
@@ -184,6 +181,17 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 		setViewportHeight(window.visualViewport?.height as number);
 	};
+
+	/**
+	 * Handles scrolling of window on mobile.
+	 */
+	const handleScroll = () => {
+		// if not mobile or chat window is close, nothing to do 
+		if (window.innerWidth > (botOptions.theme?.mobileWidth as number)) {
+			return;
+		}
+		window.scrollTo({top: 0, behavior: "instant"});
+	}
 
 	/**
 	 * Sets up the notifications feature (initial toggle status and sound).
