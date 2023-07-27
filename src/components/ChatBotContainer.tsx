@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, MouseEvent } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -380,7 +380,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}
 
 	return (
-		<div className={getChatWindowClass()}>
+		<div 
+			onMouseDown={(event: MouseEvent) => {
+				event?.preventDefault();
+			}}
+			className={getChatWindowClass()}
+		>
 			<ChatBotTooltip/>
 			<ChatBotButton unreadCount={unreadCount}/>
 			{/* prevents background from scrolling on mobile when chat window is open */}

@@ -129,7 +129,13 @@ const ChatBotInput = ({
 	}
 
 	return (
-		<div style={botOptions.chatInputStyle} className="rcb-chat-input">
+		<div 
+			onMouseDown={(event: MouseEvent) => {
+				event.stopPropagation();
+			}}
+			style={botOptions.chatInputStyle} 
+			className="rcb-chat-input"
+		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
 			<textarea
 				ref={inputRef}

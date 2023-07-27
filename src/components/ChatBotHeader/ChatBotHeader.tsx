@@ -91,7 +91,11 @@ const ChatBotHeader = ({
 				{!botOptions.theme?.embedded &&
 					<div
 						style={headerImages.closeChatIcon}
-						onClick={handleCloseChat} className="rcb-close-chat-icon"
+						onMouseDown={(event: MouseEvent) => {
+							event.stopPropagation();
+							handleCloseChat();
+						}}
+						className="rcb-close-chat-icon"
 					>
 					</div>
 				}
