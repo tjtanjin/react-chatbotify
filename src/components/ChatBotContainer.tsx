@@ -34,6 +34,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// handles paths of the user
 	const { paths, setPaths } = usePaths();
 
+	// references chat header for auto-scrolling
+	const chatHeaderRef = useRef<HTMLDivElement>(null);
+
 	// references chat body for auto-scrolling
 	const chatBodyRef = useRef<HTMLDivElement>(null);
 
@@ -156,6 +159,25 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			handleActionInput);
 	}, [paths]);
 
+	// scrolls to top if view port height changed and chat window is open
+	useEffect(() => {
+		if (!botOptions.isOpen) {
+			return;
+		}
+		window.scrollTo(0, 0);
+	}, [viewportHeight]);
+
+	/**
+	 * Handles resizing of view port (required and only for mobile view).
+	 */
+	const handleResize = () => {
+		// if not mobile, nothing to do
+		if (window.innerWidth > (botOptions.theme?.mobileWidth as number)) {
+			return;
+		}
+		setViewportHeight(window.visualViewport?.height as number);
+	};
+
 	/**
 	 * Sets up the notifications feature (initial toggle status and sound).
 	 */
@@ -193,13 +215,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		window.removeEventListener("click", handleFirstInteraction);
 		window.removeEventListener("keydown", handleFirstInteraction);
 		window.removeEventListener("touchstart", handleFirstInteraction);
-	};
-
-	/**
-	 * Handles resizing of view port (required for mobile view).
-	 */
-	const handleResize = () => {
-		setViewportHeight(window.visualViewport?.height as number);
 	};
 
 	/**
@@ -383,6 +398,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		<div 
 			onMouseDown={(event: MouseEvent) => {
 				event?.preventDefault();
+
+				// if not on mobile, should remove focus
+				if (window.innerWidth > (botOptions.theme?.mobileWidth as number)) {
+					inputRef.current?.blur();
+				}
 			}}
 			className={getChatWindowClass()}
 		>
@@ -405,6 +425,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 									border-radius: 0px;
 									right: 0px !important;
 									bottom: 0px !important;
+									top: 0px !important;
 									width: 100% !important;
 									height: ${viewportHeight}px !important;
 								}
@@ -424,7 +445,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				</>
 			}
 			<div className="background-overlay"></div>
-			<div style={botOptions.chatWindowStyle} 
+			<div
+				ref={chatHeaderRef}
+				style={botOptions.chatWindowStyle} 
 				className="rcb-chat-window"
 			>
 				<ChatBotHeader notificationToggledOn={notificationToggledOn} 

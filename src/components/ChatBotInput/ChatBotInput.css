@@ -28,6 +28,7 @@
 	font-family: inherit;
 	background-color: #fff;
 	color: #000;
+	touch-action: none;
 }
 
 .rcb-chat-input-textarea::-webkit-scrollbar {

@@ -61,7 +61,7 @@ const ChatBotBody = ({
 		backgroundColor: botOptions.theme?.secondaryColor,
 		color: "#fff",
 		maxWidth: botOptions.botBubble?.showAvatar ? "65%" : "70%",
-		cursor: botOptions.audio?.tapToPlay ? "pointer" : "",
+		cursor: (botOptions.audio?.tapToPlay && audioToggledOn) ? "pointer" : "",
 		...botOptions.botBubbleStyle
 	};
 
@@ -173,7 +173,12 @@ const ChatBotBody = ({
 							className="rcb-message-bot-avatar"
 						/>
 					}
-					<div className="rcb-bot-message">
+					<div 
+						onMouseDown={(event: MouseEvent) => {
+							event.preventDefault();
+						}}
+						className="rcb-bot-message"
+					>
 						<div className="rcb-typing-indicator">
 							<span className="rcb-dot"/>
 							<span className="rcb-dot"/>
