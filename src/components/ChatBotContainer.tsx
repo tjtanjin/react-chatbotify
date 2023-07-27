@@ -34,9 +34,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// handles paths of the user
 	const { paths, setPaths } = usePaths();
 
-	// references chat header for auto-scrolling
-	const chatHeaderRef = useRef<HTMLDivElement>(null);
-
 	// references chat body for auto-scrolling
 	const chatBodyRef = useRef<HTMLDivElement>(null);
 
@@ -88,6 +85,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// handles manual workaround for messages overflow on mobile
 	const [hasVerticalOverflow, setHasVerticalOverflow] = useState<boolean>(false);
+
+	// tracks previous window scroll position to go back to on mobile
+	const [windowScrollPos, setWindowScrollPos] = useState(0);
 
 	// adds listeners and render chat history button if enabled
 	useEffect(() => {
@@ -142,6 +142,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	useEffect(() => {
 		if (botOptions.isOpen) {
 			setUnreadCount(0);
+			if (window.innerWidth <= (botOptions.theme?.mobileWidth as number)) {
+				setWindowScrollPos(window.scrollY);
+			}
+		} else {
+			if (window.innerWidth <= (botOptions.theme?.mobileWidth as number)) {
+				window.scrollTo({top: windowScrollPos, behavior: "smooth"});
+			}
 		}
 	}, [botOptions.isOpen]);
 
@@ -164,7 +171,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (!botOptions.isOpen) {
 			return;
 		}
-		window.scrollTo(0, 0);
+		window.scrollTo({top: 0, behavior: "smooth"});
 	}, [viewportHeight]);
 
 	/**
@@ -446,7 +453,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 			<div className="background-overlay"></div>
 			<div
-				ref={chatHeaderRef}
 				style={botOptions.chatWindowStyle} 
 				className="rcb-chat-window"
 			>
