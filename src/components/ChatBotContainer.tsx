@@ -154,7 +154,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
-		 };
+		};
 	}, [botOptions.isOpen]);
 
 	// performs pre-processing when paths change
@@ -218,18 +218,24 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}
 
 	/**
-	 * Checks for initial user interaction (required to play audio).
+	 * Checks for initial user interaction (required to play audio/notification sound).
 	 */
 	const handleFirstInteraction = () => {
 		setHasInteracted(true);
 
 		// workaround for getting notification sound to play on mobile
 		notificationAudio.current?.play();
-		notificationAudio.current?.pause();  
-		
-		window.removeEventListener("click", handleFirstInteraction);
-		window.removeEventListener("keydown", handleFirstInteraction);
-		window.removeEventListener("touchstart", handleFirstInteraction);
+		notificationAudio.current?.pause();
+
+		// workaround for getting audio to play on mobile
+		const utterance = new SpeechSynthesisUtterance();
+		utterance.text = "";
+		utterance.onend = () => {
+			window.removeEventListener("click", handleFirstInteraction);
+			window.removeEventListener("keydown", handleFirstInteraction);
+			window.removeEventListener("touchstart", handleFirstInteraction);
+		};
+		window.speechSynthesis.speak(utterance);
 	};
 
 	/**
