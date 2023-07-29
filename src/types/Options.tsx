@@ -10,7 +10,6 @@ export type Options = {
 		primaryColor?: string;
 		secondaryColor?: string;
 		fontFamily?: string;
-		mobileWidth?: number;
 		actionDisabledImage?: string;
 		embedded?: boolean;
 	},
@@ -89,7 +88,7 @@ export type Options = {
 	}
 	emoji?: {
 		disabled?: boolean;
-		icon?: string;
+		emojiImage?: string;
 		list?: string[] ;
 	},
 	advance?: {

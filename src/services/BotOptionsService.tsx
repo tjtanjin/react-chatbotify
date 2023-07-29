@@ -10,6 +10,7 @@ import notificationImage from "../assets/notification_icon.svg";
 import closeChatImage from "../assets/close_chat_icon.svg";
 import sendButtonImage from "../assets/send_icon.svg";
 import voiceImage from "../assets/voice_icon.svg";
+import emojiImage from "../assets/emoji_icon.svg";
 import audioImage from "../assets/audio_icon.svg";
 import notificationSound from "../assets/notification_sound.wav";
 
@@ -25,7 +26,6 @@ const defaultOptions = {
 		fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', " +
 			"'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', " +
 			"sans-serif",
-		mobileWidth: 768,
 		actionDisabledImage: actionDisabledImage,
 		embedded: false,
 	},
@@ -69,7 +69,7 @@ const defaultOptions = {
 		disabled: false,
 		maxEntries: 30,
 		storageKey: "rcb-history",
-		viewChatHistoryButtonText: "Load Chat History",
+		viewChatHistoryButtonText: "Load Chat History ⟳",
 		chatHistoryLineBreakText: "----- Previous Chat History -----",
 	},
 	chatInput: {
@@ -93,7 +93,7 @@ const defaultOptions = {
 	voice: {
 		disabled: true,
 		defaultToggledOn: false,
-		timeoutPeriod: 60000,
+		timeoutPeriod: 10000,
 		autoSendDisabled: false,
 		autoSendPeriod: 1000,
 		voiceImage: voiceImage,
@@ -119,7 +119,7 @@ const defaultOptions = {
 	},
 	emoji: {
 		disabled: false,
-		icon: "😀",
+		emojiImage: emojiImage,
 		list: ["😀", "😃", "😄", "😊", "😍", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	advance: {

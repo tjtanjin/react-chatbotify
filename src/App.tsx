@@ -8,6 +8,7 @@ function App() {
 	const flow = {
 		start: {
 			message: "Hello! What is your name?",
+			file: () => {console.log("HI")},
 			path: "ask_age_group",
 		},
 		ask_age_group: {

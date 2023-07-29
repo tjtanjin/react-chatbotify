@@ -30,12 +30,13 @@
 .rcb-notification-icon-off,
 .rcb-audio-icon-on,
 .rcb-audio-icon-off {
+	position: relative;
+	display: inline-block;
 	background-size: cover;
 	width: 30px;
 	height: 30px;
 	border: none;
 	cursor: pointer;
-	transition: transform 0.1s ease, opacity 0.3s ease;
 	margin-left: 5px;
 }
 
@@ -44,26 +45,61 @@
 	filter: grayscale(100%);
 }
 
-.rcb-notification-icon-on:hover,
-.rcb-notification-icon-off:hover,
-.rcb-audio-icon-on:hover,
-.rcb-audio-icon-off:hover {
-	transform: scale(1.1);
+.rcb-notification-icon-on::after,
+.rcb-notification-icon-off::after,
+.rcb-audio-icon-on::after,
+.rcb-audio-icon-off::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 0;
+	height: 0;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	opacity: 0;
+	transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
+}
+  
+.rcb-notification-icon-on:hover::after,
+.rcb-notification-icon-off:hover::after,
+.rcb-audio-icon-on:hover::after,
+.rcb-audio-icon-off:hover::after {
+	width: 130%;
+	height: 130%;
+	opacity: 1;
 }
 
 /* Close Chat Icon */
 
 .rcb-close-chat-icon {
+	position: relative;
+	display: inline-block;
 	background-size: cover;
 	width: 30px;
 	height: 30px;
 	border: none;
+	margin-left: 5px;
 	cursor: pointer;
-	transition: transform 0.3s ease, opacity 0.3s ease;
-	filter: grayscale(100%) brightness(0) invert(1);
 }
 
-.rcb-close-chat-icon:hover {
-	transform: scale(1.1);
-	filter: none;
+.rcb-close-chat-icon::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 0;
+	height: 0;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	opacity: 0;
+	transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.rcb-close-chat-icon:hover::after {
+	width: 130%;
+	height: 130%;
+	opacity: 1;
 }

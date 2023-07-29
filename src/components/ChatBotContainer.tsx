@@ -89,6 +89,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks previous window scroll position to go back to on mobile
 	const [windowScrollPos, setWindowScrollPos] = useState(0);
 
+	// boolean indicating if user is on desktop (otherwise treated as on mobile)
+	const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
 	// adds listeners and render chat history button if enabled
 	useEffect(() => {
 		window.addEventListener("click", handleFirstInteraction);
@@ -142,12 +145,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	useEffect(() => {
 		if (botOptions.isOpen) {
 			setUnreadCount(0);
-			if (window.innerWidth <= (botOptions.theme?.mobileWidth as number)) {
+			if (!isDesktop) {
 				setWindowScrollPos(window.scrollY);
 				window.addEventListener("scroll", handleScroll);
 			}
 		} else {
-			if (window.innerWidth <= (botOptions.theme?.mobileWidth as number)) {
+			if (!isDesktop) {
 				window.scrollTo({top: windowScrollPos, behavior: "instant"});
 			}
 		}
@@ -176,7 +179,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const handleResize = () => {
 		// if not mobile, nothing to do
-		if (window.innerWidth > (botOptions.theme?.mobileWidth as number)) {
+		if (isDesktop) {
 			return;
 		}
 		setViewportHeight(window.visualViewport?.height as number);
@@ -187,7 +190,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const handleScroll = () => {
 		// if not mobile or chat window is close, nothing to do 
-		if (window.innerWidth > (botOptions.theme?.mobileWidth as number)) {
+		if (isDesktop) {
 			return;
 		}
 		window.scrollTo({top: 0, behavior: "instant"});
@@ -421,7 +424,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				event?.preventDefault();
 
 				// if not on mobile, should remove focus
-				if (window.innerWidth > (botOptions.theme?.mobileWidth as number)) {
+				if (isDesktop) {
 					inputRef.current?.blur();
 				}
 			}}
@@ -431,35 +434,33 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			<ChatBotButton unreadCount={unreadCount}/>
 			{/* prevents background from scrolling on mobile when chat window is open */}
 			{/* background-overlay is a temp workaround for scroll issues when keyboard is visible */}
-			{botOptions.isOpen &&
+			{botOptions.isOpen && !isDesktop &&
 				<>
 					<style>
 						{`
-							@media (max-width: ${botOptions.theme?.mobileWidth}px) {
-								html, body {
-									margin: 0;
-									overflow: hidden;
-									touch-action: none;
-								}
+							html, body {
+								margin: 0;
+								overflow: hidden;
+								touch-action: none;
+							}
 
-								.rcb-chat-window {
-									border-radius: 0px;
-									right: 0px !important;
-									bottom: 0px !important;
-									top: 0px !important;
-									width: 100% !important;
-									height: ${viewportHeight}px !important;
-								}
+							.rcb-chat-window {
+								border-radius: 0px;
+								right: 0px !important;
+								bottom: 0px !important;
+								top: 0px !important;
+								width: 100% !important;
+								height: ${viewportHeight}px !important;
+							}
 
-								.background-overlay {
-									position: fixed;
-									top: 0;
-									left: 0;
-									width: 100%;
-									height: 100%;
-									background-color: #fff;
-									z-index: 9999;
-								}
+							.background-overlay {
+								position: fixed;
+								top: 0;
+								left: 0;
+								width: 100%;
+								height: 100%;
+								background-color: #fff;
+								z-index: 9999;
 							}
 						`}
 					</style>

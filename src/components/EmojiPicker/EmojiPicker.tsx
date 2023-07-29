@@ -101,13 +101,17 @@ const EmojiPicker = ({
 	};
 
 	return (
-		<div className="rcb-emoji-picker" onMouseDown={togglePopup}>
+		<>
 			<div
 				ref={iconContainerRef}
 				style={textAreaDisabled ? emojiButtonDisabledStyle : {}} 
-				className={`rcb-emoji-picker-icon ${textAreaDisabled ? "rcb-emoji-disabled" : "rcb-emoji-enabled"}`}
+				className={`${textAreaDisabled ? "rcb-emoji-button-disabled" : "rcb-emoji-button-enabled"}`}
+				onMouseDown={togglePopup}
 			>
-				{botOptions.emoji?.icon}
+				<span
+					style={{backgroundImage: `url(${botOptions.emoji?.emojiImage})`}}
+					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}
+				/>
 			</div>
 			{showPopup && (
 				<div className="rcb-emoji-picker-popup" ref={popupRef}>
@@ -124,7 +128,7 @@ const EmojiPicker = ({
 					))}
 				</div>
 			)}
-		</div>
+		</>
 	);
 };
 

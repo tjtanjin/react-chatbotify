@@ -4,6 +4,7 @@
 .rcb-attach-button-disabled {
 	position: relative;
 	display: inline-block;
+	background-size: cover;
 	width: 30px;
 	height: 30px;
 	border-radius: 6px;
@@ -20,16 +21,30 @@
 
 .rcb-attach-button-enabled {
 	cursor: pointer;
-	opacity: 1;
-	transition: transform 0.1s ease;
-}
-
-.rcb-attach-button-enabled:hover {
-	transform: scale(1.1);
 }
 
 .rcb-attach-button-disabled {
 	opacity: 0.4;
+}
+
+.rcb-attach-button-enabled::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 0;
+	height: 0;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	opacity: 0;
+	transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.rcb-attach-button-enabled:hover::after {
+	width: 130%;
+	height: 130%;
+	opacity: 1;
 }
 
 /* Attachment Icon */
