@@ -3,6 +3,7 @@ import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, 
 
 import SendButton from "../SendButton/SendButton";
 import VoiceButton from "../VoiceButton/VoiceButton";
+import { isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotInput.css";
@@ -148,7 +149,7 @@ const ChatBotInput = ({
 				onFocus={handleFocus}
 				onBlur={handleBlur}
 			/>
-			{!botOptions.voice?.disabled &&
+			{!botOptions.voice?.disabled && isDesktop &&
 				<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled} voiceToggledOn={voiceToggledOn} 
 					handleToggleVoice={handleToggleVoice} triggerSendVoiceInput={triggerSendVoiceInput}
 				/>

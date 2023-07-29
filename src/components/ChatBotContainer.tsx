@@ -11,6 +11,7 @@ import { preProcessBlock, postProcessBlock } from "../services/BlockService/Bloc
 import { updateMessages, loadChatHistory } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
+import { isDesktop } from "../services/Utils";
 import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
@@ -88,9 +89,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks previous window scroll position to go back to on mobile
 	const [windowScrollPos, setWindowScrollPos] = useState(0);
-
-	// boolean indicating if user is on desktop (otherwise treated as on mobile)
-	const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 
 	// adds listeners and render chat history button if enabled
 	useEffect(() => {

@@ -10,3 +10,6 @@ const defaultFlow = {
 export const getDefaultFlow = () => {
 	return defaultFlow;
 }
+
+// boolean indicating if user is on desktop (otherwise treated as on mobile)
+export const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));

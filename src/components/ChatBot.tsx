@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import { parseBotOptions } from "../services/BotOptionsService";
-import { getDefaultFlow } from "../services/FlowService";
+import { getDefaultFlow } from "../services/Utils";
 import { BotOptionsContext } from "../context/BotOptionsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
