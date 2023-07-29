@@ -61,7 +61,6 @@ const ChatBotBody = ({
 		backgroundColor: botOptions.theme?.secondaryColor,
 		color: "#fff",
 		maxWidth: botOptions.botBubble?.showAvatar ? "65%" : "70%",
-		cursor: (botOptions.audio?.tapToPlay && audioToggledOn) ? "pointer" : "",
 		...botOptions.botBubbleStyle
 	};
 
@@ -128,13 +127,6 @@ const ChatBotBody = ({
 					/>
 				}
 				<div
-					onMouseDown={(event: MouseEvent) => {
-						event.preventDefault();
-						if (!botOptions.audio?.tapToPlay) {
-							return;
-						}
-						processAudio(botOptions, audioToggledOn, message);
-					}}
 					style={botBubbleStyle}
 					className="rcb-bot-message"
 				>
