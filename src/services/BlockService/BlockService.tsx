@@ -7,7 +7,6 @@ import { processMessage } from "./MessageProcessor";
 import { processOptions } from "./OptionProcessor";
 import { processPath } from "./PathProcessor";
 import { processRender } from "./RenderProcessor";
-import { processTimeout } from "./TimeoutProcessor";
 import { processTransition } from "./TransitionProcessor";
 import { Params } from "../../types/Params";
 
@@ -19,7 +18,7 @@ import { Params } from "../../types/Params";
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
  * @param setPaths updates the paths taken by the user
- * @param setTimeoutId sets the timeout id for the timeout attribute
+ * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
  */
 export const preProcessBlock = (flow: Flow, path: string, params: Params,
@@ -54,11 +53,7 @@ export const preProcessBlock = (flow: Flow, path: string, params: Params,
 			break;
 
 		case "transition":
-			processTransition(flow, path, params, setPaths);
-			break;
-
-		case "timeout":
-			processTimeout(flow, path, params, setPaths, setTimeoutId);
+			processTransition(flow, path, params, setPaths, setTimeoutId);
 		}
 	}
 }

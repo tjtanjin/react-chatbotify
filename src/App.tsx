@@ -85,7 +85,7 @@ function App() {
 		},
 		incorrect_answer: {
 			message: "Your answer is incorrect, try again!",
-			transition: 0,
+			transition: {duration: 0},
 			path: (params: Params) => params.prevPath
 		},
 	}

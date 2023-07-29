@@ -74,7 +74,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks typing state of chat bot
 	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
 
-	// tracks block timeout
+	// tracks block timeout if transition is interruptable
 	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
 
 	// tracks count of unread messages
