@@ -1,6 +1,5 @@
 import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
-import { processAudio } from "../../services/AudioService";
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
@@ -14,7 +13,6 @@ import "./ChatBotBody.css";
  * @param audioToggledOn boolean indicating if audio is toggled on
  * @param isBotTyping boolean indicating if bot is typing
  * @param isLoadingChatHistory boolean indicating is chat history is being loaded
- * @param hasVerticalOverflow boolean indicating if messages have overflowed
  * @param prevScrollHeight number representing previously scrolled height
  * @param setPrevScrollHeight setter for tracking scroll height
  */
@@ -23,7 +21,6 @@ const ChatBotBody = ({
 	audioToggledOn,
 	isBotTyping,
 	isLoadingChatHistory,
-	hasVerticalOverflow,
 	prevScrollHeight,
 	setPrevScrollHeight
 }: {
@@ -31,7 +28,6 @@ const ChatBotBody = ({
 	audioToggledOn: boolean;
 	isBotTyping: boolean;
 	isLoadingChatHistory: boolean;
-	hasVerticalOverflow: boolean;
 	prevScrollHeight: number;
 	setPrevScrollHeight: Dispatch<SetStateAction<number>>;
 }) => {
@@ -44,7 +40,6 @@ const ChatBotBody = ({
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
-		overflowY: hasVerticalOverflow ? "scroll" : "hidden",
 		...botOptions?.bodyStyle
 	}
 

@@ -7,7 +7,6 @@
 	margin-left: 16px;
 	flex-wrap: wrap;
 	gap: 10px;
-	touch-action: none;
 }
 
 .rcb-checkbox-offset {

@@ -7,7 +7,6 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	touch-action: none;
 }
 
 .rcb-options-offset {

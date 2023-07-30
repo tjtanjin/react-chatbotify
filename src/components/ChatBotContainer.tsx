@@ -84,9 +84,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number 
 		|| window.innerHeight);
 
-	// handles manual workaround for messages overflow on mobile
-	const [hasVerticalOverflow, setHasVerticalOverflow] = useState<boolean>(false);
-
 	// tracks previous window scroll position to go back to on mobile
 	const [windowScrollPos, setWindowScrollPos] = useState(0);
 
@@ -128,14 +125,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		};
 	}, []);
 
-	// checks if messages have overflowed to allow scroll and triggers check for notifications
+	// triggers check for notifications
 	useEffect(() => {
-		// manual workaround instead of using overflow: auto as using overflow: auto allows
-		// the background to scroll on mobile view as well (improve if there is a more elegant solution)
-		const element = chatBodyRef.current;
-		const hasOverflow = (element?.scrollHeight as number) > (element?.clientHeight as number);
-		setHasVerticalOverflow(hasOverflow);
-
 		handleNotifications();
 	}, [messages]);
 
@@ -474,7 +465,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					audioToggledOn={audioToggledOn} handleToggleAudio={handleToggleAudio}
 				/>
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping} audioToggledOn={audioToggledOn}
-					isLoadingChatHistory={isLoadingChatHistory} hasVerticalOverflow={hasVerticalOverflow}
+					isLoadingChatHistory={isLoadingChatHistory}
 					prevScrollHeight={prevScrollHeight}	setPrevScrollHeight={setPrevScrollHeight}
 				/>
 				<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
