@@ -66,7 +66,7 @@ const ChatBotHeader = ({
 				{botOptions.header?.title}
 			</div>
 			<div className="rcb-chat-header">
-				{!botOptions.notification?.disabled &&
+				{!botOptions.notification?.disabled && !botOptions.theme?.embedded &&
 					<div
 						style={headerImages.notificationIcon}
 						onMouseDown={(event: MouseEvent) => {
