@@ -252,11 +252,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Handles notification count update and notification sound.
 	 */
 	const handleNotifications = () => {
-		// if embedded, no need for notifications
-		if (botOptions.theme?.embedded) {
+		// if embedded, or no message found, no need for notifications
+		if (botOptions.theme?.embedded || messages.length == 0) {
 			return;
 		}
-		const message = messages.at(-1);
+		const message = messages[messages.length - 1]
 		if (message != null && !message?.isUser && !botOptions.isOpen && !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
 			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
