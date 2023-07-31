@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, RefObject } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
+import { useBotOptions } from "../../../context/BotOptionsContext";
 
 import "./EmojiPicker.css";
 
@@ -32,7 +32,7 @@ const EmojiPicker = ({
 
 	// styles emoji button when disabled
 	const emojiButtonDisabledStyle = {
-		cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`,
+		cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 	};
 
 	// handles click events for showing/dismissing emoji popup
@@ -109,7 +109,7 @@ const EmojiPicker = ({
 				onMouseDown={togglePopup}
 			>
 				<span
-					style={{backgroundImage: `url(${botOptions.emoji?.emojiImage})`}}
+					style={{backgroundImage: `url(${botOptions.emoji?.icon})`}}
 					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}
 				/>
 			</div>

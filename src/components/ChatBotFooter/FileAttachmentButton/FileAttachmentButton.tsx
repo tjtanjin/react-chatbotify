@@ -1,8 +1,8 @@
 import { ChangeEvent, RefObject, useEffect, useState } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
-import { usePaths } from "../../context/PathsContext";
-import { Flow } from "../../types/Flow";
+import { useBotOptions } from "../../../context/BotOptionsContext";
+import { usePaths } from "../../../context/PathsContext";
+import { Flow } from "../../../types/Flow";
 
 import "./FileAttachmentButton.css";
 
@@ -93,19 +93,19 @@ const FileAttachmentButton = ({
 						accept={botOptions.fileAttachment?.accept}
 					/>
 					<span
-						style={{backgroundImage: `url(${botOptions.fileAttachment?.fileAttachmentImage})`}}
+						style={{backgroundImage: `url(${botOptions.fileAttachment?.icon})`}}
 						className="rcb-attach-icon-enabled"
 					/>
 				</label>
 			) : (
 				<label 
 					className="rcb-attach-button-disabled"
-					style={{cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`}}
+					style={{cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`}}
 				>
 					<input disabled type="file" />
 					<span 
 						style={{
-							backgroundImage: `url(${botOptions.fileAttachment?.fileAttachmentImage})`
+							backgroundImage: `url(${botOptions.fileAttachment?.icon})`
 						}} 
 						className="rcb-attach-icon-disabled"
 					>

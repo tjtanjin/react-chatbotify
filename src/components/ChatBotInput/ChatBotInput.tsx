@@ -1,8 +1,8 @@
 
 import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
 
-import SendButton from "../SendButton/SendButton";
-import VoiceButton from "../VoiceButton/VoiceButton";
+import SendButton from "./SendButton/SendButton";
+import VoiceButton from "./VoiceButton/VoiceButton";
 import { isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
@@ -54,7 +54,7 @@ const ChatBotInput = ({
 	const textAreaStyle = {
 		outline: isFocused && !textAreaDisabled ? "none" : "",
 		boxShadow: isFocused && !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
-		cursor: textAreaDisabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "",
+		cursor: textAreaDisabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "",
 		caretColor: textAreaDisabled ? "transparent" : ""
 	};
 

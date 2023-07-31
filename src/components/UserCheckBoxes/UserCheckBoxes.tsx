@@ -40,7 +40,7 @@ const UserCheckboxes = ({
 
 	// styles for bot checkbox row items
 	const botCheckboxRowStyle = {
-		cursor: disabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
+		cursor: disabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
 		...botOptions.botCheckboxRowStyle
@@ -49,7 +49,7 @@ const UserCheckboxes = ({
 	// styles for bot checkbox next button
 	const botCheckboxNextStyle = {
 		cursor: disabled || checkedBoxes.size < (checkboxes.min as number) 
-			? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
+			? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
 		...botOptions.botCheckboxNextStyle
@@ -57,14 +57,14 @@ const UserCheckboxes = ({
 
 	// styles for bot checkmark
 	const botCheckMarkStyle = {
-		cursor: disabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
+		cursor: disabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
 		color: "transparent",
 		...botOptions.botCheckMarkStyle
 	};
 
 	// styles for bot selected checkmark
 	const botCheckMarkSelectedStyle = {
-		cursor: disabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
+		cursor: disabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
 		color: "#fff",
 		borderColor: botOptions.theme?.primaryColor,
 		backgroundColor: botOptions.theme?.primaryColor,

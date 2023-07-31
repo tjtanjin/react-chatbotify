@@ -37,16 +37,16 @@ const ChatBotHeader = ({
 	// icons in header
 	const headerImages = {
 		headerAvatar: {
-			backgroundImage: `url(${botOptions.header?.avatarImage})`,
+			backgroundImage: `url(${botOptions.header?.avatar})`,
 		},
 		notificationIcon: {
-			backgroundImage: `url(${botOptions.notification?.notificationImage})`,
+			backgroundImage: `url(${botOptions.notification?.icon})`,
 		},
 		audioIcon: {
-			backgroundImage: `url(${botOptions.audio?.audioImage})`,
+			backgroundImage: `url(${botOptions.audio?.icon})`,
 		},
 		closeChatIcon: {
-			backgroundImage: `url(${botOptions.header?.closeChatImage})`,
+			backgroundImage: `url(${botOptions.header?.closeChatIcon})`,
 		}
 	};
 

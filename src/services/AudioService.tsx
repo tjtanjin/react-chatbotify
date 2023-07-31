@@ -6,29 +6,34 @@ import { Options } from "../types/Options";
  * 
  * @param message message to read out
  * @param language language to listen for
- * @param voiceName voice name to use
+ * @param voiceNames list of voice names to use
  * @param rate speech rate
  * @param volume play volume
  */
-const speak = (message: string, language: string, voiceName: string, rate: number, volume: number) => {
+const speak = (message: string, language: string, voiceNames: string[], rate: number, volume: number) => {
 	const utterance = new SpeechSynthesisUtterance();
 	utterance.text = message;
 	utterance.lang = language;
 	utterance.rate = rate;
 	utterance.volume = volume;
 
-	let foundVoice = false;
-	window.speechSynthesis.getVoices().find((voice) => {
-		if (voice.name === voiceName) {
-			utterance.voice = voice;
-			window.speechSynthesis.speak(utterance);
-			foundVoice = true;
-			return;
+	let voiceIdentified = false;
+	for (const voiceName in voiceNames) {
+		window.speechSynthesis.getVoices().find((voice) => {
+			if (voice.name === voiceName) {
+				utterance.voice = voice;
+				window.speechSynthesis.speak(utterance);
+				voiceIdentified = true;
+				return;
+			}
+		});
+		if (voiceIdentified) {
+			break;
 		}
-	});
+	}
 	
 	// if cannot find voice, use default
-	if (!foundVoice) {
+	if (!voiceIdentified) {
 		window.speechSynthesis.speak(utterance);
 	}
 }
@@ -46,6 +51,6 @@ export const processAudio = (botOptions: Options, voiceToggledOn: boolean, messa
 		return;
 	}
 
-	speak(message.content, botOptions.audio?.language as string, botOptions.audio?.voiceName as string,
+	speak(message.content, botOptions.audio?.language as string, botOptions.audio?.voiceNames as string[],
 		botOptions.audio?.rate as number, botOptions.audio?.volume as number);
 }

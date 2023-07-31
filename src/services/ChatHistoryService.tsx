@@ -203,7 +203,7 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 			...(attributes["style"] as CSSProperties),
 			color: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
 			borderColor: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
-			cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`
+			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`
 		}
 	}
 	return attributes;
@@ -223,7 +223,7 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 			...(attributes["style"] as CSSProperties),
 			color: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
 			borderColor: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
-			cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`
+			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`
 		}
 	}
 	return attributes;
@@ -243,7 +243,7 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 			...(attributes["style"] as CSSProperties),
 			color: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
 			borderColor: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
-			cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`
+			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`
 		}
 	}
 	return attributes;

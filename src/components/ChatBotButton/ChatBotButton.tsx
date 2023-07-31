@@ -25,7 +25,7 @@ const ChatBotButton = ({
 
 	// styles for chat button
 	const chatButtonStyle = {
-		backgroundImage: `url(${botOptions.chatButton?.chatButtonImage}),
+		backgroundImage: `url(${botOptions.chatButton?.icon}),
 			linear-gradient(to right, ${botOptions.theme?.secondaryColor}, ${botOptions.theme?.primaryColor})`,
 		width: 75,
 		height: 75,

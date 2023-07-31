@@ -1,8 +1,8 @@
 
 import { RefObject } from "react";
 
-import EmojiPicker from "../EmojiPicker/EmojiPicker";
-import FileAttachmentButton from "../FileAttachmentButton/FileAttachmentButton";
+import EmojiPicker from "./EmojiPicker/EmojiPicker";
+import FileAttachmentButton from "./FileAttachmentButton/FileAttachmentButton";
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { Flow } from "../../types/Flow";
 

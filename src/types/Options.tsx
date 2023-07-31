@@ -13,7 +13,7 @@ export type Options = {
 		showHeader?: boolean;
 		showFooter?: boolean;
 		showInputRow?: boolean,
-		actionDisabledImage?: string;
+		actionDisabledIcon?: string;
 		embedded?: boolean;
 	},
 	tooltip?: {
@@ -21,29 +21,29 @@ export type Options = {
 		text?: string;
 	},
 	chatButton?: {
-		chatButtonImage: string;
+		icon: string;
 	},
 	header?: {
 		title?: string | JSX.Element,
 		showAvatar: boolean,
-		avatarImage?: string;
-		closeChatImage?: string;
+		avatar?: string;
+		closeChatIcon?: string;
 	},
 	notification?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
 		volume?: number;
-		notificationSound?: string;
-		notificationImage?: string;
+		icon?: string;
+		sound?: string;
 	},
 	audio?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
 		language?: string;
-		voiceName?: string;
+		voiceNames?: string[];
 		rate?: number;
 		volume?: number;
-		audioImage?: string;
+		icon?: string;
 	},
 	chatHistory?: {
 		disabled?: boolean;
@@ -57,7 +57,7 @@ export type Options = {
 		enabledPlaceholderText?: string;
 		disabledPlaceholderText?: string;
 		botDelay?: number;
-		sendButtonImage?: string;
+		sendButtonIcon?: string;
 		blockSpam?: boolean;
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;
@@ -65,11 +65,11 @@ export type Options = {
 	},
 	userBubble?: {
 		showAvatar?: boolean;
-		avatarImage?: string;
+		avatar?: string;
 	},
 	botBubble?: {
 		showAvatar?: boolean;
-		avatarImage?: string;
+		avatar?: string;
 	},
 	voice?: {
 		disabled?: boolean;
@@ -77,7 +77,7 @@ export type Options = {
 		timeoutPeriod?: number;
 		autoSendDisabled?: boolean;
 		autoSendPeriod?: number;
-		voiceImage?: string;
+		icon?: string;
 	},
 	footer?: {
 		text?: string | JSX.Element;
@@ -86,11 +86,11 @@ export type Options = {
 		disabled?: boolean;
 		multiple?: boolean;
 		accept?: string;
-		fileAttachmentImage?: string;
+		icon?: string;
 	}
 	emoji?: {
 		disabled?: boolean;
-		emojiImage?: string;
+		icon?: string;
 		list?: string[] ;
 	},
 	advance?: {

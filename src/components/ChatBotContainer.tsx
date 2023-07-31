@@ -92,7 +92,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		window.addEventListener("click", handleFirstInteraction);
 		window.addEventListener("keydown", handleFirstInteraction);
 		window.addEventListener("touchstart", handleFirstInteraction);
-		if ("visualViewport" in window) {
+		if ("visualViewport" in window && !isDesktop) {
 			window.visualViewport?.addEventListener("resize", handleResize);
 		}
 
@@ -119,7 +119,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("click", handleFirstInteraction);
 			window.removeEventListener("keydown", handleFirstInteraction);
 			window.removeEventListener("touchstart", handleFirstInteraction);
-			if ("visualViewport" in window) {
+			if ("visualViewport" in window && !isDesktop) {
 				window.visualViewport?.removeEventListener("resize", handleResize);
 			}
 		};
@@ -202,7 +202,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const setUpNotifications = () => {
 		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
 	
-		let notificationSound = botOptions.notification?.notificationSound;
+		let notificationSound = botOptions.notification?.sound;
 
 		// convert data uri to url if it is base64, true in production
 		if (notificationSound?.startsWith("data:audio")) {
@@ -405,9 +405,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}
 
 	/**
-	 * Retrieves class name for chat window.
+	 * Retrieves class name for window state.
 	 */
-	const getChatWindowClass = () => {
+	const getWindowStateClass = () => {
 		const windowClass = "rcb-chat-bot ";
 		if (botOptions.theme?.embedded) {
 			return windowClass + "rcb-window-embedded";
@@ -415,6 +415,26 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return windowClass + "rcb-window-open";
 		} else {
 			return windowClass + "rcb-window-close"
+		}
+	}
+
+	/**
+	 * Retrieves styles for chat window.
+	 */
+	const getChatWindowStyle = () => {
+		if (!isDesktop) {
+			return {
+				...botOptions.chatWindowStyle,
+				borderRadius: '0px',
+				left: '0px',
+				right: 'auto',
+				top: '0px',
+				bottom: 'auto',
+				width: '100%',
+				height: `${viewportHeight}px`,
+			}
+		} else {
+			return botOptions.chatWindowStyle;
 		}
 	}
 
@@ -428,7 +448,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					event?.preventDefault();
 				}
 			}}
-			className={getChatWindowClass()}
+			className={getWindowStateClass()}
 		>
 			<ChatBotTooltip/>
 			<ChatBotButton unreadCount={unreadCount}/>
@@ -458,19 +478,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				</>
 			}
 			<div
-				style={!isDesktop
-					? {
-						...botOptions.chatWindowStyle,
-						borderRadius: '0px',
-						left: '0px',
-						right: 'auto',
-						top: '0px',
-						bottom: 'auto',
-						width: '100%',
-						height: `${viewportHeight}px`,
-					}
-					: botOptions.chatWindowStyle
-				}
+				style={getChatWindowStyle()}
 				className="rcb-chat-window"
 			>
 				{botOptions.theme?.showHeader &&

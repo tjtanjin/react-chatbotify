@@ -1,17 +1,17 @@
 import { Options } from "../types/Options";
 
 import logo from "../assets/logo.png";
-import actionDisabledImage from "../assets/action_disabled_icon.png";
-import botAvatarImage from "../assets/bot_avatar.png";
-import userAvatarImage from "../assets/user_avatar.svg";
-import chatImage from "../assets/chat_icon.svg";
-import fileAttachmentImage from "../assets/file_attachment_icon.svg";
-import notificationImage from "../assets/notification_icon.svg";
-import closeChatImage from "../assets/close_chat_icon.svg";
-import sendButtonImage from "../assets/send_icon.svg";
-import voiceImage from "../assets/voice_icon.svg";
-import emojiImage from "../assets/emoji_icon.svg";
-import audioImage from "../assets/audio_icon.svg";
+import actionDisabledIcon from "../assets/action_disabled_icon.png";
+import botAvatar from "../assets/bot_avatar.png";
+import userAvatar from "../assets/user_avatar.svg";
+import chatIcon from "../assets/chat_icon.svg";
+import fileAttachmentIcon from "../assets/file_attachment_icon.svg";
+import notificationIcon from "../assets/notification_icon.svg";
+import closeChatIcon from "../assets/close_chat_icon.svg";
+import sendButtonIcon from "../assets/send_icon.svg";
+import voiceIcon from "../assets/voice_icon.svg";
+import emojiIcon from "../assets/emoji_icon.svg";
+import audioIcon from "../assets/audio_icon.svg";
 import notificationSound from "../assets/notification_sound.wav";
 
 // default options provided to the bot
@@ -29,7 +29,7 @@ const defaultOptions = {
 		showHeader: true,
 		showFooter: true,
 		showInputRow: true,
-		actionDisabledImage: actionDisabledImage,
+		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
 	},
 	tooltip: {
@@ -37,7 +37,7 @@ const defaultOptions = {
 		text: "Talk to me! 😊",
 	},
 	chatButton: {
-		chatButtonImage: chatImage,
+		icon: chatIcon,
 	},
 	header: {
 		title: (
@@ -47,24 +47,24 @@ const defaultOptions = {
 			</h3>
 		),
 		showAvatar: true,
-		avatarImage: botAvatarImage,
-		closeChatImage: closeChatImage,
+		avatar: botAvatar,
+		closeChatIcon: closeChatIcon,
 	},
 	notification: {
 		disabled: false,
 		defaultToggledOn: true,
 		volume: 0.2,
-		notificationImage: notificationImage,
-		notificationSound: notificationSound,
+		icon: notificationIcon,
+		sound: notificationSound,
 	},
 	audio: {
 		disabled: true,
 		defaultToggledOn: false,
 		language: "en-US",
-		voiceName: "Microsoft David - English (United States)",
+		voiceNames: ["Microsoft David - English (United States)", "Alex (English - United States)"],
 		rate: 1,
 		volume: 1,
-		audioImage: audioImage,
+		icon: audioIcon,
 	},
 	chatHistory: {
 		disabled: false,
@@ -78,7 +78,7 @@ const defaultOptions = {
 		enabledPlaceholderText: "Type your message...",
 		disabledPlaceholderText: "",
 		botDelay: 1000,
-		sendButtonImage: sendButtonImage,
+		sendButtonIcon: sendButtonIcon,
 		blockSpam: true,
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
@@ -86,11 +86,11 @@ const defaultOptions = {
 	},
 	userBubble: {
 		showAvatar: false,
-		avatarImage: userAvatarImage,
+		avatar: userAvatar,
 	},
 	botBubble: {
 		showAvatar: false,
-		avatarImage: botAvatarImage,
+		avatar: botAvatar,
 	},
 	voice: {
 		disabled: true,
@@ -98,7 +98,7 @@ const defaultOptions = {
 		timeoutPeriod: 10000,
 		autoSendDisabled: false,
 		autoSendPeriod: 1000,
-		voiceImage: voiceImage,
+		icon: voiceIcon,
 	},
 	footer: {
 		text: (
@@ -117,11 +117,11 @@ const defaultOptions = {
 		disabled: false,
 		multiple: true,
 		accept: ".png",
-		fileAttachmentImage: fileAttachmentImage,
+		icon: fileAttachmentIcon,
 	},
 	emoji: {
 		disabled: false,
-		emojiImage: emojiImage,
+		icon: emojiIcon,
 		list: ["😀", "😃", "😄", "😊", "😍", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	advance: {

@@ -37,7 +37,7 @@ const UserOptions= ({
 
 	// styles for bot option
 	const botOptionStyle = {
-		cursor: disabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
+		cursor: disabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
 		backgroundColor: "#fff",

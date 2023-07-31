@@ -1,6 +1,6 @@
 import { useState, MouseEvent } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
+import { useBotOptions } from "../../../context/BotOptionsContext";
 
 import "./SendButton.css";
 
@@ -35,7 +35,7 @@ const SendButton = ({
 	
 	// styles for send icon
 	const sendIconStyle = {
-		backgroundImage: `url(${botOptions.chatInput?.sendButtonImage})`,
+		backgroundImage: `url(${botOptions.chatInput?.sendButtonIcon})`,
 	};
 
 	/**

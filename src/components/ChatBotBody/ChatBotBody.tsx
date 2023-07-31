@@ -96,7 +96,7 @@ const ChatBotBody = ({
 				</div>
 				{botOptions.userBubble?.showAvatar &&
 					<div 
-						style={{backgroundImage: `url(${botOptions.userBubble?.avatarImage})`}}
+						style={{backgroundImage: `url(${botOptions.userBubble?.avatar})`}}
 						className="rcb-message-user-avatar"
 					/>
 				}
@@ -114,7 +114,7 @@ const ChatBotBody = ({
 			<>
 				{botOptions.botBubble?.showAvatar &&
 					<div
-						style={{backgroundImage: `url(${botOptions.botBubble?.avatarImage})`}}
+						style={{backgroundImage: `url(${botOptions.botBubble?.avatar})`}}
 						className="rcb-message-bot-avatar"
 					/>
 				}
@@ -153,7 +153,7 @@ const ChatBotBody = ({
 				<div className="rcb-bot-message-container">
 					{botOptions.botBubble?.showAvatar &&
 						<div 
-							style={{backgroundImage: `url(${botOptions.botBubble?.avatarImage})`}}
+							style={{backgroundImage: `url(${botOptions.botBubble?.avatar})`}}
 							className="rcb-message-bot-avatar"
 						/>
 					}

@@ -1,7 +1,7 @@
 import { RefObject, useEffect, MouseEvent } from "react";
 
-import { startVoiceRecording, stopVoiceRecording } from "../../services/VoiceService";
-import { useBotOptions } from "../../context/BotOptionsContext";
+import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
+import { useBotOptions } from "../../../context/BotOptionsContext";
 
 import "./VoiceButton.css";
 
@@ -49,7 +49,7 @@ const VoiceButton = ({
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}
 		>
 			<span className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
-				style={{backgroundImage: `url(${botOptions.voice?.voiceImage})`}}
+				style={{backgroundImage: `url(${botOptions.voice?.icon})`}}
 			/>
 		</div>
 	);
