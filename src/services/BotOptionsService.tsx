@@ -26,6 +26,9 @@ const defaultOptions = {
 		fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', " +
 			"'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', " +
 			"sans-serif",
+		showHeader: true,
+		showFooter: true,
+		showInputRow: true,
 		actionDisabledImage: actionDisabledImage,
 		embedded: false,
 	},
@@ -79,6 +82,7 @@ const defaultOptions = {
 		blockSpam: true,
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
+		sendAttachmentOutput: true,
 	},
 	userBubble: {
 		showAvatar: false,
@@ -138,8 +142,8 @@ const defaultOptions = {
 	botBubbleStyle: {},
 	botOptionStyle: {},
 	botOptionHoveredStyle: {},
-	botCheckBoxRowStyle: {},
-	botCheckBoxNextStyle: {},
+	botCheckboxRowStyle: {},
+	botCheckboxNextStyle: {},
 	botCheckMarkStyle: {},
 	botCheckMarkSelectedStyle: {},
 	sendButtonStyle: {},

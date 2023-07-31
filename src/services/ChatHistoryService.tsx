@@ -163,8 +163,8 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
 				attributes = addStyleToContainers(classList, attributes);
 			}
 			attributes = addStyleToOptions(classList, attributes, botOptions);
-			attributes = addStyleToCheckBoxRows(classList, attributes, botOptions);
-			attributes = addStyleToCheckBoxNextButton(classList, attributes, botOptions);
+			attributes = addStyleToCheckboxRows(classList, attributes, botOptions);
+			attributes = addStyleToCheckboxNextButton(classList, attributes, botOptions);
 			const children = renderHTML((node as Element).innerHTML, botOptions);
 			return createElement(tagName, { key: index, ...attributes }, children);
 		}
@@ -216,13 +216,13 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
  * @param attributes current attributes the element has
  * @param botOptions options provided to the bot
  */
-const addStyleToCheckBoxRows = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
+const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
 	botOptions: Options) => {
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botCheckBoxRowStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botCheckBoxRowStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`
 		}
 	}
@@ -236,13 +236,13 @@ const addStyleToCheckBoxRows = (classList: DOMTokenList, attributes: {[key: stri
  * @param attributes current attributes the element has
  * @param botOptions options provided to the bot
  */
-const addStyleToCheckBoxNextButton = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
+const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
 	botOptions: Options) => {
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botCheckBoxNextStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botCheckBoxNextStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledImage}), auto`
 		}
 	}

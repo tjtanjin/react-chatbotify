@@ -4,23 +4,23 @@ import { useEffect, useState, MouseEvent } from "react";
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { usePaths } from "../../context/PathsContext";
 
-import "./UserCheckBoxes.css";
+import "./UserCheckboxes.css";
 
 /**
  * Supports showing of checkboxes for user to mark.
  * 
- * @param checkBoxes object representing checkboxes to show and min/max number of selections
+ * @param checkboxes object representing checkboxes to show and min/max number of selections
  * @param checkedItems set representing items marked
  * @param path path associated with the current block
  * @param handleActionInput handles input (marked checkboxes) from user
  */
-const UserCheckBoxes = ({
-	checkBoxes,
+const UserCheckboxes = ({
+	checkboxes,
 	checkedItems,
 	path,
 	handleActionInput,
 }: {
-	checkBoxes: {items: Array<string>, max?: number, min?: number};
+	checkboxes: {items: Array<string>, max?: number, min?: number};
 	checkedItems: Set<string>;
 	path: string;
 	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void;
@@ -39,20 +39,20 @@ const UserCheckBoxes = ({
 	const [disabled, setDisabled] = useState<boolean>(false);
 
 	// styles for bot checkbox row items
-	const botCheckBoxRowStyle = {
+	const botCheckboxRowStyle = {
 		cursor: disabled ? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
-		...botOptions.botCheckBoxRowStyle
+		...botOptions.botCheckboxRowStyle
 	};
 
 	// styles for bot checkbox next button
-	const botCheckBoxNextStyle = {
-		cursor: disabled || checkedBoxes.size < (checkBoxes.min as number) 
+	const botCheckboxNextStyle = {
+		cursor: disabled || checkedBoxes.size < (checkboxes.min as number) 
 			? `url(${botOptions.theme?.actionDisabledImage}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
-		...botOptions.botCheckBoxNextStyle
+		...botOptions.botCheckboxNextStyle
 	};
 
 	// styles for bot checkmark
@@ -90,7 +90,7 @@ const UserCheckBoxes = ({
 				checkedItems.delete(label);
 				updatedCheckboxes.delete(label);
 			} else {
-				if (checkedBoxes.size == checkBoxes.max) {
+				if (checkedBoxes.size == checkboxes.max) {
 					return prevCheckedBoxes;
 				}
 				checkedItems.add(label);
@@ -102,7 +102,7 @@ const UserCheckBoxes = ({
 
 	return (
 		<div className={`rcb-checkbox-container ${botOptions.botBubble?.showAvatar ? "rcb-checkbox-offset" : ""}`}>
-			{checkBoxes.items.map((key) => {
+			{checkboxes.items.map((key) => {
 		
 				return (
 					<div
@@ -110,7 +110,7 @@ const UserCheckBoxes = ({
 							event.preventDefault();
 							handleCheckItems(key)
 						}}
-						style={botCheckBoxRowStyle}
+						style={botCheckboxRowStyle}
 						key={key}
 						className="rcb-checkbox-row-container"
 					>
@@ -125,9 +125,9 @@ const UserCheckBoxes = ({
 				);
 			})}
 			<button
-				style={botCheckBoxNextStyle}
+				style={botCheckboxNextStyle}
 				className="rcb-checkbox-next-button"
-				disabled={disabled || checkedBoxes.size < (checkBoxes.min as number)}
+				disabled={disabled || checkedBoxes.size < (checkboxes.min as number)}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					const userInput = Array.from(checkedItems).join(", ");
@@ -139,4 +139,4 @@ const UserCheckBoxes = ({
 	);
 };
 
-export default UserCheckBoxes;
+export default UserCheckboxes;

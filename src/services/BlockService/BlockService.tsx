@@ -38,7 +38,7 @@ export const preProcessBlock = (flow: Flow, path: string, params: Params,
 			processOptions(block, path, params.injectMessage, handleActionInput);
 			break;
 		
-		case "checkBoxes":
+		case "checkboxes":
 			processCheckboxes(block, path, params.injectMessage, handleActionInput);
 			break;
 		

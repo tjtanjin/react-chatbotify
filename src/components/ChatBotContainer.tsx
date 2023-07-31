@@ -473,22 +473,28 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				}
 				className="rcb-chat-window"
 			>
-				<ChatBotHeader notificationToggledOn={notificationToggledOn} 
-					handleToggleNotification={handleToggleNotification}
-					audioToggledOn={audioToggledOn} handleToggleAudio={handleToggleAudio}
-				/>
+				{botOptions.theme?.showHeader &&
+					<ChatBotHeader notificationToggledOn={notificationToggledOn} 
+						handleToggleNotification={handleToggleNotification}
+						audioToggledOn={audioToggledOn} handleToggleAudio={handleToggleAudio}
+					/>
+				}
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
 					isLoadingChatHistory={isLoadingChatHistory}
 					prevScrollHeight={prevScrollHeight}	setPrevScrollHeight={setPrevScrollHeight}
 				/>
-				<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
-					inputRef={inputRef} textAreaDisabled={textAreaDisabled} 
-					voiceToggledOn={voiceToggledOn} getCurrPath={getCurrPath}
-				/>
-				<ChatBotFooter inputRef={inputRef} flow={flow} textAreaDisabled={textAreaDisabled} 
-					handleActionInput={handleActionInput} injectMessage={injectMessage}
-					getCurrPath={getCurrPath} getPrevPath={getPrevPath} openChat={openChat}
-				/>
+				{botOptions.theme?.showInputRow &&
+					<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
+						inputRef={inputRef} textAreaDisabled={textAreaDisabled} 
+						voiceToggledOn={voiceToggledOn} getCurrPath={getCurrPath}
+					/>
+				}
+				{botOptions.theme?.showFooter &&
+					<ChatBotFooter inputRef={inputRef} flow={flow} textAreaDisabled={textAreaDisabled} 
+						handleActionInput={handleActionInput} injectMessage={injectMessage}
+						getCurrPath={getCurrPath} getPrevPath={getPrevPath} openChat={openChat}
+					/>
+				}
 			</div>
 		</div>
 	);

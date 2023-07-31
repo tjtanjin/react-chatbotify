@@ -10,6 +10,9 @@ export type Options = {
 		primaryColor?: string;
 		secondaryColor?: string;
 		fontFamily?: string;
+		showHeader?: boolean;
+		showFooter?: boolean;
+		showInputRow?: boolean,
 		actionDisabledImage?: string;
 		embedded?: boolean;
 	},
@@ -58,6 +61,7 @@ export type Options = {
 		blockSpam?: boolean;
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;
+		sendAttachmentOutput?: boolean;
 	},
 	userBubble?: {
 		showAvatar?: boolean;
@@ -129,10 +133,10 @@ export type Options = {
 	botOptionHoveredStyle?: {
 		[key: string]: string | number;
 	},
-	botCheckBoxRowStyle?: {
+	botCheckboxRowStyle?: {
 		[key: string]: string | number;
 	},
-	botCheckBoxNextStyle?: {
+	botCheckboxNextStyle?: {
 		[key: string]: string | number;
 	},
 	botCheckMarkStyle?: {

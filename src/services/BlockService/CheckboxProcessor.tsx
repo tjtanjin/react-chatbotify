@@ -1,4 +1,4 @@
-import UserCheckBoxes from "../../components/UserCheckBoxes/UserCheckBoxes";
+import UserCheckboxes from "../../components/UserCheckboxes/UserCheckboxes";
 import { Block } from "../../types/Block";
 
 /**
@@ -13,35 +13,35 @@ export const processCheckboxes = (block: Block, path: string,
 	injectMessage: (content: string | JSX.Element, isUser?: boolean) => void,
 	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
 
-	const checkBoxes = block.checkBoxes;
-	if (checkBoxes == null) {
+	const checkboxes = block.checkboxes;
+	if (checkboxes == null) {
 		return;
 	}
 
 	// nothing to render if no items present
-	if (checkBoxes.items.length == 0) {
+	if (checkboxes.items.length == 0) {
 		return;
 	}
 
 	// defaults min value to 1 if not provided
-	if (checkBoxes.min == null) {
-		checkBoxes.min = 1;
+	if (checkboxes.min == null) {
+		checkboxes.min = 1;
 	}
 
 	// defaults max value to length of items if not provided
-	if (checkBoxes.max == null) {
-		checkBoxes.max = checkBoxes.items.length;
+	if (checkboxes.max == null) {
+		checkboxes.max = checkboxes.items.length;
 	}
 	
 	// enforces minimum cannot be greater than maximum
-	if (checkBoxes.min > checkBoxes.max) {
-		checkBoxes.min = checkBoxes.max;
+	if (checkboxes.min > checkboxes.max) {
+		checkboxes.min = checkboxes.max;
 	}
 
 	const checkedItems = new Set<string>();
 
 	const content = (
-		<UserCheckBoxes checkBoxes={checkBoxes} checkedItems={checkedItems} path={path}
+		<UserCheckboxes checkboxes={checkboxes} checkedItems={checkedItems} path={path}
 			handleActionInput={handleActionInput}
 		/>
 	);
