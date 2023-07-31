@@ -421,11 +421,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
-				event?.preventDefault();
-
 				// if not on mobile, should remove focus
 				if (isDesktop) {
 					inputRef.current?.blur();
+				} else {
+					event?.preventDefault();
 				}
 			}}
 			className={getChatWindowClass()}
@@ -477,7 +477,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					handleToggleNotification={handleToggleNotification}
 					audioToggledOn={audioToggledOn} handleToggleAudio={handleToggleAudio}
 				/>
-				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping} audioToggledOn={audioToggledOn}
+				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
 					isLoadingChatHistory={isLoadingChatHistory}
 					prevScrollHeight={prevScrollHeight}	setPrevScrollHeight={setPrevScrollHeight}
 				/>

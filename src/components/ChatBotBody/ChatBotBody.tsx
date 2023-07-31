@@ -10,7 +10,6 @@ import "./ChatBotBody.css";
  * Contains chat messages between the user and bot.
  * 
  * @param chatBodyRef reference to the chat body
- * @param audioToggledOn boolean indicating if audio is toggled on
  * @param isBotTyping boolean indicating if bot is typing
  * @param isLoadingChatHistory boolean indicating is chat history is being loaded
  * @param prevScrollHeight number representing previously scrolled height
@@ -18,14 +17,12 @@ import "./ChatBotBody.css";
  */
 const ChatBotBody = ({
 	chatBodyRef,
-	audioToggledOn,
 	isBotTyping,
 	isLoadingChatHistory,
 	prevScrollHeight,
 	setPrevScrollHeight
 }: {
 	chatBodyRef: RefObject<HTMLDivElement>;
-	audioToggledOn: boolean;
 	isBotTyping: boolean;
 	isLoadingChatHistory: boolean;
 	prevScrollHeight: number;
