@@ -51,6 +51,11 @@ const FileAttachmentButton = ({
 			return;
 		}
 		const block = flow[currPath];
+
+		// if path is invalid, nothing to process (i.e. becomes dead end!)
+		if (block == null) {
+			return;
+		}
 		setBlockAllowsAttachment(typeof block.file === "function");
 	}, [paths]);
 

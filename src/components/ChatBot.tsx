@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import { parseBotOptions } from "../services/BotOptionsService";
-import { getDefaultFlow } from "../services/Utils";
+import { defaultFlow } from "../services/Utils";
 import { BotOptionsContext } from "../context/BotOptionsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
@@ -34,7 +34,7 @@ const ChatBot = ({
 	const [paths, setPaths] = useState<string[]>(["start"]);
 
 	// provides a default welcome flow if no user flow provided
-	const parsedFlow: Flow = flow ?? getDefaultFlow();
+	const parsedFlow: Flow = flow ?? defaultFlow;
 
 	/**
 	 * Wraps bot options provider around child element.

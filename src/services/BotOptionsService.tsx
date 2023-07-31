@@ -42,8 +42,8 @@ const defaultOptions = {
 	header: {
 		title: (
 			<h3 style={{cursor: "pointer", margin: 0}} onClick={
-				() => window.open("https://tjtanjin.com")
-			}>tjtanjin
+				() => window.open("https://github.com/tjtanjin/")
+			}>Tan Jin
 			</h3>
 		),
 		showAvatar: true,
