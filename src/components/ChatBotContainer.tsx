@@ -136,17 +136,26 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			setUnreadCount(0);
 			if (!isDesktop) {
 				setWindowScrollPos(window.scrollY);
+				if (document.documentElement.scrollWidth > document.documentElement.clientWidth) {
+					return;
+				}
+
+				// only use scroll event to scroll to top if page is not scrollable horizontally
+				// currently unable to resolve bug with chat window view on mobile when page is scrollable horizontally
 				window.addEventListener("scroll", handleScroll);
+
+				return () => {
+					if (document.documentElement.scrollWidth > document.documentElement.clientWidth) {
+						return;
+					}
+					window.removeEventListener("scroll", handleScroll);
+				};
 			}
 		} else {
 			if (!isDesktop) {
-				window.scrollTo({top: windowScrollPos, behavior: "instant"});
+				window.scrollTo({top: windowScrollPos, left: 0, behavior: "instant"});
 			}
 		}
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-		};
 	}, [botOptions.isOpen]);
 
 	// performs pre-processing when paths change
@@ -164,25 +173,27 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [paths]);
 
 	/**
-	 * Handles resizing of view port (required and only for mobile view).
+	 * Handles resizing of view port (only for mobile view). KIV - Refer to comments below.
 	 */
 	const handleResize = () => {
 		// if not mobile, nothing to do
-		if (isDesktop) {
+		if (isDesktop || document.documentElement.scrollWidth > document.documentElement.clientWidth) {
 			return;
 		}
+		// only resize viewport if page is not scrollable horizontally (remove this condition if fix is found)
+		// currently unable to resolve bug with chat window view on mobile when page is scrollable horizontally
 		setViewportHeight(window.visualViewport?.height as number);
 	};
 
 	/**
-	 * Handles scrolling of window on mobile.
+	 * Handles scrolling of window when chat is open (only for mobile view). KIV - Refer to comments below.
 	 */
 	const handleScroll = () => {
 		// if not mobile or chat window is close, nothing to do 
 		if (isDesktop) {
 			return;
 		}
-		window.scrollTo({top: 0, behavior: "instant"});
+		window.scrollTo({top: 0, left: 0, behavior: "instant"});
 	}
 
 	/**
@@ -421,43 +432,45 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		>
 			<ChatBotTooltip/>
 			<ChatBotButton unreadCount={unreadCount}/>
-			{/* prevents background from scrolling on mobile when chat window is open */}
-			{/* background-overlay is a temp workaround for scroll issues when keyboard is visible */}
+			{/* styles and prevents background from scrolling on mobile when chat window is open */}
 			{botOptions.isOpen && !isDesktop &&
 				<>
 					<style>
 						{`
 							html, body {
-								margin: 0;
 								overflow: hidden;
 								touch-action: none;
 							}
-
-							.rcb-chat-window {
-								border-radius: 0px;
-								right: 0px !important;
-								bottom: 0px !important;
-								top: 0px !important;
-								width: 100% !important;
-								height: ${viewportHeight}px !important;
-							}
-
-							.background-overlay {
-								position: fixed;
-								top: 0;
-								left: 0;
-								width: 100%;
-								height: 100%;
-								background-color: #fff;
-								z-index: 9999;
-							}
 						`}
 					</style>
+					<div 
+						style={{
+							position: "fixed",
+							top: 0,
+							left: 0,
+							width: "100%",
+							height: "100%",
+							backgroundColor: "#fff",
+							zIndex: 9999
+						}}
+					>	
+					</div>
 				</>
 			}
-			<div className="background-overlay"></div>
 			<div
-				style={botOptions.chatWindowStyle} 
+				style={!isDesktop
+					? {
+						...botOptions.chatWindowStyle,
+						borderRadius: '0px',
+						left: '0px',
+						right: 'auto',
+						top: '0px',
+						bottom: 'auto',
+						width: '100%',
+						height: `${viewportHeight}px`,
+					}
+					: botOptions.chatWindowStyle
+				}
 				className="rcb-chat-window"
 			>
 				<ChatBotHeader notificationToggledOn={notificationToggledOn} 
