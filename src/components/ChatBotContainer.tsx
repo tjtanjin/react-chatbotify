@@ -165,7 +165,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 		const block = flow[currPath];
-		console.log(currPath);
 
 		// if path is invalid, nothing to process (i.e. becomes dead end!)
 		if (block == null) {
@@ -266,7 +265,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 		const message = messages[messages.length - 1]
-		if (message != null && !message?.isUser && document.visibilityState !== "visible" && !isBotTyping) {
+		if (message != null && !message?.isUser && (!botOptions.isOpen || document.visibilityState !== "visible")
+			&& !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
 			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
 				notificationAudio.current?.play();

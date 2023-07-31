@@ -13,7 +13,6 @@ import { Params } from "./types/Params";
  * Exports for developer use.
  */
 export {
-	ChatBot,
 	getDefaultBotOptions,
 	BotOptionsContext,
 	useBotOptions,
