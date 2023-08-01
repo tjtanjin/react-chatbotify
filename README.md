@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300px" src="https://raw.githubusercontent.com/tjtanjin/react-chatbotify/main/src/assets/logo.png" />
+  <img width="200px" src="https://raw.githubusercontent.com/tjtanjin/react-chatbotify/main/src/assets/logo.png" />
   <h1 align="center">React ChatBotify</h1>
 </p>
 
@@ -20,7 +20,7 @@
 ### Introduction
 
 <p align="center">
-  <img height="600px" src="https://raw.githubusercontent.com/tjtanjin/react-chatbotify/main/src/assets/demo.png" />
+  <img height="400px" src="https://raw.githubusercontent.com/tjtanjin/react-chatbotify/main/src/assets/demo.png" />
 </p>
 
 React ChatBotify is an intuitive and versatile chatbot library tailored to streamline your development process while providing the flexibility to implement advanced features. It is crafted to meet a wide range of requirements, whether you're building a straightforward FAQ chatbot or an intricate conversational interface.
