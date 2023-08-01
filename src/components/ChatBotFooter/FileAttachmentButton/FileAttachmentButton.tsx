@@ -92,6 +92,7 @@ const FileAttachmentButton = ({
 			{blockAllowsAttachment ? (
 				<label className="rcb-attach-button-enabled">
 					<input
+						className="rcb-attach-input"
 						type="file"
 						onChange={handleUpload}
 						multiple={botOptions.fileAttachment?.multiple}

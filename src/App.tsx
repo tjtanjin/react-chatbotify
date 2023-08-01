@@ -4,7 +4,7 @@ import { Params } from "./types/Params";
 function App() {
 
 	// Serves as an example flow used during the development phase - covers all possible attributes in a block.
-	// also covers various use cases/types
+	// restore to default state before running selenium tests (or update the test cases if necessary)!
 	const flow = {
 		start: {
 			message: "Hello! What is your name?",
@@ -52,30 +52,41 @@ function App() {
 			}
 		},
 		ask_weather: {
-			message: "What's my favourite color? Click the button below to find out my answer!",
+			message: (params: Params) => {
+				if (params.prevPath == "incorrect_answer") {
+					return;
+				}
+				return "What's my favourite color? Click the button below to find out my answer!"
+			},
 			render: (
 				<div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: 10}}>
 					<button 
+						className="secret-fav-color"
 						onClick={() => alert("black")}>
 						Click me!
 					</button>
 				</div>
 			),
-			function: (params: Params) => params.openChat(false),
 			path: (params: Params) => {
 				if (params.userInput.toLowerCase() != "black") {
 					return "incorrect_answer"
 				} else {
+					params.openChat(false);
 					return "close_chat";
 				}
 			},
 		},
 		close_chat: {
 			message: "I went into hiding but you found me! Ok tell me, what's your favourite food?",
+			path: "ask_image"
+		},
+		ask_image: {
+			message: (params: Params) => `${params.userInput}? Interesting. Could you share an image of that?`,
+			file: (params: Params) => console.log(params.files),
 			path: "end"
 		},
 		end: {
-			message: (params: Params) => `${params.userInput}? Interesting. Thank you for sharing! See you again!`,
+			message: "Thank you for sharing! See you again!",
 			path: "loop"
 		},
 		loop: {
