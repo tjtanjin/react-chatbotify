@@ -15,11 +15,8 @@ import { Params } from "./types/Params";
 export {
 	getDefaultBotOptions,
 	BotOptionsContext,
-	useBotOptions,
 	MessagesContext,
-	useMessages,
 	PathsContext,
-	usePaths
 };
 
 export type {
