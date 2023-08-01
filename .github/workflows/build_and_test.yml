@@ -33,8 +33,7 @@ jobs:
         run: npm run build --if-present
 
       - name: Start
-        run: npm run start
-        background: yes
+        run: npm run start &
 
   test:
     needs: build
