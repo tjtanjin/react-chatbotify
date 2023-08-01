@@ -103,7 +103,7 @@ const defaultOptions = {
 	footer: {
 		text: (
 			<div style={{cursor: "pointer"}} 
-				onClick={() => window.open("https://tjtanjin.com")}
+				onClick={() => window.open("https://react-chatbotify.tjtanjin.com")}
 			>
 				<span>Powered By </span>
 				<span style={{fontWeight: "bold"}}>
@@ -122,7 +122,7 @@ const defaultOptions = {
 	emoji: {
 		disabled: false,
 		icon: emojiIcon,
-		list: ["😀", "😃", "😄", "😊", "😍", "🥳", "🎉", "🎈", "🚀", "⭐️"]
+		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	advance: {
 		useCustomMessages: false,

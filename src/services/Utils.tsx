@@ -1,6 +1,6 @@
 import { Params } from "../types/Params";
 
-const helpOptions = ["Quickstart", "API Docs", "Examples", "Github"];
+const helpOptions = ["Quickstart", "API Docs", "Examples", "Github", "Discord"];
 
 // default provided welcome flow if user does not pass in a flow to the chat bot
 export const defaultFlow = {
@@ -23,7 +23,7 @@ export const defaultFlow = {
 	},
 	unknown_input: {
 		message: "Sorry, I do not understand your message 😢! If you require further assistance, you may click on " +
-			"the Github option and open an issue there.",
+			"the Github option and open an issue there or visit our discord.",
 		options: helpOptions,
 		path: "process_options"
 	},
@@ -43,6 +43,9 @@ export const defaultFlow = {
 				break;
 			case "Github":
 				link = "https://github.com/tjtanjin/react-chatbotify/";
+				break;
+			case "Discord":
+				link = "https://discord.gg/6R4DK4G5Zh";
 				break;
 			default:
 				return "unknown_input";

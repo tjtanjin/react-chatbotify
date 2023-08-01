@@ -41,6 +41,7 @@ React ChatBotify offers a wide array of features designed to enhance your chatbo
 - **Checkbox & Options Support:** Utilize checkboxes and options within the chatbot interface, allowing users to select from a list of choices and easily make selections.
 - **Emoji Picker:** Enhance the chatbot's expression and engagement with users by incorporating emojis into messages, adding a touch of personality and emotion.
 - **File Attachments:** Seamlessly handle file attachments within the chatbot, enabling users to share and receive documents, images, or other relevant files during conversations.
+- **Mobile-Friendly Interface:** Provide smooth user experience across various devices with our mobile-friendly chatbot interface.
 
 These features, **along with many others**, empower developers to create highly interactive and personalized chatbot experiences tailored to their specific application requirements.
 
@@ -78,9 +79,9 @@ Examples on the website are also run on a live editor so feel free to explore to
 * [Tan Jin](https://github.com/tjtanjin)
 
 ### Contributing
-If you have code to contribute to the project, open a pull request and describe clearly the changes and what they are intended to do (enhancement, bug fixes etc). Alternatively, you may simply raise bugs or suggestions by opening an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues) or raising it up on [**discord**](https://discord.gg/NsKQwKydN9).
+If you have code to contribute to the project, open a pull request and describe clearly the changes and what they are intended to do (enhancement, bug fixes etc). Alternatively, you may simply raise bugs or suggestions by opening an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues) or raising it up on [**discord**](https://discord.gg/6R4DK4G5Zh).
 
 Note: Templates have been created for pull requests and issues to guide you in the process.
 
 ### Others
-If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), raise it up on [**discord**](https://discord.gg/NsKQwKydN9), or drop me an email at: **cjtanjin@gmail.com.**
+If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), raise it up on [**discord**](https://discord.gg/6R4DK4G5Zh), or drop me an email at: **cjtanjin@gmail.com.**

@@ -10,7 +10,8 @@ export type Block = {
 	checkboxes?: {items: Array<string>, max?: number, min?: number};
 	render?: JSX.Element | void | ((params: Params) => JSX.Element | void);
 	chatDisabled?: boolean;
-	transition?: {duration: number, interruptable?: boolean};
+	transition?: {duration: number, interruptable?: boolean} | void | 
+	((params: Params) => {duration: number, interruptable?: boolean} | void);
 
 	// post-processing attributes (runs after user input)
 	function?: ((params: Params) => void);

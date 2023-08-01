@@ -25,6 +25,7 @@ let numCases = 0;
 
 // execution and test cases below
 // test cases are executed in order and are based on the default flow in App.tsx
+// before running tests, ensure the app is running in the background
 const run = async() => {
     await driver.get(TEST_URL);
     await executeTest(openChatWindow);

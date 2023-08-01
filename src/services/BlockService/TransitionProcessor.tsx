@@ -18,7 +18,11 @@ export const processTransition = (flow: Flow, path: string, params: Params,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
-	const transitionDetails = block.transition;
+	let transitionDetails = block.transition;
+
+	if (typeof transitionDetails === "function") {
+		transitionDetails = transitionDetails(params);
+	}
 
 	// cannot transition if details are not present
 	if (transitionDetails == null) {
