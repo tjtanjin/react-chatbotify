@@ -21,7 +21,7 @@
   },
   "scripts": {
     "lint": "eslint . --ext .tsx",
-    "test": "node ./tests/RunTests.js",
+    "test": "node ./test/RunTests.js",
     "build": "vite build",
     "prepublishOnly": "vite build",
     "prepack": "vite build",

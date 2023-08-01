@@ -6,7 +6,7 @@
 .pnp.js
 
 # testing
-/tests/chromedriver.exe
+/test/chromedriver.exe
 
 # production
 /build

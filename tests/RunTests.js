@@ -282,7 +282,7 @@ const sendFood = async () => {
 
 const sendImage = async () => {
     const attachElement = await driver.findElement(By.className("rcb-attach-input"));
-    const filePath = path.resolve("./tests/assets/logo.png");
+    const filePath = path.resolve("./test/assets/logo.png");
     attachElement.sendKeys(filePath);
     const expectedText = "Thank you for sharing! See you again!";
     await sleep(WAIT_DURATION);
