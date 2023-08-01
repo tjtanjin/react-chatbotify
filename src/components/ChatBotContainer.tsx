@@ -232,9 +232,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const handleFirstInteraction = () => {
 		setHasInteracted(true);
 
-		// workaround for getting notification sound to play on mobile
-		notificationAudio.current?.play();
-		notificationAudio.current?.pause();
+		// load audio on first user interaction
+		notificationAudio.current?.load();
 
 		// workaround for getting audio to play on mobile
 		const utterance = new SpeechSynthesisUtterance();

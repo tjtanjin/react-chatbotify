@@ -118,7 +118,10 @@ export type Options = {
 	bodyStyle?: {
 		[key: string]: string | number;
 	},
-	chatInputStyle?: {
+	chatInputContainerStyle?: {
+		[key: string]: string | number;
+	},
+	chatInputAreaStyle?: {
 		[key: string]: string | number;
 	},
 	userBubbleStyle?: {

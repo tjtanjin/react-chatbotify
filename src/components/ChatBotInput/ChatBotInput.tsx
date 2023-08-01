@@ -51,11 +51,13 @@ const ChatBotInput = ({
 	}, [voiceInputTrigger])
 
 	// styles for text area
-	const textAreaStyle = {
+	const textAreaStyle: React.CSSProperties = {
 		outline: isFocused && !textAreaDisabled ? "none" : "",
 		boxShadow: isFocused && !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
 		cursor: textAreaDisabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "",
-		caretColor: textAreaDisabled ? "transparent" : ""
+		caretColor: textAreaDisabled ? "transparent" : "",
+		boxSizing: isDesktop ? "content-box" : "border-box",
+		...botOptions.chatInputAreaStyle,
 	};
 
 	// styles for input placeholder
@@ -134,7 +136,7 @@ const ChatBotInput = ({
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
 			}}
-			style={botOptions.chatInputStyle} 
+			style={botOptions.chatInputContainerStyle} 
 			className="rcb-chat-input"
 		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}

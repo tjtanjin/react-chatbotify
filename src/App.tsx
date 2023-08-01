@@ -8,7 +8,6 @@ function App() {
 	const flow = {
 		start: {
 			message: "Hello! What is your name?",
-			file: () => {console.log("HI")},
 			path: "ask_age_group",
 		},
 		ask_age_group: {
@@ -38,7 +37,7 @@ function App() {
 		},
 		ask_favourite_pet: {
 			message: "Interesting! Pick any 2 pets below.",
-			checkboxes: {items: ["Dog", "Cat", "Rabbit"], max: 1},
+			checkboxes: {items: ["Dog", "Cat", "Rabbit", "Hamster"], min:2, max: 2},
 			function: (params: Params) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
 			path: "ask_height",
 		},
@@ -55,9 +54,9 @@ function App() {
 		ask_weather: {
 			message: "What's my favourite color? Click the button below to find out my answer!",
 			render: (
-				<div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+				<div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: 10}}>
 					<button 
-						onClick={() => alert("Black!")}>
+						onClick={() => alert("black")}>
 						Click me!
 					</button>
 				</div>
