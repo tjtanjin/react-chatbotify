@@ -1,46 +1,79 @@
-# Getting Started with Create React App
+<p align="center">
+  <img width="300px" src="https://raw.githubusercontent.com/tjtanjin/react-chatbotify/main/src/assets/logo.png" />
+  <h1 align="center">React ChatBotify</h1>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <a href="https://github.com/tjtanjin/react-chatbotify/actions"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build_and_test.yml/badge.svg" /> </a>
+</p>
 
-## Available Scripts
+## Table of Contents
+* [Introduction](#introduction)
+* [Features](#features)
+* [Technologies](#technologies)
+* [Quickstart](#quickstart)
+* [Documentation](#documentation)
+* [Team](#team)
+* [Contributing](#contributing)
+* [Others](#others)
 
-In the project directory, you can run:
+### Introduction
+React ChatBotify is an intuitive and versatile chatbot library tailored to streamline your development process while providing the flexibility to implement advanced features. It is crafted to meet a wide range of requirements, whether you're building a straightforward FAQ chatbot or an intricate conversational interface.
 
-### `npm start`
+React ChatBotify aims to simplify the creation of chatbots by offering a user-friendly experience while accommodating the diverse needs of developers. With its extensive capabilities, you can easily customize and expand your chatbot's functionalities. From basic interactions to sophisticated conversational flows, React ChatBotify empowers you to build chatbots that meet your specific project goals.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+React ChatBotify offers a wide array of features designed to enhance your chatbot experience. Here are just a few of the key features:
 
-### `npm test`
+- **Dynamic Attributes:** Create interactive conversations by dynamically generating messages and defining multiple conversation paths based on user inputs.
+- **Custom Rendering of Components:** Seamlessly integrate your own custom components into the chatbot interface to boast your application's unique design and functionality.
+- **Timeouts and Auto-Transitions:** Set timeouts and automate transitions between chatbot paths, allowing for a smooth user experience.
+- **Voice Input & Audio Output:** Enable voice input for users to interact with the chatbot through speech, and leverage audio output capabilities to provide spoken responses or prompts.
+- **Chat Notifications:** Keep users informed with real-time chat notifications, ensuring they never miss important updates or new messages.
+- **Checkbox & Options Support:** Utilize checkboxes and options within the chatbot interface, allowing users to select from a list of choices and easily make selections.
+- **Emoji Picker:** Enhance the chatbot's expression and engagement with users by incorporating emojis into messages, adding a touch of personality and emotion.
+- **File Attachments:** Seamlessly handle file attachments within the chatbot, enabling users to share and receive documents, images, or other relevant files during conversations.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+These features, **along with many others**, empower developers to create highly interactive and personalized chatbot experiences tailored to their specific application requirements.
 
-### `npm run build`
+### Technologies
+Technologies used by React ChatBotify are as below:
+##### Done with:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<p align="center">
+  <img height="150" width="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" />
+</p>
+<p align="center">
+ReactJS
+</p>
+<p align="center">
+  <img height="150" width="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png" />
+</p>
+<p align="center">
+Typescript
+</p>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+##### Project Repository
+- https://github.com/tjtanjin/react-chatbotify
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Quickstart
+For a thorough walkthrough on getting started, you may refer to the [**Quickstart Guide**](https://react-chatbotify.tjtanjin.com/docs/introduction/quickstart/) on the [**Documentation Website**](https://react-chatbotify.tjtanjin.com/).
 
-### `npm run eject`
+### Documentation
+A full documentation (along with a **live playground**) for the library can be found at the following link:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- https://react-chatbotify.tjtanjin.com/
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Examples on the website are also run on a live editor so feel free to explore to your heart's content!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Team
+* [Tan Jin](https://github.com/tjtanjin)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Contributing
+If you have code to contribute to the project, open a pull request and describe clearly the changes and what they are intended to do (enhancement, bug fixes etc). Alternatively, you may simply raise bugs or suggestions by opening an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues) or raising it up on [**discord**]().
 
-## Learn More
+Note: Templates have been created for pull requests and issues to guide you in the process.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Others
+If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), raise it up on [**discord**](), or drop me an email at: **cjtanjin@gmail.com.**
