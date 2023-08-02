@@ -11,7 +11,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/export.tsx"),
       name: "react-chatbotify",
-      fileName: "react-chatbotify"
+      fileName: "react-chatbotify",
+      formats: ["es"]
     },
     rollupOptions: {
       external: ["react", "react-dom"],
@@ -42,10 +43,5 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true
-  },
-//   resolve: {
-//     alias: {
-//       src: path.resolve(__dirname, "src"),
-//     }
-//   },
+  }
 });
