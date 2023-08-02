@@ -48,7 +48,7 @@ These features, **along with many others**, empower developers to create highly 
 
 ### Technologies
 Technologies used by React ChatBotify are as below:
-##### Done with:
+#### Done with:
 
 <p align="center">
   <img height="150" width="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" />
@@ -63,7 +63,7 @@ ReactJS
 Typescript
 </p>
 
-##### Project Repository
+#### Project Repository
 - https://github.com/tjtanjin/react-chatbotify
 
 ### Quickstart
@@ -80,7 +80,9 @@ Examples on the website are also run on a live editor so feel free to explore to
 * [Tan Jin](https://github.com/tjtanjin)
 
 ### Contributing
-If you have code to contribute to the project, open a pull request and describe clearly the changes and what they are intended to do (enhancement, bug fixes etc). Alternatively, you may simply raise bugs or suggestions by opening an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues) or raising it up on [**discord**](https://discord.gg/6R4DK4G5Zh).
+If you are looking to contribute to the project, you may find the [**Developer Guide**](https://github.com/tjtanjin/react-chatbotify/blob/main/docs/DeveloperGuide.md) useful.
+
+In general, the forking workflow is encouraged and you may open a pull request with clear descriptions on the changes and what they are intended to do (enhancement, bug fixes etc). Alternatively, you may simply raise bugs or suggestions by opening an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues) or raising it up on [**discord**](https://discord.gg/6R4DK4G5Zh).
 
 Note: Templates have been created for pull requests and issues to guide you in the process.
 
@@ -88,11 +90,18 @@ Note: Templates have been created for pull requests and issues to guide you in t
 If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), raise it up on [**discord**](https://discord.gg/6R4DK4G5Zh), or drop me an email at: **cjtanjin@gmail.com.**
 
 ### Attributions
-##### Images
+#### Images
+Credits are to be given for the following images:
 - [Logo](https://www.craiyon.com/)
 - [Bot Avatar](https://www.craiyon.com/)
 
-##### Sound
+#### Sound
+Credits are to be given for the notification sound:
 - [Notification Sound](https://pixabay.com/sound-effects/notifications-sound-127856/)
+
+#### Inspirations
+As I have used similar alternatives at some point in my developer journey, some inspirations have been taken from them and they ought to be credited here:
+- [Tidio](https://www.tidio.com/)
+- [React Simple Chatbot](https://github.com/LucasBassetti/react-simple-chatbot)
 
 Note: All other media content are hand-drawn unless otherwise stated, feel free to use them!
