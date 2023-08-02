@@ -15,7 +15,7 @@
 		"plugin:@typescript-eslint/recommended"
 	],
 	"rules": {
-		//"@typescript-eslint/no-unused-vars": "error",
+		"@typescript-eslint/no-unused-vars": "error",
 		"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 		"indent": ["error", "tab"],
 		"react/jsx-indent": ["error", "tab"],
