@@ -19,10 +19,12 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-chatbotify.js"
+      "import": "./dist/react-chatbotify.js",
+      "require": "./dist/react-chatbotify.js"
     },
     "./dist/react-chatbotify.css": {
-      "import": "./dist/react-chatbotify.css"
+      "import": "./dist/react-chatbotify.css",
+      "require": "./dist/react-chatbotify.css"
     }
   },
   "scripts": {
