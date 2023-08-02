@@ -1,22 +1,28 @@
 {
   "name": "react-chatbotify",
+  "homepage": "https://react-chatbotify.tjtanjin.com",
+  "keywords": [
+    "react",
+    "chat",
+    "chatbot",
+    "conversational-bot",
+    "frontend-library"
+  ],
   "type": "module",
   "files": [
     "./dist"
   ],
   "version": "1.0.0",
   "description": "Enrich Conversations - Power & Flexibility at Your Fingertips!",
-  "main": "./dist/react-chatbotify.umd.cjs",
+  "main": "./dist/react-chatbotify.js",
   "module": "./dist/react-chatbotify.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-chatbotify.js",
-      "require": "./dist/react-chatbotify.umd.cjs"
+      "import": "./dist/react-chatbotify.js"
     },
     "./dist/react-chatbotify.css": {
-      "import": "./dist/react-chatbotify.css",
-      "require": "./dist/react-chatbotify.css"
+      "import": "./dist/react-chatbotify.css"
     }
   },
   "scripts": {
@@ -29,6 +35,10 @@
   },
   "author": "tjtanjin",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tjtanjin/react-chatbotify"
+  },
   "devDependencies": {
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
