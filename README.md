@@ -15,7 +15,8 @@
 * [Documentation](#documentation)
 * [Team](#team)
 * [Contributing](#contributing)
-* [Others](#others)
+* [Support](#support)
+* [Attributions](#attributions)
 
 ### Introduction
 
@@ -83,5 +84,15 @@ If you have code to contribute to the project, open a pull request and describe 
 
 Note: Templates have been created for pull requests and issues to guide you in the process.
 
-### Others
+### Support
 If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), raise it up on [**discord**](https://discord.gg/6R4DK4G5Zh), or drop me an email at: **cjtanjin@gmail.com.**
+
+### Attributions
+##### Images
+- [Logo](https://www.craiyon.com/)
+- [Bot Avatar](https://www.craiyon.com/)
+
+##### Sound
+- [Notification Sound](https://pixabay.com/sound-effects/notifications-sound-127856/)
+
+Note: All other media content are hand-drawn unless otherwise stated, feel free to use them!
