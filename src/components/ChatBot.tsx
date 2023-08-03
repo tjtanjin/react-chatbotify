@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import { parseBotOptions } from "../services/BotOptionsService";
-import { defaultFlow } from "../services/Utils";
+import { defaultFlow, isDesktop } from "../services/Utils";
 import { BotOptionsContext } from "../context/BotOptionsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
@@ -95,10 +95,22 @@ const ChatBot = ({
 		return result;
 	}
 
+	/**
+	 * Checks if chatbot should be shown depending on platform.
+	 */
+	const shouldShowChatBot = () => {
+		return (isDesktop && botOptions.theme?.desktopEnabled)
+			|| (!isDesktop && botOptions.theme?.mobileEnabled);
+	}
+
 	return (
-		<div style={{fontFamily: botOptions.theme?.fontFamily}}>
-			{renderChatBot()}
-		</div>
+		<>
+			{shouldShowChatBot() &&
+				<div style={{fontFamily: botOptions.theme?.fontFamily}}>
+					{renderChatBot()}
+				</div>
+			}
+		</>
 	);
 };
 

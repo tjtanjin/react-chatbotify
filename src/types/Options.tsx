@@ -15,6 +15,8 @@ export type Options = {
 		showInputRow?: boolean,
 		actionDisabledIcon?: string;
 		embedded?: boolean;
+		desktopEnabled?: boolean;
+		mobileEnabled?: boolean;
 	},
 	tooltip?: {
 		mode?: string;

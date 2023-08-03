@@ -31,6 +31,8 @@ const defaultOptions = {
 		showInputRow: true,
 		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
+		desktopEnabled: true,
+		mobileEnabled: true,
 	},
 	tooltip: {
 		mode: "CLOSE",
