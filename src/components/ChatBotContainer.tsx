@@ -92,7 +92,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		window.addEventListener("click", handleFirstInteraction);
 		window.addEventListener("keydown", handleFirstInteraction);
 		window.addEventListener("touchstart", handleFirstInteraction);
-		if ("visualViewport" in window && !isDesktop) {
+		if ("visualViewport" in window && !isDesktop && !botOptions.theme?.embedded) {
 			window.visualViewport?.addEventListener("resize", handleResize);
 		}
 
@@ -119,7 +119,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("click", handleFirstInteraction);
 			window.removeEventListener("keydown", handleFirstInteraction);
 			window.removeEventListener("touchstart", handleFirstInteraction);
-			if ("visualViewport" in window && !isDesktop) {
+			if ("visualViewport" in window && !isDesktop && !botOptions.theme?.embedded) {
 				window.visualViewport?.removeEventListener("resize", handleResize);
 			}
 		};
