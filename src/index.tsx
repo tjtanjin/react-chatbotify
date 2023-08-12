@@ -1,8 +1,30 @@
-import ReactDOM from "react-dom/client";
+import ChatBot from "./components/ChatBot";
+import { getDefaultBotOptions } from "./services/BotOptionsService";
+import { BotOptionsContext } from "./context/BotOptionsContext";
+import { MessagesContext } from "./context/MessagesContext";
+import { PathsContext } from "./context/PathsContext";
+import { Block } from "./types/Block";
+import { Flow } from "./types/Flow";
+import { Message } from "./types/Message";
+import { Options } from "./types/Options";
+import { Params } from "./types/Params";
 
-import App from "./App";
+/**
+ * Exports for developer use.
+ */
+export {
+	getDefaultBotOptions,
+	BotOptionsContext,
+	MessagesContext,
+	PathsContext,
+};
 
-const root = ReactDOM.createRoot(
-	document.getElementById("root") as HTMLElement
-);
-root.render(<App />);
+export type {
+	Block,
+	Flow,
+	Message,
+	Options,
+	Params
+};
+
+export default ChatBot;

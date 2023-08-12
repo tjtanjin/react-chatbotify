@@ -8,19 +8,19 @@
     "conversational-bot",
     "frontend-library"
   ],
-  "type": "module",
   "files": [
     "./dist"
   ],
   "version": "1.0.3",
   "description": "Enrich Conversations - Power & Flexibility at Your Fingertips!",
-  "main": "./dist/react-chatbotify.js",
-  "module": "./dist/react-chatbotify.js",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-chatbotify.js",
-      "require": "./dist/react-chatbotify.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./dist/react-chatbotify.css": {
       "import": "./dist/react-chatbotify.css",
@@ -30,9 +30,9 @@
   "scripts": {
     "lint": "eslint . --ext .tsx",
     "test": "node ./test/RunTests.js",
-    "build": "vite build",
-    "prepublishOnly": "vite build",
-    "prepack": "vite build",
+    "build": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
+    "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
+    "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "start": "vite serve"
   },
   "author": "tjtanjin",

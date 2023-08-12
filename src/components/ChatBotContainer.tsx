@@ -153,7 +153,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 		} else {
 			if (!isDesktop) {
-				window.scrollTo({top: windowScrollPos, left: 0, behavior: "instant"});
+				window.scrollTo({top: windowScrollPos, left: 0, behavior: "auto"});
 			}
 		}
 	}, [botOptions.isOpen]);
@@ -199,7 +199,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (isDesktop) {
 			return;
 		}
-		window.scrollTo({top: 0, left: 0, behavior: "instant"});
+		window.scrollTo({top: 0, left: 0, behavior: "auto"});
 	}
 
 	/**

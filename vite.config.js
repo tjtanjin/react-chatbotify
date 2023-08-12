@@ -9,10 +9,10 @@ export default defineConfig({
   root: "src",
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/export.tsx"),
+      entry: path.resolve(__dirname, "src/index.tsx"),
       name: "react-chatbotify",
-      fileName: "react-chatbotify",
-      formats: ["es"]
+      fileName: "index",
+      formats: ["es", "cjs"]
     },
     rollupOptions: {
       external: ["react", "react-dom"],
