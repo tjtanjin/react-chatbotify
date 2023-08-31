@@ -16,6 +16,7 @@ import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
 import { Flow } from "../types/Flow";
+import { Params } from "../types/Params";
 
 import "./ChatBotContainer.css";
 
@@ -174,9 +175,20 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		updateTextArea();
 		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
 		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current, injectMessage, openChat};
-		preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths, setTimeoutId, 
-			handleActionInput);
+		callNewBlock(currPath, params);
 	}, [paths]);
+
+	/**
+	 * Calls the new block for preprocessing upon change to path.
+	 * 
+	 * @param currPath the current path
+	 * @param params parameters that may be used in the block
+	 */
+	const callNewBlock = async (currPath: string, params: Params) => {
+		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths, setTimeoutId, 
+			handleActionInput);
+		setIsBotTyping(false);
+	}
 
 	/**
 	 * Handles resizing of view port (only for mobile view). KIV - Refer to comments below.
@@ -394,14 +406,14 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			setIsBotTyping(true);
 		}, 400);
 
-		setTimeout(() => {
+		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), userInput, injectMessage, openChat};
-			const hasNextPath = postProcessBlock(flow, path, params, setPaths);
+			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
 				updateTextArea();
 				syncVoiceWithChatInput(keepVoiceOnRef.current, botOptions);
+				setIsBotTyping(false);
 			}
-			setIsBotTyping(false);
 		}, botOptions.chatInput?.botDelay);
 
 		// short delay before auto-focusing back on textinput, required if textinput was disabled by blockspam option

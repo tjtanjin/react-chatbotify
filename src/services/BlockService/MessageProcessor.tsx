@@ -7,7 +7,7 @@ import { Params } from "../../types/Params";
  * @param block current block being processed
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  */
-export const processMessage = (block: Block, params: Params) => {
+export const processMessage = async (block: Block, params: Params) => {
 
 	const replyMessage = block.message;
 	if (replyMessage == null) {
@@ -21,10 +21,15 @@ export const processMessage = (block: Block, params: Params) => {
 		return;
 	}
 
-	const parsedMessage = replyMessage(params);
+	let parsedMessage = replyMessage(params);
+	if (parsedMessage instanceof Promise) {
+		parsedMessage = await parsedMessage;
+	}
+
 	if (parsedMessage == null) {
 		return;
 	}
+
 	if (parsedMessage.trim() !== "") {
 		params.injectMessage(parsedMessage);
 	}

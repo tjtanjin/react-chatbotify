@@ -13,19 +13,25 @@ import { Params } from "../../types/Params";
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const processTransition = (flow: Flow, path: string, params: Params,
+export const processTransition = async (flow: Flow, path: string, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
-	let transitionDetails = block.transition;
+	const transitionAttr = block.transition;
 
-	if (typeof transitionDetails === "function") {
-		transitionDetails = transitionDetails(params);
+	let transitionDetails;
+	if (typeof transitionAttr === "function") {
+		transitionDetails = transitionAttr(params);
+		if (transitionDetails instanceof Promise) {
+			transitionDetails = await transitionDetails;
+		}
+	} else {
+		transitionDetails = transitionAttr;
 	}
 
 	// cannot transition if details are not present
-	if (transitionDetails == null) {
+	if (transitionDetails == null || transitionDetails instanceof Promise) {
 		return;
 	}
 
@@ -39,8 +45,8 @@ export const processTransition = (flow: Flow, path: string, params: Params,
 		transitionDetails.interruptable = false;
 	}
 	
-	const timeoutId = setTimeout(() => {
-		postProcessBlock(flow, path, params, setPaths);
+	const timeoutId = setTimeout(async () => {
+		await postProcessBlock(flow, path, params, setPaths);
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
 		setTimeoutId(timeoutId);

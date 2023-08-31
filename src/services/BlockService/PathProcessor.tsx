@@ -10,7 +10,7 @@ import { Params } from "../../types/Params";
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
-export const processPath = (block: Block, params: Params,
+export const processPath = async (block: Block, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const nextPath = block.path;
@@ -23,10 +23,16 @@ export const processPath = (block: Block, params: Params,
 		return true;
 	}
 
-	const parsedPath = nextPath(params);
+	let parsedPath = nextPath(params);
+	if (parsedPath instanceof Promise) {
+		parsedPath = await parsedPath;
+	}
+
 	if (parsedPath == null) {
 		return false;
 	}
+	// eslint-disable-next-line
+	// @ts-ignore
 	setPaths(prev => [...prev, parsedPath]);
 	return true;
 }

@@ -7,7 +7,7 @@ import { Params } from "../../types/Params";
  * @param block current block being processed
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  */
-export const processRender = (block: Block, params: Params) => {
+export const processRender = async (block: Block, params: Params) => {
 
 	const element = block.render;
 	if (element == null) {
@@ -15,7 +15,11 @@ export const processRender = (block: Block, params: Params) => {
 	}
 
 	if (typeof element === "function") {
-		const content = element(params)
+		let content = element(params);
+		if (content instanceof Promise) {
+			content = await content;
+		}
+
 		if (content == null) {
 			return;
 		}

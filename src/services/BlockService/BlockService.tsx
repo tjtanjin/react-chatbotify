@@ -21,7 +21,7 @@ import { Params } from "../../types/Params";
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
  */
-export const preProcessBlock = (flow: Flow, path: string, params: Params,
+export const preProcessBlock = async (flow: Flow, path: string, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
 	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
@@ -31,7 +31,7 @@ export const preProcessBlock = (flow: Flow, path: string, params: Params,
 	for (const attribute of attributes) {
 		switch (attribute) {
 		case "message":
-			processMessage(block, params);
+			await processMessage(block, params);
 			break;
 		
 		case "options":
@@ -43,7 +43,7 @@ export const preProcessBlock = (flow: Flow, path: string, params: Params,
 			break;
 		
 		case "render":
-			processRender(block, params);
+			await processRender(block, params);
 			break;
 		
 		case "chatDisabled":
@@ -53,7 +53,7 @@ export const preProcessBlock = (flow: Flow, path: string, params: Params,
 			break;
 
 		case "transition":
-			processTransition(flow, path, params, setPaths, setTimeoutId);
+			await processTransition(flow, path, params, setPaths, setTimeoutId);
 		}
 	}
 }
@@ -66,20 +66,20 @@ export const preProcessBlock = (flow: Flow, path: string, params: Params,
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
-export const postProcessBlock = (flow: Flow, path: string, params: Params,
+export const postProcessBlock = async (flow: Flow, path: string, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const block = flow[path];
 	const attributes = Object.keys(block);
 	for (const attribute of attributes) {
 		if (attribute === "function") {
-			processFunction(block, params);
+			await processFunction(block, params);
 		}
 	}
 
 	// path is always executed last in post-processing
 	if (attributes.includes("path")) {
-		return processPath(block, params, setPaths);
+		return await processPath(block, params, setPaths);
 	}
 	return false;
 }
