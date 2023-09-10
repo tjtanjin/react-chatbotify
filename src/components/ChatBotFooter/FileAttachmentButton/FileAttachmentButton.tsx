@@ -64,7 +64,7 @@ const FileAttachmentButton = ({
 	 * 
 	 * @param event file upload event
 	 */
-	const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
+	const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files;
 		if (files == null) {
 			return;
@@ -82,7 +82,7 @@ const FileAttachmentButton = ({
 				fileNames.push(files[i].name);
 			}
 			handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
-			fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
+			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
 				injectMessage, openChat, files});
 		}
 	};

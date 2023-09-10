@@ -17,7 +17,7 @@ export type Block = {
 
 	// post-processing attributes (runs after user input)
 	function?: ((params: Params) => void) | ((params: Params) => Promise<void>);
-	file?: ((params: Params) => void);
+	file?: ((params: Params) => void) | ((params: Params) => Promise<void>);
 	path?: string | null | undefined | ((params: Params) => string | null | undefined) |
 	((params: Params) => Promise<string | null | undefined>);
 }
