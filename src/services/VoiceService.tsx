@@ -4,7 +4,7 @@ import { Options } from "../types/Options";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SpeechRecognition = (window as any).speechRecognition || (window as any).webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+const recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
 let inactivityTimer: ReturnType<typeof setTimeout> | null;
 let autoSendTimer: ReturnType<typeof setTimeout>;
 let toggleOn = false;
@@ -19,6 +19,10 @@ let toggleOn = false;
  */
 export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void, inputRef: RefObject<HTMLTextAreaElement>) => {
+
+	if (recognition == null) {
+		return;
+	}
 	
 	if (!toggleOn) {
 		toggleOn = true;
@@ -66,6 +70,10 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
  * Stops voice recording.
  */
 export const stopVoiceRecording = () => {
+	if (recognition == null) {
+		return;
+	}
+
 	toggleOn = false;
 	if (recognition) {
 		recognition.stop();
@@ -80,7 +88,7 @@ export const stopVoiceRecording = () => {
  */
 export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botOptions: Options) => {
 
-	if (botOptions.voice?.disabled || !botOptions.chatInput?.blockSpam) {
+	if (botOptions.voice?.disabled || !botOptions.chatInput?.blockSpam || recognition == null) {
 		return;
 	}
 
