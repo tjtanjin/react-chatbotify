@@ -122,18 +122,15 @@ const ChatBotInput = ({
 			return;
 		}
 
-		const characterLimit = botOptions.chatInput?.characterLimit
-		if (characterLimit != null && characterLimit > 0) {
-			if (inputRef.current && inputRef.current.value.length > characterLimit) {
-				inputRef.current.value = inputRef.current.value.slice(0, characterLimit);
-				setInputLength(inputRef.current.value.length);
-				return;
-			}
-		}
-
 		if (inputRef.current) {
+			const characterLimit = botOptions.chatInput?.characterLimit
+			const newInput = event.target.value.replace(/\n/g, " ");
+			if (characterLimit != null && characterLimit > 0 && newInput.length > characterLimit) {
+				inputRef.current.value = newInput.slice(0, characterLimit);
+			} else {
+				inputRef.current.value = newInput
+			}
 			setInputLength(inputRef.current.value.length);
-			inputRef.current.value = event.target.value.replace(/\n/g, " ");
 		}
 	};
 
@@ -181,8 +178,9 @@ const ChatBotInput = ({
 			/>
 			<div className="rcb-chat-input-button-container">
 				{!botOptions.voice?.disabled && isDesktop &&
-					<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled} voiceToggledOn={voiceToggledOn} 
-						handleToggleVoice={handleToggleVoice} triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
+					<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}
+						voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
+						triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
 					/>
 				}
 				<SendButton handleSubmit={handleSubmit}/>

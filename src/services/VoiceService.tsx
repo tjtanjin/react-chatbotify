@@ -19,7 +19,8 @@ let toggleOn = false;
  * @param inputRef reference to textarea for input
  */
 export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () => void,
-	triggerSendVoiceInput: () => void, setInputLength: Dispatch<SetStateAction<number>>, inputRef: RefObject<HTMLTextAreaElement>) => {
+	triggerSendVoiceInput: () => void, setInputLength: Dispatch<SetStateAction<number>>,
+	inputRef: RefObject<HTMLTextAreaElement>) => {
 
 	if (recognition == null) {
 		return;
@@ -44,12 +45,10 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 		if (inputRef.current) {
 			const characterLimit = botOptions.chatInput?.characterLimit
 			const newInput = inputRef.current.value + voiceInput;
-			if (characterLimit != null && characterLimit > 0) {
-				if (newInput.length > characterLimit) {
-					inputRef.current.value = newInput.slice(0, characterLimit);
-				} else {
-					inputRef.current.value = newInput
-				}
+			if (characterLimit != null && characterLimit > 0 && newInput.length > characterLimit) {
+				inputRef.current.value = newInput.slice(0, characterLimit);
+			} else {
+				inputRef.current.value = newInput
 			}
 			setInputLength(inputRef.current.value.length);
 		}
