@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { RefObject, Dispatch, SetStateAction } from "react";
 
 import { Options } from "../types/Options";
 
@@ -15,10 +15,11 @@ let toggleOn = false;
  * @param botOptions options provided to the bot
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
+ * @param setInputLength sets the input length to reflect character count & limit
  * @param inputRef reference to textarea for input
  */
 export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () => void,
-	triggerSendVoiceInput: () => void, inputRef: RefObject<HTMLTextAreaElement>) => {
+	triggerSendVoiceInput: () => void, setInputLength: Dispatch<SetStateAction<number>>, inputRef: RefObject<HTMLTextAreaElement>) => {
 
 	if (recognition == null) {
 		return;
@@ -39,8 +40,18 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 		clearTimeout(autoSendTimer);
 
 		const voiceInput = event.results[event.results.length - 1][0].transcript;
+
 		if (inputRef.current) {
-			inputRef.current.value = inputRef.current.value + voiceInput;
+			const characterLimit = botOptions.chatInput?.characterLimit
+			const newInput = inputRef.current.value + voiceInput;
+			if (characterLimit != null && characterLimit > 0) {
+				if (newInput.length > characterLimit) {
+					inputRef.current.value = newInput.slice(0, characterLimit);
+				} else {
+					inputRef.current.value = newInput
+				}
+			}
+			setInputLength(inputRef.current.value.length);
 		}
 
 		inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);

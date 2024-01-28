@@ -58,6 +58,8 @@ export type Options = {
 		disabled?: boolean;
 		enabledPlaceholderText?: string;
 		disabledPlaceholderText?: string;
+		showCharacterCount?: boolean,
+		characterLimit?: number,
 		botDelay?: number;
 		sendButtonIcon?: string;
 		blockSpam?: boolean;
@@ -154,6 +156,12 @@ export type Options = {
 		[key: string]: string | number;
 	},
 	sendButtonHoveredStyle?: {
+		[key: string]: string | number;
+	},
+	characterLimitStyle?: {
+		[key: string]: string | number;
+	},
+	characterLimitReachedStyle?: {
 		[key: string]: string | number;
 	},
 	chatHistoryButtonStyle?: {

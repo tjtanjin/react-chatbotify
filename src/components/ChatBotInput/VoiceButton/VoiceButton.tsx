@@ -1,4 +1,4 @@
-import { RefObject, useEffect, MouseEvent } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, MouseEvent } from "react";
 
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
 import { useBotOptions } from "../../../context/BotOptionsContext";
@@ -13,19 +13,22 @@ import "./VoiceButton.css";
  * @param voiceToggledOn boolean indicating if voice is toggled on
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
+ * @param setInputLength sets the input length to reflect character count & limit
  */
 const VoiceButton = ({
 	inputRef,
 	textAreaDisabled,
 	voiceToggledOn,
 	handleToggleVoice,
-	triggerSendVoiceInput
+	triggerSendVoiceInput,
+	setInputLength
 }: {
 	inputRef: RefObject<HTMLTextAreaElement>;
 	textAreaDisabled: boolean;
 	voiceToggledOn: boolean;
 	handleToggleVoice: () => void;
 	triggerSendVoiceInput: () => void;
+	setInputLength: Dispatch<SetStateAction<number>>;
 }) => {
 
 	// handles options for bot
@@ -34,7 +37,7 @@ const VoiceButton = ({
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
-			startVoiceRecording(botOptions, handleToggleVoice, triggerSendVoiceInput, inputRef);
+			startVoiceRecording(botOptions, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
 		} else {
 			stopVoiceRecording();
 		}

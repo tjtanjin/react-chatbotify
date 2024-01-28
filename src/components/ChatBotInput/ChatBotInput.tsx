@@ -40,6 +40,9 @@ const ChatBotInput = ({
 	// tracks if chat input is focused
 	const [isFocused, setIsFocused] = useState<boolean>(false);
 
+	// tracks length of input
+	const [inputLength, setInputLength] = useState<number>(0);
+
 	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
 	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
 	useEffect(() => {
@@ -48,6 +51,7 @@ const ChatBotInput = ({
 			return;
 		}
 		handleActionInput(currPath, inputRef.current?.value as string);
+		setInputLength(0);
 	}, [voiceInputTrigger])
 
 	// styles for text area
@@ -58,6 +62,18 @@ const ChatBotInput = ({
 		caretColor: textAreaDisabled ? "transparent" : "",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...botOptions.chatInputAreaStyle,
+	};
+
+	// styles for character limit
+	const characterLimitStyle = {
+		color: "#989898",
+		...botOptions.characterLimitStyle
+	};
+
+	// styles for character limit reached
+	const characterLimitReachedStyle = {
+		color: "#ff0000",
+		...botOptions.characterLimitReachedStyle
 	};
 
 	// styles for input placeholder
@@ -105,7 +121,18 @@ const ChatBotInput = ({
 			inputRef.current.value = "";
 			return;
 		}
+
+		const characterLimit = botOptions.chatInput?.characterLimit
+		if (characterLimit != null && characterLimit > 0) {
+			if (inputRef.current && inputRef.current.value.length > characterLimit) {
+				inputRef.current.value = inputRef.current.value.slice(0, characterLimit);
+				setInputLength(inputRef.current.value.length);
+				return;
+			}
+		}
+
 		if (inputRef.current) {
+			setInputLength(inputRef.current.value.length);
 			inputRef.current.value = event.target.value.replace(/\n/g, " ");
 		}
 	};
@@ -122,6 +149,7 @@ const ChatBotInput = ({
 			return;
 		}
 		handleActionInput(currPath, inputRef.current?.value as string);
+		setInputLength(0);
 	};
 
 	/**
@@ -151,12 +179,28 @@ const ChatBotInput = ({
 				onFocus={handleFocus}
 				onBlur={handleBlur}
 			/>
-			{!botOptions.voice?.disabled && isDesktop &&
-				<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled} voiceToggledOn={voiceToggledOn} 
-					handleToggleVoice={handleToggleVoice} triggerSendVoiceInput={triggerSendVoiceInput}
-				/>
-			}
-			<SendButton handleSubmit={handleSubmit}/>
+			<div className="rcb-chat-input-button-container">
+				{!botOptions.voice?.disabled && isDesktop &&
+					<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled} voiceToggledOn={voiceToggledOn} 
+						handleToggleVoice={handleToggleVoice} triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
+					/>
+				}
+				<SendButton handleSubmit={handleSubmit}/>
+				{botOptions.chatInput?.showCharacterCount
+					&& botOptions.chatInput?.characterLimit != null
+					&& botOptions.chatInput?.characterLimit > 0
+					&&
+					<div 
+						className="rcb-chat-input-char-counter"
+						style={inputLength >= botOptions.chatInput?.characterLimit
+							? characterLimitReachedStyle
+							: characterLimitStyle
+						}
+					>
+						{inputLength}/{botOptions.chatInput?.characterLimit}
+					</div>
+				}
+			</div>
 		</div>
 	);
 };

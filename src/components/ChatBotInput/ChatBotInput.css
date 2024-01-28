@@ -42,3 +42,16 @@
 .rcb-chat-input-textarea::-webkit-scrollbar-thumb:hover {
 	background-color: transparent;
 }
+
+/* ChatBot Input Button Area */
+
+.rcb-chat-input-button-container {
+	display: "flex";
+	flex-direction: "column";
+}
+
+.rcb-chat-input-char-counter {
+	font-size: 14px;
+	margin-left: 8px;
+	margin-top: 3px;
+}
