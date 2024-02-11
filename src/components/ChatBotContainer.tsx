@@ -498,11 +498,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				<>
 					<style>
 						{`
-						body {
-							overflow: hidden;
-							touch-action: none;
-						}
-					`}
+							html {
+								overflow: hidden !important;
+								touch-action: none !important;
+								scroll-behavior: auto !important;
+							}
+						`}
 					</style>
 					<div 
 						style={{
