@@ -175,27 +175,26 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			setViewportWidth(window.visualViewport?.width as number);
 		}
 
+		const cleanupScrollEventListeners = () => {
+			window.removeEventListener("scroll", handleMobileScrollOpened);
+			window.removeEventListener("scroll", handleMobileScrollClosed);
+			window.visualViewport?.removeEventListener("resize", handleResize);
+		};
+
 		if (botOptions.isOpen) {
-			window.removeEventListener('scroll', handleMobileScrollClosed);
+			cleanupScrollEventListeners();
 			document.body.style.position = "fixed";
 			window.addEventListener("scroll", handleMobileScrollOpened);
 			window.visualViewport?.addEventListener("resize", handleResize);
-
-			return () => {
-				window.removeEventListener("scroll", handleMobileScrollOpened);
-				window.visualViewport?.removeEventListener("resize", handleResize);
-			};
 		} else {
 			document.body.style.position = "static";
-			window.removeEventListener("scroll", handleMobileScrollOpened);
+			cleanupScrollEventListeners();
 			window.scrollTo({top: scrollPositionRef.current, left: 0, behavior: "auto"});
 			window.addEventListener('scroll', handleMobileScrollClosed);
 			window.visualViewport?.removeEventListener("resize", handleResize);
-
-			return () => {
-				window.removeEventListener("scroll", handleMobileScrollClosed);
-			};
 		}
+
+		return cleanupScrollEventListeners;
 	}, [botOptions.isOpen]);
 
 	// performs pre-processing when paths change
@@ -487,14 +486,28 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			<ChatBotButton unreadCount={unreadCount}/>
 			{/* styles and prevents background from scrolling on mobile when chat window is open */}
 			{botOptions.isOpen && !isDesktop && !botOptions.theme?.embedded &&
-				<style>
-					{`
+				<>
+					<style>
+						{`
 						body {
 							overflow: hidden;
 							touch-action: none;
 						}
 					`}
-				</style>
+					</style>
+					<div 
+						style={{
+							position: "fixed",
+							top: 0,
+							left: 0,
+							width: "100%",
+							height: "100%",
+							backgroundColor: "#fff",
+							zIndex: 9999
+						}}
+					>	
+					</div>
+				</>
 			}
 			<div
 				style={getChatWindowStyle()}
