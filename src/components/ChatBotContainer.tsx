@@ -130,9 +130,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		if ("virtualKeyboard" in navigator) {
-			// @ts-ignore
+			// @ts-expect-error virtualkeyboard type unknown
 			navigator.virtualKeyboard.overlaysContent = true;
-			// @ts-ignore
+			// @ts-expect-error virtualkeyboard type unknown
 			navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
 				const { x, y, width, height } = event.target.boundingRect;
 				// width does not need adjustments so only height is adjusted
