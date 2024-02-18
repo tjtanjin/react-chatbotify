@@ -30,6 +30,8 @@ React ChatBotify aims to simplify the creation of chatbots by offering a user-fr
 
 `npm install react-chatbotify --save`
 
+Note that this repository contains the code for the library. If you're looking for the repository for the React ChatBotify user guide, you may look [here](https://github.com/tjtanjin/react-chatbotify-docs).
+
 ### Features
 
 React ChatBotify offers a wide array of features designed to enhance your chatbot experience. Here are just a few of the key features:
