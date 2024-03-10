@@ -13,12 +13,7 @@ import { Options } from "../types/Options";
  * @param message message to append
  * @param botOptions options provided to the bot
  */
-const updateMessages = (setMessages: Dispatch<SetStateAction<Message[]>>, message: Message, botOptions: Options) => {
-	setMessages((prevMessages) => [...prevMessages, message]);
-
-	if (botOptions.chatHistory?.disabled) {
-		return;
-	}
+const saveMessageToHistory = (message: Message, botOptions: Options) => {
 
 	const historyStorageKey = botOptions.chatHistory?.storageKey as string;
 	let chatHistory = getChatHistory(historyStorageKey);
@@ -62,7 +57,8 @@ const parseMessageToString = (message: Message) => {
 		const clonedMessage = structuredClone({
 			content: ReactDOMServer.renderToString(message.content),
 			type: message.type,
-			isUser: message.isUser
+			isUser: message.isUser,
+			timestamp: message.timestamp
 		});
 		return clonedMessage;
 	}
@@ -250,6 +246,6 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 }
 
 export {
-	updateMessages,
+	saveMessageToHistory,
 	loadChatHistory
 }

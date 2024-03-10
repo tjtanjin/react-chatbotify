@@ -12,6 +12,7 @@ import "./FileAttachmentButton.css";
  * @param inputRef reference to the textarea
  * @param flow conversation flow for the bot
  * @param injectMessage utility function for injecting a message into the messages array
+ * @param streamMessage utility function for streaming a message into the messages array
  * @param openChat utility function to open/close chat window
  * @param getCurrPath retrieves current path for the user
  * @param getPrevPath retrieves previous path for the user
@@ -21,6 +22,7 @@ const FileAttachmentButton = ({
 	inputRef,
 	flow,
 	injectMessage,
+	streamMessage,
 	openChat,
 	getCurrPath,
 	getPrevPath,
@@ -29,6 +31,7 @@ const FileAttachmentButton = ({
 	inputRef: RefObject<HTMLTextAreaElement>;
 	flow: Flow;
 	injectMessage: (content: string | JSX.Element, isUser?: boolean) => void;
+	streamMessage: (content: string | JSX.Element, isUser?: boolean) => void;
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => string | null;
 	getPrevPath: () => string | null;
@@ -83,7 +86,7 @@ const FileAttachmentButton = ({
 			}
 			handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				injectMessage, openChat, files});
+				injectMessage, streamMessage, openChat, files});
 		}
 	};
 

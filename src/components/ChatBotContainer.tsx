@@ -8,7 +8,7 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
-import { updateMessages, loadChatHistory } from "../services/ChatHistoryService";
+import { saveMessageToHistory, loadChatHistory } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
 import { isDesktop } from "../services/Utils";
@@ -44,6 +44,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// references a temporarily stored user input for use in attribute params
 	const paramsInputRef = useRef<string>("");
+
+	// tracks if chat bot is streaming messages
+	const isBotStreamingRef = useRef<boolean>(false);
 
 	// checks if voice should be toggled back on after a user input
 	const keepVoiceOnRef = useRef<boolean>(false);
@@ -219,9 +222,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		updateTextArea();
 		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
-		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current, injectMessage, openChat};
+		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current, injectMessage, streamMessage, openChat};
 		callNewBlock(currPath, params);
 	}, [paths]);
 
@@ -234,7 +236,14 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const callNewBlock = async (currPath: string, params: Params) => {
 		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths, setTimeoutId, 
 			handleActionInput);
+
+		// cleanup logic after preprocessing of a block
 		setIsBotTyping(false);
+		updateTextArea();
+
+		// cleanup logic after preprocessing of a block (affects only streaming messages)
+		isBotStreamingRef.current = false
+		// call save history?
 	}
 
 	/**
@@ -302,7 +311,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (message != null && !message?.isUser && (!botOptions.isOpen || document.visibilityState !== "visible")
 			&& !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
-			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
+			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted && !isBotStreamingRef.current) {
 				notificationAudio.current?.play();
 			}
 		}
@@ -331,7 +340,40 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const injectMessage = (content: string | JSX.Element, isUser = false) => {
 		const message = {content: content, type: typeof content, isUser: isUser, timestamp: new Date()};
 		processAudio(botOptions, audioToggledOn, message);
-		updateMessages(setMessages, message, botOptions);
+		setMessages((prevMessages) => [...prevMessages, message]);
+		if (!botOptions.chatHistory?.disabled) {
+			saveMessageToHistory(message, botOptions);
+		}
+	}
+
+	/**
+	 *  Streams data into the last message at the end of the messages array with given type.
+	 * 
+	 * @param content message content to inject
+	 * @param isUser boolean indicating if the message comes from user
+	 */
+	const streamMessage = (content: string | JSX.Element, isUser = false) => {
+		const message = {content: content, type: typeof content, isUser: isUser, timestamp: new Date()};
+		if (!isBotStreamingRef.current) {
+			setIsBotTyping(false);
+			setMessages(prevMessages => [...prevMessages, message]);
+			isBotStreamingRef.current = true;
+			return;
+		}
+
+		setMessages((prevMessages) => {
+			const updatedMessages = [...prevMessages];
+
+			for (let i = updatedMessages.length - 1; i >= 0; i--) {
+				if (!updatedMessages[i].isUser && typeof updatedMessages[i].content == typeof content) {
+				    updatedMessages[i] = message;
+				    break;
+				}
+			}
+		
+			return updatedMessages;
+		});
+		// todo: test streaming across multiple blocks, and also saving history for stream messages
 	}
 
 	/**
@@ -430,7 +472,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}, 400);
 
 		setTimeout(async () => {
-			const params = {prevPath: getPrevPath(), userInput, injectMessage, openChat};
+			const params = {prevPath: getPrevPath(), userInput, injectMessage, streamMessage, openChat};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
 				updateTextArea();
@@ -542,7 +584,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				{botOptions.theme?.showFooter &&
 					<ChatBotFooter inputRef={inputRef} flow={flow} textAreaDisabled={textAreaDisabled} 
 						handleActionInput={handleActionInput} injectMessage={injectMessage}
-						getCurrPath={getCurrPath} getPrevPath={getPrevPath} openChat={openChat}
+						streamMessage={streamMessage} getCurrPath={getCurrPath} getPrevPath={getPrevPath}
+						openChat={openChat}
 					/>
 				}
 			</div>

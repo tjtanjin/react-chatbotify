@@ -15,6 +15,7 @@ import "./ChatBotFooter.css";
  * @param flow conversation flow for the bot
  * @param textAreaDisabled boolean indicating if textarea is disabled
  * @param injectMessage utility function for injecting a message into the messages array
+ * @param streamMessage utility function for streaming a message into the messages array
  * @param openChat utility function to open/close chat window
  * @param getCurrPath retrieves current path for the user
  * @param getPrevPath retrieves previous path for the user
@@ -25,6 +26,7 @@ const ChatBotFooter = ({
 	flow,
 	textAreaDisabled,
 	injectMessage,
+	streamMessage,
 	openChat,
 	getCurrPath,
 	getPrevPath,
@@ -34,6 +36,7 @@ const ChatBotFooter = ({
 	flow: Flow;
 	textAreaDisabled: boolean;
 	injectMessage: (content: string | JSX.Element, isUser?: boolean) => void;
+	streamMessage: (content: string | JSX.Element, isUser?: boolean) => void;
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => string | null;
 	getPrevPath: () => string | null;
@@ -49,6 +52,7 @@ const ChatBotFooter = ({
 				{!botOptions.fileAttachment?.disabled &&
 					<FileAttachmentButton inputRef={inputRef} flow={flow} getCurrPath={getCurrPath} openChat={openChat}
 						getPrevPath={getPrevPath} handleActionInput={handleActionInput} injectMessage={injectMessage}
+						streamMessage={streamMessage}
 					/>
 				}
 				{!botOptions.emoji?.disabled &&

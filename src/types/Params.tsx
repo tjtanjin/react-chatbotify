@@ -5,6 +5,7 @@ export type Params = {
 	userInput: string,
 	prevPath: string | null
 	injectMessage: (content: string | JSX.Element, isUser?: boolean) => void;
+	streamMessage: (content: string | JSX.Element, isUser?: boolean) => void;
 	openChat: (isOpen: boolean) => void;
 	files?: FileList;
 }
