@@ -8,7 +8,7 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
-import { saveMessageToHistory, loadChatHistory } from "../services/ChatHistoryService";
+import { loadChatHistory, saveChatHistory } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
 import { isDesktop } from "../services/Utils";
@@ -234,8 +234,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param params parameters that may be used in the block
 	 */
 	const callNewBlock = async (currPath: string, params: Params) => {
-		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths, setTimeoutId, 
-			handleActionInput);
+		await preProcessBlock(messages, flow, currPath, params, setTextAreaDisabled, setPaths,
+				setTimeoutId, handleActionInput);
 
 		// cleanup logic after preprocessing of a block
 		setIsBotTyping(false);
@@ -243,7 +243,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// cleanup logic after preprocessing of a block (affects only streaming messages)
 		isBotStreamingRef.current = false
-		// call save history?
+		saveChatHistory(messages);
 	}
 
 	/**
@@ -341,9 +341,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		const message = {content: content, type: typeof content, isUser: isUser, timestamp: new Date()};
 		processAudio(botOptions, audioToggledOn, message);
 		setMessages((prevMessages) => [...prevMessages, message]);
-		if (!botOptions.chatHistory?.disabled) {
-			saveMessageToHistory(message, botOptions);
-		}
 	}
 
 	/**
@@ -474,6 +471,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), userInput, injectMessage, streamMessage, openChat};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
+			saveChatHistory(messages);
 			if (!hasNextPath) {
 				updateTextArea();
 				syncVoiceWithChatInput(keepVoiceOnRef.current, botOptions);

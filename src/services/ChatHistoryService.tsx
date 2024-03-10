@@ -6,36 +6,40 @@ import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { Message } from "../types/Message";
 import { Options } from "../types/Options";
 
+// variables used to track history, updated when botOptions.chatHistory value changes
+let historyLoaded = false;
+let historyStorageKey = "rcb-history";
+let historyMaxEntries = 30;
+let historyDisabled = false;
+
 /**
  * Updates the messages array with a new message appended at the end and saves chat history if enabled.
  * 
- * @param setMessages setter for updating messages
- * @param message message to append
- * @param botOptions options provided to the bot
+ * @param messages messages containing current conversation with the bot
  */
-const saveMessageToHistory = (message: Message, botOptions: Options) => {
+const saveChatHistory = async (messages: Message[]) => {
+	if (historyDisabled) {
+		return;
+	}
 
-	const historyStorageKey = botOptions.chatHistory?.storageKey as string;
-	let chatHistory = getChatHistory(historyStorageKey);
-	if (chatHistory == null) {
+	let chatHistory = getChatHistory();
+
+	// if history is already loaded into messages array, treat as empty as well
+	if (chatHistory == null || historyLoaded) {
 		chatHistory = [];
 	}
 
-	const parsedMessage = parseMessageToString(message);
-	chatHistory.push(parsedMessage);
-	if (chatHistory.length > (botOptions.chatHistory?.maxEntries as number)) {
-		chatHistory.shift();
-	}
+	messages = [...chatHistory, ...messages];
 
-	localStorage.setItem(historyStorageKey, JSON.stringify(chatHistory));
+	const messagesToSave = messages.slice(-historyMaxEntries);
+	const parsedMessages = messagesToSave.map(parseMessageToString);
+	localStorage.setItem(historyStorageKey, JSON.stringify(parsedMessages));
 }
 
 /**
  * Retrieves chat history.
- * 
- * @param historyStorageKey key used to identify chat history stored in local storage
  */
-const getChatHistory = (historyStorageKey: string) => {
+const getChatHistory = () => {
 	const chatHistory = localStorage.getItem(historyStorageKey);
 	if (chatHistory != null) {
 		try {
@@ -45,6 +49,17 @@ const getChatHistory = (historyStorageKey: string) => {
 		}
 	}
 	return null;
+}
+
+/**
+ * Sets the currently used history storage key.
+ * 
+ * @param botOptions options provided to the bot
+ */
+const setHistoryStorageValues = (botOptions: Options) => {
+	historyStorageKey = botOptions.chatHistory?.storageKey as string;
+	historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
+	historyDisabled = botOptions.chatHistory?.disabled as boolean;
 }
 
 /**
@@ -79,6 +94,7 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>,
 	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
+	historyLoaded = true;
 	if (chatHistory != null) {
 		try {
 			setMessages((prevMessages) => {
@@ -246,6 +262,7 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 }
 
 export {
-	saveMessageToHistory,
-	loadChatHistory
+	saveChatHistory,
+	loadChatHistory,
+	setHistoryStorageValues
 }

@@ -8,6 +8,7 @@ import { processOptions } from "./OptionProcessor";
 import { processPath } from "./PathProcessor";
 import { processRender } from "./RenderProcessor";
 import { processTransition } from "./TransitionProcessor";
+import { Message } from "../../types/Message";
 import { Params } from "../../types/Params";
 
 /**
@@ -21,7 +22,7 @@ import { Params } from "../../types/Params";
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
  */
-export const preProcessBlock = async (flow: Flow, path: string, params: Params,
+export const preProcessBlock = async (messages: Message[], flow: Flow, path: string, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
 	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
@@ -53,10 +54,8 @@ export const preProcessBlock = async (flow: Flow, path: string, params: Params,
 			break;
 
 		case "transition":
-			await processTransition(flow, path, params, setPaths, setTimeoutId);
+			await processTransition(messages, flow, path, params, setPaths, setTimeoutId);
 		}
-
-		// call save history here?
 	}
 }
 

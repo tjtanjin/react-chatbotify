@@ -13,7 +13,7 @@ const sleep = promisify(setTimeout);
 const { Builder, By, Key, until } = webdriver;
 const options = new Options();
 if (HEADLESS) {
-    options.headless();
+    options.addArguments("--headless=new");
 }
 options.addArguments("start-maximized");
 const driver = new Builder()
