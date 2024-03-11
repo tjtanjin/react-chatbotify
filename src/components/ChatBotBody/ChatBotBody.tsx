@@ -143,9 +143,9 @@ const ChatBotBody = ({
 				return (
 					<div 
 						key={index} 
-						className={message.isUser ? "rcb-user-message-container" : "rcb-bot-message-container"}
+						className={message.sender === "user" ? "rcb-user-message-container" : "rcb-bot-message-container"}
 					>
-						{message.isUser ? renderUserMessage(message) : renderBotMessage(message)}
+						{message.sender === "user" ? renderUserMessage(message) : renderBotMessage(message)}
 					</div>
 				);
 			})}

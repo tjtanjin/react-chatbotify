@@ -1,9 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 import { postProcessBlock} from "./BlockService";
-import { saveChatHistory } from "../ChatHistoryService";
 import { Flow } from "../../types/Flow";
-import { Message } from "../../types/Message";
 import { Params } from "../../types/Params";
 
 /**
@@ -16,8 +14,8 @@ import { Params } from "../../types/Params";
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const processTransition = async (messages: Message[], flow: Flow,
-	path: string, params: Params, setPaths: Dispatch<SetStateAction<string[]>>,
+export const processTransition = async (flow: Flow, path: string, params: Params,
+	setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
@@ -50,7 +48,6 @@ export const processTransition = async (messages: Message[], flow: Flow,
 	
 	const timeoutId = setTimeout(async () => {
 		await postProcessBlock(flow, path, params, setPaths);
-		saveChatHistory(messages);
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
 		setTimeoutId(timeoutId);

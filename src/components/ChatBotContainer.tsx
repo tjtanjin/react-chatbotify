@@ -8,7 +8,7 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
-import { loadChatHistory, saveChatHistory } from "../services/ChatHistoryService";
+import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
 import { isDesktop } from "../services/Utils";
@@ -47,6 +47,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks if chat bot is streaming messages
 	const isBotStreamingRef = useRef<boolean>(false);
+
+	const historyMessages = useRef<string>("");
 
 	// checks if voice should be toggled back on after a user input
 	const keepVoiceOnRef = useRef<boolean>(false);
@@ -103,6 +105,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
 		setAudioToggledOn(botOptions.audio?.defaultToggledOn as boolean);
 		setVoiceToggledOn(botOptions.voice?.defaultToggledOn as boolean);
+		historyMessages.current = localStorage.getItem(botOptions.chatHistory?.storageKey as string) as string;
 		if (botOptions.chatHistory?.disabled) {
 			localStorage.removeItem(botOptions.chatHistory?.storageKey as string);
 		} else {
@@ -111,8 +114,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				const messageContent = {
 					content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory} />,
 					type: "object",
-					isUser: false,
-					timestamp: null,
+					sender: "system"
 				};
 				setMessages([messageContent]);
 			}
@@ -165,6 +167,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	useEffect(() => {
 		handleNotifications();
 	}, [messages]);
+
+	// triggers check for notifications
+	useEffect(() => {
+		saveChatHistory(messages, historyMessages.current);
+	}, [messages.length]);
+
+	// triggers update to chat history options
+	useEffect(() => {
+		setHistoryStorageValues(botOptions);
+	}, [botOptions.chatHistory?.storageKey, botOptions.chatHistory?.maxEntries, botOptions.chatHistory?.disabled]);
 
 	// resets unread count on opening chat and handles scrolling/resizing window on mobile devices
 	useEffect(() => {
@@ -234,7 +246,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param params parameters that may be used in the block
 	 */
 	const callNewBlock = async (currPath: string, params: Params) => {
-		await preProcessBlock(messages, flow, currPath, params, setTextAreaDisabled, setPaths,
+		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths,
 				setTimeoutId, handleActionInput);
 
 		// cleanup logic after preprocessing of a block
@@ -243,7 +255,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// cleanup logic after preprocessing of a block (affects only streaming messages)
 		isBotStreamingRef.current = false
-		saveChatHistory(messages);
 	}
 
 	/**
@@ -308,7 +319,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 		const message = messages[messages.length - 1]
-		if (message != null && !message?.isUser && (!botOptions.isOpen || document.visibilityState !== "visible")
+		if (message != null && message?.sender != "user" && (!botOptions.isOpen || document.visibilityState !== "visible")
 			&& !isBotTyping) {
 			setUnreadCount(prev => prev + 1);
 			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted && !isBotStreamingRef.current) {
@@ -335,10 +346,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Injects a message at the end of the messages array.
 	 * 
 	 * @param content message content to inject
-	 * @param isUser boolean indicating if the message comes from user
+	 * @param sender sender of the message
 	 */
-	const injectMessage = (content: string | JSX.Element, isUser = false) => {
-		const message = {content: content, type: typeof content, isUser: isUser, timestamp: new Date()};
+	const injectMessage = (content: string | JSX.Element, sender = "bot") => {
+		const message = {content: content, type: typeof content, sender: sender, timestamp: new Date()};
 		processAudio(botOptions, audioToggledOn, message);
 		setMessages((prevMessages) => [...prevMessages, message]);
 	}
@@ -347,10 +358,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 *  Streams data into the last message at the end of the messages array with given type.
 	 * 
 	 * @param content message content to inject
-	 * @param isUser boolean indicating if the message comes from user
+	* @param sender sender of the message
 	 */
-	const streamMessage = (content: string | JSX.Element, isUser = false) => {
-		const message = {content: content, type: typeof content, isUser: isUser, timestamp: new Date()};
+	const streamMessage = (content: string | JSX.Element, sender = "bot") => {
+		const message = {content: content, type: typeof content, sender: sender, timestamp: new Date()};
 		if (!isBotStreamingRef.current) {
 			setIsBotTyping(false);
 			setMessages(prevMessages => [...prevMessages, message]);
@@ -362,7 +373,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			const updatedMessages = [...prevMessages];
 
 			for (let i = updatedMessages.length - 1; i >= 0; i--) {
-				if (!updatedMessages[i].isUser && typeof updatedMessages[i].content == typeof content) {
+				if (updatedMessages[i].sender != "user" && typeof updatedMessages[i].content == typeof content) {
 				    updatedMessages[i] = message;
 				    break;
 				}
@@ -448,7 +459,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// Add user message to messages array
 		if (sendUserInput) {
-			injectMessage(userInput, true);
+			injectMessage(userInput, "user");
 		}
 
 		// Clear input field
@@ -471,7 +482,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), userInput, injectMessage, streamMessage, openChat};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
-			saveChatHistory(messages);
 			if (!hasNextPath) {
 				updateTextArea();
 				syncVoiceWithChatInput(keepVoiceOnRef.current, botOptions);

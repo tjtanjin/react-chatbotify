@@ -10,7 +10,7 @@ import { Block } from "../../types/Block";
  * @param handleActionInput handles action input from user 
  */
 export const processCheckboxes = (block: Block, path: string,
-	injectMessage: (content: string | JSX.Element, isUser?: boolean) => void,
+	injectMessage: (content: string | JSX.Element, sender?: string) => void,
 	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
 
 	const checkboxes = block.checkboxes;

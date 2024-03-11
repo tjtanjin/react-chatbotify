@@ -4,6 +4,7 @@
 export type Message = {
 	content: string | JSX.Element;
 	type: string;
-	isUser: boolean;
-	timestamp: Date | null;
+	sender: string;
+	isHistory?: boolean;
+	timestamp?: Date;
 }

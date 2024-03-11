@@ -46,7 +46,7 @@ const speak = (message: string, language: string, voiceNames: string[], rate: nu
  * @param message message to read out
  */
 export const processAudio = (botOptions: Options, voiceToggledOn: boolean, message: Message) => {
-	if (botOptions.audio?.disabled || message.isUser || typeof message.content !== "string"
+	if (botOptions.audio?.disabled || message.sender === "user" || typeof message.content !== "string"
 		|| (!botOptions?.isOpen && !botOptions.theme?.embedded) || !voiceToggledOn) {
 		return;
 	}

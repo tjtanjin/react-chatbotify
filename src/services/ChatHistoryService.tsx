@@ -7,48 +7,62 @@ import { Message } from "../types/Message";
 import { Options } from "../types/Options";
 
 // variables used to track history, updated when botOptions.chatHistory value changes
-let historyLoaded = false;
-let historyStorageKey = "rcb-history";
-let historyMaxEntries = 30;
-let historyDisabled = false;
+let historyLoaded: boolean = false;
+let historyStorageKey: string = "rcb-history";
+let historyMaxEntries: number = 30;
+let historyDisabled: boolean = false;
 
 /**
  * Updates the messages array with a new message appended at the end and saves chat history if enabled.
  * 
  * @param messages messages containing current conversation with the bot
  */
-const saveChatHistory = async (messages: Message[]) => {
+const saveChatHistory = async (messages: Message[], chatHistory: string) => {
 	if (historyDisabled) {
 		return;
 	}
+	
+	const historyMessages = getHistoryMessages(chatHistory);
+	let messagesToSave: Message[] = [];
+    const offset = historyLoaded ? historyMessages.length : 0;
 
-	let chatHistory = getChatHistory();
+	for (let i = messages.length - 1; i >= offset; i--) {
+        const message = messages[i];
 
-	// if history is already loaded into messages array, treat as empty as well
-	if (chatHistory == null || historyLoaded) {
-		chatHistory = [];
-	}
+        if (message.sender === "system") {
+            break;
+        } else {
+			messagesToSave.unshift(message);
+		}
 
-	messages = [...chatHistory, ...messages];
+        if (messagesToSave.length === historyMaxEntries) {
+            break;
+        }
+    }
 
-	const messagesToSave = messages.slice(-historyMaxEntries);
-	const parsedMessages = messagesToSave.map(parseMessageToString);
+	let parsedMessages = messagesToSave.map(parseMessageToString);
+    if (parsedMessages.length < historyMaxEntries) {
+        const difference = historyMaxEntries - parsedMessages.length;
+        parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
+    }
+
 	localStorage.setItem(historyStorageKey, JSON.stringify(parsedMessages));
 }
 
 /**
  * Retrieves chat history.
+ * 
+ * @param historyStorageKey key used to identify chat history stored in local storage
  */
-const getChatHistory = () => {
-	const chatHistory = localStorage.getItem(historyStorageKey);
+const getHistoryMessages = (chatHistory: string) => {
 	if (chatHistory != null) {
 		try {
 			return JSON.parse(chatHistory);
 		} catch {
-			return null;
+			return [];
 		}
 	}
-	return null;
+	return [];
 }
 
 /**
@@ -57,9 +71,9 @@ const getChatHistory = () => {
  * @param botOptions options provided to the bot
  */
 const setHistoryStorageValues = (botOptions: Options) => {
-	historyStorageKey = botOptions.chatHistory?.storageKey as string;
-	historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
-	historyDisabled = botOptions.chatHistory?.disabled as boolean;
+    historyStorageKey = botOptions.chatHistory?.storageKey as string;
+    historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
+    historyDisabled = botOptions.chatHistory?.disabled as boolean;
 }
 
 /**
@@ -72,7 +86,7 @@ const parseMessageToString = (message: Message) => {
 		const clonedMessage = structuredClone({
 			content: ReactDOMServer.renderToString(message.content),
 			type: message.type,
-			isUser: message.isUser,
+			sender: message.sender,
 			timestamp: message.timestamp
 		});
 		return clonedMessage;
@@ -101,9 +115,7 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 				const loaderMessage = {
 					content: <LoadingSpinner/>,
 					type: "object",
-					isUser: false,
-					isHistory: true,
-					timestamp: null
+					sender: "system"
 				}
 				prevMessages.shift();
 				return [loaderMessage, ...prevMessages];
@@ -112,9 +124,9 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 			const parsedMessages = JSON.parse(chatHistory).map((message: Message) => {
 				if (message.type === "object") {
 					const element = renderHTML(message.content as string, botOptions);
-					return { ...message, content: element };
+					return { ...message, content: element, isHistory: true };
 				}
-				return message;
+				return { ...message, isHistory: true };
 			});
 
 			setTimeout(() => {
@@ -123,7 +135,7 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 					const lineBreakMessage = {
 						content: <ChatHistoryLineBreak/>,
 						type: "object",
-						isUser: false
+						sender: "system"
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
