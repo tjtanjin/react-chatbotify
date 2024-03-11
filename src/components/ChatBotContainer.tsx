@@ -16,6 +16,7 @@ import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
 import { Flow } from "../types/Flow";
+import { Message } from "../types/Message";
 import { Params } from "../types/Params";
 
 import "./ChatBotContainer.css";
@@ -163,14 +164,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 	}, [])
 
-	// triggers check for notifications
-	useEffect(() => {
-		handleNotifications();
-	}, [messages]);
-
-	// triggers check for notifications
+	// triggers check for notifications and saving of chat history
 	useEffect(() => {
 		saveChatHistory(messages, historyMessages.current);
+		handleNotifications();
 	}, [messages.length]);
 
 	// triggers update to chat history options
@@ -235,7 +232,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
-		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current, injectMessage, streamMessage, openChat};
+		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current,
+			injectMessage, streamMessage, openChat};
 		callNewBlock(currPath, params);
 	}, [paths]);
 
@@ -247,7 +245,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const callNewBlock = async (currPath: string, params: Params) => {
 		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths,
-				setTimeoutId, handleActionInput);
+			setTimeoutId, handleActionInput);
 
 		// cleanup logic after preprocessing of a block
 		setIsBotTyping(false);
@@ -319,10 +317,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 		const message = messages[messages.length - 1]
-		if (message != null && message?.sender != "user" && (!botOptions.isOpen || document.visibilityState !== "visible")
-			&& !isBotTyping) {
+		if (message != null && message?.sender !== "user" && !isBotTyping
+			&& (!botOptions.isOpen || document.visibilityState !== "visible")) {
 			setUnreadCount(prev => prev + 1);
-			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted && !isBotStreamingRef.current) {
+			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
 				notificationAudio.current?.play();
 			}
 		}
@@ -348,11 +346,67 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param content message content to inject
 	 * @param sender sender of the message
 	 */
-	const injectMessage = (content: string | JSX.Element, sender = "bot") => {
+	const injectMessage = async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, type: typeof content, sender: sender, timestamp: new Date()};
 		processAudio(botOptions, audioToggledOn, message);
-		setMessages((prevMessages) => [...prevMessages, message]);
+
+		const isStream = typeof message.content === "string"
+			&& message.sender === "bot" && botOptions?.botBubble?.simStream;
+
+		if (isStream) {
+			await simulateStream(message, botOptions.botBubble?.streamSpeed as number)
+		} else {
+			setMessages((prevMessages) => [...prevMessages, message]);
+		}
 	}
+
+	const simulateStream = async (message: Message, streamSpeed: number) => {
+		// when simulating stream, disable text area and stop bot typing
+		setTextAreaDisabled(true);
+		setIsBotTyping(false);
+
+		// set an initial empty message to be used for streaming
+		setMessages(prevMessages => [...prevMessages, message]);
+
+		// initialize default message to empty with stream index position 0
+		let streamIndex = 0;
+		const streamMessage = message.content as string;
+		message.content = "";
+
+		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
+			const intervalId = setInterval(() => {
+				setMessages((prevMessages) => {
+					const updatedMessages = [...prevMessages];
+		
+					for (let i = updatedMessages.length - 1; i >= 0; i--) {
+						if (updatedMessages[i].sender === "bot" && typeof updatedMessages[i].content === "string") {
+							message.content = streamMessage.slice(0, streamIndex + 1);
+							updatedMessages[i] = message;
+							break;
+						}
+					}
+
+					// for simulated streaming, manually trigger save chat history of streamed message at the end
+					if (streamIndex === streamMessage.length - 1) {
+						saveChatHistory(updatedMessages, historyMessages.current);
+					}
+				
+					return updatedMessages;
+				});
+
+				streamIndex++;
+
+				// when streaming is done, remove task, unlock text area, and resolve the promise
+				if (streamIndex === streamMessage.length) {
+					clearInterval(intervalId);
+					setTextAreaDisabled(false);
+					resolve();
+				}
+			}, streamSpeed);
+		});
+
+		await simStreamDoneTask;
+	};
 
 	/**
 	 *  Streams data into the last message at the end of the messages array with given type.
@@ -360,8 +414,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param content message content to inject
 	* @param sender sender of the message
 	 */
-	const streamMessage = (content: string | JSX.Element, sender = "bot") => {
+	const streamMessage = async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, type: typeof content, sender: sender, timestamp: new Date()};
+
+		// if has no stream yet, add an initial message and set streaming to true
 		if (!isBotStreamingRef.current) {
 			setIsBotTyping(false);
 			setMessages(prevMessages => [...prevMessages, message]);
@@ -373,9 +429,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			const updatedMessages = [...prevMessages];
 
 			for (let i = updatedMessages.length - 1; i >= 0; i--) {
-				if (updatedMessages[i].sender != "user" && typeof updatedMessages[i].content == typeof content) {
-				    updatedMessages[i] = message;
-				    break;
+				if (updatedMessages[i].sender === sender && typeof updatedMessages[i].content === typeof content) {
+					updatedMessages[i] = message;
+					break;
 				}
 			}
 		

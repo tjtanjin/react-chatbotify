@@ -30,8 +30,8 @@ const FileAttachmentButton = ({
 }: {
 	inputRef: RefObject<HTMLTextAreaElement>;
 	flow: Flow;
-	injectMessage: (content: string | JSX.Element, sender?: string) => void;
-	streamMessage: (content: string | JSX.Element, sender?: string) => void;
+	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => string | null;
 	getPrevPath: () => string | null;

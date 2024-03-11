@@ -5,6 +5,5 @@ export type Message = {
 	content: string | JSX.Element;
 	type: string;
 	sender: string;
-	isHistory?: boolean;
 	timestamp?: Date;
 }

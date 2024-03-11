@@ -23,9 +23,9 @@ export const processRender = async (block: Block, params: Params) => {
 		if (content == null) {
 			return;
 		}
-		params.injectMessage(content);
+		await params.injectMessage(content);
 		return;
 	}
 
-	params.injectMessage(element);
+	await params.injectMessage(element);
 }

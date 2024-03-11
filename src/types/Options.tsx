@@ -74,6 +74,8 @@ export type Options = {
 	botBubble?: {
 		showAvatar?: boolean;
 		avatar?: string;
+		simStream?: boolean,
+		streamSpeed? :number,
 	},
 	voice?: {
 		disabled?: boolean;

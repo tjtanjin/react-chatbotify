@@ -4,8 +4,8 @@
 export type Params = {
 	userInput: string,
 	prevPath: string | null
-	injectMessage: (content: string | JSX.Element, sender?: string) => void;
-	streamMessage: (content: string | JSX.Element, sender?: string) => void;
+	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
 	files?: FileList;
 }

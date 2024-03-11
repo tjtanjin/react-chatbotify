@@ -37,7 +37,7 @@ export const processTransition = async (flow: Flow, path: string, params: Params
 	}
 
 	// cannot transition if duration is invalid
-	if (transitionDetails.duration == null || typeof transitionDetails.duration != "number") {
+	if (transitionDetails.duration == null || typeof transitionDetails.duration !== "number") {
 		return;
 	}
 

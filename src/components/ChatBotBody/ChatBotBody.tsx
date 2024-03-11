@@ -69,7 +69,7 @@ const ChatBotBody = ({
 		if (chatBodyRef.current != null) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
-	}, [messages, isBotTyping]);
+	}, [messages.length, isBotTyping]);
 
 	/**
 	 * Updates scroll height within the chat body.
@@ -143,7 +143,10 @@ const ChatBotBody = ({
 				return (
 					<div 
 						key={index} 
-						className={message.sender === "user" ? "rcb-user-message-container" : "rcb-bot-message-container"}
+						className={message.sender === "user"
+							? "rcb-user-message-container"
+							: "rcb-bot-message-container"
+						}
 					>
 						{message.sender === "user" ? renderUserMessage(message) : renderBotMessage(message)}
 					</div>

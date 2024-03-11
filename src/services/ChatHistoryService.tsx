@@ -7,10 +7,10 @@ import { Message } from "../types/Message";
 import { Options } from "../types/Options";
 
 // variables used to track history, updated when botOptions.chatHistory value changes
-let historyLoaded: boolean = false;
-let historyStorageKey: string = "rcb-history";
-let historyMaxEntries: number = 30;
-let historyDisabled: boolean = false;
+let historyLoaded = false;
+let historyStorageKey = "rcb-history";
+let historyMaxEntries = 30;
+let historyDisabled = false;
 
 /**
  * Updates the messages array with a new message appended at the end and saves chat history if enabled.
@@ -23,28 +23,28 @@ const saveChatHistory = async (messages: Message[], chatHistory: string) => {
 	}
 	
 	const historyMessages = getHistoryMessages(chatHistory);
-	let messagesToSave: Message[] = [];
-    const offset = historyLoaded ? historyMessages.length : 0;
+	const messagesToSave: Message[] = [];
+	const offset = historyLoaded ? historyMessages.length : 0;
 
 	for (let i = messages.length - 1; i >= offset; i--) {
-        const message = messages[i];
+		const message = messages[i];
 
-        if (message.sender === "system") {
-            break;
-        } else {
+		if (message.sender === "system") {
+			break;
+		} else {
 			messagesToSave.unshift(message);
 		}
 
-        if (messagesToSave.length === historyMaxEntries) {
-            break;
-        }
-    }
+		if (messagesToSave.length === historyMaxEntries) {
+			break;
+		}
+	}
 
 	let parsedMessages = messagesToSave.map(parseMessageToString);
-    if (parsedMessages.length < historyMaxEntries) {
-        const difference = historyMaxEntries - parsedMessages.length;
-        parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
-    }
+	if (parsedMessages.length < historyMaxEntries) {
+		const difference = historyMaxEntries - parsedMessages.length;
+		parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
+	}
 
 	localStorage.setItem(historyStorageKey, JSON.stringify(parsedMessages));
 }
@@ -71,9 +71,9 @@ const getHistoryMessages = (chatHistory: string) => {
  * @param botOptions options provided to the bot
  */
 const setHistoryStorageValues = (botOptions: Options) => {
-    historyStorageKey = botOptions.chatHistory?.storageKey as string;
-    historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
-    historyDisabled = botOptions.chatHistory?.disabled as boolean;
+	historyStorageKey = botOptions.chatHistory?.storageKey as string;
+	historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
+	historyDisabled = botOptions.chatHistory?.disabled as boolean;
 }
 
 /**
@@ -124,9 +124,9 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 			const parsedMessages = JSON.parse(chatHistory).map((message: Message) => {
 				if (message.type === "object") {
 					const element = renderHTML(message.content as string, botOptions);
-					return { ...message, content: element, isHistory: true };
+					return { ...message, content: element };
 				}
-				return { ...message, isHistory: true };
+				return message;
 			});
 
 			setTimeout(() => {

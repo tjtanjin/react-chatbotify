@@ -16,7 +16,7 @@ export const processMessage = async (block: Block, params: Params) => {
 	
 	if (typeof replyMessage === "string") {
 		if (replyMessage.trim() !== "") {
-			params.injectMessage(replyMessage);
+			await params.injectMessage(replyMessage);
 		}
 		return;
 	}
@@ -31,6 +31,6 @@ export const processMessage = async (block: Block, params: Params) => {
 	}
 
 	if (parsedMessage.trim() !== "") {
-		params.injectMessage(parsedMessage);
+		await params.injectMessage(parsedMessage);
 	}
 }

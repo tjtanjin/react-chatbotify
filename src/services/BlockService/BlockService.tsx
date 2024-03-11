@@ -8,7 +8,6 @@ import { processOptions } from "./OptionProcessor";
 import { processPath } from "./PathProcessor";
 import { processRender } from "./RenderProcessor";
 import { processTransition } from "./TransitionProcessor";
-import { Message } from "../../types/Message";
 import { Params } from "../../types/Params";
 
 /**

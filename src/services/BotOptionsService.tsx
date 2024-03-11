@@ -95,6 +95,8 @@ const defaultOptions = {
 	botBubble: {
 		showAvatar: false,
 		avatar: botAvatar,
+		simStream: false,
+		streamSpeed: 30,
 	},
 	voice: {
 		disabled: true,
