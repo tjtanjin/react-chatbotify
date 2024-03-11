@@ -85,14 +85,13 @@ const parseMessageToString = (message: Message) => {
 	if (isValidElement(message.content)) {
 		const clonedMessage = structuredClone({
 			content: ReactDOMServer.renderToString(message.content),
-			type: message.type,
+			type: "object",
 			sender: message.sender,
-			timestamp: message.timestamp
 		});
 		return clonedMessage;
 	}
 
-	return message;
+	return {...message, type: "string"}
 }
 
 /**
@@ -114,7 +113,6 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 			setMessages((prevMessages) => {
 				const loaderMessage = {
 					content: <LoadingSpinner/>,
-					type: "object",
 					sender: "system"
 				}
 				prevMessages.shift();
@@ -134,7 +132,6 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 					prevMessages.shift();
 					const lineBreakMessage = {
 						content: <ChatHistoryLineBreak/>,
-						type: "object",
 						sender: "system"
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];

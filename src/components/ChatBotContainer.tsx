@@ -114,7 +114,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			if (chatHistory != null) {
 				const messageContent = {
 					content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory} />,
-					type: "object",
 					sender: "system"
 				};
 				setMessages([messageContent]);
@@ -347,7 +346,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param sender sender of the message
 	 */
 	const injectMessage = async (content: string | JSX.Element, sender = "bot") => {
-		const message = {content: content, type: typeof content, sender: sender, timestamp: new Date()};
+		const message = {content: content, sender: sender};
 		processAudio(botOptions, audioToggledOn, message);
 
 		const isStream = typeof message.content === "string"
@@ -415,7 +414,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	* @param sender sender of the message
 	 */
 	const streamMessage = async (content: string | JSX.Element, sender = "bot") => {
-		const message = {content: content, type: typeof content, sender: sender, timestamp: new Date()};
+		const message = {content: content, sender: sender};
 
 		// if has no stream yet, add an initial message and set streaming to true
 		if (!isBotStreamingRef.current) {

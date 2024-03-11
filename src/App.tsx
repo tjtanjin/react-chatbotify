@@ -11,38 +11,9 @@ function App() {
 			path: "ask_age_group",
 		},
 		ask_age_group: {
-			message: async (params: Params) => {
-				let currentIndex = 0;
-				const streamedMessage = "Hi there, the use of params.streamMessage allows you to stream your responses. I am such an example message!";
-				
-				const startStream = () => {
-					return new Promise((resolve) => {
-					  // Start simulating the stream
-					  simulateStream(resolve);
-					});
-				};
-
-				const simulateStream = (resolve: any) => {
-					const fakeEvent = {
-					  data: streamedMessage.slice(0, currentIndex + 1),
-					};
-					params.streamMessage(fakeEvent.data);
-					currentIndex++;
-				  
-					// Stop the simulation after 5 messages (for testing purposes)
-					if (currentIndex < streamedMessage.length) {
-					  setTimeout(() => simulateStream(resolve), 30);
-					} else {
-					  // Resolve the promise when the simulation is complete
-					  resolve();
-					}
-				};
-
-				await startStream();
-				console.log("I AM DONE")
-			},
+			message: (params: Params) => `Hey ${params.userInput}! Nice to meet you, what is your age group?`,
 			options: ["child", "teen", "adult"],
-			chatDisabled: false,
+			chatDisabled: true,
 			path: () => "ask_math_question",
 		},
 		ask_math_question: {
