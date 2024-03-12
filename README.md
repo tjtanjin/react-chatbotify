@@ -38,7 +38,8 @@ React ChatBotify offers a wide array of features designed to enhance your chatbo
 
 - **Dynamic Attributes:** Create interactive conversations by dynamically generating messages and defining multiple conversation paths based on user inputs.
 - **Custom Rendering of Components:** Seamlessly integrate your own custom components into the chatbot interface to boast your application's unique design and functionality.
-- **Timeouts and Auto-Transitions:** Set timeouts and automate transitions between chatbot paths, allowing for a smooth user experience.
+- **Stream Responses:** Integrate with LLM models and custom endpoints to stream (or even simulate) your bot responses for an elevated user experience.
+- **Timeouts and Auto-Transitions:** Set timeouts and automate transitions between chatbot paths, providing users with a guided flow and journey.
 - **Voice Input & Audio Output:** Enable voice input for users to interact with the chatbot through speech, and leverage audio output capabilities to provide spoken responses or prompts.
 - **Chat Notifications:** Keep users informed with real-time chat notifications, ensuring they never miss important updates or new messages.
 - **Checkbox & Options Support:** Utilize checkboxes and options within the chatbot interface, allowing users to select from a list of choices and easily make selections.
