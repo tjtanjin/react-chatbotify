@@ -4,7 +4,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/tjtanjin/react-chatbotify/actions"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build_and_test.yml/badge.svg" /> </a>
+  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml/badge.svg" /> </a>
+  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml/badge.svg" /> </a>
+  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/test.yml/badge.svg" /> </a>
+  <img src="https://badge.fury.io/js/react-chatbotify.svg" />
 </p>
 
 ## Table of Contents
