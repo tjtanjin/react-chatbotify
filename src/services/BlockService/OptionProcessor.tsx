@@ -13,7 +13,7 @@ import { Block } from "../../types/Block";
  */
 export const processOptions = (block: Block, path: string,
 	injectMessage: (content: string | JSX.Element, sender?: string) => void,
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
+	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const options = block.options;
 	if (options == null) {

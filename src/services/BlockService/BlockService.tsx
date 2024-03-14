@@ -24,7 +24,7 @@ import { Params } from "../../types/Params";
 export const preProcessBlock = async (flow: Flow, path: string, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
+	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const block = flow[path];
 	const attributes = Object.keys(block);

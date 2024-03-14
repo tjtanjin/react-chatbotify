@@ -23,7 +23,7 @@ const UserCheckboxes = ({
 	checkboxes: {items: Array<string>, max?: number, min?: number};
 	checkedItems: Set<string>;
 	path: string;
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void;
+	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot
@@ -71,7 +71,8 @@ const UserCheckboxes = ({
 		...botOptions.botCheckMarkSelectedStyle
 	};
 
-	// disables checkboxes when moving on from current path
+	// when moving on from current path, we also want to disable checkboxes
+	// cannot just rely on user input since path can change even without it (e.g. transition)
 	useEffect(() => {
 		if (paths.length > 0 && paths[paths.length - 1] !== path) {
 			setDisabled(true);
@@ -131,6 +132,7 @@ const UserCheckboxes = ({
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					const userInput = Array.from(checkedItems).join(", ");
+					setDisabled(true);
 					handleActionInput(path, userInput, botOptions.chatInput?.sendCheckboxOutput as boolean);
 				}}
 			>

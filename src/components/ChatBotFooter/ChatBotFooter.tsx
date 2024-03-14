@@ -40,7 +40,7 @@ const ChatBotFooter = ({
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => string | null;
 	getPrevPath: () => string | null;
-	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => void;
+	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot

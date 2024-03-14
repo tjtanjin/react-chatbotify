@@ -70,6 +70,8 @@ export type Options = {
 	userBubble?: {
 		showAvatar?: boolean;
 		avatar?: string;
+		simStream?: boolean,
+		streamSpeed? :number,
 	},
 	botBubble?: {
 		showAvatar?: boolean;

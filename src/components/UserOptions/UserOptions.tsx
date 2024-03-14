@@ -20,7 +20,7 @@ const UserOptions= ({
 }: {
 	options: string[];
 	path: string;
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void;
+	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot
@@ -52,7 +52,8 @@ const UserOptions= ({
 		...botOptions.botOptionHoveredStyle
 	};
 
-	// disables options when moving on from current path
+	// when moving on from current path, we also want to disable options
+	// cannot just rely on user input since path can change even without it (e.g. transition)
 	useEffect(() => {
 		if (paths.length > 0 && paths[paths.length - 1] !== path) {
 			setDisabled(true);
@@ -99,6 +100,7 @@ const UserOptions= ({
 								return;
 							}
 
+							setDisabled(true);
 							handleActionInput(path, key, botOptions.chatInput?.sendOptionOutput as boolean);
 						}}
 					>

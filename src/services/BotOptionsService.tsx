@@ -91,6 +91,8 @@ const defaultOptions = {
 	userBubble: {
 		showAvatar: false,
 		avatar: userAvatar,
+		simStream: false,
+		streamSpeed: 30,
 	},
 	botBubble: {
 		showAvatar: false,

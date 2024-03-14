@@ -31,7 +31,7 @@ const ChatBotInput = ({
 	voiceToggledOn: boolean;
 	getCurrPath: () => string | null;
 	handleToggleVoice: () => void;
-	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => void;
+	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot

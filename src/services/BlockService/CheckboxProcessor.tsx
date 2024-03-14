@@ -11,7 +11,7 @@ import { Block } from "../../types/Block";
  */
 export const processCheckboxes = (block: Block, path: string,
 	injectMessage: (content: string | JSX.Element, sender?: string) => void,
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => void) => {
+	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const checkboxes = block.checkboxes;
 	if (checkboxes == null) {

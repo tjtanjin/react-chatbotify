@@ -35,7 +35,7 @@ const FileAttachmentButton = ({
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => string | null;
 	getPrevPath: () => string | null;
-	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => void;
+	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot
@@ -84,7 +84,7 @@ const FileAttachmentButton = ({
 			for (let i = 0; i < files.length; i++) {
 				fileNames.push(files[i].name);
 			}
-			handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
+			await handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
 				injectMessage, streamMessage, openChat, files});
 		}

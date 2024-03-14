@@ -343,25 +343,28 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Injects a message at the end of the messages array.
 	 * 
 	 * @param content message content to inject
-	 * @param sender sender of the message
+	 * @param sender sender of the message, defaults to bot
 	 */
 	const injectMessage = async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, sender: sender};
 		processAudio(botOptions, audioToggledOn, message);
 
-		const isStream = typeof message.content === "string"
+		const isBotStream = typeof message.content === "string"
 			&& message.sender === "bot" && botOptions?.botBubble?.simStream;
+		const isUserStream = typeof message.content === "string"
+			&& message.sender === "user" && botOptions?.userBubble?.simStream;
 
-		if (isStream) {
-			await simulateStream(message, botOptions.botBubble?.streamSpeed as number)
+		if (isBotStream) {
+			await simulateStream(message, botOptions.botBubble?.streamSpeed as number, "bot");
+		} else if (isUserStream) {
+			await simulateStream(message, botOptions.userBubble?.streamSpeed as number, "user");
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
 	}
 
-	const simulateStream = async (message: Message, streamSpeed: number) => {
+	const simulateStream = async (message: Message, streamSpeed: number, sender: string) => {
 		// when simulating stream, disable text area and stop bot typing
-		setTextAreaDisabled(true);
 		setIsBotTyping(false);
 
 		// set an initial empty message to be used for streaming
@@ -378,7 +381,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					const updatedMessages = [...prevMessages];
 		
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
-						if (updatedMessages[i].sender === "bot" && typeof updatedMessages[i].content === "string") {
+						if (updatedMessages[i].sender === sender && typeof updatedMessages[i].content === "string") {
 							message.content = streamMessage.slice(0, streamIndex + 1);
 							updatedMessages[i] = message;
 							break;
@@ -398,7 +401,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				// when streaming is done, remove task, unlock text area, and resolve the promise
 				if (streamIndex === streamMessage.length) {
 					clearInterval(intervalId);
-					setTextAreaDisabled(false);
 					resolve();
 				}
 			}, streamSpeed);
@@ -411,7 +413,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 *  Streams data into the last message at the end of the messages array with given type.
 	 * 
 	 * @param content message content to inject
-	* @param sender sender of the message
+	* @param sender sender of the message, defaults to bot
 	 */
 	const streamMessage = async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, sender: sender};
@@ -503,7 +505,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param userInput input provided by the user
 	 * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
 	 */
-	const handleActionInput = (path: string, userInput: string, sendUserInput = true) => {
+	const handleActionInput = async (path: string, userInput: string, sendUserInput = true) => {
 		clearTimeout(timeoutId);
 		userInput = userInput.trim();
 		paramsInputRef.current = userInput;
@@ -514,7 +516,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// Add user message to messages array
 		if (sendUserInput) {
-			injectMessage(userInput, "user");
+			await injectMessage(userInput, "user");
 		}
 
 		// Clear input field
