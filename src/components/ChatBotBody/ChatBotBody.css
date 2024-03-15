@@ -52,6 +52,7 @@
 	flex-direction: row;
 	width: fit-content;
 	font-size: 15px;
+ 	overflow-wrap: anywhere;
 	overflow: hidden;
 }
 
