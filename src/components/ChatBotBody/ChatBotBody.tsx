@@ -1,4 +1,4 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, useRef, CSSProperties, MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { useMessages } from "../../context/MessagesContext";
@@ -14,19 +14,22 @@ import "./ChatBotBody.css";
  * @param isLoadingChatHistory boolean indicating is chat history is being loaded
  * @param prevScrollHeight number representing previously scrolled height
  * @param setPrevScrollHeight setter for tracking scroll height
+ * @param setIsLoadingChatHistory setter for tracking whether is loading history
  */
 const ChatBotBody = ({
 	chatBodyRef,
 	isBotTyping,
 	isLoadingChatHistory,
 	prevScrollHeight,
-	setPrevScrollHeight
+	setPrevScrollHeight,
+	setIsLoadingChatHistory,
 }: {
 	chatBodyRef: RefObject<HTMLDivElement>;
 	isBotTyping: boolean;
 	isLoadingChatHistory: boolean;
 	prevScrollHeight: number;
 	setPrevScrollHeight: Dispatch<SetStateAction<number>>;
+	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>;
 }) => {
 
 	// handles options for bot
@@ -34,6 +37,9 @@ const ChatBotBody = ({
 
 	// handles messages between user and the chat bot
 	const { messages } = useMessages();
+
+	// track if is scrolling body
+	const isScrollingBody = useRef<boolean>(false);
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
@@ -63,20 +69,23 @@ const ChatBotBody = ({
 			const scrollDifference = scrollHeight - prevScrollHeight;
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
 			setPrevScrollHeight(scrollHeight);
+			setIsLoadingChatHistory(false);
 			return;
 		}
 
-		if (chatBodyRef.current != null) {
+		if (chatBodyRef.current != null && !isScrollingBody.current) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
-	}, [messages.length, isBotTyping]);
+	}, [chatBodyRef.current?.scrollHeight, messages.length, isBotTyping]);
 
 	/**
 	 * Updates scroll height within the chat body.
 	 */
 	const updateScrollHeight = () => {
 		if (chatBodyRef?.current != null) {
-			setPrevScrollHeight(chatBodyRef.current.scrollHeight);
+			const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
+			setPrevScrollHeight(scrollHeight);
+			isScrollingBody.current = (scrollHeight - scrollTop !== clientHeight)
 		}
 	};
 

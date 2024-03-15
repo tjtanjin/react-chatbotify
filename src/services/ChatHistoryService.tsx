@@ -136,7 +136,6 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setIsLoadingChatHistory(false);
 				setTextAreaDisabled(botOptions.chatInput?.disabled || false);
 			}, 500)
 		} catch {

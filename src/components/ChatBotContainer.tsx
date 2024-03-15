@@ -519,6 +519,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			await injectMessage(userInput, "user");
 		}
 
+		if (chatBodyRef.current != null) {
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+		}
+
 		// Clear input field
 		if (inputRef.current) {
 			inputRef.current.value = "";
@@ -637,8 +641,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					/>
 				}
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
-					isLoadingChatHistory={isLoadingChatHistory}
-					prevScrollHeight={prevScrollHeight}	setPrevScrollHeight={setPrevScrollHeight}
+					isLoadingChatHistory={isLoadingChatHistory} prevScrollHeight={prevScrollHeight}
+					setPrevScrollHeight={setPrevScrollHeight} setIsLoadingChatHistory={setIsLoadingChatHistory}
 				/>
 				{botOptions.theme?.showInputRow &&
 					<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
