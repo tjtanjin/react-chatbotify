@@ -5,10 +5,7 @@
 	width: 100%;
 	padding-bottom: 16px;
 	overflow-x: hidden;
-}
-
-.rcb-chat-body-container::-webkit-scrollbar {
-	width: 8px;
+	overflow-y: scroll
 }
 
 .rcb-chat-body-container::-webkit-scrollbar-track {

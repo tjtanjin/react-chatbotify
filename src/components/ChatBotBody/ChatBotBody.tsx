@@ -43,7 +43,8 @@ const ChatBotBody = ({
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
-		...botOptions?.bodyStyle
+		...botOptions?.bodyStyle,
+		scrollbarWidth: botOptions.theme?.showScrollbar ? "auto" : "none",
 	}
 
 	// styles for user bubble

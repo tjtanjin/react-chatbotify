@@ -29,6 +29,7 @@ const defaultOptions = {
 		showHeader: true,
 		showFooter: true,
 		showInputRow: true,
+		showScrollbar: false,
 		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
 		desktopEnabled: true,
