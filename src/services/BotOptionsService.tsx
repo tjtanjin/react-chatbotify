@@ -29,7 +29,6 @@ const defaultOptions = {
 		showHeader: true,
 		showFooter: true,
 		showInputRow: true,
-		showScrollbar: false,
 		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
 		desktopEnabled: true,
@@ -88,6 +87,13 @@ const defaultOptions = {
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
 		sendAttachmentOutput: true,
+	},
+	chatWindow: {
+		showScrollbar: false,
+		autoJumpToBottom: false,
+		showMessagePrompt: true,
+		messagePromptText: "New Messages ↓",
+		messagePromptOffset: 30,
 	},
 	userBubble: {
 		showAvatar: false,

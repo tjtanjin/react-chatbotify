@@ -12,7 +12,7 @@ export type Options = {
 		fontFamily?: string;
 		showHeader?: boolean;
 		showFooter?: boolean;
-		showInputRow?: boolean,
+		showInputRow?: boolean;
 		actionDisabledIcon?: string;
 		embedded?: boolean;
 		desktopEnabled?: boolean;
@@ -26,8 +26,8 @@ export type Options = {
 		icon: string;
 	},
 	header?: {
-		title?: string | JSX.Element,
-		showAvatar: boolean,
+		title?: string | JSX.Element;
+		showAvatar: boolean;
 		avatar?: string;
 		closeChatIcon?: string;
 	},
@@ -58,8 +58,8 @@ export type Options = {
 		disabled?: boolean;
 		enabledPlaceholderText?: string;
 		disabledPlaceholderText?: string;
-		showCharacterCount?: boolean,
-		characterLimit?: number,
+		showCharacterCount?: boolean;
+		characterLimit?: number;
 		botDelay?: number;
 		sendButtonIcon?: string;
 		blockSpam?: boolean;
@@ -67,17 +67,24 @@ export type Options = {
 		sendCheckboxOutput?: boolean;
 		sendAttachmentOutput?: boolean;
 	},
+	chatWindow?: {
+		showScrollbar?: boolean;
+		autoJumpToBottom?: boolean;
+		showMessagePrompt?: boolean;
+		messagePromptText?: string;
+		messagePromptOffset?: number;
+	},
 	userBubble?: {
 		showAvatar?: boolean;
 		avatar?: string;
-		simStream?: boolean,
-		streamSpeed? :number,
+		simStream?: boolean;
+		streamSpeed? :number;
 	},
 	botBubble?: {
 		showAvatar?: boolean;
 		avatar?: string;
-		simStream?: boolean,
-		streamSpeed? :number,
+		simStream?: boolean;
+		streamSpeed? :number;
 	},
 	voice?: {
 		disabled?: boolean;
@@ -175,6 +182,12 @@ export type Options = {
 		[key: string]: string | number;
 	},
 	chatHistoryLineBreakStyle?: {
+		[key: string]: string | number;
+	},
+	chatMessagePromptStyle?: {
+		[key: string]: string | number;
+	},
+	chatMessagePromptHoveredStyle?: {
 		[key: string]: string | number;
 	},
 	footerStyle?: {

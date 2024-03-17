@@ -1,5 +1,6 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, useRef, CSSProperties, MouseEvent } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, useState, CSSProperties, MouseEvent } from "react";
 
+import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import { useBotOptions } from "../../context/BotOptionsContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
@@ -12,24 +13,36 @@ import "./ChatBotBody.css";
  * @param chatBodyRef reference to the chat body
  * @param isBotTyping boolean indicating if bot is typing
  * @param isLoadingChatHistory boolean indicating is chat history is being loaded
- * @param prevScrollHeight number representing previously scrolled height
- * @param setPrevScrollHeight setter for tracking scroll height
+ * @param chatScrollHeight number representing chat window scroll height
+ * @param setChatScrollHeight setter for tracking chat window scroll height
  * @param setIsLoadingChatHistory setter for tracking whether is loading history
+ * @param isScrolling boolean representing whether user is scrolling chat
+ * @param setIsScrolling setter for tracking if user is scrolling
+ * @param unreadCount number representing unread messages count
+ * @param setUnreadCount setter for unread messages count
  */
 const ChatBotBody = ({
 	chatBodyRef,
 	isBotTyping,
 	isLoadingChatHistory,
-	prevScrollHeight,
-	setPrevScrollHeight,
+	chatScrollHeight,
+	setChatScrollHeight,
 	setIsLoadingChatHistory,
+	isScrolling: isScrolling,
+	setIsScrolling,
+	unreadCount,
+	setUnreadCount,
 }: {
 	chatBodyRef: RefObject<HTMLDivElement>;
 	isBotTyping: boolean;
 	isLoadingChatHistory: boolean;
-	prevScrollHeight: number;
-	setPrevScrollHeight: Dispatch<SetStateAction<number>>;
+	chatScrollHeight: number;
+	setChatScrollHeight: Dispatch<SetStateAction<number>>;
 	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>;
+	isScrolling: boolean;
+	setIsScrolling: Dispatch<SetStateAction<boolean>>;
+	unreadCount: number;
+	setUnreadCount: Dispatch<SetStateAction<number>>;
 }) => {
 
 	// handles options for bot
@@ -38,13 +51,10 @@ const ChatBotBody = ({
 	// handles messages between user and the chat bot
 	const { messages } = useMessages();
 
-	// track if is scrolling body
-	const isScrollingBody = useRef<boolean>(false);
-
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
 		...botOptions?.bodyStyle,
-		scrollbarWidth: botOptions.theme?.showScrollbar ? "auto" : "none",
+		scrollbarWidth: botOptions.chatWindow?.showScrollbar ? "auto" : "none",
 	}
 
 	// styles for user bubble
@@ -65,29 +75,56 @@ const ChatBotBody = ({
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
-		if (isLoadingChatHistory && chatBodyRef.current != null) {
+		if (!chatBodyRef.current) {
+			return;
+		}
+
+		if (isLoadingChatHistory) {
 			const { scrollHeight } = chatBodyRef.current;
-			const scrollDifference = scrollHeight - prevScrollHeight;
+			const scrollDifference = scrollHeight - chatScrollHeight;
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
-			setPrevScrollHeight(scrollHeight);
 			setIsLoadingChatHistory(false);
 			return;
 		}
 
-		if (chatBodyRef.current != null && !isScrollingBody.current) {
+		if (botOptions.chatWindow?.autoJumpToBottom || !isScrolling) {
+			console.log(!isScrolling);
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+			if (botOptions.isOpen) {
+				setUnreadCount(0);
+			}
 		}
-	}, [chatBodyRef.current?.scrollHeight, messages.length, isBotTyping]);
+	}, [messages.length, isBotTyping]);
+
+	// shifts scroll position when scroll height changes
+	useEffect(() => {
+		if (!chatBodyRef.current) {
+			return;
+		}
+
+		// used to return chat history to correct height
+		setChatScrollHeight(chatBodyRef.current.scrollHeight);
+
+		if (!isScrolling) {
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+			if (botOptions.isOpen) {
+				setUnreadCount(0);
+			}
+		}
+	}, [chatBodyRef.current?.scrollHeight, isScrolling]);
 
 	/**
-	 * Updates scroll height within the chat body.
+	 * Checks and updates whether a user is scrolling in chat window.
 	 */
-	const updateScrollHeight = () => {
-		if (chatBodyRef?.current != null) {
-			const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
-			setPrevScrollHeight(scrollHeight);
-			isScrollingBody.current = (scrollHeight - scrollTop !== clientHeight)
+	const updateIsScrolling = () => {
+		if (!chatBodyRef.current) {
+			return;
 		}
+
+		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
+		setIsScrolling(
+			scrollTop + clientHeight < scrollHeight - (botOptions.chatWindow?.messagePromptOffset || 30)
+		);
 	};
 
 	/**
@@ -143,7 +180,7 @@ const ChatBotBody = ({
 			style={bodyStyle}
 			className="rcb-chat-body-container"
 			ref={chatBodyRef} 
-			onScroll={updateScrollHeight}
+			onScroll={updateIsScrolling}
 		>
 			{messages.map((message, index) => {
 				if (typeof message.content !== "string") {
@@ -184,6 +221,10 @@ const ChatBotBody = ({
 					</div>
 				</div>
 			)}
+			<ChatMessagePrompt
+				chatBodyRef={chatBodyRef} isScrolling={isScrolling}
+				setIsScrolling={setIsScrolling} unreadCount={unreadCount}
+			/>
 		</div>
 	);
 };

@@ -5,8 +5,8 @@ import ChatBotBody from "./ChatBotBody/ChatBotBody";
 import ChatBotInput from "./ChatBotInput/ChatBotInput";
 import ChatBotFooter from "./ChatBotFooter/ChatBotFooter";
 import ChatBotButton from "./ChatBotButton/ChatBotButton";
-import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
+import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
@@ -75,8 +75,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks if chat history is being loaded
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
 
+	// tracks whether user is scrolling chat
+	const [isScrolling, setIsScrolling] = useState<boolean>(false);
+
 	// tracks scroll height
-	const [prevScrollHeight, setPrevScrollHeight] = useState<number>(0);
+	const [chatScrollHeight, setChatScrollHeight] = useState<number>(0);
 
 	// tracks typing state of chat bot
 	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
@@ -210,7 +213,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			document.body.style.position = "static";
 			cleanupScrollEventListeners();
 			window.scrollTo({top: scrollPositionRef.current, left: 0, behavior: "auto"});
-			window.addEventListener('scroll', handleMobileScrollClosed);
+			window.addEventListener("scroll", handleMobileScrollClosed);
 			window.visualViewport?.removeEventListener("resize", handleResize);
 		}
 
@@ -243,6 +246,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param params parameters that may be used in the block
 	 */
 	const callNewBlock = async (currPath: string, params: Params) => {
+		if (currPath === "start") {
+			setTextAreaDisabled(true);
+		}
+
 		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths,
 			setTimeoutId, handleActionInput);
 
@@ -275,6 +282,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		notificationAudio.current = new Audio(notificationSound);
+		notificationAudio.current.controls = false;
 		notificationAudio.current.volume = botOptions.notification?.volume as number;
 	}
 
@@ -317,7 +325,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 		const message = messages[messages.length - 1]
 		if (message != null && message?.sender !== "user" && !isBotTyping
-			&& (!botOptions.isOpen || document.visibilityState !== "visible")) {
+			&& (!botOptions.isOpen || document.visibilityState !== "visible"
+			|| (botOptions.isOpen && isScrolling))) {
 			setUnreadCount(prev => prev + 1);
 			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
 				notificationAudio.current?.play();
@@ -355,20 +364,27 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			&& message.sender === "user" && botOptions?.userBubble?.simStream;
 
 		if (isBotStream) {
-			await simulateStream(message, botOptions.botBubble?.streamSpeed as number, "bot");
+			await simulateStream(message, botOptions.botBubble?.streamSpeed as number);
 		} else if (isUserStream) {
-			await simulateStream(message, botOptions.userBubble?.streamSpeed as number, "user");
+			await simulateStream(message, botOptions.userBubble?.streamSpeed as number);
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
 	}
 
-	const simulateStream = async (message: Message, streamSpeed: number, sender: string) => {
+	/**
+	 * Simulates the streaming of a message from the bot.
+	 * 
+	 * @param message message to stream
+	 * @param streamSpeed speed to stream the message
+	 */
+	const simulateStream = async (message: Message, streamSpeed: number) => {
 		// when simulating stream, disable text area and stop bot typing
 		setIsBotTyping(false);
 
 		// set an initial empty message to be used for streaming
 		setMessages(prevMessages => [...prevMessages, message]);
+		isBotStreamingRef.current = true
 
 		// initialize default message to empty with stream index position 0
 		let streamIndex = 0;
@@ -381,7 +397,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					const updatedMessages = [...prevMessages];
 		
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
-						if (updatedMessages[i].sender === sender && typeof updatedMessages[i].content === "string") {
+						if (updatedMessages[i].sender === message.sender && typeof updatedMessages[i].content === "string") {
 							message.content = streamMessage.slice(0, streamIndex + 1);
 							updatedMessages[i] = message;
 							break;
@@ -407,6 +423,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		});
 
 		await simStreamDoneTask;
+		isBotStreamingRef.current = false;
 	};
 
 	/**
@@ -449,7 +466,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const showChatHistory = (chatHistory: string) => {
 		setIsLoadingChatHistory(true);
 		setTextAreaDisabled(true);
-		loadChatHistory(botOptions, chatHistory, setMessages, setIsLoadingChatHistory, setTextAreaDisabled);
+		loadChatHistory(botOptions, chatHistory, setMessages, setTextAreaDisabled);
 	}
 
 	/**
@@ -519,9 +536,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			await injectMessage(userInput, "user");
 		}
 
-		if (chatBodyRef.current != null) {
+		if (chatBodyRef.current) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
+
 
 		// Clear input field
 		if (inputRef.current) {
@@ -577,11 +595,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (!isDesktop && !botOptions.theme?.embedded) {
 			return {
 				...botOptions.chatWindowStyle,
-				borderRadius: '0px',
-				left: '0px',
-				right: 'auto',
-				top: '0px',
-				bottom: 'auto',
+				borderRadius: "0px",
+				left: "0px",
+				right: "auto",
+				top: "0px",
+				bottom: "auto",
 				width: `${viewportWidth}px`,
 				height: `${viewportHeight}px`,
 			}
@@ -641,8 +659,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					/>
 				}
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
-					isLoadingChatHistory={isLoadingChatHistory} prevScrollHeight={prevScrollHeight}
-					setPrevScrollHeight={setPrevScrollHeight} setIsLoadingChatHistory={setIsLoadingChatHistory}
+					isLoadingChatHistory={isLoadingChatHistory} chatScrollHeight={chatScrollHeight}
+					setChatScrollHeight={setChatScrollHeight} setIsLoadingChatHistory={setIsLoadingChatHistory}
+					isScrolling={isScrolling} setIsScrolling={setIsScrolling}
+					unreadCount={unreadCount} setUnreadCount={setUnreadCount}
 				/>
 				{botOptions.theme?.showInputRow &&
 					<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 

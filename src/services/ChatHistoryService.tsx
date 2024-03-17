@@ -100,11 +100,9 @@ const parseMessageToString = (message: Message) => {
  * @param botOptions options provided to the bot
  * @param chatHistory chat history to show
  * @param setMessages setter for updating messages
- * @param setIsLoadingChatHistory setter for updating load progress
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
 const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: Dispatch<SetStateAction<Message[]>>, 
-	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>,
 	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
