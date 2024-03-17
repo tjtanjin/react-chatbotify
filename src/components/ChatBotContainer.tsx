@@ -397,7 +397,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					const updatedMessages = [...prevMessages];
 		
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
-						if (updatedMessages[i].sender === message.sender && typeof updatedMessages[i].content === "string") {
+						if (updatedMessages[i].sender === message.sender
+							&& typeof updatedMessages[i].content === "string") {
 							message.content = streamMessage.slice(0, streamIndex + 1);
 							updatedMessages[i] = message;
 							break;

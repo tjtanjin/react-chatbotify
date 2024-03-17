@@ -1,4 +1,4 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, useState, CSSProperties, MouseEvent } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import { useBotOptions } from "../../context/BotOptionsContext";
