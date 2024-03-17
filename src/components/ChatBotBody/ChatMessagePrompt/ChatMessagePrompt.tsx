@@ -56,7 +56,6 @@ const ChatMessagePrompt = ({
      */
 	const scrollToBottom = () => {
 		if (chatBodyRef.current) {
-			setIsScrolling(false);
 			chatBodyRef.current.scrollTo({
 				top: chatBodyRef.current.scrollHeight,
 				behavior: "smooth"

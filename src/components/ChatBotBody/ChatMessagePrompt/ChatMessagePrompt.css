@@ -13,7 +13,7 @@
 
 .rcb-message-prompt-container.hidden {
     opacity: 0;
-    height: 0px; /* work around for hiding element while still having animation*/
+    height: 0px; /* work around for hiding element while still having animation */
     visibility: hidden;
     pointer-events: none;
 }

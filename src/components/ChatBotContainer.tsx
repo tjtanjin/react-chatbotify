@@ -49,6 +49,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks if chat bot is streaming messages
 	const isBotStreamingRef = useRef<boolean>(false);
 
+	// tracks history messages loaded on start
 	const historyMessages = useRef<string>("");
 
 	// checks if voice should be toggled back on after a user input
@@ -282,7 +283,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		notificationAudio.current = new Audio(notificationSound);
-		notificationAudio.current.controls = false;
 		notificationAudio.current.volume = botOptions.notification?.volume as number;
 	}
 
