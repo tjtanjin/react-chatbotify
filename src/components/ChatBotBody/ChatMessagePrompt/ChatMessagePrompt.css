@@ -1,13 +1,12 @@
 .rcb-message-prompt-container.visible {
     position: sticky;
     bottom: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: inline-flex;
+    margin: auto;
+    display: flex;
     align-items: center;
     justify-content: center;
     opacity: 1;
-    transition: opacity 0.3s ease-in-out;
+    animation: popIn 0.3s ease-in-out;
     pointer-events: auto;
 }
 
@@ -34,3 +33,16 @@
     padding: 0px;
 }
 
+@keyframes popIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    70% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+}
