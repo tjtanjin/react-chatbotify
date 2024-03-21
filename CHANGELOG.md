@@ -1,9 +1,34 @@
 # CHANGELOG.md
 
+## v1.4.0 (22-03-2024)
+
+**Added:**
+- A new `chatWindow` section has been added into the [**Configurations**](https://react-chatbotify.tjtanjin.com/docs/introduction/bot_options#configurations) category with the following default values:
+  ```
+  chatWindow: {
+    showScrollbar: false,
+    autoJumpToBottom: false,
+    showMessagePrompt: true,
+    messagePromptText: "New Messages ↓",
+    messagePromptOffset: 30,
+  }
+  ```
+  Explanations for what each property does can be found on the [**documentation website**](https://react-chatbotify.tjtanjin.com/docs/introduction/bot_options#configurations).
+
+**Fixed:**
+- Fixed an occasional issue where stream messages do not autoscroll when user is at the bottom of the chat
+- Fixed an issue where users can interrupt the `start` block if it is streaming
+- Fixed a bug where users can pinch-zoom the chat window on mobile devices to cause it to be distorted
+- Fixed a rare bug where the chat window could be scrolled out of view
+- Fixed a longstanding issue where playing notification sounds on mobile devices causes media controls to appear in notifications tray
+
+**Note:**
+
+Initially planned for only bug fixes, I eventually added a whole new `chatWindow` section simply because I felt there were many small areas that could use enhancements (hiding the scrollbar, showing new message prompts instead of forcing users to the bottom etc). This led to **version 1.4.0** which was entirely focused on cleaning up the imperfections from the several changes that have been made in the last few releases.
+
 ## v1.3.2 (16-03-2024)
 
 **Fixed:**
-
 - Fixed an issue where chat window auto-scrolling does not work for streamed messages
 - Fixed an issue where loading chat history caused current scroll position to shift
 - Fixed an issue where extremely long words get abruptly cut-off at the tail end of the message bubble

@@ -129,6 +129,8 @@ In order to run the test, you will need to **download** the [chromedriver](https
 
 Finally, if you would like to, you can then also build the library with `npm run build`.
 
+Note: As of version **1.3.0**, the chatbot also comes with streaming messages as a feature. Should you decide to run tests against stream messages, you may wish to increase the `WAIT_DURATION` and set `HEADLESS` to `false` in _test/config.js_.
+
 ## Pull Requests
 
 If you are satisfied with your changes and would like to **contribute back to the project** (which we strongly encourage you to!), feel free to open a pull request to the master branch.
