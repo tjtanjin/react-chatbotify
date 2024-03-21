@@ -169,6 +169,8 @@ const defaultOptions = {
 	chatHistoryButtonStyle: {},
 	chatHistoryButtonHoveredStyle: {},
 	chatHistoryLineBreakStyle: {},
+	chatMessagePromptStyle: {},
+	chatMessagePromptHoveredStyle: {},
 	footerStyle: {},
 	loadingSpinnerStyle: {},
 }
