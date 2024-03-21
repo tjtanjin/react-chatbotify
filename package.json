@@ -11,7 +11,7 @@
   "files": [
     "./dist"
   ],
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Enrich Conversations - Power & Flexibility at Your Fingertips!",
   "type": "module",
   "main": "./dist/index.cjs",
