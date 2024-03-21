@@ -6,6 +6,7 @@
 	padding-bottom: 16px;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	touch-action: pan-y; /* prevents pinch zoom on mobile */
 }
 
 .rcb-chat-body-container::-webkit-scrollbar-track {
