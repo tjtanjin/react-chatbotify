@@ -270,7 +270,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const setUpNotifications = async () => {
 		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
 	
-		let notificationSound = botOptions.notification?.sound;
+		const notificationSound = botOptions.notification?.sound;
 		audioContextRef.current = new AudioContext();
 		const gainNode = audioContextRef.current.createGain();
 		gainNode.gain.value = botOptions.notification?.volume || 0.2;
@@ -347,21 +347,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			source.start();
 		}
 	}
-
-	/**
-	 * Helps check if audio should be played.
-	 */
-	const shouldPlayAudio = () => {
-		if (!audioBufferRef.current || !audioContextRef.current) {
-		  return false;
-		}
-	  
-		const message = messages[messages.length - 1];
-		const isUserMessage = message?.sender === "user";
-		const isBotTypingOrInvisible = isBotTyping || !botOptions.isOpen || document.visibilityState !== "visible" || (botOptions.isOpen && isScrolling);
-	  
-		return !botOptions.theme?.embedded && messages.length > 0 && !isUserMessage && !isBotTypingOrInvisible && !botOptions.notification?.disabled && notificationToggledOn && hasInteracted;
-	};
 
 	/**
 	 * Retrieves current path for user.
