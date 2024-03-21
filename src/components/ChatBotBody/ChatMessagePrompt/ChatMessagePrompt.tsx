@@ -52,15 +52,44 @@ const ChatMessagePrompt = ({
 	};
 
 	/**
-     * Handles scrolling to the bottom of the chat window.
+     * Handles scrolling to the bottom of the chat window with specified duration.
      */
-	const scrollToBottom = () => {
-		if (chatBodyRef.current) {
-			chatBodyRef.current.scrollTo({
-				top: chatBodyRef.current.scrollHeight,
-				behavior: "smooth"
-			});
+	function scrollToBottom(duration: number) {
+		if (!chatBodyRef.current) {
+			return;
 		}
+
+		const start = chatBodyRef.current.scrollTop;
+		const end = chatBodyRef.current.scrollHeight - chatBodyRef.current.clientHeight;
+		const change = end - start;
+		const increment = 20;
+		let currentTime = 0;
+	
+		function animateScroll() {
+			if (!chatBodyRef.current) {
+				return;
+			}
+			currentTime += increment;
+			const val = easeInOutQuad(currentTime, start, change, duration);
+			chatBodyRef.current.scrollTop = val;
+			if (currentTime < duration) {
+				requestAnimationFrame(animateScroll);
+			} else {
+				setIsScrolling(false);
+			}
+		}
+		
+		animateScroll();
+	}
+
+	/**
+	 * Helper function for custom scrolling.
+	 */
+	const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+		t /= d / 2;
+		if (t < 1) return c / 2 * t * t + b;
+		t--;
+		return -c / 2 * (t * (t - 2) - 1) + b;
 	};
 
 	/**
@@ -82,7 +111,7 @@ const ChatMessagePrompt = ({
 				style={isHovered ? chatMessagePromptHoveredStyle : botOptions.chatMessagePromptStyle}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
-					scrollToBottom();
+					scrollToBottom(600);
 				}}
 				className="rcb-message-prompt-text"
 			>

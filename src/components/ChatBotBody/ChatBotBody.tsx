@@ -88,7 +88,6 @@ const ChatBotBody = ({
 		}
 
 		if (botOptions.chatWindow?.autoJumpToBottom || !isScrolling) {
-			console.log(!isScrolling);
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 			if (botOptions.isOpen) {
 				setUnreadCount(0);
@@ -111,7 +110,14 @@ const ChatBotBody = ({
 				setUnreadCount(0);
 			}
 		}
-	}, [chatBodyRef.current?.scrollHeight, isScrolling]);
+	}, [chatBodyRef.current?.scrollHeight]);
+
+	// sets unread count to 0 if not scrolling
+	useEffect(() => {
+		if (!isScrolling) {
+			setUnreadCount(0);
+		}
+	}, [isScrolling]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.
@@ -120,11 +126,16 @@ const ChatBotBody = ({
 		if (!chatBodyRef.current) {
 			return;
 		}
-
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
 		setIsScrolling(
 			scrollTop + clientHeight < scrollHeight - (botOptions.chatWindow?.messagePromptOffset || 30)
 		);
+
+		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
+		// this is necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom
+		if (!isScrolling && scrollTop + clientHeight >= scrollHeight - 1) {
+			chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+		}
 	};
 
 	/**
@@ -150,7 +161,7 @@ const ChatBotBody = ({
 			</>
 		);
 	};
-	
+
 	/**
 	 * Renders message from the bot.
 	 * 

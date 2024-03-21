@@ -56,7 +56,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const keepVoiceOnRef = useRef<boolean>(false);
 
 	// audio to play for notifications
-	const notificationAudio = useRef<HTMLAudioElement>();
+	const audioContextRef = useRef<AudioContext | null>(null);
+	const audioBufferRef = useRef<AudioBuffer>();
+	const gainNodeRef = useRef<AudioNode | null>(null);
 
 	// tracks if user has interacted with page
 	const [hasInteracted, setHasInteracted] = useState<boolean>(false);
@@ -265,12 +267,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	/**
 	 * Sets up the notifications feature (initial toggle status and sound).
 	 */
-	const setUpNotifications = () => {
+	const setUpNotifications = async () => {
 		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
 	
 		let notificationSound = botOptions.notification?.sound;
+		audioContextRef.current = new AudioContext();
+		const gainNode = audioContextRef.current.createGain();
+		gainNode.gain.value = botOptions.notification?.volume || 0.2;
+		gainNodeRef.current = gainNode;
 
-		// convert data uri to url if it is base64, true in production
+		let audioSource;
 		if (notificationSound?.startsWith("data:audio")) {
 			const binaryString = atob(notificationSound.split(",")[1]);
 			const arrayBuffer = new ArrayBuffer(binaryString.length);
@@ -278,12 +284,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			for (let i = 0; i < binaryString.length; i++) {
 				uint8Array[i] = binaryString.charCodeAt(i);
 			}
-			const blob = new Blob([uint8Array], { type: "audio/wav" });
-			notificationSound = URL.createObjectURL(blob);
+			audioSource = arrayBuffer;
+		} else {
+			const response = await fetch(notificationSound as string);
+			audioSource = await response.arrayBuffer();
 		}
 
-		notificationAudio.current = new Audio(notificationSound);
-		notificationAudio.current.volume = botOptions.notification?.volume as number;
+		audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
 	}
 
 	/**
@@ -291,9 +298,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const handleFirstInteraction = () => {
 		setHasInteracted(true);
-
-		// load audio on first user interaction
-		notificationAudio.current?.load();
 
 		// workaround for getting audio to play on mobile
 		const utterance = new SpeechSynthesisUtterance();
@@ -319,20 +323,45 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Handles notification count update and notification sound.
 	 */
 	const handleNotifications = () => {
-		// if embedded, or no message found, no need for notifications
-		if (botOptions.theme?.embedded || messages.length == 0) {
+		// if no audio context or no messages, return
+		if (!audioContextRef.current || messages.length === 0) {
 			return;
 		}
+
 		const message = messages[messages.length - 1]
-		if (message != null && message?.sender !== "user" && !isBotTyping
-			&& (!botOptions.isOpen || document.visibilityState !== "visible"
-			|| (botOptions.isOpen && isScrolling))) {
-			setUnreadCount(prev => prev + 1);
-			if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted) {
-				notificationAudio.current?.play();
-			}
+		// if message is null or sent by user or is bot typing, return
+		if (message == null || message.sender === "user" || isBotTyping) {
+			return;
+		}
+
+		// if chat is open but user is not scrolling, return
+		if (botOptions.isOpen && !isScrolling) {
+			return;
+		}
+
+		setUnreadCount(prev => prev + 1);
+		if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted && audioBufferRef.current) {
+			const source = audioContextRef.current.createBufferSource();
+			source.buffer = audioBufferRef.current;
+			source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
+			source.start();
 		}
 	}
+
+	/**
+	 * Helps check if audio should be played.
+	 */
+	const shouldPlayAudio = () => {
+		if (!audioBufferRef.current || !audioContextRef.current) {
+		  return false;
+		}
+	  
+		const message = messages[messages.length - 1];
+		const isUserMessage = message?.sender === "user";
+		const isBotTypingOrInvisible = isBotTyping || !botOptions.isOpen || document.visibilityState !== "visible" || (botOptions.isOpen && isScrolling);
+	  
+		return !botOptions.theme?.embedded && messages.length > 0 && !isUserMessage && !isBotTypingOrInvisible && !botOptions.notification?.disabled && notificationToggledOn && hasInteracted;
+	};
 
 	/**
 	 * Retrieves current path for user.
