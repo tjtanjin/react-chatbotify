@@ -21,6 +21,10 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./dist/react-chatbotify.css": {
+      "import": "./dist/react-chatbotify.css",
+      "require": "./dist/react-chatbotify.css"
     }
   },
   "scripts": {
