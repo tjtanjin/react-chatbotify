@@ -1,7 +1,8 @@
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import dts from 'vite-plugin-dts';
+import dts from "vite-plugin-dts";
 import path from "path";
+import libCss from "vite-plugin-libcss";
 
 import { defineConfig } from "vite";
 
@@ -12,36 +13,38 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.tsx"),
       name: "react-chatbotify",
       fileName: "index",
-      formats: ["es", "cjs"]
+      formats: ["es", "cjs"],
     },
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
         globals: {
-          react: "React"
+          react: "React",
         },
         assetFileNames: (assetInfo) => {
-            if (assetInfo.name === "style.css") return "react-chatbotify.css";
-            return assetInfo.name;
+          if (assetInfo.name === "style.css") return "react-chatbotify.css";
+          return assetInfo.name;
         },
-      }
+      },
     },
     outDir: "../dist",
   },
   assetsInclude: ["**/*.svg", "**/*.png", "**/*.wav"],
   plugins: [
     svgr({
-        svgrOptions: {
-            ref: true,
-        },
+      svgrOptions: {
+        ref: true,
+      },
     }),
     react({
       include: "**/*.{jsx,tsx}",
     }),
-    dts()
+    dts(),
+    libCss(),
   ],
   server: {
     port: 3000,
-    host: true
-  }
+    host: true,
+  },
 });
+
