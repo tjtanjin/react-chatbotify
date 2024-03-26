@@ -75,12 +75,14 @@ export type Options = {
 		messagePromptOffset?: number;
 	},
 	userBubble?: {
+		animate?: boolean;
 		showAvatar?: boolean;
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
 	},
 	botBubble?: {
+		animate?: boolean;
 		showAvatar?: boolean;
 		avatar?: string;
 		simStream?: boolean;

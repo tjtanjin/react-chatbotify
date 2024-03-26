@@ -64,6 +64,7 @@ const ChatBotBody = ({
 		maxWidth: botOptions.userBubble?.showAvatar ? "65%" : "70%",
 		...botOptions.userBubbleStyle
 	};
+	const userBubbleEntryStyle = botOptions.userBubble?.animate ? "rcb-user-message-entry" : "";
 
 	// styles for bot bubble
 	const botBubbleStyle = {
@@ -72,6 +73,7 @@ const ChatBotBody = ({
 		maxWidth: botOptions.botBubble?.showAvatar ? "65%" : "70%",
 		...botOptions.botBubbleStyle
 	};
+	const botBubbleEntryStyle = botOptions.botBubble?.animate ? "rcb-bot-message-entry" : "";
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
@@ -148,7 +150,7 @@ const ChatBotBody = ({
 			<>
 				<div
 					style={userBubbleStyle}
-					className="rcb-user-message"
+					className={`rcb-user-message ${userBubbleEntryStyle}`}
 				>
 					{message.content}
 				</div>
@@ -178,7 +180,7 @@ const ChatBotBody = ({
 				}
 				<div
 					style={botBubbleStyle}
-					className="rcb-bot-message"
+					className={`rcb-bot-message ${botBubbleEntryStyle}`}
 				>
 					{message.content}
 				</div>
@@ -222,7 +224,7 @@ const ChatBotBody = ({
 						onMouseDown={(event: MouseEvent) => {
 							event.preventDefault();
 						}}
-						className="rcb-bot-message"
+						className={`rcb-bot-message ${botBubbleEntryStyle}`}
 					>
 						<div className="rcb-typing-indicator">
 							<span className="rcb-dot"/>

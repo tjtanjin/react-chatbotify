@@ -96,12 +96,14 @@ const defaultOptions = {
 		messagePromptOffset: 30,
 	},
 	userBubble: {
+		animate: true,
 		showAvatar: false,
 		avatar: userAvatar,
 		simStream: false,
 		streamSpeed: 30,
 	},
 	botBubble: {
+		animate: true,
 		showAvatar: false,
 		avatar: botAvatar,
 		simStream: false,

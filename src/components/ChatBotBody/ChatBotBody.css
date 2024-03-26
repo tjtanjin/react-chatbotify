@@ -57,6 +57,9 @@
 .rcb-bot-message {
 	margin-left: 0;
 	margin-left: 16px;
+}
+
+.rcb-bot-message-entry {
 	animation: bot-entry 0.3s ease-in backwards;
 }
 
@@ -74,6 +77,9 @@
 .rcb-user-message {
 	margin-right: 0;
 	margin-right: 16px;
+}
+
+.rcb-user-message-entry {
 	animation: user-entry 0.3s ease-in backwards;
 }
 
