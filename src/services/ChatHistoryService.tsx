@@ -31,7 +31,9 @@ const saveChatHistory = async (messages: Message[], chatHistory: string) => {
 
 		if (message.sender === "system") {
 			break;
-		} else {
+		}
+
+		if (message.content !== "") {
 			messagesToSave.unshift(message);
 		}
 
