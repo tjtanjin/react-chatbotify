@@ -12,7 +12,7 @@
     "./dist"
   ],
   "version": "1.5.0",
-  "description": "Enrich Conversations - Power & Flexibility at Your Fingertips!",
+  "description": "A modern React library for creating a flexible and extensible chatbot.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
