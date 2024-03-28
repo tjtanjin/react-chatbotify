@@ -1,5 +1,16 @@
 # CHANGELOG.md
 
+## v1.4.0 (29-03-2024)
+
+**Added:**
+- Added a new `animate` option to both `userBubble` and `botBubble` to easily toggle animations on and off for them
+
+**Fixed:**
+- Fixed an issue where empty chat bubbles from stream messages are being saved to chat history
+
+**Miscellaneous:**
+- As of this version (**1.5.0**), it is no longer necessary to import `react-chatbotify.css` file in your projects (injected implicitly). Keeping the import statement will not cause any issues currently but this will be a **breaking change** in version **2.0.0**. It is recommended to remove the import statement as soon as possible and the documentation website has also been updated to reflect this change.
+
 ## v1.4.0 (22-03-2024)
 
 **Added:**
