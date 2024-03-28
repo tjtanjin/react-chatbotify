@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## v1.4.0 (29-03-2024)
+## v1.5.0 (29-03-2024)
 
 **Added:**
 - Added a new `animate` option to both `userBubble` and `botBubble` to easily toggle animations on and off for them
