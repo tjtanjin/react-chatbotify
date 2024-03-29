@@ -57,7 +57,6 @@
     "typescript": "^5.1.6",
     "vite": "^4.5.2",
     "vite-plugin-dts": "^3.4.0",
-    "vite-plugin-libcss": "^1.1.1",
     "vite-plugin-svgr": "^3.2.0"
   },
   "browserslist": {

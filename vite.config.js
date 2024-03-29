@@ -2,7 +2,6 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import dts from "vite-plugin-dts";
 import path from "path";
-import libCss from "vite-plugin-libcss";
 
 import { defineConfig } from "vite";
 
@@ -21,10 +20,12 @@ export default defineConfig({
         globals: {
           react: "React",
         },
+        // todo: deprecate and remove in 2.0.0, breaking change!
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return "react-chatbotify.css";
           return assetInfo.name;
         },
+        intro: 'import "./react-chatbotify.css";',
       },
     },
     outDir: "../dist",
@@ -39,8 +40,7 @@ export default defineConfig({
     react({
       include: "**/*.{jsx,tsx}",
     }),
-    dts(),
-    libCss(),
+    dts()
   ],
   server: {
     port: 3000,
