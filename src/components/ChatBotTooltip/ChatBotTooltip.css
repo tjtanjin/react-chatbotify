@@ -8,6 +8,7 @@
 	white-space: nowrap;
 	cursor: pointer;
 	font-size: 20px;
+	transition: transform 0.3s ease;
 }
 
 .rcb-chat-tooltip-tail {

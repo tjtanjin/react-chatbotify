@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import { isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotTooltip.css";
@@ -15,37 +16,52 @@ const ChatBotTooltip = () => {
 	// tracks whether to show tooltip
 	const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
-	// checks if tooltip should be shown on load
-	useEffect(() => {
-		if (botOptions.tooltip?.mode === "ALWAYS") {
-			return;
-		}
-		if (botOptions.isOpen) {
-			setShowTooltip(false);
-		}
-	}, [botOptions.isOpen]);
+	// tracks if tooltip was shown on start
+	const [shownTooltipOnStart, setShownTooltipOnStart] = useState<boolean>(false);
 
-	/**
-	 * Checks if tooltip should be shown.
-	 */
-	const shouldShowTooltip = () => {
+	// tooltip offset
+	const [tooltipOffset, setTooltipOffset] = useState<number>(0);
+
+	// checks if tooltip should be shown
+	useEffect(() => {
 		const mode = botOptions.tooltip?.mode;
 		if (mode === "ALWAYS") {
-			return true;
+			if (isDesktop) {
+				let offset;
+				if (botOptions.isOpen) {
+					offset = (botOptions.chatWindowStyle?.width as number || 375) -
+					(botOptions.chatButtonStyle?.width as number || 75)
+				} else {
+					offset = 0;
+				}
+				setTooltipOffset(offset);
+				setShowTooltip(true);
+			} else {
+				if (botOptions.isOpen) {
+					setShowTooltip(false);
+				} else {
+					setShowTooltip(true);
+				}
+			}
+		} else if (mode === "NEVER") {
+			setShowTooltip(false);
 		} else if (mode === "START") {
-			return showTooltip;
+			if (!shownTooltipOnStart) {
+				setShownTooltipOnStart(true);
+				setShowTooltip(true);
+			} else {
+				setShowTooltip(false);
+			}
 		} else if (mode === "CLOSE") {
-			return !botOptions.isOpen;
-		} else {
-			return false;
+			setShowTooltip(!botOptions.isOpen);
 		}
-	};
+
+	}, [botOptions.isOpen]);
 
 	// styles for tooltip
 	const tooltipStyle = {
-		display: shouldShowTooltip() ? "visible" : "hidden",
-		opacity: shouldShowTooltip() ? 1 : 0,
-		right: `calc(${botOptions.chatButtonStyle?.width || 75}px + 40px)`,
+		transform: `translateX(-${tooltipOffset}px)`,
+		right: (botOptions.chatButtonStyle?.width as number || 75) + 40,
 		bottom: 30,
 		backgroundColor: botOptions.theme?.secondaryColor,
 		color: botOptions.theme?.secondaryColor,
@@ -62,7 +78,7 @@ const ChatBotTooltip = () => {
 			{!botOptions.theme?.embedded &&
 				<div 
 					style={tooltipStyle}
-					className={`rcb-chat-tooltip ${botOptions.isOpen ? "rcb-tooltip-hide" : "rcb-tooltip-show"}`}
+					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}
 					onClick={() => setBotOptions({...botOptions, isOpen: true})}
 				>
 					<span style={{ color: "#fff" }}>{botOptions.tooltip?.text}</span>
