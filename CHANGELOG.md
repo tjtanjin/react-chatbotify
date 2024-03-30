@@ -1,5 +1,15 @@
 # CHANGELOG.md
 
+## v1.5.1 (30-03-2024)
+
+**Fixed:**
+- Fixed an issue where library css file is not injected for commonjs users
+- Fixed an issue where tooltip mode may not be respected
+- Fixed an issue where option boxes do not stretch on much larger chatbot window width
+- Fixed an issue where overflowing text are not hidden for checkboxes/option boxes
+- Fixed an issue where if `header` section is used, then `showAvatar` is a required property
+- Fixed usage of oversized images (improves default chatbot load time!)
+
 ## v1.5.0 (29-03-2024)
 
 **Added:**
