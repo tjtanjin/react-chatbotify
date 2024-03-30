@@ -13,7 +13,7 @@ const ChatBotTooltip = () => {
 	const { botOptions, setBotOptions } = useBotOptions();
 
 	// tracks whether to show tooltip
-	const [showTooltip, setShowTooltip] = useState<boolean>(true);
+	const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
 	// checks if tooltip should be shown on load
 	useEffect(() => {
