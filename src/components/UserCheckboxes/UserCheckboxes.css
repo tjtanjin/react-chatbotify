@@ -10,7 +10,7 @@
 }
 
 .rcb-checkbox-offset {
-	margin-left: 50px;
+	margin-left: 50px !important;
 }
 
 /* Checkbox Row Container */
@@ -27,7 +27,8 @@
 	width: 80%;
 	cursor: pointer;
 	background-color: #fff;
-	animation: checkboxes-entry 0.5s ease-out
+	animation: checkboxes-entry 0.5s ease-out;
+	overflow: hidden;
 }
 
 .rcb-checkbox-row-container:hover {
@@ -83,7 +84,6 @@
   
 .rcb-checkbox-label {
 	font-size: 14px;
-	text-overflow: ellipsis;
 }
 
 /* Checkbox Next Button */

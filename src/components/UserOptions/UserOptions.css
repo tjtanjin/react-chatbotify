@@ -3,14 +3,14 @@
 .rcb-options-container {
 	padding-top: 12px;
 	margin-left: 16px;
-	max-width: 219px;
+	max-width: 70%;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
 }
 
 .rcb-options-offset {
-	margin-left: 50px;
+	margin-left: 50px !important;
 }
 
 /* Options */
@@ -27,6 +27,7 @@
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 	animation: options-entry 0.5s ease-out;
+	overflow: hidden;
 }
 
 @keyframes options-entry {
