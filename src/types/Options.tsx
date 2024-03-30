@@ -27,7 +27,7 @@ export type Options = {
 	},
 	header?: {
 		title?: string | JSX.Element;
-		showAvatar: boolean;
+		showAvatar?: boolean;
 		avatar?: string;
 		closeChatIcon?: string;
 	},
