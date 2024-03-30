@@ -1,6 +1,6 @@
 import { Options } from "../types/Options";
 
-import logo from "../assets/logo.png";
+import chatButton from "../assets/chat_button.png";
 import actionDisabledIcon from "../assets/action_disabled_icon.png";
 import botAvatar from "../assets/bot_avatar.png";
 import userAvatar from "../assets/user_avatar.svg";
@@ -124,7 +124,7 @@ const defaultOptions = {
 			>
 				<span>Powered By </span>
 				<span style={{fontWeight: "bold"}}>
-					<img style={{width: 10, height: 10}} src={logo}></img>
+					<img style={{width: 10, height: 10}} src={chatButton}></img>
 					<span> React ChatBotify</span>
 				</span>
 			</div>
