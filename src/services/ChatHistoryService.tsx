@@ -201,9 +201,10 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
  */
 const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties}) => {
 	if (classList.contains("rcb-options-container") || classList.contains("rcb-checkbox-container")) {
-		attributes["style"] = {
-			...(attributes["style"] as CSSProperties),
-			marginLeft: "50px"
+		if (attributes.hasOwnProperty("class")) {
+			attributes["class"] = `${classList.toString()} rcb-options-offset`;
+		} else {
+			attributes["class"] = "rcb-options-offset"
 		}
 	}
 	return attributes;
@@ -223,7 +224,8 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 			...(attributes["style"] as CSSProperties),
 			color: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
 			borderColor: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
-			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`
+			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
+			...botOptions.botOptionStyle
 		}
 	}
 	return attributes;
