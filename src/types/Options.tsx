@@ -141,6 +141,12 @@ export type Options = {
 	chatInputAreaStyle?: {
 		[key: string]: string | number;
 	},
+	chatInputAreaFocusedStyle?: {
+		[key: string]: string | number;
+	},
+	chatInputAreaDisabledStyle?: {
+		[key: string]: string | number;
+	},
 	userBubbleStyle?: {
 		[key: string]: string | number;
 	},

@@ -156,6 +156,8 @@ const defaultOptions = {
 	bodyStyle: {},
 	chatInputContainerStyle: {},
 	chatInputAreaStyle: {},
+	chatInputAreaFocusedStyle: {},
+	chatInputAreaDisabledStyle: {},
 	userBubbleStyle: {},
 	botBubbleStyle: {},
 	botOptionStyle: {},
