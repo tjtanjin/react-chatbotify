@@ -245,7 +245,8 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 			...(attributes["style"] as CSSProperties),
 			color: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
 			borderColor: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
-			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`
+			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
+			...botOptions.botCheckboxRowStyle
 		}
 	}
 	return attributes;
@@ -265,7 +266,8 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 			...(attributes["style"] as CSSProperties),
 			color: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
 			borderColor: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
-			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`
+			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
+			...botOptions.botCheckboxNextStyle
 		}
 	}
 	return attributes;
