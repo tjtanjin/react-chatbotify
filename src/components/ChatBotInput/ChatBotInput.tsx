@@ -56,12 +56,22 @@ const ChatBotInput = ({
 
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {
-		outline: isFocused && !textAreaDisabled ? "none" : "",
-		boxShadow: isFocused && !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
-		cursor: textAreaDisabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "",
-		caretColor: textAreaDisabled ? "transparent" : "",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...botOptions.chatInputAreaStyle,
+	};
+
+	// styles for focused text area
+	const textAreaFocusedStyle: React.CSSProperties = {
+		outline: !textAreaDisabled ? "none" : "",
+		boxShadow: !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
+		...botOptions.chatInputAreaFocusedStyle,
+	};
+
+	// styles for disabled text area
+	const textAreaDisabledStyle: React.CSSProperties = {
+		cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
+		caretColor: "transparent",
+		...botOptions.chatInputAreaDisabledStyle,
 	};
 
 	// styles for character limit
@@ -167,7 +177,7 @@ const ChatBotInput = ({
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
 			<textarea
 				ref={inputRef}
-				style={textAreaStyle}
+				style={textAreaDisabled ? textAreaDisabledStyle : (isFocused ? textAreaFocusedStyle : textAreaStyle)}
 				rows={1}
 				className="rcb-chat-input-textarea"
 				placeholder={placeholder}
