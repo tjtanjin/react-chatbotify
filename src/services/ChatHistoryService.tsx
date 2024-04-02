@@ -201,7 +201,7 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
  */
 const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties}) => {
 	if (classList.contains("rcb-options-container") || classList.contains("rcb-checkbox-container")) {
-		if (attributes.hasOwnProperty("class")) {
+		if (Object.prototype.hasOwnProperty.call(attributes, "class")) {
 			attributes["class"] = `${classList.toString()} rcb-options-offset`;
 		} else {
 			attributes["class"] = "rcb-options-offset"
