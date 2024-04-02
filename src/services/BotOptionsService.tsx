@@ -238,7 +238,7 @@ export const parseBotOptions = async (providedOptions: Options | undefined,
 	let combinedOptions: Options = defaultOptions;
 	if (theme != null) {
 		if (Array.isArray(theme)) {
-			for (const selectedTheme in theme) {
+			for (const selectedTheme of theme) {
 				const themeOptions = await getThemeOptions(selectedTheme);
 				combinedOptions = getCombinedOptions(themeOptions, defaultOptions);
 			}
