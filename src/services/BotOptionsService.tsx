@@ -193,9 +193,10 @@ export const getDefaultBotOptions = () => {
  * @param theme theme to retrieve options for
  */
 const getThemeOptions = async (theme: string): Promise<Options> => {
+	console.log("HIHI")
 	// prepare json and css urls
 	const cdnUrl = "https://cdn.jsdelivr.net/gh/tjtanjin/react-chatbotify-themes/themes"
-	const jsonFile = "styles.json";
+	const jsonFile = "options.json";
 	const cssFile = "styles.css";
 	const jsonUrl = `${cdnUrl}/${theme}/${jsonFile}`;
 	const cssUrl = `${cdnUrl}/${theme}/${cssFile}`;
