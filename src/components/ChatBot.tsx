@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import { parseBotOptions } from "../services/BotOptionsService";
@@ -17,15 +17,20 @@ import { Message } from "../types/Message";
  * @param options options to setup the bot
  */
 const ChatBot = ({
+	theme,
 	flow,
 	options
 }: {
+	theme?: string | Array<string>,
 	flow?: Flow,
 	options?: Options
 }) => {
 
+	// handles loading of chatbot only when options is loaded
+	const [optionsLoaded, setOptionsLoaded] = useState<boolean>(false);
+
 	// handles setting of options for the chat bot
-	const [botOptions, setBotOptions] = useState<Options>(parseBotOptions(options));
+	const [botOptions, setBotOptions] = useState<Options>({});
 
 	// handles messages between user and the chat bot
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -35,6 +40,20 @@ const ChatBot = ({
 
 	// provides a default welcome flow if no user flow provided
 	const parsedFlow: Flow = flow ?? defaultFlow;
+
+	// load options on start
+	useEffect(() => {
+        loadOptions()
+    }, []);
+
+	/**
+	 * Loads bot options.
+	 */
+	const loadOptions = async () => {
+		const combinedOptions = await parseBotOptions(options, theme);
+		setBotOptions(combinedOptions);
+		setOptionsLoaded(true);
+	}
 
 	/**
 	 * Wraps bot options provider around child element.
@@ -99,7 +118,7 @@ const ChatBot = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return (isDesktop && botOptions.theme?.desktopEnabled)
+		return optionsLoaded && (isDesktop && botOptions.theme?.desktopEnabled)
 			|| (!isDesktop && botOptions.theme?.mobileEnabled);
 	}
 
