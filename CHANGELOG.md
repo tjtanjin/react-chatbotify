@@ -1,5 +1,14 @@
 # CHANGELOG.md
 
+## v1.5.2 (08-04-2024)
+
+**Added:**
+- Added 2 new style props for `chatInputAreaFocusedStyle` and `chatInputAreaDisabledStyle`
+
+**Fixed:**
+- Fixed a few instances where chat history options/checkboxes are not rendered correctly
+- Reduced notification sound file size
+
 ## v1.5.1 (30-03-2024)
 
 **Fixed:**
