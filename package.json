@@ -11,7 +11,7 @@
   "files": [
     "./dist"
   ],
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A modern React library for creating a flexible and extensible chatbot.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -28,12 +28,13 @@
     }
   },
   "scripts": {
-    "lint": "eslint . --ext .tsx",
+    "lint": "eslint --fix . --ext .tsx",
     "test": "node ./test/RunTests.js",
     "build": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
-    "start": "vite serve"
+    "start": "vite serve",
+    "prepare": "husky install"
   },
   "author": "tjtanjin",
   "license": "MIT",
@@ -57,7 +58,8 @@
     "typescript": "^5.1.6",
     "vite": "^4.5.2",
     "vite-plugin-dts": "^3.4.0",
-    "vite-plugin-svgr": "^3.2.0"
+    "vite-plugin-svgr": "^3.2.0",
+    "husky": "^8.0.0"
   },
   "browserslist": {
     "production": [
