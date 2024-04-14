@@ -129,6 +129,7 @@ const defaultOptions = {
 				</span>
 			</div>
 		),
+		buttons:["file-attachment","emoji-picker"]
 	},
 	fileAttachment: {
 		disabled: false,

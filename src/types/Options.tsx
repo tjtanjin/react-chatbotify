@@ -98,6 +98,7 @@ export type Options = {
 	},
 	footer?: {
 		text?: string | JSX.Element;
+		buttons?: Array<JSX.Element | string>;
 	},
 	fileAttachment?: {
 		disabled?: boolean;
