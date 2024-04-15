@@ -43,8 +43,8 @@ const ChatBot = ({
 
 	// load options on start
 	useEffect(() => {
-        loadOptions()
-    }, []);
+		loadOptions()
+	}, []);
 
 	/**
 	 * Loads bot options.

@@ -13,7 +13,6 @@ import voiceIcon from "../assets/voice_icon.svg";
 import emojiIcon from "../assets/emoji_icon.svg";
 import audioIcon from "../assets/audio_icon.svg";
 import notificationSound from "../assets/notification_sound.wav";
-import { Dispatch, SetStateAction } from "react";
 
 // default options provided to the bot
 const defaultOptions = {
@@ -194,7 +193,6 @@ export const getDefaultBotOptions = () => {
  * @param theme theme to retrieve options for
  */
 const getThemeOptions = async (theme: string): Promise<Options> => {
-	console.log("HIHI")
 	// prepare json and css urls
 	const cdnUrl = "https://cdn.jsdelivr.net/gh/tjtanjin/react-chatbotify-themes/themes"
 	const jsonFile = "options.json";
@@ -204,22 +202,22 @@ const getThemeOptions = async (theme: string): Promise<Options> => {
 
 	// load css
 	const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = cssUrl;
-    document.head.appendChild(link);
+	link.rel = 'stylesheet';
+	link.href = cssUrl;
+	document.head.appendChild(link);
 
 	// load json
-    try {
-        const response = await fetch(jsonUrl);
-        if (!response.ok) {
-            console.log(`Failed to fetch theme ${theme}`);
+	try {
+		const response = await fetch(jsonUrl);
+		if (!response.ok) {
+			console.log(`Failed to fetch theme ${theme}`);
 			return {}
-        }
-        return await response.json();
-    } catch (error) {
-        console.log(`Failed to fetch theme ${theme}`);
+		}
+		return await response.json();
+	} catch (error) {
+		console.log(`Failed to fetch theme ${theme}`);
 		return {}
-    }
+	}
 }
 
 /**
@@ -265,27 +263,34 @@ export const parseBotOptions = async (providedOptions: Options | undefined,
  * Combines default and provided options.
  * 
  * @param providedOptions options provided by the user to the bot
+ * @param baseOptions the base options that the provided options will overwrite
  */
 const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Options => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const stack: Array<{ source: any, target: any }> = [{ source: preferredOptions, target: baseOptions }];
-    
-    while (stack.length > 0) {
-        const { source, target } = stack.pop()!;
-        
-        for (const key in source) {
-            if (source.hasOwnProperty(key)) {
-                if (typeof source[key] === 'object' && source[key] !== null) {
-                    if (!target[key]) {
-                        target[key] = Array.isArray(source[key]) ? [] : {};
-                    }
-                    stack.push({ source: source[key], target: target[key] });
-                } else {
-                    target[key] = source[key];
-                }
-            }
-        }
-    }
+	
+	while (stack.length > 0) {
+		const poppedItem = stack.pop();
+		if (poppedItem == null) {
+			continue;
+		}
 
-    return baseOptions;
+		const { source, target } = poppedItem;
+		for (const key in source) {
+			if (Object.prototype.hasOwnProperty.call(source, key)) {
+				continue;
+			}
+
+			if (typeof source[key] === 'object' && source[key] !== null) {
+				if (!target[key]) {
+					target[key] = Array.isArray(source[key]) ? [] : {};
+				}
+				stack.push({ source: source[key], target: target[key] });
+			} else {
+				target[key] = source[key];
+			}
+		}
+	}
+
+	return baseOptions;
 }
