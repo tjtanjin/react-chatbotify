@@ -10,6 +10,7 @@
 * [Design](#design)
 * [Code Documentation](#code-documentation)
 * [Testing](#testing)
+* [Commit Messages](#commit-messages)
 * [Pull Requests](#pull-requests)
 * [Final Notes](#final-notes)
 
@@ -130,6 +131,11 @@ In order to run the test, you will need to **download** the [chromedriver](https
 Finally, if you would like to, you can then also build the library with `npm run build`.
 
 Note: As of version **1.3.0**, the chatbot also comes with streaming messages as a feature. Should you decide to run tests against stream messages, you may wish to increase the `WAIT_DURATION` and set `HEADLESS` to `false` in _test/config.js_.
+
+
+## Commit Messages
+
+Commitizen([cz-cli](https://github.com/commitizen/cz-cli)) is used in this repository to handle and prepare commit messages. All you need to do is run `git commit` and then commit using the interactive interface in the terminal.
 
 ## Pull Requests
 
