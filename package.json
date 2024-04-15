@@ -34,7 +34,7 @@
     "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "start": "vite serve",
-    "prepare": "husky install"
+    "prepare": "husky install && git config --local core.editor cat"
   },
   "author": "tjtanjin",
   "license": "MIT",
