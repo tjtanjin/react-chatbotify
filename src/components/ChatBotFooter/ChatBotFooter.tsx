@@ -1,5 +1,5 @@
 
-import { RefObject } from "react";
+import React, { RefObject } from "react";
 
 import EmojiPicker from "./EmojiPicker/EmojiPicker";
 import FileAttachmentButton from "./FileAttachmentButton/FileAttachmentButton";
@@ -46,18 +46,33 @@ const ChatBotFooter = ({
 	// handles options for bot
 	const { botOptions } = useBotOptions();
 
+	const renderFileAttachment = () => {
+		return (
+			<FileAttachmentButton inputRef={inputRef}
+				flow={flow} getCurrPath={getCurrPath} openChat={openChat}
+				getPrevPath={getPrevPath} handleActionInput={handleActionInput} injectMessage={injectMessage}
+				streamMessage={streamMessage}
+			/>
+		)
+	}
+
+	const renderEmojiPicker = () => {
+		return (<EmojiPicker inputRef={inputRef} textAreaDisabled={textAreaDisabled}/>)
+	}
+
 	return (
 		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
-				{!botOptions.fileAttachment?.disabled &&
-					<FileAttachmentButton inputRef={inputRef} flow={flow} getCurrPath={getCurrPath} openChat={openChat}
-						getPrevPath={getPrevPath} handleActionInput={handleActionInput} injectMessage={injectMessage}
-						streamMessage={streamMessage}
-					/>
-				}
-				{!botOptions.emoji?.disabled &&
-					<EmojiPicker inputRef={inputRef} textAreaDisabled={textAreaDisabled}/>
-				}
+				{botOptions.footer?.buttons?.map((element) => {
+					if (element === "file-attachment" && !botOptions.fileAttachment?.disabled) {
+						return renderFileAttachment();
+					} else if (element === "emoji-picker" && !botOptions.emoji?.disabled) {
+						return renderEmojiPicker();
+					} else if (element !== "file-attachment" && element !== "emoji-picker" 
+						&& React.isValidElement(element)) {
+						return element;
+					}
+				})}
 			</div>
 			<span>{botOptions.footer?.text}</span>
 		</div>
