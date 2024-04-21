@@ -278,7 +278,7 @@ const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Op
 
 		const { source, target } = poppedItem;
 		for (const key in source) {
-			if (Object.prototype.hasOwnProperty.call(source, key)) {
+			if (!Object.prototype.hasOwnProperty.call(source, key)) {
 				continue;
 			}
 
