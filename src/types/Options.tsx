@@ -29,6 +29,7 @@ export type Options = {
 		title?: string | JSX.Element;
 		showAvatar?: boolean;
 		avatar?: string;
+		buttons?: Array<JSX.Element | string>;
 		closeChatIcon?: string;
 	},
 	notification?: {
