@@ -50,7 +50,7 @@ const defaultOptions = {
 		),
 		showAvatar: true,
 		avatar: botAvatar,
-		buttons: ["audio-button", "notification-button"],
+		buttons: ["audio-button", "notification-button", "close-chat-button"],
 		closeChatIcon: closeChatIcon,
 	},
 	notification: {

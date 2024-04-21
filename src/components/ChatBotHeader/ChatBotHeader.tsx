@@ -93,6 +93,24 @@ const ChatBotHeader = ({
 		);
 	};
 
+
+	/**
+	 * Renders close chat button.
+	 */
+	const renderCloseChatButton = () => {
+		return (
+			<div
+				style={headerImages.closeChatIcon}
+				onMouseDown={(event: MouseEvent) => {
+					event.stopPropagation();
+					handleCloseChat();
+				}}
+				className="rcb-close-chat-icon"
+			>
+			</div>
+		)
+	}
+
 	return (
 		<div style={headerStyle} className="rcb-chat-header-container">
 			<div className="rcb-chat-header">
@@ -111,22 +129,12 @@ const ChatBotHeader = ({
 						return <React.Fragment key={index}>{renderNotificationButton()}</React.Fragment>;
 					} else if (button === "audio-button" && !botOptions.audio?.disabled) {
 						return <React.Fragment key={index}>{renderAudioButton()}</React.Fragment>;
+					} else if (button === "close-chat-button" && !botOptions.theme?.embedded) {
+						return <React.Fragment key={index}>{renderCloseChatButton()}</React.Fragment>;
 					} else if (React.isValidElement(button)) {
 						return <React.Fragment key={index}>{button}</React.Fragment>;
-					}
-									
+					}				
 				})}
-				{!botOptions.theme?.embedded &&
-					<div
-						style={headerImages.closeChatIcon}
-						onMouseDown={(event: MouseEvent) => {
-							event.stopPropagation();
-							handleCloseChat();
-						}}
-						className="rcb-close-chat-icon"
-					>
-					</div>
-				}
 			</div>
 		</div>
 	);

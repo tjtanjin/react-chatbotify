@@ -63,14 +63,13 @@ const ChatBotFooter = ({
 	return (
 		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
-				{botOptions.footer?.buttons?.map((element) => {
-					if (element === "file-attachment" && !botOptions.fileAttachment?.disabled) {
-						return renderFileAttachment();
-					} else if (element === "emoji-picker" && !botOptions.emoji?.disabled) {
-						return renderEmojiPicker();
-					} else if (element !== "file-attachment" && element !== "emoji-picker" 
-						&& React.isValidElement(element)) {
-						return element;
+				{botOptions.footer?.buttons?.map((button, index) => {
+					if (button === "file-attachment" && !botOptions.fileAttachment?.disabled) {
+						return <React.Fragment key={index}>{renderFileAttachment()}</React.Fragment>;
+					} else if (button === "emoji-picker" && !botOptions.emoji?.disabled) {
+						return <React.Fragment key={index}>{renderEmojiPicker()}</React.Fragment>;
+					} else if (React.isValidElement(button)) {
+						return <React.Fragment key={index}>{button}</React.Fragment>;
 					}
 				})}
 			</div>
