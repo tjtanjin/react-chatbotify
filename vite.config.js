@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import dts from "vite-plugin-dts";
 import path from "path";
+import eslint from "vite-plugin-eslint";
 
 import { defineConfig } from "vite";
 
@@ -40,11 +41,11 @@ export default defineConfig({
     react({
       include: "**/*.{jsx,tsx}",
     }),
-    dts()
+    dts(),
+    eslint()
   ],
   server: {
     port: 3000,
     host: true,
   },
 });
-
