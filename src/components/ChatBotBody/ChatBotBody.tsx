@@ -58,7 +58,7 @@ const ChatBotBody = ({
 	}
 
 	// styles for user bubble
-	const userBubbleStyle = {
+	const userBubbleStyle: CSSProperties = {
 		backgroundColor: botOptions.theme?.primaryColor,
 		color: "#fff",
 		maxWidth: botOptions.userBubble?.showAvatar ? "65%" : "70%",
@@ -67,7 +67,7 @@ const ChatBotBody = ({
 	const userBubbleEntryStyle = botOptions.userBubble?.animate ? "rcb-user-message-entry" : "";
 
 	// styles for bot bubble
-	const botBubbleStyle = {
+	const botBubbleStyle: CSSProperties = {
 		backgroundColor: botOptions.theme?.secondaryColor,
 		color: "#fff",
 		maxWidth: botOptions.botBubble?.showAvatar ? "65%" : "70%",

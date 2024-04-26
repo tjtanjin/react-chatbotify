@@ -31,7 +31,7 @@ const ChatMessagePrompt = ({
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
 	// styles for chat message prompt hovered
-	const chatMessagePromptHoveredStyle = {
+	const chatMessagePromptHoveredStyle: React.CSSProperties = {
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
 		...botOptions.chatMessagePromptHoveredStyle
