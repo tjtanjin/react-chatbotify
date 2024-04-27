@@ -1,5 +1,4 @@
-
-import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
 
 import SendButton from "./SendButton/SendButton";
 import VoiceButton from "./VoiceButton/VoiceButton";
@@ -7,7 +6,6 @@ import { isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotInput.css";
-import React from "react";
 
 /**
  * Contains chat input field for user to enter messages.
@@ -189,17 +187,17 @@ const ChatBotInput = ({
 			/>
 			<div className="rcb-chat-input-button-container">
 				{botOptions.chatInput?.buttons?.map((button, index) => {
-					switch(button){
-					case "send":
+					if(button === "send"){
 						return <SendButton key={index} handleSubmit={handleSubmit}/>
-					case "voice":
+					}else if(button === "voice"){
 						return !botOptions.voice?.disabled && isDesktop &&
 							<VoiceButton key={index} inputRef={inputRef} textAreaDisabled={textAreaDisabled}
 								voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
 								triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
 							/>
+					}else {
+						return <React.Fragment key={index}>{button}</React.Fragment>
 					}
-					return <React.Fragment key={index}>{button}</React.Fragment>
 				})}
 				{botOptions.chatInput?.showCharacterCount
 					&& botOptions.chatInput?.characterLimit != null
