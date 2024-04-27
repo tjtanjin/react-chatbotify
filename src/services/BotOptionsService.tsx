@@ -88,6 +88,7 @@ const defaultOptions = {
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
 		sendAttachmentOutput: true,
+		buttons: ["voice", "send"]
 	},
 	chatWindow: {
 		showScrollbar: false,
@@ -282,7 +283,7 @@ const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Op
 				continue;
 			}
 
-			if (typeof source[key] === 'object' && source[key] !== null) {
+			if (typeof source[key] === 'object' && source[key] !== null && key !== 'buttons') {
 				if (!target[key]) {
 					target[key] = Array.isArray(source[key]) ? [] : {};
 				}

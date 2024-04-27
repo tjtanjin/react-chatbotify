@@ -67,6 +67,7 @@ export type Options = {
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;
 		sendAttachmentOutput?: boolean;
+		buttons?: Array<JSX.Element | string>;
 	},
 	chatWindow?: {
 		showScrollbar?: boolean;
