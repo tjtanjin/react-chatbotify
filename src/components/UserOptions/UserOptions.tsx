@@ -36,7 +36,7 @@ const UserOptions= ({
 	const [disabled, setDisabled] = useState<boolean>(false);
 
 	// styles for bot option
-	const botOptionStyle = {
+	const botOptionStyle: React.CSSProperties = {
 		cursor: disabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
@@ -45,7 +45,7 @@ const UserOptions= ({
 	};
 
 	// styles for bot hovered option
-	const botOptionHoveredStyle = {
+	const botOptionHoveredStyle: React.CSSProperties = {
 		color: "#fff" ,
 		borderColor: botOptions.theme?.primaryColor,
 		backgroundColor: botOptions.theme?.primaryColor,

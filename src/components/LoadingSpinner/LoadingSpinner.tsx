@@ -11,7 +11,7 @@ const LoadingSpinner = () => {
 	const { botOptions } = useBotOptions();
 
 	// styles for spinner
-	const loadingSpinnerStyle = {
+	const loadingSpinnerStyle: React.CSSProperties = {
 		borderTop: `4px solid ${botOptions.theme?.primaryColor}`,
 		...botOptions.loadingSpinnerStyle
 	};

@@ -59,7 +59,7 @@ const ChatBotTooltip = () => {
 	}, [botOptions.isOpen]);
 
 	// styles for tooltip
-	const tooltipStyle = {
+	const tooltipStyle: React.CSSProperties = {
 		transform: `translateX(-${tooltipOffset}px)`,
 		right: (botOptions.chatButtonStyle?.width as number || 75) + 40,
 		bottom: 30,
