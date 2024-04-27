@@ -165,6 +165,25 @@ const ChatBotInput = ({
 		setVoiceInputTrigger(prev => !prev);
 	}
 
+	/**
+	 * Renders voice button
+	 */
+	const renderVoiceButton = () => {
+		return (
+			<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}
+				voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
+				triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
+			/>
+		)
+	}
+
+	/**
+	 * Renders send button
+	 */
+	const renderSendButton = () => {
+		return (<SendButton handleSubmit={handleSubmit}/>)
+	}
+
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
@@ -187,15 +206,11 @@ const ChatBotInput = ({
 			/>
 			<div className="rcb-chat-input-button-container">
 				{botOptions.chatInput?.buttons?.map((button, index) => {
-					if(button === "send"){
-						return <SendButton key={index} handleSubmit={handleSubmit}/>
-					}else if(button === "voice"){
-						return !botOptions.voice?.disabled && isDesktop &&
-							<VoiceButton key={index} inputRef={inputRef} textAreaDisabled={textAreaDisabled}
-								voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
-								triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
-							/>
-					}else {
+					if (button === "send"){
+						return <React.Fragment key={index}>{renderSendButton()}</React.Fragment>
+					}else if (button === "voice" && !botOptions.voice?.disabled && isDesktop){
+						return <React.Fragment key={index}>{renderVoiceButton()}</React.Fragment>
+					}else if (React.isValidElement(button)) {
 						return <React.Fragment key={index}>{button}</React.Fragment>
 					}
 				})}
