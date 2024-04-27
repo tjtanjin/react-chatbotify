@@ -206,11 +206,11 @@ const ChatBotInput = ({
 			/>
 			<div className="rcb-chat-input-button-container">
 				{botOptions.chatInput?.buttons?.map((button, index) => {
-					if (button === "send"){
+					if (button === "send") {
 						return <React.Fragment key={index}>{renderSendButton()}</React.Fragment>
-					}else if (button === "voice" && !botOptions.voice?.disabled && isDesktop){
+					} else if (button === "voice" && !botOptions.voice?.disabled && isDesktop) {
 						return <React.Fragment key={index}>{renderVoiceButton()}</React.Fragment>
-					}else if (React.isValidElement(button)) {
+					} else if (React.isValidElement(button)) {
 						return <React.Fragment key={index}>{button}</React.Fragment>
 					}
 				})}
