@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useE
 
 import SendButton from "./SendButton/SendButton";
 import VoiceButton from "./VoiceButton/VoiceButton";
-import { isDesktop } from "../../services/Utils";
+import { BUTTON, isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotInput.css";
@@ -206,9 +206,9 @@ const ChatBotInput = ({
 			/>
 			<div className="rcb-chat-input-button-container">
 				{botOptions.chatInput?.buttons?.map((button, index) => {
-					if (button === "send") {
+					if (button === BUTTON.SEND_MESSAGE_BUTTON) {
 						return <React.Fragment key={index}>{renderSendButton()}</React.Fragment>
-					} else if (button === "voice" && !botOptions.voice?.disabled && isDesktop) {
+					} else if (button === BUTTON.VOICE_MESSAGE_BUTTON && !botOptions.voice?.disabled && isDesktop) {
 						return <React.Fragment key={index}>{renderVoiceButton()}</React.Fragment>
 					} else if (React.isValidElement(button)) {
 						return <React.Fragment key={index}>{button}</React.Fragment>

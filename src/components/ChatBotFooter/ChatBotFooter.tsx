@@ -4,6 +4,7 @@ import React, { RefObject } from "react";
 import EmojiPicker from "./EmojiPicker/EmojiPicker";
 import FileAttachmentButton from "./FileAttachmentButton/FileAttachmentButton";
 import { useBotOptions } from "../../context/BotOptionsContext";
+import { BUTTON } from "../../services/Utils";
 import { Flow } from "../../types/Flow";
 
 import "./ChatBotFooter.css";
@@ -64,9 +65,9 @@ const ChatBotFooter = ({
 		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
 				{botOptions.footer?.buttons?.map((button, index) => {
-					if (button === "file-attachment" && !botOptions.fileAttachment?.disabled) {
+					if (button === BUTTON.FILE_ATTACHMENT_BUTTON && !botOptions.fileAttachment?.disabled) {
 						return <React.Fragment key={index}>{renderFileAttachment()}</React.Fragment>;
-					} else if (button === "emoji-picker" && !botOptions.emoji?.disabled) {
+					} else if (button === BUTTON.EMOJI_PICKER_BUTTON && !botOptions.emoji?.disabled) {
 						return <React.Fragment key={index}>{renderEmojiPicker()}</React.Fragment>;
 					} else if (React.isValidElement(button)) {
 						return <React.Fragment key={index}>{button}</React.Fragment>;

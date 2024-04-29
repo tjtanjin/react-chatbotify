@@ -1,6 +1,7 @@
 import React, { MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
+import { BUTTON } from "../../services/Utils";
 
 import "./ChatBotHeader.css";
 
@@ -122,14 +123,14 @@ const ChatBotHeader = ({
 			<div className="rcb-chat-header">
 				{botOptions.header?.buttons?.map((button, index) => {
 					if (
-						button === "notification-button" &&
+						button === BUTTON.NOTIFICATION_BUTTON &&
 						!botOptions.notification?.disabled &&
 						!botOptions.theme?.embedded
 					) {
 						return <React.Fragment key={index}>{renderNotificationButton()}</React.Fragment>;
-					} else if (button === "audio-button" && !botOptions.audio?.disabled) {
+					} else if (button === BUTTON.AUDIO_BUTTON && !botOptions.audio?.disabled) {
 						return <React.Fragment key={index}>{renderAudioButton()}</React.Fragment>;
-					} else if (button === "close-chat-button" && !botOptions.theme?.embedded) {
+					} else if (button === BUTTON.CLOSE_CHAT_BUTTON && !botOptions.theme?.embedded) {
 						return <React.Fragment key={index}>{renderCloseChatButton()}</React.Fragment>;
 					} else if (React.isValidElement(button)) {
 						return <React.Fragment key={index}>{button}</React.Fragment>;

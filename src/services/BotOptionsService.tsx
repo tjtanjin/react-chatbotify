@@ -1,3 +1,4 @@
+import { BUTTON } from "./Utils";
 import { Options } from "../types/Options";
 
 import chatButton from "../assets/chat_button.png";
@@ -50,7 +51,7 @@ const defaultOptions = {
 		),
 		showAvatar: true,
 		avatar: botAvatar,
-		buttons: ["audio-button", "notification-button", "close-chat-button"],
+		buttons: [BUTTON.AUDIO_BUTTON, BUTTON.NOTIFICATION_BUTTON, BUTTON.CLOSE_CHAT_BUTTON],
 		closeChatIcon: closeChatIcon,
 	},
 	notification: {
@@ -88,7 +89,7 @@ const defaultOptions = {
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
 		sendAttachmentOutput: true,
-		buttons: ["voice", "send"]
+		buttons: [BUTTON.VOICE_MESSAGE_BUTTON, BUTTON.SEND_MESSAGE_BUTTON]
 	},
 	chatWindow: {
 		showScrollbar: false,
@@ -131,7 +132,7 @@ const defaultOptions = {
 				</span>
 			</div>
 		),
-		buttons: ["file-attachment","emoji-picker"]
+		buttons: [BUTTON.FILE_ATTACHMENT_BUTTON, BUTTON.EMOJI_PICKER_BUTTON]
 	},
 	fileAttachment: {
 		disabled: false,
