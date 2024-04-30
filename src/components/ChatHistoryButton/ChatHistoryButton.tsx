@@ -6,18 +6,17 @@ import "./ChatHistoryButton.css";
 
 /**
  * Supports viewing of old messages.
- * 
+ *
  * @param chatHistory string representation of old chat messages
  * @param showChatHistory entry point for showing of chat history
  */
 const ChatHistoryButton = ({
 	chatHistory,
-	showChatHistory
+	showChatHistory,
 }: {
-	chatHistory: string;
-	showChatHistory: (chatHistory: string) => void;
+    chatHistory: string;
+    showChatHistory: (chatHistory: string) => void;
 }) => {
-
 	// handles options for bot
 	const { botOptions } = useBotOptions();
 
@@ -28,36 +27,42 @@ const ChatHistoryButton = ({
 	const chatHistoryButtonHoveredStyle: React.CSSProperties = {
 		color: botOptions.theme?.primaryColor,
 		borderColor: botOptions.theme?.primaryColor,
-		...botOptions.chatHistoryButtonHoveredStyle
+		...botOptions.chatHistoryButtonHoveredStyle,
 	};
 
 	/**
-	 * Handles mouse enter event on view chat history button.
-	 */
+     * Handles mouse enter event on view chat history button.
+     */
 	const handleMouseEnter = () => {
 		setIsHovered(true);
 	};
 
 	/**
-	 * Handles mouse leave event on view chat history button.
-	 */
+     * Handles mouse leave event on view chat history button.
+     */
 	const handleMouseLeave = () => {
 		setIsHovered(false);
 	};
-	
+
 	return (
 		<div className="rcb-view-history-container">
 			<div
 				onMouseEnter={handleMouseEnter}
-				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? chatHistoryButtonHoveredStyle : botOptions.chatHistoryButtonStyle}
+				onMouseLeave={handleMouseLeave}
+				style={
+					isHovered
+						? chatHistoryButtonHoveredStyle
+						: botOptions.chatHistoryButtonStyle
+				}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					showChatHistory(chatHistory);
 				}}
 				className="rcb-view-history-button"
 			>
-				{botOptions.chatHistory?.viewChatHistoryButtonText}
+				<p>
+					{botOptions.chatHistory?.viewChatHistoryButtonText}
+				</p>
 			</div>
 		</div>
 	);
