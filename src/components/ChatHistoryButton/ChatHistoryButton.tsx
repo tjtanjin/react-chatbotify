@@ -14,8 +14,8 @@ const ChatHistoryButton = ({
 	chatHistory,
 	showChatHistory,
 }: {
-    chatHistory: string;
-    showChatHistory: (chatHistory: string) => void;
+	    chatHistory: string;
+	    showChatHistory: (chatHistory: string) => void;
 }) => {
 	// handles options for bot
 	const { botOptions } = useBotOptions();
