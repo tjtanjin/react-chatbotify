@@ -57,7 +57,7 @@ const ChatHistoryButton = ({
 				}}
 				className="rcb-view-history-button"
 			>
-				{botOptions.chatHistory?.viewChatHistoryButtonText}
+				<p>{botOptions.chatHistory?.viewChatHistoryButtonText}</p>
 			</div>
 		</div>
 	);
