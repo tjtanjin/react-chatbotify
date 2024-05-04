@@ -2,8 +2,7 @@ import { RefObject, Dispatch, SetStateAction } from "react";
 
 import { Options } from "../types/Options";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SpeechRecognition = (window as any).speechRecognition || (window as any).webkitSpeechRecognition;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
 let inactivityTimer: ReturnType<typeof setTimeout> | null;
 let autoSendTimer: ReturnType<typeof setTimeout>;
@@ -34,8 +33,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	const inactivityPeriod = botOptions.voice?.timeoutPeriod;
 	const autoSendPeriod = botOptions.voice?.autoSendPeriod;
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	recognition.onresult = (event: any) => {
+	recognition.onresult = event => {
 		clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
 		inactivityTimer = null;
 		clearTimeout(autoSendTimer);
