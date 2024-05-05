@@ -120,91 +120,33 @@ export type Options = {
 	},
 
 	// styles
-	tooltipStyle?: {
-		[key: string]: string | number;
-	},
-	chatButtonStyle?: {
-		[key: string]: string | number;
-	},
-	notificationBadgeStyle?: {
-		[key: string]: string | number;
-	},
-	chatWindowStyle?: {
-		[key: string]: string | number;
-	},
-	headerStyle?: {
-		[key: string]: string | number;
-	},
-	bodyStyle?: {
-		[key: string]: string | number;
-	},
-	chatInputContainerStyle?: {
-		[key: string]: string | number;
-	},
-	chatInputAreaStyle?: {
-		[key: string]: string | number;
-	},
-	chatInputAreaFocusedStyle?: {
-		[key: string]: string | number;
-	},
-	chatInputAreaDisabledStyle?: {
-		[key: string]: string | number;
-	},
-	userBubbleStyle?: {
-		[key: string]: string | number;
-	},
-	botBubbleStyle?: {
-		[key: string]: string | number;
-	},
-	botOptionStyle?: {
-		[key: string]: string | number;
-	},
-	botOptionHoveredStyle?: {
-		[key: string]: string | number;
-	},
-	botCheckboxRowStyle?: {
-		[key: string]: string | number;
-	},
-	botCheckboxNextStyle?: {
-		[key: string]: string | number;
-	},
-	botCheckMarkStyle?: {
-		[key: string]: string | number;
-	},
-	botCheckMarkSelectedStyle?: {
-		[key: string]: string | number;
-	},
-	sendButtonStyle?: {
-		[key: string]: string | number;
-	},
-	sendButtonHoveredStyle?: {
-		[key: string]: string | number;
-	},
-	characterLimitStyle?: {
-		[key: string]: string | number;
-	},
-	characterLimitReachedStyle?: {
-		[key: string]: string | number;
-	},
-	chatHistoryButtonStyle?: {
-		[key: string]: string | number;
-	},
-	chatHistoryButtonHoveredStyle?: {
-		[key: string]: string | number;
-	},
-	chatHistoryLineBreakStyle?: {
-		[key: string]: string | number;
-	},
-	chatMessagePromptStyle?: {
-		[key: string]: string | number;
-	},
-	chatMessagePromptHoveredStyle?: {
-		[key: string]: string | number;
-	},
-	footerStyle?: {
-		[key: string]: string | number;
-	},
-	loadingSpinnerStyle?: {
-		[key: string]: string | number;
-	}
+	tooltipStyle?: React.CSSProperties;
+	chatButtonStyle?: React.CSSProperties;
+	notificationBadgeStyle?: React.CSSProperties;
+	chatWindowStyle?: React.CSSProperties;
+	headerStyle?: React.CSSProperties;
+	bodyStyle?: React.CSSProperties;
+	chatInputContainerStyle?: React.CSSProperties;
+	chatInputAreaStyle?: React.CSSProperties;
+	chatInputAreaFocusedStyle?: React.CSSProperties;
+	chatInputAreaDisabledStyle?: React.CSSProperties;
+	userBubbleStyle?: React.CSSProperties;
+	botBubbleStyle?: React.CSSProperties;
+	botOptionStyle?: React.CSSProperties;
+	botOptionHoveredStyle?: React.CSSProperties;
+	botCheckboxRowStyle?: React.CSSProperties;
+	botCheckboxNextStyle?: React.CSSProperties;
+	botCheckMarkStyle?: React.CSSProperties;
+	botCheckMarkSelectedStyle?: React.CSSProperties;
+	sendButtonStyle?: React.CSSProperties;
+	sendButtonHoveredStyle?: React.CSSProperties;
+	characterLimitStyle?: React.CSSProperties;
+	characterLimitReachedStyle?: React.CSSProperties;
+	chatHistoryButtonStyle?: React.CSSProperties;
+	chatHistoryButtonHoveredStyle?: React.CSSProperties;
+	chatHistoryLineBreakStyle?: React.CSSProperties;
+	chatMessagePromptStyle?: React.CSSProperties;
+	chatMessagePromptHoveredStyle?: React.CSSProperties;
+	footerStyle?: React.CSSProperties;
+	loadingSpinnerStyle?: React.CSSProperties;
 }

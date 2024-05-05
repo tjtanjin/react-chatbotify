@@ -74,13 +74,13 @@ const ChatBotInput = ({
 	};
 
 	// styles for character limit
-	const characterLimitStyle = {
+	const characterLimitStyle: React.CSSProperties = {
 		color: "#989898",
 		...botOptions.characterLimitStyle
 	};
 
 	// styles for character limit reached
-	const characterLimitReachedStyle = {
+	const characterLimitReachedStyle: React.CSSProperties = {
 		color: "#ff0000",
 		...botOptions.characterLimitReachedStyle
 	};

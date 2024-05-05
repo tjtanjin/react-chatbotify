@@ -28,7 +28,7 @@ const ChatBotHeader = ({
 	const { botOptions, setBotOptions } = useBotOptions();
 
 	// styles for header
-	const headerStyle = {
+	const headerStyle: React.CSSProperties = {
 		background: `linear-gradient(to right, ${botOptions.theme?.secondaryColor },
 			${botOptions.theme?.primaryColor})`,
 		...botOptions.headerStyle

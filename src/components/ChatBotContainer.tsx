@@ -606,7 +606,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	/**
 	 * Retrieves styles for chat window.
 	 */
-	const getChatWindowStyle = () => {
+	const getChatWindowStyle = (): React.CSSProperties | undefined => {
 		if (!isDesktop && !botOptions.theme?.embedded) {
 			return {
 				...botOptions.chatWindowStyle,

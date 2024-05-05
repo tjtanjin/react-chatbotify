@@ -22,19 +22,19 @@ const SendButton = ({
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
 	// styles for send button
-	const sendButtonStyle = {
+	const sendButtonStyle: React.CSSProperties = {
 		backgroundColor: botOptions.theme?.primaryColor,
 		...botOptions.sendButtonStyle
 	};
 
 	// styles for hovered send button
-	const sendButtonHoveredStyle = {
+	const sendButtonHoveredStyle: React.CSSProperties = {
 		backgroundColor: botOptions.theme?.secondaryColor,
 		...botOptions.sendButtonHoveredStyle
 	};
 	
 	// styles for send icon
-	const sendIconStyle = {
+	const sendIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${botOptions.chatInput?.sendButtonIcon})`,
 	};
 
