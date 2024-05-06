@@ -196,21 +196,26 @@ export const getDefaultBotOptions = () => {
  * @param theme theme to retrieve options for
  */
 const getThemeOptions = async (theme: string): Promise<Options> => {
-	// prepare json and css urls
-	const cdnUrl = "https://cdn.jsdelivr.net/gh/tjtanjin/react-chatbotify-themes/themes"
-	const jsonFile = "options.json";
-	const cssFile = "styles.css";
-	const jsonUrl = `${cdnUrl}/${theme}/${jsonFile}`;
-	const cssUrl = `${cdnUrl}/${theme}/${cssFile}`;
-
-	// load css
-	const link = document.createElement('link');
-	link.rel = 'stylesheet';
-	link.href = cssUrl;
-	document.head.appendChild(link);
-
-	// load json
 	try {
+		// prepare json and css urls
+		const themeBaseUrl = import.meta.env.VITE_THEME_BASE_CDN_URL;
+    
+		if(!themeBaseUrl) {
+			throw Error('base url not found in .env file');
+		}
+    
+		const jsonFile = "options.json";
+		const cssFile = "styles.css";
+		const jsonUrl = `${themeBaseUrl}/${theme}/${jsonFile}`;
+		const cssUrl = `${themeBaseUrl}/${theme}/${cssFile}`;
+
+		// load css
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = cssUrl;
+		document.head.appendChild(link);
+
+		// load json
 		const response = await fetch(jsonUrl);
 		if (!response.ok) {
 			console.log(`Failed to fetch theme ${theme}`);
@@ -218,7 +223,7 @@ const getThemeOptions = async (theme: string): Promise<Options> => {
 		}
 		return await response.json();
 	} catch (error) {
-		console.log(`Failed to fetch theme ${theme}`);
+		console.log(`Failed to fetch theme ${theme} - ${error}`);
 		return {}
 	}
 }
