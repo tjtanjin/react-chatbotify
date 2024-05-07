@@ -53,6 +53,7 @@ const run = async() => {
     await executeTest(viewHistory);
     await executeTest(charLimit);
     await executeTest(newMessagePrompt);
+    await executeTest(scrollToBottom);
     showTestSummary();
     await driver.quit();
 };
@@ -399,6 +400,28 @@ const newMessagePrompt = async () => {
     }
 };
 
+
+const scrollToBottom = async () => {
+
+    const chatWindowElement = await driver.findElement(By.className("rcb-chat-body-container"));
+    const messagePrompt = await driver.findElement(By.className("rcb-message-prompt-container"));
+    await messagePrompt.click();
+
+    await sleep(WAIT_DURATION);
+
+    const isScrolledToBottom = await driver.executeScript(
+        "const element = arguments[0];" +
+        "const scrollPosition = element.scrollTop + element.offsetHeight;" +
+        "const totalContentHeight = element.scrollHeight;" +
+        "const tolerance = 5; /* pixels allowed for inaccuracy */" +
+        "return scrollPosition >= totalContentHeight - tolerance;",
+        chatWindowElement
+      );
+    
+    if (!isScrolledToBottom) {
+      throw new Error("Chat did not auto-scroll to the bottom when the new message prompt was clicked.");
+    }
+};
 
 const showTestSummary = () => {
     console.log(errors);
