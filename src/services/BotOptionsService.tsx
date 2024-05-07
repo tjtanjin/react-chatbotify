@@ -16,7 +16,7 @@ import audioIcon from "../assets/audio_icon.svg";
 import notificationSound from "../assets/notification_sound.wav";
 
 // default options provided to the bot
-const defaultOptions = {
+const defaultOptions: Options = {
 	// tracks state of chat window, also the default state to load it in
 	isOpen: false,
 
@@ -242,7 +242,7 @@ export const parseBotOptions = async (providedOptions: Options | undefined,
 		return defaultOptions;
 	}
 
-	let combinedOptions: Options = defaultOptions;
+	let combinedOptions = defaultOptions;
 	if (theme != null) {
 		if (Array.isArray(theme)) {
 			for (const selectedTheme of theme) {
@@ -274,8 +274,7 @@ export const parseBotOptions = async (providedOptions: Options | undefined,
  * @param baseOptions the base options that the provided options will overwrite
  */
 const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Options => {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const stack: Array<{ source: any, target: any }> = [{ source: preferredOptions, target: baseOptions }];
+	const stack: Array<{ source: object, target: object }> = [{ source: preferredOptions, target: baseOptions }];
 	
 	while (stack.length > 0) {
 		const poppedItem = stack.pop();
@@ -284,18 +283,16 @@ const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Op
 		}
 
 		const { source, target } = poppedItem;
-		for (const key in source) {
-			if (!Object.prototype.hasOwnProperty.call(source, key)) {
-				continue;
-			}
-
-			if (typeof source[key] === 'object' && source[key] !== null && key !== 'buttons') {
-				if (!target[key]) {
-					target[key] = Array.isArray(source[key]) ? [] : {};
-				}
-				stack.push({ source: source[key], target: target[key] });
+		for (const key of Object.keys(source)) {
+			const keyAsObjectType = key as keyof object;
+			if (
+				typeof source[keyAsObjectType] === 'object' && 
+				source[keyAsObjectType] !== null && 
+				keyAsObjectType !== 'buttons'
+			) {
+				stack.push({ source: source[keyAsObjectType], target: target[keyAsObjectType] });
 			} else {
-				target[key] = source[key];
+				target[keyAsObjectType] = source[keyAsObjectType];
 			}
 		}
 	}
