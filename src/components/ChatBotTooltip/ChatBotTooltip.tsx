@@ -69,7 +69,7 @@ const ChatBotTooltip = () => {
 	};
 
 	// styles for tooltip tail
-	const tooltipTailStyle = {
+	const tooltipTailStyle: React.CSSProperties = {
 		borderColor: `transparent transparent transparent ${tooltipStyle.backgroundColor}`
 	};
 	

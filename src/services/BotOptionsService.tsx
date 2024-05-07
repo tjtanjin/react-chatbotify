@@ -1,3 +1,4 @@
+import { BUTTON } from "./Utils";
 import { Options } from "../types/Options";
 
 import chatButton from "../assets/chat_button.png";
@@ -15,7 +16,7 @@ import audioIcon from "../assets/audio_icon.svg";
 import notificationSound from "../assets/notification_sound.wav";
 
 // default options provided to the bot
-const defaultOptions = {
+const defaultOptions: Options = {
 	// tracks state of chat window, also the default state to load it in
 	isOpen: false,
 
@@ -50,6 +51,7 @@ const defaultOptions = {
 		),
 		showAvatar: true,
 		avatar: botAvatar,
+		buttons: [BUTTON.AUDIO_BUTTON, BUTTON.NOTIFICATION_BUTTON, BUTTON.CLOSE_CHAT_BUTTON],
 		closeChatIcon: closeChatIcon,
 	},
 	notification: {
@@ -87,6 +89,7 @@ const defaultOptions = {
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
 		sendAttachmentOutput: true,
+		buttons: [BUTTON.VOICE_MESSAGE_BUTTON, BUTTON.SEND_MESSAGE_BUTTON]
 	},
 	chatWindow: {
 		showScrollbar: false,
@@ -129,6 +132,7 @@ const defaultOptions = {
 				</span>
 			</div>
 		),
+		buttons: [BUTTON.FILE_ATTACHMENT_BUTTON, BUTTON.EMOJI_PICKER_BUTTON]
 	},
 	fileAttachment: {
 		disabled: false,
@@ -187,38 +191,111 @@ export const getDefaultBotOptions = () => {
 }
 
 /**
+ * Retrieves the options for a theme via CDN.
+ * 
+ * @param theme theme to retrieve options for
+ */
+const getThemeOptions = async (theme: string): Promise<Options> => {
+	try {
+		// prepare json and css urls
+		const themeBaseUrl = import.meta.env.VITE_THEME_BASE_CDN_URL;
+    
+		if(!themeBaseUrl) {
+			throw Error('base url not found in .env file');
+		}
+    
+		const jsonFile = "options.json";
+		const cssFile = "styles.css";
+		const jsonUrl = `${themeBaseUrl}/${theme}/${jsonFile}`;
+		const cssUrl = `${themeBaseUrl}/${theme}/${cssFile}`;
+
+		// load css
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = cssUrl;
+		document.head.appendChild(link);
+
+		// load json
+		const response = await fetch(jsonUrl);
+		if (!response.ok) {
+			console.log(`Failed to fetch theme ${theme}`);
+			return {}
+		}
+		return await response.json();
+	} catch (error) {
+		console.log(`Failed to fetch theme ${theme} - ${error}`);
+		return {}
+	}
+}
+
+/**
  * Parses default options with user provided options to generate final bot options.
  * 
  * @param providedOptions options provided by the user to the bot
+ * @param theme theme provided by the user to the bot
  */
-export const parseBotOptions = (providedOptions: Options | undefined) => {
-	if (providedOptions == null) {
+export const parseBotOptions = async (providedOptions: Options | undefined,
+	theme: string | undefined | Array<string>): Promise<Options> => {
+	
+	// if no provided options or theme, then just load default options
+	if (providedOptions == null && theme == null) {
 		return defaultOptions;
 	}
 
-	// enforces value for bot delay does not go below 500
-	if (providedOptions.chatInput?.botDelay != null && providedOptions.chatInput?.botDelay < 500) {
-		providedOptions.chatInput.botDelay = 500;
+	let combinedOptions = defaultOptions;
+	if (theme != null) {
+		if (Array.isArray(theme)) {
+			for (const selectedTheme of theme) {
+				const themeOptions = await getThemeOptions(selectedTheme);
+				combinedOptions = getCombinedOptions(themeOptions, defaultOptions);
+			}
+		} else {
+			const themeOptions = await getThemeOptions(theme);
+			combinedOptions = getCombinedOptions(themeOptions, defaultOptions);
+		}
 	}
 
-	return getCombinedOptions(providedOptions);
+	if (providedOptions != null) {
+		combinedOptions = getCombinedOptions(providedOptions, combinedOptions);
+	}
+
+	// enforces value for bot delay does not go below 500
+	if (combinedOptions.chatInput?.botDelay != null && combinedOptions.chatInput?.botDelay < 500) {
+		combinedOptions.chatInput.botDelay = 500;
+	}
+
+	return combinedOptions;
 }
 
 /**
  * Combines default and provided options.
  * 
  * @param providedOptions options provided by the user to the bot
+ * @param baseOptions the base options that the provided options will overwrite
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getCombinedOptions = (providedOptions: any): Options => {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const mergedOptions: any = { ...defaultOptions };
-	for (const prop in providedOptions) {
-		if (typeof providedOptions[prop] === "object" && providedOptions[prop] !== null) {
-			mergedOptions[prop] = { ...mergedOptions[prop], ...providedOptions[prop] };
-		} else {
-			mergedOptions[prop] = providedOptions[prop];
+const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Options => {
+	const stack: Array<{ source: object, target: object }> = [{ source: preferredOptions, target: baseOptions }];
+	
+	while (stack.length > 0) {
+		const poppedItem = stack.pop();
+		if (poppedItem == null) {
+			continue;
+		}
+
+		const { source, target } = poppedItem;
+		for (const key of Object.keys(source)) {
+			const keyAsObjectType = key as keyof object;
+			if (
+				typeof source[keyAsObjectType] === 'object' && 
+				source[keyAsObjectType] !== null && 
+				keyAsObjectType !== 'buttons'
+			) {
+				stack.push({ source: source[keyAsObjectType], target: target[keyAsObjectType] });
+			} else {
+				target[keyAsObjectType] = source[keyAsObjectType];
+			}
 		}
 	}
-	return mergedOptions;
+
+	return baseOptions;
 }

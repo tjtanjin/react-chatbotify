@@ -29,6 +29,7 @@ export type Options = {
 		title?: string | JSX.Element;
 		showAvatar?: boolean;
 		avatar?: string;
+		buttons?: Array<JSX.Element | string>;
 		closeChatIcon?: string;
 	},
 	notification?: {
@@ -66,6 +67,7 @@ export type Options = {
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;
 		sendAttachmentOutput?: boolean;
+		buttons?: Array<JSX.Element | string>;
 	},
 	chatWindow?: {
 		showScrollbar?: boolean;
@@ -98,6 +100,7 @@ export type Options = {
 	},
 	footer?: {
 		text?: string | JSX.Element;
+		buttons?: Array<JSX.Element | string>;
 	},
 	fileAttachment?: {
 		disabled?: boolean;

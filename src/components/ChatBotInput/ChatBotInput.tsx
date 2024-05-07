@@ -1,9 +1,8 @@
-
-import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
 
 import SendButton from "./SendButton/SendButton";
 import VoiceButton from "./VoiceButton/VoiceButton";
-import { isDesktop } from "../../services/Utils";
+import { BUTTON, isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotInput.css";
@@ -166,6 +165,25 @@ const ChatBotInput = ({
 		setVoiceInputTrigger(prev => !prev);
 	}
 
+	/**
+	 * Renders voice button
+	 */
+	const renderVoiceButton = () => {
+		return (
+			<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}
+				voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
+				triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
+			/>
+		)
+	}
+
+	/**
+	 * Renders send button
+	 */
+	const renderSendButton = () => {
+		return (<SendButton handleSubmit={handleSubmit}/>)
+	}
+
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
@@ -187,13 +205,15 @@ const ChatBotInput = ({
 				onBlur={handleBlur}
 			/>
 			<div className="rcb-chat-input-button-container">
-				{!botOptions.voice?.disabled && isDesktop &&
-					<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}
-						voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
-						triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
-					/>
-				}
-				<SendButton handleSubmit={handleSubmit}/>
+				{botOptions.chatInput?.buttons?.map((button, index) => {
+					if (button === BUTTON.SEND_MESSAGE_BUTTON) {
+						return <React.Fragment key={index}>{renderSendButton()}</React.Fragment>
+					} else if (button === BUTTON.VOICE_MESSAGE_BUTTON && !botOptions.voice?.disabled && isDesktop) {
+						return <React.Fragment key={index}>{renderVoiceButton()}</React.Fragment>
+					} else if (React.isValidElement(button)) {
+						return <React.Fragment key={index}>{button}</React.Fragment>
+					}
+				})}
 				{botOptions.chatInput?.showCharacterCount
 					&& botOptions.chatInput?.characterLimit != null
 					&& botOptions.chatInput?.characterLimit > 0

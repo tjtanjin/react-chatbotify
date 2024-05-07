@@ -31,7 +31,7 @@ const EmojiPicker = ({
 	const [showPopup, setShowPopup] = useState<boolean>(false);
 
 	// styles emoji button when disabled
-	const emojiButtonDisabledStyle = {
+	const emojiButtonDisabledStyle: React.CSSProperties = {
 		cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 	};
 

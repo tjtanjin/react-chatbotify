@@ -1,6 +1,7 @@
-import { MouseEvent } from "react";
+import React, { MouseEvent } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
+import { BUTTON } from "../../services/Utils";
 
 import "./ChatBotHeader.css";
 
@@ -57,6 +58,60 @@ const ChatBotHeader = ({
 		setBotOptions({...botOptions, isOpen: false});
 	}
 
+	/**
+	 * Renders notification button.
+	 */
+
+	const renderNotificationButton = () => {
+		return (
+			<div
+				style={headerImages.notificationIcon}
+				onMouseDown={(event: MouseEvent) => {
+					event.preventDefault();
+					handleToggleNotification();
+				}}
+				className={`rcb-notification-icon-${
+					notificationToggledOn ? "on" : "off"
+				}`}
+			></div>
+		);
+	};
+
+	/**
+	 * Renders audio button.
+	 */
+
+	const renderAudioButton = () => {
+		return (
+			<div
+				style={headerImages.audioIcon}
+				onMouseDown={(event: MouseEvent) => {
+					event.preventDefault();
+					handleToggleAudio();
+				}}
+				className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}
+			></div>
+		);
+	};
+
+
+	/**
+	 * Renders close chat button.
+	 */
+	const renderCloseChatButton = () => {
+		return (
+			<div
+				style={headerImages.closeChatIcon}
+				onMouseDown={(event: MouseEvent) => {
+					event.stopPropagation();
+					handleCloseChat();
+				}}
+				className="rcb-close-chat-icon"
+			>
+			</div>
+		)
+	}
+
 	return (
 		<div style={headerStyle} className="rcb-chat-header-container">
 			<div className="rcb-chat-header">
@@ -66,39 +121,21 @@ const ChatBotHeader = ({
 				{botOptions.header?.title}
 			</div>
 			<div className="rcb-chat-header">
-				{!botOptions.notification?.disabled && !botOptions.theme?.embedded &&
-					<div
-						style={headerImages.notificationIcon}
-						onMouseDown={(event: MouseEvent) => {
-							event.preventDefault();
-							handleToggleNotification();
-						}}
-						className={`rcb-notification-icon-${notificationToggledOn ? "on" : "off"}`}
-					>
-					</div>
-				}
-				{!botOptions.audio?.disabled &&
-					<div
-						style={headerImages.audioIcon}
-						onMouseDown={(event: MouseEvent) => {
-							event.preventDefault();
-							handleToggleAudio();
-						}}
-						className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}
-					>
-					</div>
-				}
-				{!botOptions.theme?.embedded &&
-					<div
-						style={headerImages.closeChatIcon}
-						onMouseDown={(event: MouseEvent) => {
-							event.stopPropagation();
-							handleCloseChat();
-						}}
-						className="rcb-close-chat-icon"
-					>
-					</div>
-				}
+				{botOptions.header?.buttons?.map((button, index) => {
+					if (
+						button === BUTTON.NOTIFICATION_BUTTON &&
+						!botOptions.notification?.disabled &&
+						!botOptions.theme?.embedded
+					) {
+						return <React.Fragment key={index}>{renderNotificationButton()}</React.Fragment>;
+					} else if (button === BUTTON.AUDIO_BUTTON && !botOptions.audio?.disabled) {
+						return <React.Fragment key={index}>{renderAudioButton()}</React.Fragment>;
+					} else if (button === BUTTON.CLOSE_CHAT_BUTTON && !botOptions.theme?.embedded) {
+						return <React.Fragment key={index}>{renderCloseChatButton()}</React.Fragment>;
+					} else if (React.isValidElement(button)) {
+						return <React.Fragment key={index}>{button}</React.Fragment>;
+					}				
+				})}
 			</div>
 		</div>
 	);

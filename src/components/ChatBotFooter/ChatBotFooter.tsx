@@ -1,9 +1,10 @@
 
-import { RefObject } from "react";
+import React, { RefObject } from "react";
 
 import EmojiPicker from "./EmojiPicker/EmojiPicker";
 import FileAttachmentButton from "./FileAttachmentButton/FileAttachmentButton";
 import { useBotOptions } from "../../context/BotOptionsContext";
+import { BUTTON } from "../../services/Utils";
 import { Flow } from "../../types/Flow";
 
 import "./ChatBotFooter.css";
@@ -46,18 +47,32 @@ const ChatBotFooter = ({
 	// handles options for bot
 	const { botOptions } = useBotOptions();
 
+	const renderFileAttachment = () => {
+		return (
+			<FileAttachmentButton inputRef={inputRef}
+				flow={flow} getCurrPath={getCurrPath} openChat={openChat}
+				getPrevPath={getPrevPath} handleActionInput={handleActionInput} injectMessage={injectMessage}
+				streamMessage={streamMessage}
+			/>
+		)
+	}
+
+	const renderEmojiPicker = () => {
+		return (<EmojiPicker inputRef={inputRef} textAreaDisabled={textAreaDisabled}/>)
+	}
+
 	return (
 		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
-				{!botOptions.fileAttachment?.disabled &&
-					<FileAttachmentButton inputRef={inputRef} flow={flow} getCurrPath={getCurrPath} openChat={openChat}
-						getPrevPath={getPrevPath} handleActionInput={handleActionInput} injectMessage={injectMessage}
-						streamMessage={streamMessage}
-					/>
-				}
-				{!botOptions.emoji?.disabled &&
-					<EmojiPicker inputRef={inputRef} textAreaDisabled={textAreaDisabled}/>
-				}
+				{botOptions.footer?.buttons?.map((button, index) => {
+					if (button === BUTTON.FILE_ATTACHMENT_BUTTON && !botOptions.fileAttachment?.disabled) {
+						return <React.Fragment key={index}>{renderFileAttachment()}</React.Fragment>;
+					} else if (button === BUTTON.EMOJI_PICKER_BUTTON && !botOptions.emoji?.disabled) {
+						return <React.Fragment key={index}>{renderEmojiPicker()}</React.Fragment>;
+					} else if (React.isValidElement(button)) {
+						return <React.Fragment key={index}>{button}</React.Fragment>;
+					}
+				})}
 			</div>
 			<span>{botOptions.footer?.text}</span>
 		</div>
