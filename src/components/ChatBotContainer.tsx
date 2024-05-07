@@ -49,9 +49,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// tracks if chat bot is streaming messages
 	const isBotStreamingRef = useRef<boolean>(false);
 
-	// tracks history messages loaded on start
-	const historyMessages = useRef<string>("");
-
 	// checks if voice should be toggled back on after a user input
 	const keepVoiceOnRef = useRef<boolean>(false);
 
@@ -112,7 +109,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
 		setAudioToggledOn(botOptions.audio?.defaultToggledOn as boolean);
 		setVoiceToggledOn(botOptions.voice?.defaultToggledOn as boolean);
-		historyMessages.current = localStorage.getItem(botOptions.chatHistory?.storageKey as string) as string;
 		if (botOptions.chatHistory?.disabled) {
 			localStorage.removeItem(botOptions.chatHistory?.storageKey as string);
 		} else {
@@ -171,7 +167,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// triggers check for notifications and saving of chat history
 	useEffect(() => {
-		saveChatHistory(messages, historyMessages.current);
+		saveChatHistory(messages);
 		handleNotifications();
 	}, [messages.length]);
 
@@ -421,7 +417,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 					// for simulated streaming, manually trigger save chat history of streamed message at the end
 					if (streamIndex === streamMessage.length - 1) {
-						saveChatHistory(updatedMessages, historyMessages.current);
+						saveChatHistory(updatedMessages);
 					}
 				
 					return updatedMessages;
