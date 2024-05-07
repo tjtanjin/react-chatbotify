@@ -51,7 +51,8 @@ const run = async() => {
     await executeTest(toggleAudio);
     await executeTest(toggleVoice);
     await executeTest(viewHistory);
-    await executeTest(testCharacterLimit);
+    await executeTest(charLimit);
+    await executeTest(newMessagePrompt);
     showTestSummary();
     await driver.quit();
 };
@@ -360,7 +361,7 @@ const viewHistory = async () => {
     }
 }
 
-const testCharacterLimit = async () => {
+const charLimit = async () => {
     const charCounterElements = await driver.findElements(By.className("rcb-chat-input-char-counter"));
     if (charCounterElements.length > 0) {
 
@@ -377,6 +378,27 @@ const testCharacterLimit = async () => {
         }
     }
 };
+
+const newMessagePrompt = async () => {
+    const textAreaElement = await driver.findElement(By.className("rcb-chat-input-textarea"));
+    await textAreaElement.sendKeys("Hello", Key.RETURN);
+
+    const chatWindowElement = await driver.findElement(By.className("rcb-chat-body-container"));
+    await driver.executeScript("arguments[0].scrollTop = 0", chatWindowElement);
+
+    await sleep(WAIT_DURATION);
+
+    const messagePrompt = await driver.findElements(By.className("rcb-message-prompt-container"));
+    if (messagePrompt.length === 0) {
+        throw new Error("Message prompt container element not found.");
+    }
+    const messagePromptClasses = await messagePrompt[0].getAttribute("class");
+
+    if (!messagePromptClasses.includes("visible") || messagePromptClasses.includes("hidden")) {
+        throw new Error("New message prompt was not shown when new messages were received.");
+    }
+};
+
 
 const showTestSummary = () => {
     console.log(errors);
