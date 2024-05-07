@@ -176,6 +176,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setHistoryStorageValues(botOptions);
 	}, [botOptions.chatHistory?.storageKey, botOptions.chatHistory?.maxEntries, botOptions.chatHistory?.disabled]);
 
+	// saves messages once a stream ends
+	useEffect(() => {
+		if (!isBotStreamingRef.current) {
+			saveChatHistory(messages);
+		}
+	}, [isBotStreamingRef.current])
+
 	// resets unread count on opening chat and handles scrolling/resizing window on mobile devices
 	useEffect(() => {
 		if (botOptions.isOpen) {
@@ -415,11 +422,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 						}
 					}
 
-					// for simulated streaming, manually trigger save chat history of streamed message at the end
-					if (streamIndex === streamMessage.length - 1) {
-						saveChatHistory(updatedMessages);
-					}
-				
 					return updatedMessages;
 				});
 
