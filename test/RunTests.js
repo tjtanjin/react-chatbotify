@@ -51,6 +51,7 @@ const run = async() => {
     await executeTest(toggleAudio);
     await executeTest(toggleVoice);
     await executeTest(viewHistory);
+    await executeTest(testCharacterLimit);
     showTestSummary();
     await driver.quit();
 };
@@ -359,6 +360,24 @@ const viewHistory = async () => {
     }
 }
 
+const testCharacterLimit = async () => {
+    const charCounterElements = await driver.findElements(By.className("rcb-chat-input-char-counter"));
+    if (charCounterElements.length > 0) {
+
+        const charCounterText = await charCounterElements[0].getText();
+        const characterLimit = parseInt(charCounterText.split('/')[1], 10);
+
+        const textAreaElement = await driver.findElement(By.className("rcb-chat-input-textarea"));
+        await driver.wait(until.elementIsVisible(textAreaElement), WAIT_DURATION);
+        const longString = "a".repeat(characterLimit + 10);
+        await textAreaElement.sendKeys(longString);
+        const textAreaValue = await textAreaElement.getAttribute("value");
+        if (textAreaValue.length > characterLimit) {
+            throw new Error(`Character limit exceeded: Expected max ${characterLimit} characters but found ${textAreaValue.length}`);
+        }
+    }
+};
+
 const showTestSummary = () => {
     console.log(errors);
     console.log(`Total Test Cases: ${numCases}`);
@@ -370,5 +389,7 @@ const showTestSummary = () => {
         process.exit(1);
     }
 }
+
+
 
 run();
