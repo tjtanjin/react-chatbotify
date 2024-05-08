@@ -129,6 +129,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		};
 	}, []);
 
+	// triggers update to chat history options
+	useEffect(() => {
+		setHistoryStorageValues(botOptions);
+	}, [botOptions.chatHistory?.storageKey, botOptions.chatHistory?.maxEntries, botOptions.chatHistory?.disabled]);
+
 	// used to handle virtualkeyboard api (if supported on browser)
 	useEffect(() => {
 		// if is desktop or is embedded bot, nothing to resize
@@ -170,11 +175,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		saveChatHistory(messages);
 		handleNotifications();
 	}, [messages.length]);
-
-	// triggers update to chat history options
-	useEffect(() => {
-		setHistoryStorageValues(botOptions);
-	}, [botOptions.chatHistory?.storageKey, botOptions.chatHistory?.maxEntries, botOptions.chatHistory?.disabled]);
 
 	// saves messages once a stream ends
 	useEffect(() => {
