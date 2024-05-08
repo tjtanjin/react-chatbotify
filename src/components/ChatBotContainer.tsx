@@ -114,14 +114,14 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		} else {
 			const chatHistory = localStorage.getItem(botOptions.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
+				// note: must always render this button even if autoload (chat history logic relies on system message)
+				const messageContent = {
+					content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory} />,
+					sender: "system"
+				};
+				setMessages([messageContent]);
 				if (botOptions.chatHistory?.autoLoad) {
 					loadChatHistory(botOptions, chatHistory, setMessages, setTextAreaDisabled);
-				} else {
-					const messageContent = {
-						content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory} />,
-						sender: "system"
-					};
-					setMessages([messageContent]);
 				}
 			}
 		}
