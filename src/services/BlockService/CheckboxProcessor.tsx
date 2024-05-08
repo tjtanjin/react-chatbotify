@@ -1,5 +1,6 @@
 import UserCheckboxes from "../../components/UserCheckboxes/UserCheckboxes";
 import { Block } from "../../types/Block";
+import { Flow } from "../../types/Flow";
 
 /**
  * Handles processing of checkboxes in current block.
@@ -9,9 +10,9 @@ import { Block } from "../../types/Block";
  * @param injectMessage utility function for injecting a message into the messages array
  * @param handleActionInput handles action input from user 
  */
-export const processCheckboxes = (block: Block, path: string,
+export const processCheckboxes = (block: Block, path: keyof Flow,
 	injectMessage: (content: string | JSX.Element, sender?: string) => void,
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>) => {
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const checkboxes = block.checkboxes;
 	if (checkboxes == null) {

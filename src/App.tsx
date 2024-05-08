@@ -1,11 +1,12 @@
 import ChatBot from "./components/ChatBot";
+import { Flow } from "./types/Flow";
 import { Params } from "./types/Params";
 
 function App() {
 
 	// Serves as an example flow used during the development phase - covers all possible attributes in a block.
 	// restore to default state before running selenium tests (or update the test cases if necessary)!
-	const flow = {
+	const flow: Flow = {
 		start: {
 			message: "Hello! What is your name?",
 			path: "ask_age_group",

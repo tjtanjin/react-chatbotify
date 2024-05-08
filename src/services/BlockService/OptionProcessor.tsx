@@ -2,6 +2,7 @@
 
 import UserOptions from "../../components/UserOptions/UserOptions";
 import { Block } from "../../types/Block";
+import { Flow } from "../../types/Flow";
 
 /**
  * Handles processing of options in current block.
@@ -11,9 +12,9 @@ import { Block } from "../../types/Block";
  * @param injectMessage utility function for injecting a message into the messages array
  * @param handleActionInput handles action input from user 
  */
-export const processOptions = (block: Block, path: string,
+export const processOptions = (block: Block, path: keyof Flow,
 	injectMessage: (content: string | JSX.Element, sender?: string) => void,
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>) => {
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const options = block.options;
 	if (options == null) {
