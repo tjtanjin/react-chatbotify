@@ -232,8 +232,8 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botOptionStyle?.color || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botOptionStyle?.color || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 			...botOptions.botOptionStyle
 		}
@@ -253,8 +253,8 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botCheckboxRowStyle?.color || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botCheckboxRowStyle?.color || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 			...botOptions.botCheckboxRowStyle
 		}
@@ -274,8 +274,8 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botCheckboxNextStyle?.color || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botCheckboxNextStyle?.color || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 			...botOptions.botCheckboxNextStyle
 		}
