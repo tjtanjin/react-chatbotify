@@ -11,18 +11,18 @@ let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
 let historyDisabled = false;
+let historyMessages: Message[] = [];
 
 /**
  * Updates the messages array with a new message appended at the end and saves chat history if enabled.
  * 
  * @param messages messages containing current conversation with the bot
  */
-const saveChatHistory = async (messages: Message[], chatHistory: string) => {
+const saveChatHistory = async (messages: Message[]) => {
 	if (historyDisabled) {
 		return;
 	}
 	
-	const historyMessages = getHistoryMessages(chatHistory);
 	const messagesToSave: Message[] = [];
 	const offset = historyLoaded ? historyMessages.length : 0;
 
@@ -42,7 +42,7 @@ const saveChatHistory = async (messages: Message[], chatHistory: string) => {
 		}
 	}
 
-	let parsedMessages = messagesToSave.map(parseMessageToString);
+	let parsedMessages: Message[] = messagesToSave.map(parseMessageToString);
 	if (parsedMessages.length < historyMaxEntries) {
 		const difference = historyMaxEntries - parsedMessages.length;
 		parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
@@ -76,6 +76,7 @@ const setHistoryStorageValues = (botOptions: Options) => {
 	historyStorageKey = botOptions.chatHistory?.storageKey as string;
 	historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
 	historyDisabled = botOptions.chatHistory?.disabled as boolean;
+	historyMessages = getHistoryMessages(localStorage.getItem(historyStorageKey) as string);
 }
 
 /**
