@@ -131,14 +131,18 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 			setTimeout(() => {
 				setMessages((prevMessages) => {
 					prevMessages.shift();
-					// if autoload, no need for chat history line break
+					// if autoload, line break is invisible
+					let lineBreakMessage;
 					if (botOptions.chatHistory?.autoLoad) {
-						return [...parsedMessages, ...prevMessages];
-					}
-
-					const lineBreakMessage = {
-						content: <ChatHistoryLineBreak/>,
-						sender: "system"
+						lineBreakMessage = {
+							content: <></>,
+							sender: "system"
+						}
+					} else {
+						lineBreakMessage = {
+							content: <ChatHistoryLineBreak/>,
+							sender: "system"
+						}
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
