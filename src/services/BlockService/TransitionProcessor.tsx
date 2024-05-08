@@ -14,11 +14,16 @@ import { Params } from "../../types/Params";
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const processTransition = async (flow: Flow, path: string, params: Params,
+export const processTransition = async (flow: Flow, path: keyof Flow, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
+
+	if (!block) {
+		throw new Error("block is not valid.");
+	}
+
 	const transitionAttr = block.transition;
 
 	let transitionDetails;

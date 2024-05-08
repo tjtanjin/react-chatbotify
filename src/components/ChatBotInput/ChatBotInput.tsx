@@ -7,6 +7,7 @@ import { isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotInput.css";
+import { Flow } from "../../types/Flow";
 
 /**
  * Contains chat input field for user to enter messages.
@@ -29,9 +30,9 @@ const ChatBotInput = ({
 	inputRef: RefObject<HTMLTextAreaElement>;
 	textAreaDisabled: boolean;
 	voiceToggledOn: boolean;
-	getCurrPath: () => string | null;
+	getCurrPath: () => keyof Flow | null;
 	handleToggleVoice: () => void;
-	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => Promise<void>;
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot

@@ -5,6 +5,7 @@ import { useBotOptions } from "../../context/BotOptionsContext";
 import { usePaths } from "../../context/PathsContext";
 
 import "./UserOptions.css";
+import { Flow } from "../../types/Flow";
 
 /**
  * Supports showing of options for user to select.
@@ -19,8 +20,8 @@ const UserOptions= ({
 	handleActionInput
 }: {
 	options: string[];
-	path: string;
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>;
+	path: keyof Flow;
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot

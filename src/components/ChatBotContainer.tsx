@@ -248,7 +248,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param currPath the current path
 	 * @param params parameters that may be used in the block
 	 */
-	const callNewBlock = async (currPath: string, params: Params) => {
+	const callNewBlock = async (currPath: keyof Flow, params: Params) => {
 		if (currPath === "start") {
 			setTextAreaDisabled(true);
 		}
@@ -352,7 +352,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Retrieves current path for user.
 	 */
 	const getCurrPath = () => {
-		return paths.length > 0 ? paths[paths.length -1] : null;
+		return paths.length > 0 ? paths[paths.length - 1] : null;
 	}
 
 	/**
@@ -493,6 +493,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 		const block = flow[currPath];
+
+		if (!block) {
+			return;
+		}
+
 		if (block.chatDisabled != null) {
 			setTextAreaDisabled(block.chatDisabled);
 		} else {
@@ -537,7 +542,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param userInput input provided by the user
 	 * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
 	 */
-	const handleActionInput = async (path: string, userInput: string, sendUserInput = true) => {
+	const handleActionInput = async (path: keyof Flow, userInput: string, sendUserInput = true) => {
 		clearTimeout(timeoutId);
 		userInput = userInput.trim();
 		paramsInputRef.current = userInput;

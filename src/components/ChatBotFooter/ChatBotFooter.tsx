@@ -38,9 +38,9 @@ const ChatBotFooter = ({
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
-	getCurrPath: () => string | null;
-	getPrevPath: () => string | null;
-	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => Promise<void>;
+	getCurrPath: () => keyof Flow | null;
+	getPrevPath: () => keyof Flow | null;
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot
