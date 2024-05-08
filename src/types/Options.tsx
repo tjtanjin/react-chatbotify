@@ -53,6 +53,7 @@ export type Options = {
 		storageKey?: string;
 		viewChatHistoryButtonText?: string;
 		chatHistoryLineBreakText?: string;
+		autoLoad?: boolean;
 	},
 	chatInput?: {
 		disabled?: boolean;

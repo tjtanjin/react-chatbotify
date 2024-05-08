@@ -74,6 +74,7 @@ const defaultOptions = {
 		storageKey: "rcb-history",
 		viewChatHistoryButtonText: "Load Chat History ⟳",
 		chatHistoryLineBreakText: "----- Previous Chat History -----",
+		autoLoad: false,
 	},
 	chatInput: {
 		disabled: false,
