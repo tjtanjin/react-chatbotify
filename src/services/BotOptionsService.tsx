@@ -96,6 +96,12 @@ const defaultOptions = {
 		messagePromptText: "New Messages ↓",
 		messagePromptOffset: 30,
 	},
+	sensitiveInfo: {
+		showAsterisks: true,
+		asterisksCount: 10,
+		toggleEnabled: false,
+		defaultToggledOn: true,
+	},
 	userBubble: {
 		animate: true,
 		showAvatar: false,
