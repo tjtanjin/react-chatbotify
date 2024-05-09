@@ -9,7 +9,7 @@ import { Params } from "../../types/Params";
  */
 export const processFunction = async (block: Block, params: Params) => {
 	const func = block.function;
-	if (func == null) {
+	if (!func) {
 		return;
 	}
 

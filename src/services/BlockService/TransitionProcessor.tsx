@@ -37,7 +37,7 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 	}
 
 	// cannot transition if details are not present
-	if (transitionDetails == null || transitionDetails instanceof Promise) {
+	if (!transitionDetails || transitionDetails instanceof Promise) {
 		return;
 	}
 
@@ -47,7 +47,7 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 	}
 
 	// defaults interruptable to false if not found
-	if (transitionDetails.interruptable == null) {
+	if (!transitionDetails.interruptable) {
 		transitionDetails.interruptable = false;
 	}
 	

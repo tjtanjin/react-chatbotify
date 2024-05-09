@@ -69,12 +69,12 @@ const FileAttachmentButton = ({
 	 */
 	const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files;
-		if (files == null) {
+		if (!files) {
 			return;
 		}
 
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];

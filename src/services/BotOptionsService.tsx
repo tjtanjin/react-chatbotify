@@ -199,7 +199,7 @@ export const getDefaultBotOptions = () => {
  * @param providedOptions options provided by the user to the bot
  */
 export const parseBotOptions = (providedOptions: Options | undefined) => {
-	if (providedOptions == null) {
+	if (!providedOptions) {
 		return defaultOptions;
 	}
 

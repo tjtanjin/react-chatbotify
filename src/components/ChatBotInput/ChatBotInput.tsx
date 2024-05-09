@@ -51,7 +51,7 @@ const ChatBotInput = ({
 	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
 	useEffect(() => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		handleActionInput(currPath, inputRef.current?.value as string);
@@ -156,7 +156,7 @@ const ChatBotInput = ({
 	const handleSubmit = (event: (FormEvent | MouseEvent)) => {
 		event.preventDefault();
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		handleActionInput(currPath, inputRef.current?.value as string);

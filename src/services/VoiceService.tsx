@@ -21,7 +21,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	triggerSendVoiceInput: () => void, setInputLength: Dispatch<SetStateAction<number>>,
 	inputRef: RefObject<HTMLTextAreaElement>) => {
 
-	if (recognition == null) {
+	if (!recognition) {
 		return;
 	}
 	
@@ -60,7 +60,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	recognition.onend = () => {
 		if (toggleOn) {
 			recognition.start();
-			if (inactivityTimer == null) {
+			if (!inactivityTimer) {
 				inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);
 			}
 		} else {
@@ -78,7 +78,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
  * Stops voice recording.
  */
 export const stopVoiceRecording = () => {
-	if (recognition == null) {
+	if (!recognition) {
 		return;
 	}
 
@@ -96,7 +96,7 @@ export const stopVoiceRecording = () => {
  */
 export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botOptions: Options) => {
 
-	if (botOptions.voice?.disabled || !botOptions.chatInput?.blockSpam || recognition == null) {
+	if (botOptions.voice?.disabled || !botOptions.chatInput?.blockSpam || !recognition) {
 		return;
 	}
 

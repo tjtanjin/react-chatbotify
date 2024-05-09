@@ -15,7 +15,7 @@ export const processCheckboxes = (block: Block, path: keyof Flow,
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const checkboxes = block.checkboxes;
-	if (checkboxes == null) {
+	if (!checkboxes) {
 		return;
 	}
 

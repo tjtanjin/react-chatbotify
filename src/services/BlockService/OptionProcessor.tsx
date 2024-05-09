@@ -17,7 +17,7 @@ export const processOptions = (block: Block, path: keyof Flow,
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const options = block.options;
-	if (options == null) {
+	if (!options) {
 		return;
 	}
 
