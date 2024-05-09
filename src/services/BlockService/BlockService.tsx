@@ -18,6 +18,7 @@ import { Block } from "../../types/Block";
  * @param path path associated with the current block
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
+ * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
@@ -53,13 +54,13 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
 			break;
 		
 		case "chatDisabled":
-			if (block.chatDisabled != null) {
+			if (block.chatDisabled) {
 				setTextAreaDisabled(block.chatDisabled);
 			}
 			break;
 
 		case "isSensitive":
-			if (block.isSensitive != null) {
+			if (block.isSensitive) {
 				setTextAreaSensitiveMode(block.isSensitive);
 			}
 			break;

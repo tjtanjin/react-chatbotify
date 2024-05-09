@@ -236,13 +236,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// performs pre-processing when paths change
 	useEffect(() => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath ) {
 			return;
 		}
 		const block = flow[currPath];
 
 		// if path is invalid, nothing to process (i.e. becomes dead end!)
-		if (block == null) {
+		if (!block) {
 			return;
 		}
 
@@ -340,7 +340,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		const message = messages[messages.length - 1]
 		// if message is null or sent by user or is bot typing, return
-		if (message == null || message.sender === "user" || isBotTyping) {
+		if (!message || message.sender === "user" || isBotTyping) {
 			return;
 		}
 
@@ -494,7 +494,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const updateTextArea = () => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
@@ -503,13 +503,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		if (block.chatDisabled != null) {
+		if (block.chatDisabled) {
 			setTextAreaDisabled(block.chatDisabled);
 		} else {
 			setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
 		}
 
-		if (block.isSensitive != null) {
+		if (block.isSensitive) {
 			setTextAreaSensitiveMode(block.isSensitive);
 		} else {
 			setTextAreaSensitiveMode(false);
@@ -611,7 +611,17 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	* @param userInput input provided by the user
 	 */
 	const handleSendUserInput = async (userInput: string) => {
-		if (textAreaSensitiveMode) {
+		const currPath = getCurrPath();
+		if (!currPath) {
+			return;
+		}
+
+		const block = flow[currPath];
+		if (!block) {
+			return;
+		}
+
+		if (block.isSensitive) {
 			if (botOptions?.sensitiveInfo?.hideInBubble) {
 				return;
 			} else if (botOptions?.sensitiveInfo?.maskInBubble) {

@@ -50,13 +50,13 @@ const FileAttachmentButton = ({
 	// checks if attachments are allowed on every path traversal into another block
 	useEffect(() => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
 
 		// if path is invalid, nothing to process (i.e. becomes dead end!)
-		if (block == null) {
+		if (!block) {
 			return;
 		}
 		setBlockAllowsAttachment(typeof block.file === "function");

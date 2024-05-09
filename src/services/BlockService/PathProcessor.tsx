@@ -31,8 +31,6 @@ export const processPath = async (block: Block, params: Params,
 	if (parsedPath == null) {
 		return false;
 	}
-	// eslint-disable-next-line
-	// @ts-ignore
 	setPaths(prev => [...prev, parsedPath]);
 	return true;
 }
