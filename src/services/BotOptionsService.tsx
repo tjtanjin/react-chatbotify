@@ -108,6 +108,7 @@ const defaultOptions = {
 		avatar: userAvatar,
 		simStream: false,
 		streamSpeed: 30,
+		dangerouslySetInnerHtml: false,
 	},
 	botBubble: {
 		animate: true,
@@ -115,6 +116,7 @@ const defaultOptions = {
 		avatar: botAvatar,
 		simStream: false,
 		streamSpeed: 30,
+		dangerouslySetInnerHtml: false,
 	},
 	voice: {
 		disabled: true,

@@ -148,12 +148,20 @@ const ChatBotBody = ({
 	const renderUserMessage = (message: Message) => {
 		return (
 			<>
-				<div
-					style={userBubbleStyle}
-					className={`rcb-user-message ${userBubbleEntryStyle}`}
-				>
-					{message.content}
-				</div>
+				{botOptions?.userBubble?.dangerouslySetInnerHtml ?
+					<div
+						style={{...userBubbleStyle, display: "inline" }}
+						className={`rcb-user-message ${userBubbleEntryStyle}`}
+						dangerouslySetInnerHTML={{__html: message.content}}
+					/>
+					:
+					<div
+						style={userBubbleStyle}
+						className={`rcb-user-message ${userBubbleEntryStyle}`}
+					>
+						{message.content}
+					</div>
+				}
 				{botOptions.userBubble?.showAvatar &&
 					<div 
 						style={{backgroundImage: `url(${botOptions.userBubble?.avatar})`}}
@@ -178,12 +186,20 @@ const ChatBotBody = ({
 						className="rcb-message-bot-avatar"
 					/>
 				}
-				<div
-					style={botBubbleStyle}
-					className={`rcb-bot-message ${botBubbleEntryStyle}`}
-				>
-					{message.content}
-				</div>
+				{botOptions?.botBubble?.dangerouslySetInnerHtml ?
+					<div
+						style={{...botBubbleStyle, display: "inline" }}
+						className={`rcb-bot-message ${botBubbleEntryStyle}`}
+						dangerouslySetInnerHTML={{__html: message.content}}
+					/>
+					:
+					<div
+						style={botBubbleStyle}
+						className={`rcb-bot-message ${botBubbleEntryStyle}`}
+					>
+						{message.content}
+					</div>
+				}
 			</>
 		);
 	};

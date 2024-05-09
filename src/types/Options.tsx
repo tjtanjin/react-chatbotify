@@ -87,6 +87,7 @@ export type Options = {
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
+		dangerouslySetInnerHtml?: boolean;
 	},
 	botBubble?: {
 		animate?: boolean;
@@ -94,6 +95,7 @@ export type Options = {
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
+		dangerouslySetInnerHtml?: boolean;
 	},
 	voice?: {
 		disabled?: boolean;
