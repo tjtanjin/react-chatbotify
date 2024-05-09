@@ -14,6 +14,7 @@ import { Flow } from "../../types/Flow";
  * 
  * @param inputRef reference to the textarea
  * @param textAreaDisabled boolean indicating if textarea is disabled
+ * @param textAreaSensitveMode boolean indicating is textarea is in sensitve mode
  * @param voiceToggledOn boolean indicating if voice is toggled on
  * @param getCurrPath retrieves the current path of user
  * @param handleToggleVoice handles toggling of voice
@@ -22,13 +23,15 @@ import { Flow } from "../../types/Flow";
 const ChatBotInput = ({
 	inputRef,
 	textAreaDisabled,
+	textAreaSensitiveMode,
 	voiceToggledOn,
 	getCurrPath,
 	handleToggleVoice,
 	handleActionInput,
 }: {
-	inputRef: RefObject<HTMLTextAreaElement>;
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
+	textAreaSensitiveMode: boolean;
 	voiceToggledOn: boolean;
 	getCurrPath: () => keyof Flow | null;
 	handleToggleVoice: () => void;
@@ -114,7 +117,7 @@ const ChatBotInput = ({
 	 * 
 	 * @param event keyboard event
 	 */ 
-	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (event.key === "Enter") {
 			event.preventDefault();
 			handleSubmit(event);
@@ -126,7 +129,7 @@ const ChatBotInput = ({
 	 * 
 	 * @param event textarea change event
 	 */
-	const handleTextareaValueChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleTextareaValueChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (textAreaDisabled && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
@@ -176,17 +179,37 @@ const ChatBotInput = ({
 			className="rcb-chat-input"
 		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
-			<textarea
-				ref={inputRef}
-				style={textAreaDisabled ? textAreaDisabledStyle : (isFocused ? textAreaFocusedStyle : textAreaStyle)}
-				rows={1}
-				className="rcb-chat-input-textarea"
-				placeholder={placeholder}
-				onChange={handleTextareaValueChange}
-				onKeyDown={handleKeyDown}
-				onFocus={handleFocus}
-				onBlur={handleBlur}
-			/>
+			{textAreaSensitiveMode && botOptions.sensitiveInfo?.maskInTextArea ?
+				<input
+					// @ts-expect-error input ref type
+					ref={inputRef}
+					type="password"
+					className="rcb-chat-input-textarea"
+					style={textAreaDisabled
+						? textAreaDisabledStyle
+						: (isFocused ? textAreaFocusedStyle : textAreaStyle)}
+					placeholder={placeholder}
+					onChange={handleTextareaValueChange}
+					onKeyDown={handleKeyDown}
+					onFocus={handleFocus}
+					onBlur={handleBlur}
+				/>
+				:
+				<textarea
+					// @ts-expect-error input ref type
+					ref={inputRef}
+					style={textAreaDisabled
+						? textAreaDisabledStyle
+						: (isFocused ? textAreaFocusedStyle : textAreaStyle)}
+					rows={1}
+					className="rcb-chat-input-textarea"
+					placeholder={placeholder}
+					onChange={handleTextareaValueChange}
+					onKeyDown={handleKeyDown}
+					onFocus={handleFocus}
+					onBlur={handleBlur}
+				/>
+			}
 			<div className="rcb-chat-input-button-container">
 				{!botOptions.voice?.disabled && isDesktop &&
 					<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}

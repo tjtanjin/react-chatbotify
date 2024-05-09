@@ -14,7 +14,7 @@ const EmojiPicker = ({
 	inputRef,
 	textAreaDisabled
 }: {
-	inputRef: RefObject<HTMLTextAreaElement>;
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
 }) => {
 

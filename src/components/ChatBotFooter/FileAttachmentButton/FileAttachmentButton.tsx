@@ -28,7 +28,7 @@ const FileAttachmentButton = ({
 	getPrevPath,
 	handleActionInput
 }: {
-	inputRef: RefObject<HTMLTextAreaElement>;
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	flow: Flow;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;

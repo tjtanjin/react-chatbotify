@@ -41,7 +41,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const chatBodyRef = useRef<HTMLDivElement>(null);
 
 	// references textarea for user input
-	const inputRef = useRef<HTMLTextAreaElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
 
 	// references a temporarily stored user input for use in attribute params
 	const paramsInputRef = useRef<string>("");
@@ -71,6 +71,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks if textarea is disabled
 	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(false);
+
+	// tracks if textarea is in sensitive mode
+	const [textAreaSensitiveMode, setTextAreaSensitiveMode] = useState<boolean>(false);
 
 	// tracks if chat history is being loaded
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
@@ -260,8 +263,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			setTextAreaDisabled(true);
 		}
 
-		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths,
-			setTimeoutId, handleActionInput);
+		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setTextAreaSensitiveMode,
+			setPaths, setTimeoutId, handleActionInput);
 
 		// cleanup logic after preprocessing of a block
 		setIsBotTyping(false);
@@ -505,6 +508,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		} else {
 			setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
 		}
+
+		if (block.isSensitive != null) {
+			setTextAreaSensitiveMode(block.isSensitive);
+		} else {
+			setTextAreaSensitiveMode(false);
+		}
 	}
 
 	/**
@@ -555,7 +564,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// Add user message to messages array
 		if (sendUserInput) {
-			await injectMessage(userInput, "user");
+			await handleSendUserInput(userInput);
 		}
 
 		if (chatBodyRef.current) {
@@ -594,6 +603,24 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTimeout(() => {
 			inputRef.current?.focus();
 		}, botOptions.chatInput?.botDelay as number + 100);
+	}
+
+	/**
+	 * Handles sending of user input to check if should send as plain text or sensitive info.
+	 * 
+	* @param userInput input provided by the user
+	 */
+	const handleSendUserInput = async (userInput: string) => {
+		if (textAreaSensitiveMode) {
+			if (botOptions?.sensitiveInfo?.hideInBubble) {
+				return;
+			} else if (botOptions?.sensitiveInfo?.maskInBubble) {
+				await injectMessage("*".repeat(botOptions.sensitiveInfo?.asterisksCount as number || 10), "user");
+				return;
+			}
+		}
+
+		await injectMessage(userInput, "user");
 	}
 
 	/**
@@ -688,7 +715,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				/>
 				{botOptions.theme?.showInputRow &&
 					<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
-						inputRef={inputRef} textAreaDisabled={textAreaDisabled} 
+						inputRef={inputRef} textAreaDisabled={textAreaDisabled}
+						textAreaSensitiveMode={textAreaSensitiveMode}
 						voiceToggledOn={voiceToggledOn} getCurrPath={getCurrPath}
 					/>
 				}

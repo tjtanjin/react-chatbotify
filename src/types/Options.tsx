@@ -76,10 +76,10 @@ export type Options = {
 		messagePromptOffset?: number;
 	},
 	sensitiveInfo?: {
-		showAsterisks?: boolean;
+		maskInTextArea?: boolean;
+		maskInBubble?: boolean;
 		asterisksCount?: number;
-		toggleEnabled?: boolean;
-		defaultToggledOn?: boolean;
+		hideInBubble?: boolean;
 	},
 	userBubble?: {
 		animate?: boolean;

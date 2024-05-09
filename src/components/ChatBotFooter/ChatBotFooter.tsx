@@ -32,7 +32,7 @@ const ChatBotFooter = ({
 	getPrevPath,
 	handleActionInput
 }: {
-	inputRef: RefObject<HTMLTextAreaElement>;
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	flow: Flow;
 	textAreaDisabled: boolean;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;

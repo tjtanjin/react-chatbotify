@@ -23,8 +23,8 @@ import { Block } from "../../types/Block";
  * @param handleActionInput handles action input from user 
  */
 export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
-	setTextAreaDisabled: (inputDisabled: boolean) => void, setPaths: Dispatch<SetStateAction<string[]>>,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
+	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
+	setPaths: Dispatch<SetStateAction<string[]>>, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const block = flow[path];
@@ -55,6 +55,12 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
 		case "chatDisabled":
 			if (block.chatDisabled != null) {
 				setTextAreaDisabled(block.chatDisabled);
+			}
+			break;
+
+		case "isSensitive":
+			if (block.isSensitive != null) {
+				setTextAreaSensitiveMode(block.isSensitive);
 			}
 			break;
 

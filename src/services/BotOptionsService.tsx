@@ -97,10 +97,10 @@ const defaultOptions = {
 		messagePromptOffset: 30,
 	},
 	sensitiveInfo: {
-		showAsterisks: true,
+		maskInTextArea: true,
+		maskInBubble: true,
 		asterisksCount: 10,
-		toggleEnabled: false,
-		defaultToggledOn: true,
+		hideInBubble: false,
 	},
 	userBubble: {
 		animate: true,
