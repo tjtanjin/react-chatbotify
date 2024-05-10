@@ -98,7 +98,7 @@ const defaultOptions = {
 	},
 	sensitiveInput: {
 		maskInTextArea: true,
-		maskInBubble: true,
+		maskInUserBubble: true,
 		asterisksCount: 10,
 		hideInBubble: false,
 	},

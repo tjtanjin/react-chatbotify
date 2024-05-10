@@ -77,7 +77,7 @@ export type Options = {
 	},
 	sensitiveInput?: {
 		maskInTextArea?: boolean;
-		maskInBubble?: boolean;
+		maskInUserBubble?: boolean;
 		asterisksCount?: number;
 		hideInBubble?: boolean;
 	},
