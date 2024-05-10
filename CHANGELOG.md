@@ -1,5 +1,25 @@
 # CHANGELOG.md
 
+## v1.6.0 (11-05-2024)
+
+**Added:**
+- Added a new `sensitiveInput` configuration section to cater for sensitive information (refer to [API documentation](https://react-chatbotify.tjtanjin.com/docs/api/bot_options#sensitiveinput))
+- Added a new `autoLoad` property to the `chatHistory` section which allows chat history messages to be automatically loaded on start
+- Added a new `dangerouslySetInnerHtml` property to both `userBubble` and `botBubble` which allows setting of raw HTML content (use with caution)
+
+**Fixed:**
+- Fixed several type definitions within the library itself
+- Fixed an issue where the load chat history button can appear distorted if given a long text string
+- Fixed an issue where some chat history messages may not be saved when using real-time stream
+- Fixed an issue where chat input textarea may resize when focused on some occasions
+- Fixed selection of emoji causing textarea to lose focus
+- Improved performance for saving chat history
+- Further reduced assets file size
+
+**Note:**
+
+This update contains significant additions but they have been documented on the [API documentation](https://react-chatbotify.tjtanjin.com/docs/api/bot_options#sensitiveinput) and you will also find new live examples for [Sensitive Input](https://react-chatbotify.tjtanjin.com/docs/examples/sensitive_input) and [Markup Message](https://react-chatbotify.tjtanjin.com/docs/examples/markup_message). This will be one of the last few (if not the last) release before v2.0.0 arrives. Feel free to join [discord](https://discord.gg/6R4DK4G5Zh) to stay up to date!
+
 ## v1.5.2 (08-04-2024)
 
 **Added:**
