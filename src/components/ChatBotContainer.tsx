@@ -513,7 +513,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		if (!shouldDisableTextArea) {
 			setTimeout(() => {
-				inputRef.current?.focus();
+				// prevent chatbot from forcing input focus on load
+				if (currPath !== "start") {
+					inputRef.current?.focus();
+				}
 			}, 100)
 		}
 
