@@ -96,7 +96,7 @@ const defaultOptions = {
 		messagePromptText: "New Messages ↓",
 		messagePromptOffset: 30,
 	},
-	sensitiveInfo: {
+	sensitiveInput: {
 		maskInTextArea: true,
 		maskInBubble: true,
 		asterisksCount: 10,

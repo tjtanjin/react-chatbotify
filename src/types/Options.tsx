@@ -75,7 +75,7 @@ export type Options = {
 		messagePromptText?: string;
 		messagePromptOffset?: number;
 	},
-	sensitiveInfo?: {
+	sensitiveInput?: {
 		maskInTextArea?: boolean;
 		maskInBubble?: boolean;
 		asterisksCount?: number;

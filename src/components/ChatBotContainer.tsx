@@ -625,10 +625,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		if (block.isSensitive) {
-			if (botOptions?.sensitiveInfo?.hideInBubble) {
+			if (botOptions?.sensitiveInput?.hideInBubble) {
 				return;
-			} else if (botOptions?.sensitiveInfo?.maskInBubble) {
-				await injectMessage("*".repeat(botOptions.sensitiveInfo?.asterisksCount as number || 10), "user");
+			} else if (botOptions?.sensitiveInput?.maskInBubble) {
+				await injectMessage("*".repeat(botOptions.sensitiveInput?.asterisksCount as number || 10), "user");
 				return;
 			}
 		}

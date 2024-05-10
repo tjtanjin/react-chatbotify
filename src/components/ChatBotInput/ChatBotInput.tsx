@@ -181,7 +181,7 @@ const ChatBotInput = ({
 			className="rcb-chat-input"
 		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
-			{textAreaSensitiveMode && botOptions.sensitiveInfo?.maskInTextArea ?
+			{textAreaSensitiveMode && botOptions.sensitiveInput?.maskInTextArea ?
 				<input
 					ref={inputRef as RefObject<HTMLInputElement>}
 					type="password"
