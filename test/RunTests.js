@@ -338,15 +338,15 @@ const toggleVoice = async () => {
 
 const viewHistory = async () => {
     await driver.navigate().refresh();
-    await sleep(WAIT_DURATION + 1000); // extra 1 second just in case
+    await sleep(WAIT_DURATION);
     const buttonElement = await driver.findElement(By.className("rcb-toggle-button"));
     await buttonElement.click();
     const hideElement = await driver.findElement(By.className("rcb-window-open"));
-    await driver.wait(until.elementIsVisible(hideElement), WAIT_DURATION);
+    await driver.wait(until.elementIsVisible(hideElement), WAIT_DURATION + 1000); // extra 1 second just in case
     const viewHistoryElement = await driver.findElement(By.className("rcb-view-history-button"));
-    await driver.wait(until.elementIsVisible(viewHistoryElement), WAIT_DURATION);
+    await driver.wait(until.elementIsVisible(viewHistoryElement), WAIT_DURATION + 1000); // extra 1 second just in case
     await viewHistoryElement.click();
-    await sleep(WAIT_DURATION + 1000); // extra 1 second just in case
+    await sleep(WAIT_DURATION);
     const replyElements = await driver.findElements(By.className("rcb-bot-message"));
     const expectedReplyCount = 14;
     if (replyElements.length != expectedReplyCount) {
