@@ -33,11 +33,10 @@ const VoiceButton = ({
 
 	// handles options for bot
 	const { botOptions } = useBotOptions();
-
+	
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
-			// @ts-expect-error input ref type
 			startVoiceRecording(botOptions, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
 		} else {
 			stopVoiceRecording();

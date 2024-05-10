@@ -19,7 +19,7 @@ let toggleOn = false;
  */
 export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void, setInputLength: Dispatch<SetStateAction<number>>,
-	inputRef: RefObject<HTMLTextAreaElement>) => {
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>) => {
 
 	if (!recognition) {
 		return;
