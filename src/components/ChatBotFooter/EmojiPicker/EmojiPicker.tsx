@@ -87,7 +87,6 @@ const EmojiPicker = ({
 					inputElement.focus();
 					const length = inputElement.value.length;
 					inputElement.setSelectionRange(length, length);
-					inputRef.current?.focus();
 				}
 			}, 50)
 		}

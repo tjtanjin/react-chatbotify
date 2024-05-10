@@ -245,6 +245,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// if path is invalid, nothing to process (i.e. becomes dead end!)
 		if (!block) {
+			setIsBotTyping(false);
 			return;
 		}
 
@@ -505,10 +506,15 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		if (block.chatDisabled) {
-			setTextAreaDisabled(block.chatDisabled);
-		} else {
-			setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
+		const shouldDisableTextArea = block.chatDisabled 
+			? block.chatDisabled
+			: botOptions.chatInput?.disabled as boolean;
+		setTextAreaDisabled(shouldDisableTextArea);
+
+		if (!shouldDisableTextArea) {
+			setTimeout(() => {
+				inputRef.current?.focus();
+			}, 100)
 		}
 
 		if (block.isSensitive) {
@@ -600,11 +606,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				setIsBotTyping(false);
 			}
 		}, botOptions.chatInput?.botDelay);
-
-		// short delay before auto-focusing back on textinput, required if textinput was disabled by blockspam option
-		setTimeout(() => {
-			inputRef.current?.focus();
-		}, botOptions.chatInput?.botDelay as number + 100);
 	}
 
 	/**
