@@ -68,6 +68,7 @@ const ChatBotInput = ({
 	const textAreaFocusedStyle: React.CSSProperties = {
 		outline: !textAreaDisabled ? "none" : "",
 		boxShadow: !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
+		boxSizing: isDesktop ? "content-box" : "border-box",
 		...botOptions.chatInputAreaFocusedStyle,
 	};
 
@@ -75,6 +76,7 @@ const ChatBotInput = ({
 	const textAreaDisabledStyle: React.CSSProperties = {
 		cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 		caretColor: "transparent",
+		boxSizing: isDesktop ? "content-box" : "border-box",
 		...botOptions.chatInputAreaDisabledStyle,
 	};
 
