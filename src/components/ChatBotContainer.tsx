@@ -147,13 +147,15 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (isDesktop || botOptions.theme?.embedded) {
 			return;
 		}
-
-		if ("virtualKeyboard" in navigator) {
-			// @ts-expect-error virtualkeyboard type unknown
+		
+		if (navigator.virtualKeyboard) {
 			navigator.virtualKeyboard.overlaysContent = true;
-			// @ts-expect-error virtualkeyboard type unknown
 			navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
-				const { x, y, width, height } = event.target.boundingRect;
+				if (!event.target) {
+					return;
+				}
+
+				const { x, y, width, height } = (event.target as VirtualKeyboard).boundingRect;
 				// width does not need adjustments so only height is adjusted
 				if (x == 0 && y == 0 && width == 0 && height == 0) {
 					// delay added as it takes time for keyboard to appear and resize the viewport height

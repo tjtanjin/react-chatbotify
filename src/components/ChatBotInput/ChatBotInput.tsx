@@ -181,8 +181,7 @@ const ChatBotInput = ({
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
 			{textAreaSensitiveMode && botOptions.sensitiveInfo?.maskInTextArea ?
 				<input
-					// @ts-expect-error input ref type
-					ref={inputRef}
+					ref={inputRef as RefObject<HTMLInputElement>}
 					type="password"
 					className="rcb-chat-input-textarea"
 					style={textAreaDisabled
@@ -196,8 +195,7 @@ const ChatBotInput = ({
 				/>
 				:
 				<textarea
-					// @ts-expect-error input ref type
-					ref={inputRef}
+					ref={inputRef as RefObject<HTMLTextAreaElement>}
 					style={textAreaDisabled
 						? textAreaDisabledStyle
 						: (isFocused ? textAreaFocusedStyle : textAreaStyle)}
