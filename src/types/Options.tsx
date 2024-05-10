@@ -79,7 +79,7 @@ export type Options = {
 		maskInTextArea?: boolean;
 		maskInUserBubble?: boolean;
 		asterisksCount?: number;
-		hideInBubble?: boolean;
+		hideInUserBubble?: boolean;
 	},
 	userBubble?: {
 		animate?: boolean;

@@ -625,7 +625,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		if (block.isSensitive) {
-			if (botOptions?.sensitiveInput?.hideInBubble) {
+			if (botOptions?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (botOptions?.sensitiveInput?.maskInUserBubble) {
 				await injectMessage("*".repeat(botOptions.sensitiveInput?.asterisksCount as number || 10), "user");

@@ -100,7 +100,7 @@ const defaultOptions = {
 		maskInTextArea: true,
 		maskInUserBubble: true,
 		asterisksCount: 10,
-		hideInBubble: false,
+		hideInUserBubble: false,
 	},
 	userBubble: {
 		animate: true,
