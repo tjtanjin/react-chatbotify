@@ -12,7 +12,7 @@ declare global {
 	 * provided here is based on the proposed specification available at 
 	 * {@link https://w3c.github.io/virtual-keyboard/#dom-navigator-virtualkeyboard}.
 	 */
-	class VirtualKeyboard extends EventTarget {
+	interface VirtualKeyboard extends EventTarget {
 		hide(): void
 		show(): void;
 		boundingRect: DOMRect;
