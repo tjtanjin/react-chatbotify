@@ -11,7 +11,7 @@ import { preProcessBlock, postProcessBlock } from "../services/BlockService/Bloc
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
-import { isDesktop } from "../services/Utils";
+import { isDesktop, parseMarkupMessage } from "../services/Utils";
 import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
@@ -391,9 +391,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			&& message.sender === "user" && botOptions?.userBubble?.simStream;
 
 		if (isBotStream) {
-			await simulateStream(message, botOptions.botBubble?.streamSpeed as number);
+			const streamSpeed = botOptions.botBubble?.streamSpeed as number;
+			const useMarkup = botOptions.botBubble?.dangerouslySetInnerHtml as boolean;
+			await simulateStream(message, streamSpeed, useMarkup);
 		} else if (isUserStream) {
-			await simulateStream(message, botOptions.userBubble?.streamSpeed as number);
+			const streamSpeed = botOptions.userBubble?.streamSpeed as number;
+			const useMarkup = botOptions.userBubble?.dangerouslySetInnerHtml as boolean;
+			await simulateStream(message, streamSpeed, useMarkup);
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
@@ -404,8 +408,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * 
 	 * @param message message to stream
 	 * @param streamSpeed speed to stream the message
+	 * @param useMarkup boolean indicating whether markup is used
 	 */
-	const simulateStream = async (message: Message, streamSpeed: number) => {
+	const simulateStream = async (message: Message, streamSpeed: number, useMarkup: boolean) => {
 		// when simulating stream, disable text area and stop bot typing
 		setIsBotTyping(false);
 
@@ -414,7 +419,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		isBotStreamingRef.current = true
 
 		// initialize default message to empty with stream index position 0
-		const streamMessage = message.content as string;
+		let streamMessage = message.content as string | string[];
+		if (useMarkup) {
+			streamMessage = parseMarkupMessage(streamMessage as string);
+		}
 		let streamIndex = 0;
 		const endStreamIndex = streamMessage.length - 1;
 		message.content = "";

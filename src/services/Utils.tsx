@@ -1,6 +1,7 @@
 import { Flow } from "../types/Flow";
 import { Params } from "../types/Params";
 
+// default welcome options
 const helpOptions = ["Quickstart", "API Docs", "Examples", "Github", "Discord"];
 
 // default provided welcome flow if user does not pass in a flow to the chat bot
@@ -66,3 +67,47 @@ export const defaultFlow: Flow = {
 
 // boolean indicating if user is on desktop (otherwise treated as on mobile)
 export const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+/**
+ * Parses message that has markup enabled (holds html tags as individual elements to enable smooth streaming).
+ * 
+ * @param message message to parse
+ */
+export const parseMarkupMessage = (message: string) => {
+	const result: string[] = [];
+	let currentTag = "";
+	let isInTag = false;
+
+	for (let i = 0; i < message.length; i++) {
+		const char = message[i];
+
+		if (char === "<") {
+			// detects start of html tag
+			if (!isInTag) {
+				isInTag = true;
+				currentTag = char;
+			} else {
+				result.push(currentTag);
+				currentTag = char;
+			}
+		} else if (char === ">") {
+			// detects end of html tag
+			currentTag += char;
+			result.push(currentTag);
+			currentTag = "";
+			isInTag = false;
+		} else {
+			// handles normal character 
+			if (isInTag) {
+				currentTag += char;
+			} else {
+				result.push(char);
+			}
+		}
+	}
+  
+	if (currentTag !== "") {
+		result.push(currentTag);
+	}
+	return result;
+}
