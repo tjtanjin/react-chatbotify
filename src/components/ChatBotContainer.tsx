@@ -414,20 +414,21 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		isBotStreamingRef.current = true
 
 		// initialize default message to empty with stream index position 0
-		let streamIndex = 0;
 		const streamMessage = message.content as string;
+		let streamIndex = 0;
+		const endStreamIndex = streamMessage.length - 1;
 		message.content = "";
 
 		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
 			const intervalId = setInterval(() => {
 				setMessages((prevMessages) => {
 					const updatedMessages = [...prevMessages];
-		
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
 						if (updatedMessages[i].sender === message.sender
 							&& typeof updatedMessages[i].content === "string") {
-							message.content = streamMessage.slice(0, streamIndex + 1);
+							message.content += streamMessage[streamIndex];
 							updatedMessages[i] = message;
+							streamIndex++;
 							break;
 						}
 					}
@@ -435,10 +436,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					return updatedMessages;
 				});
 
-				streamIndex++;
-
 				// when streaming is done, remove task, unlock text area, and resolve the promise
-				if (streamIndex === streamMessage.length) {
+				if (streamIndex === endStreamIndex) {
 					clearInterval(intervalId);
 					resolve();
 				}
