@@ -36,6 +36,7 @@ const ChatBotButton = ({
 		<>
 			{!botOptions.theme?.embedded &&
 				<button
+					aria-label="Open Chat"
 					style={chatButtonStyle}
 					className={`rcb-toggle-button ${botOptions.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}
