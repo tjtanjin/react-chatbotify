@@ -30,7 +30,6 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 			toggleOn = true;
 			recognition.start();
 		} catch {
-			console.log("YAY")
 			// catches rare dom exception if user spams voice button
 		}
 	}
