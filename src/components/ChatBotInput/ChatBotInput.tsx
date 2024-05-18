@@ -69,6 +69,7 @@ const ChatBotInput = ({
 		outline: !textAreaDisabled ? "none" : "",
 		boxShadow: !textAreaDisabled ? `0 0 5px ${botOptions.theme?.primaryColor}` : "",
 		boxSizing: isDesktop ? "content-box" : "border-box",
+		...botOptions.chatInputAreaStyle, // by default inherit the base style for input area
 		...botOptions.chatInputAreaFocusedStyle,
 	};
 
@@ -77,6 +78,7 @@ const ChatBotInput = ({
 		cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 		caretColor: "transparent",
 		boxSizing: isDesktop ? "content-box" : "border-box",
+		...botOptions.chatInputAreaStyle, // by default inherit the base style for input area
 		...botOptions.chatInputAreaDisabledStyle,
 	};
 
