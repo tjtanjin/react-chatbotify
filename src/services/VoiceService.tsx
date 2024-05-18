@@ -26,8 +26,13 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	}
 	
 	if (!toggleOn) {
-		toggleOn = true;
-		recognition.start();
+		try {
+			toggleOn = true;
+			recognition.start();
+		} catch {
+			console.log("YAY")
+			// catches rare dom exception if user spams voice button
+		}
 	}
 
 	const inactivityPeriod = botOptions.voice?.timeoutPeriod;
