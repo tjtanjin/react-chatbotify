@@ -1,5 +1,17 @@
 # CHANGELOG.md
 
+## v1.6.1 (18-05-2024)
+
+**Added:**
+- Added a new `showCount` property to the `notification` section which allows showing/hiding of unread message count on the top right corner of chatbot button
+
+**Fixed:**
+- Improved performance for streaming messages
+- Fixed an issue where streaming messages while `dangerouslySetInnerHtml` is set to `true` will pause briefly on encountering html tags
+- Fixed an issue where notification sound may occasionally chime when chatbot is embedded
+- Fixed an issue where textarea styles may be inconsistent when disabled/focused
+- Fixed an issue where the bot may crash on rare occasions when users spam the voice button
+
 ## v1.6.0 (11-05-2024)
 
 **Added:**
