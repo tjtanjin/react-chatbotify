@@ -140,7 +140,14 @@ const ChatBotInput = ({
 
 		if (inputRef.current) {
 			const characterLimit = botOptions.chatInput?.characterLimit
-			const newInput = event.target.value.replace(/\n/g, " ");
+			/*
+			* The parameter inputValueFormat controls whether the input content needs to be formatted,
+			* because the newline characters copied and pasted in the textarea will be formatted.
+			* This is not the result that everyone needs,
+			* so I added this control variable to control whether the input content needs to be formatted.
+			* */
+			const inputValueFormat = botOptions.chatInput?.inputValueFormat
+			const newInput = inputValueFormat ? event.target.value.replace(/\n/g, " ") : event.target.value;
 			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
 				inputRef.current.value = newInput.slice(0, characterLimit);
 			} else {
