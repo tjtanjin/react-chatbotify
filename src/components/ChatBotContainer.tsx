@@ -11,7 +11,7 @@ import { preProcessBlock, postProcessBlock } from "../services/BlockService/Bloc
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
-import { isDesktop, parseMarkupMessage } from "../services/Utils";
+import { isChatBotVisible, isDesktop, parseMarkupMessage } from "../services/Utils";
 import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
@@ -519,9 +519,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		if (!shouldDisableTextArea) {
 			setTimeout(() => {
-				// prevent chatbot from forcing input focus on load
-				if (currPath !== "start") {
-					inputRef.current?.focus();
+				if (botOptions.theme?.embedded) {
+					// for embedded chatbot, only do input focus if chatbot is still visible on page
+					if (isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
+						inputRef.current?.focus();
+					}
+				} else {
+					// prevent chatbot from forcing input focus on load
+					if (currPath !== "start") {
+						inputRef.current?.focus();
+					}
 				}
 			}, 100)
 		}

@@ -1,6 +1,8 @@
 import { Flow } from "../types/Flow";
 import { Params } from "../types/Params";
 
+// todo: consider re-organizing the functions in this file, getting a little varied and long
+
 // default welcome options
 const helpOptions = ["Quickstart", "API Docs", "Examples", "Github", "Discord"];
 
@@ -110,4 +112,26 @@ export const parseMarkupMessage = (message: string) => {
 		result.push(currentTag);
 	}
 	return result;
+}
+
+/**
+ * Checks if chatbot is visible (uses chatbot body as reference).
+ * 
+ * @param element chatbot body used to gauge visibility
+ */
+export const isChatBotVisible = (element: HTMLDivElement) => {
+	if (!element) {
+		return false;
+	}
+
+	const rect = element.getBoundingClientRect();
+	const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+	const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+
+	return (
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= windowHeight &&
+		rect.right <= windowWidth
+	);
 }
