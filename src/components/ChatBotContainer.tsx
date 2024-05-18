@@ -445,7 +445,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				});
 
 				// when streaming is done, remove task, unlock text area, and resolve the promise
-				if (streamIndex === endStreamIndex) {
+				if (streamIndex >= endStreamIndex) {
 					clearInterval(intervalId);
 					resolve();
 				}
