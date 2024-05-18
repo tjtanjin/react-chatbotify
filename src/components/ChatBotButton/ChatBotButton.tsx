@@ -41,7 +41,7 @@ const ChatBotButton = ({
 					className={`rcb-toggle-button ${botOptions.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}
 				>
-					{!botOptions.notification?.disabled &&
+					{!botOptions.notification?.disabled && botOptions.notification?.showCount &&
 						<span style={botOptions.notificationBadgeStyle} className="rcb-badge">
 							{unreadCount}
 						</span>

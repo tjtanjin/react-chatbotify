@@ -58,6 +58,7 @@ const defaultOptions = {
 		volume: 0.2,
 		icon: notificationIcon,
 		sound: notificationSound,
+		showCount: true,
 	},
 	audio: {
 		disabled: true,

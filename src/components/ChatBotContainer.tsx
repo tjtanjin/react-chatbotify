@@ -485,7 +485,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		
 			return updatedMessages;
 		});
-		// todo: test streaming across multiple blocks, and also saving history for stream messages
 	}
 
 	/**

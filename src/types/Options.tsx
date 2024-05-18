@@ -37,6 +37,7 @@ export type Options = {
 		volume?: number;
 		icon?: string;
 		sound?: string;
+		showCount?: boolean;
 	},
 	audio?: {
 		disabled?: boolean;
