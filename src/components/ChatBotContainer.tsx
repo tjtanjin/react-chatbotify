@@ -424,11 +424,19 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			streamMessage = parseMarkupMessage(streamMessage as string);
 		}
 		let streamIndex = 0;
-		const endStreamIndex = streamMessage.length - 1;
+		const endStreamIndex = streamMessage.length;
 		message.content = "";
 
 		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
 			const intervalId = setInterval(() => {
+				// consider streaming done once end index is reached or exceeded
+				// when streaming is done, remove task and resolve the promise
+				if (streamIndex >= endStreamIndex) {
+					clearInterval(intervalId);
+					resolve();
+					return;
+				}
+
 				setMessages((prevMessages) => {
 					const updatedMessages = [...prevMessages];
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
@@ -440,15 +448,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 							break;
 						}
 					}
-
 					return updatedMessages;
 				});
-
-				// when streaming is done, remove task, unlock text area, and resolve the promise
-				if (streamIndex >= endStreamIndex) {
-					clearInterval(intervalId);
-					resolve();
-				}
 			}, streamSpeed);
 		});
 
