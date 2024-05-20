@@ -129,13 +129,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 		}
 
-		// Set default value for input box
-		if (botOptions.chatInput?.defaultInputValue) {
-			if (inputRef.current) {
-				inputRef.current.value = botOptions.chatInput?.defaultInputValue;
-			}
-		}
-
 		return () => {
 			window.removeEventListener("click", handleFirstInteraction);
 			window.removeEventListener("keydown", handleFirstInteraction);

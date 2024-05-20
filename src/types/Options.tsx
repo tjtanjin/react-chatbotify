@@ -57,8 +57,7 @@ export type Options = {
 	},
 	chatInput?: {
 		disabled?: boolean;
-		defaultInputValue?: string;
-		inputValueFormat?: boolean;
+		allowNewline?: boolean;
 		enabledPlaceholderText?: string;
 		disabledPlaceholderText?: string;
 		showCharacterCount?: boolean;
