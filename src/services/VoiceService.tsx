@@ -95,7 +95,7 @@ export const stopVoiceRecording = () => {
 /**
  * Syncs voice toggle to textarea state (voice should not be enabled if textarea is disabled).
  * 
- * @param keepVoiceOn boolean indicating if voice was and thus is to be kept toggled on
+ * @param keepVoiceOn boolean indicating if voice was on and thus is to be kept toggled on
  * @param botOptions options provided to the bot
  */
 export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botOptions: Options) => {

@@ -15,6 +15,7 @@ import { isChatBotVisible, isDesktop, parseMarkupMessage } from "../services/Uti
 import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
+import { Block } from "../types/Block";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Params } from "../types/Params";
@@ -238,7 +239,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// performs pre-processing when paths change
 	useEffect(() => {
 		const currPath = getCurrPath();
-		if (!currPath ) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
@@ -249,19 +250,20 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
 		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current,
 			injectMessage, streamMessage, openChat};
-		callNewBlock(currPath, params);
+		callNewBlock(currPath, block, params);
 	}, [paths]);
 
 	/**
 	 * Calls the new block for preprocessing upon change to path.
 	 * 
 	 * @param currPath the current path
+	 * @param block the current block
 	 * @param params parameters that may be used in the block
 	 */
-	const callNewBlock = async (currPath: keyof Flow, params: Params) => {
+	const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
+		// when bot first loads, disable textarea first to allow uninterrupted sending of initial messages
 		if (currPath === "start") {
 			setTextAreaDisabled(true);
 		}
@@ -272,6 +274,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		// cleanup logic after preprocessing of a block
 		setIsBotTyping(false);
 		updateTextArea();
+		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
 
 		// cleanup logic after preprocessing of a block (affects only streaming messages)
 		isBotStreamingRef.current = false
@@ -411,7 +414,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param useMarkup boolean indicating whether markup is used
 	 */
 	const simulateStream = async (message: Message, streamSpeed: number, useMarkup: boolean) => {
-		// when simulating stream, disable text area and stop bot typing
+		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
 		// set an initial empty message to be used for streaming
