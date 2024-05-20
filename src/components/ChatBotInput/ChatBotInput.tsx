@@ -141,10 +141,12 @@ const ChatBotInput = ({
 		if (inputRef.current) {
 			const characterLimit = botOptions.chatInput?.characterLimit
 			/*
-			* @params allowNewline  Allow input values to contain line breaks '\n'
+			* @params allowNewline Boolean
+			* allowNewline [true] Allow input values to contain line breaks '\n'
+			* allowNewline [false] Replace \n with a space
 			* */
 			const allowNewline = botOptions.chatInput?.allowNewline
-			const newInput = allowNewline ? event.target.value.replace(/\n/g, " ") : event.target.value;
+			const newInput = allowNewline ? event.target.value : event.target.value.replace(/\n/g, " ");
 			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
 				inputRef.current.value = newInput.slice(0, characterLimit);
 			} else {
