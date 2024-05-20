@@ -52,6 +52,7 @@
 	font-size: 15px;
  	overflow-wrap: anywhere;
 	overflow: hidden;
+	white-space: pre-wrap;
 }
 
 .rcb-bot-message {

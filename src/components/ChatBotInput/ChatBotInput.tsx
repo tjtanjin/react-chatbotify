@@ -123,7 +123,12 @@ const ChatBotInput = ({
 	 */ 
 	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (event.key === "Enter") {
-			event.preventDefault();
+			if (event.shiftKey) {
+				if (!botOptions.chatInput?.allowNewline) {
+					event.preventDefault();
+				}
+				return;
+			}
 			handleSubmit(event);
 		}
 	};

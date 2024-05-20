@@ -79,6 +79,7 @@ const defaultOptions = {
 	},
 	chatInput: {
 		disabled: false,
+		allowNewline: false,
 		enabledPlaceholderText: "Type your message...",
 		disabledPlaceholderText: "",
 		showCharacterCount: false,
