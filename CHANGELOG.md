@@ -1,5 +1,16 @@
 # CHANGELOG.md
 
+## v1.6.2 (25-05-2024)
+
+**Added:**
+- Added a new `allowNewline` property to the `chatInput` section which determines if user input can contain newline (`\n`)
+- The notifications feature is now properly supported for embedded chatbots and will chime only if the chatbot is scrolled out of view
+
+**Fixed:**
+- Fixed an issue where voice detection may not be properly disabled while the chatbot is still streaming messages
+- Fixed an issue where **shift + enter** submits user input instead of attempting to add newline
+- Fixed an issue where newline is automatically converted to whitespace in user and bot bubbles
+
 ## v1.6.1 (19-05-2024)
 
 **Added:**
