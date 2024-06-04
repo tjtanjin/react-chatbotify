@@ -77,7 +77,7 @@ const openChatWindow = async () => {
 
 const sendName = async () => {
     const textAreaElement = await driver.findElement(By.className("rcb-chat-input-textarea"));
-    await driver.wait(until.elementIsVisible(textAreaElement), WAIT_DURATION);
+    await sleep(WAIT_DURATION);
     await textAreaElement.sendKeys("Tan Jin", Key.RETURN);
     const expectedText = "Hey Tan Jin!";
     await sleep(WAIT_DURATION);
