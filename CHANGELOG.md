@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v1.6.3 (05-06-2024)
+
+**Fixed:**
+- Fixed a rare issue where streaming of messages can sometimes cause `undefined` to appear.
+
 ## v1.6.2 (25-05-2024)
 
 **Added:**
