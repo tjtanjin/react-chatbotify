@@ -108,11 +108,10 @@ function App() {
 					<ChatBot
 						flow={flow}
 						options={{
-							theme: {flowStartTrigger: "ON_PAGE_INTERACT", embedded: true},
 							audio: {disabled: false},
 							chatInput: {botDelay: 1000},
 							userBubble: {showAvatar: true},
-							botBubble: {showAvatar: true, simStream: true},
+							botBubble: {showAvatar: true},
 							voice: {disabled: false}
 						}}
 					></ChatBot>
