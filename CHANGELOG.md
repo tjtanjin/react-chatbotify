@@ -9,6 +9,10 @@
 **Fixed:**
 - Fixed an issue where embedded chatbot notifications are played while chatbot is visible
 
+**Note:**
+
+This release has a minor breaking change for developers who are using advance custom paths. If you are currently initializing paths with `["start"]`, note that specifying the `start` block is no longer needed. This means you can simply use `[]` as shown in the updated custom paths example [here](https://react-chatbotify.tjtanjin.com/docs/examples/custom_paths).
+
 ## v1.6.3 (05-06-2024)
 
 **Fixed:**
