@@ -1,9 +1,18 @@
 # CHANGELOG.md
 
+## v1.7.0 (10-06-2024)
+
+**Added:**
+- Added a new `language` property to the `voice` section for managing voice input language
+- Added a new `flowStartTrigger` property to the `theme` section for managing when flow starts
+
+**Fixed:**
+- Fixed an issue where embedded chatbot notifications are played while chatbot is visible
+
 ## v1.6.3 (05-06-2024)
 
 **Fixed:**
-- Fixed a rare issue where streaming of messages can sometimes cause `undefined` to appear.
+- Fixed a rare issue where streaming of messages can sometimes cause `undefined` to appear
 
 ## v1.6.2 (25-05-2024)
 
