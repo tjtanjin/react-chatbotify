@@ -359,7 +359,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		const message = messages[messages.length - 1]
 		// if message is null or sent by user or is bot typing or bot is embedded, return
 		if (!message || message.sender === "user" || isBotTyping || (botOptions.theme?.embedded
-			&& !isChatBotVisible(chatBodyRef.current as HTMLDivElement))) {
+			&& isChatBotVisible(chatBodyRef.current as HTMLDivElement))) {
 			return;
 		}
 
