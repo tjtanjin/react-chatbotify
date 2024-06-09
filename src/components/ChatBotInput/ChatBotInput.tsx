@@ -1,6 +1,15 @@
 
-import { useState, ChangeEvent, FormEvent, KeyboardEvent, RefObject, useEffect, MouseEvent } from "react";
-
+import {
+	useState,
+	ChangeEvent,
+	FormEvent,
+	KeyboardEvent,
+	RefObject,
+	useEffect,
+	MouseEvent,
+	SetStateAction,
+	Dispatch
+} from "react";
 import SendButton from "./SendButton/SendButton";
 import VoiceButton from "./VoiceButton/VoiceButton";
 import { isDesktop } from "../../services/Utils";
@@ -18,7 +27,9 @@ import { Flow } from "../../types/Flow";
  * @param voiceToggledOn boolean indicating if voice is toggled on
  * @param getCurrPath retrieves the current path of user
  * @param handleToggleVoice handles toggling of voice
- * @param handleActionInput handles action input from user 
+ * @param handleActionInput handles action input from user
+ * @param hasFlowStarted boolean indicating if flow has started
+ * @param setHasFlowStarted sets whether the flow has started
  */
 const ChatBotInput = ({
 	inputRef,
@@ -28,6 +39,8 @@ const ChatBotInput = ({
 	getCurrPath,
 	handleToggleVoice,
 	handleActionInput,
+	hasFlowStarted,
+	setHasFlowStarted
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
@@ -36,6 +49,8 @@ const ChatBotInput = ({
 	getCurrPath: () => keyof Flow | null;
 	handleToggleVoice: () => void;
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
+	hasFlowStarted: boolean;
+	setHasFlowStarted: Dispatch<SetStateAction<boolean>>;
 }) => {
 
 	// handles options for bot
@@ -189,6 +204,10 @@ const ChatBotInput = ({
 		<div 
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
+				// checks if user is interacting with chatbot for the first time
+				if (!hasFlowStarted && botOptions.theme?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+					setHasFlowStarted(true);
+				}
 			}}
 			style={botOptions.chatInputContainerStyle} 
 			className="rcb-chat-input"

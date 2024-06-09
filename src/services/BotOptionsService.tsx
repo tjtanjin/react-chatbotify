@@ -33,6 +33,7 @@ const defaultOptions = {
 		embedded: false,
 		desktopEnabled: true,
 		mobileEnabled: true,
+		flowStartTrigger: "ON_LOAD",
 	},
 	tooltip: {
 		mode: "CLOSE",

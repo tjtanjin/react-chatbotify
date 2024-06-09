@@ -59,7 +59,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const gainNodeRef = useRef<AudioNode | null>(null);
 
 	// tracks if user has interacted with page
-	const [hasInteracted, setHasInteracted] = useState<boolean>(false);
+	const [hasInteractedPage, setHasInteractedPage] = useState<boolean>(false);
+
+	// tracks if flow has started
+	const [hasFlowStarted, setHasFlowStarted] = useState<boolean>(false);
 
 	// tracks if notification is toggled on
 	const [notificationToggledOn, setNotificationToggledOn] = useState<boolean>(true);
@@ -255,6 +258,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		callNewBlock(currPath, block, params);
 	}, [paths]);
 
+	useEffect(() => {
+		if (hasFlowStarted || botOptions.theme?.flowStartTrigger === "ON_LOAD") {
+			setPaths(["start"]);
+		}
+	}, [hasFlowStarted]);
+
 	/**
 	 * Calls the new block for preprocessing upon change to path.
 	 * 
@@ -313,7 +322,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Checks for initial user interaction (required to play audio/notification sound).
 	 */
 	const handleFirstInteraction = () => {
-		setHasInteracted(true);
+		setHasInteractedPage(true);
+		if (!hasFlowStarted && botOptions.theme?.flowStartTrigger === "ON_PAGE_INTERACT") {
+			setHasFlowStarted(true);
+		}
 
 		// workaround for getting audio to play on mobile
 		const utterance = new SpeechSynthesisUtterance();
@@ -357,7 +369,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		setUnreadCount(prev => prev + 1);
-		if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted && audioBufferRef.current) {
+		if (!botOptions.notification?.disabled && notificationToggledOn
+			&& hasInteractedPage && audioBufferRef.current) {
 			const source = audioContextRef.current.createBufferSource();
 			source.buffer = audioBufferRef.current;
 			source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
@@ -697,6 +710,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
+				// checks if user is interacting with chatbot for the first time
+				if (!hasFlowStarted && botOptions.theme?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+					setHasFlowStarted(true);
+				}
+
 				// if not on mobile, should remove focus
 				if (isDesktop) {
 					inputRef.current?.blur();
@@ -755,6 +773,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 						inputRef={inputRef} textAreaDisabled={textAreaDisabled}
 						textAreaSensitiveMode={textAreaSensitiveMode}
 						voiceToggledOn={voiceToggledOn} getCurrPath={getCurrPath}
+						hasFlowStarted={hasFlowStarted} setHasFlowStarted={setHasFlowStarted}
 					/>
 				}
 				{botOptions.theme?.showFooter &&

@@ -17,6 +17,7 @@ export type Options = {
 		embedded?: boolean;
 		desktopEnabled?: boolean;
 		mobileEnabled?: boolean;
+		flowStartTrigger?: string;
 	},
 	tooltip?: {
 		mode?: string;

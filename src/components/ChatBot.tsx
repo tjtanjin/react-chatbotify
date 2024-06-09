@@ -31,7 +31,7 @@ const ChatBot = ({
 	const [messages, setMessages] = useState<Message[]>([]);
 
 	// handles paths of the user
-	const [paths, setPaths] = useState<string[]>(["start"]);
+	const [paths, setPaths] = useState<string[]>([]);
 
 	// provides a default welcome flow if no user flow provided
 	const parsedFlow: Flow = flow ?? defaultFlow;
