@@ -123,6 +123,7 @@ const defaultOptions = {
 	voice: {
 		disabled: true,
 		defaultToggledOn: false,
+		language: "en-US",
 		timeoutPeriod: 10000,
 		autoSendDisabled: false,
 		autoSendPeriod: 1000,

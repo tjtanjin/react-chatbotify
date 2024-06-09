@@ -102,6 +102,7 @@ export type Options = {
 	voice?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
+		language?: string;
 		timeoutPeriod?: number;
 		autoSendDisabled?: boolean;
 		autoSendPeriod?: number;

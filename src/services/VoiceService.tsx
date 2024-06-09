@@ -28,6 +28,7 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 	if (!toggleOn) {
 		try {
 			toggleOn = true;
+			recognition.lang = botOptions.voice?.language as string;
 			recognition.start();
 		} catch {
 			// catches rare dom exception if user spams voice button
