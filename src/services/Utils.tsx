@@ -12,6 +12,7 @@ export const defaultFlow: Flow = {
 		message: "Hello, I am Tan Jin 👋! Welcome to React ChatBotify, I'm excited that you are using our " +
 			"chatbot 😊!",
 		transition: {duration: 1000},
+		chatDisabled: true,
 		path: "show_options"
 	},
 	show_options: {
