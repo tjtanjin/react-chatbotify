@@ -18,7 +18,7 @@ const speak = (message: string, language: string, voiceNames: string[], rate: nu
 	utterance.volume = volume;
 
 	let voiceIdentified = false;
-	for (const voiceName in voiceNames) {
+	for (const voiceName of voiceNames) {
 		window.speechSynthesis.getVoices().find((voice) => {
 			if (voice.name === voiceName) {
 				utterance.voice = voice;
