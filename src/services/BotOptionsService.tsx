@@ -44,10 +44,11 @@ const defaultOptions = {
 	},
 	header: {
 		title: (
-			<h3 style={{cursor: "pointer", margin: 0}} onClick={
+			<div style={{cursor: "pointer", margin: 0, fontSize: 20, fontWeight: "bold"}} onClick={
 				() => window.open("https://github.com/tjtanjin/")
-			}>Tan Jin
-			</h3>
+			}>
+				Tan Jin
+			</div>
 		),
 		showAvatar: true,
 		avatar: botAvatar,
@@ -132,14 +133,12 @@ const defaultOptions = {
 	},
 	footer: {
 		text: (
-			<div style={{cursor: "pointer"}} 
+			<div style={{cursor: "pointer", display: "flex", flexDirection: "row", alignItems: "center", columnGap: 3}} 
 				onClick={() => window.open("https://react-chatbotify.tjtanjin.com")}
 			>
 				<span>Powered By </span>
-				<span style={{fontWeight: "bold"}}>
-					<img style={{width: 10, height: 10}} src={chatButton}></img>
-					<span> React ChatBotify</span>
-				</span>
+				<img style={{width: 10, height: 10}} src={chatButton}/>
+				<span style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
 		),
 	},
