@@ -147,6 +147,7 @@ const defaultOptions = {
 		multiple: true,
 		accept: ".png",
 		icon: fileAttachmentIcon,
+		showMediaDisplay: true,
 	},
 	emoji: {
 		disabled: false,
@@ -189,6 +190,7 @@ const defaultOptions = {
 	chatMessagePromptHoveredStyle: {},
 	footerStyle: {},
 	loadingSpinnerStyle: {},
+	mediaDisplayContainerStyle: {},
 }
 
 /**

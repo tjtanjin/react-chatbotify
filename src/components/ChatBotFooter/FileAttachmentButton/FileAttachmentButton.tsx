@@ -1,5 +1,7 @@
 import { ChangeEvent, RefObject, useEffect, useState } from "react";
 
+import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
+import { getMediaFileDetails } from "../../../services/Utils";
 import { useBotOptions } from "../../../context/BotOptionsContext";
 import { usePaths } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
@@ -87,6 +89,20 @@ const FileAttachmentButton = ({
 			const fileNames = [];
 			for (let i = 0; i < files.length; i++) {
 				fileNames.push(files[i].name);
+				// checks if media (i.e. image, video, audio should be displayed)
+				if (!botOptions.fileAttachment?.showMediaDisplay) {
+					continue;
+				}
+
+				// retrieves file details and skips if not image, video or audio
+				const fileDetails = await getMediaFileDetails(files[i]);
+				if (!fileDetails.fileType || !fileDetails.fileUrl) {
+					continue;
+				}
+
+				// sends media display if file details are valid
+				await injectMessage(<MediaDisplay file={files[i]} fileType={fileDetails.fileType}
+					fileUrl={fileDetails.fileUrl}/>, "user");
 			}
 			await handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),

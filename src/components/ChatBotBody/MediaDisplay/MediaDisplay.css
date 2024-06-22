@@ -1,0 +1,54 @@
+/* Container Display Styles (for Image & Video) */
+
+.rcb-media-display-image-container, .rcb-media-display-video-container {
+	margin-top: 8px;
+	margin-right: 16px;
+	border-radius: 22px;
+	padding: 16px 16px;
+	width: fit-content;
+}
+
+/* Image Display */
+
+.rcb-media-display-image {
+	width: 100%;
+	height: auto;
+	border-radius: 22px;
+	object-fit: cover;
+}
+
+/* Video Display */
+
+.rcb-media-display-video {
+	width: 100%;
+	height: auto;
+	border-radius: 22px;
+	background-color: black;
+}
+
+/* Audio Display */
+
+.rcb-media-display-audio {
+	margin-top: 8px;
+	margin-right: 16px;
+	width: 100%;
+	height: auto;
+	border-radius: 22px;
+}
+
+/* Media Display Entry Animations */
+
+.rcb-media-entry {
+	animation: media-entry 0.3s ease-in backwards;
+}
+
+@keyframes media-entry {
+	0% {
+		transform: translate(100%, 50%) scale(0);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+}

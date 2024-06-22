@@ -117,6 +117,7 @@ export type Options = {
 		multiple?: boolean;
 		accept?: string;
 		icon?: string;
+		showMediaDisplay?: boolean;
 	}
 	emoji?: {
 		disabled?: boolean;
@@ -159,4 +160,5 @@ export type Options = {
 	chatMessagePromptHoveredStyle?: React.CSSProperties;
 	footerStyle?: React.CSSProperties;
 	loadingSpinnerStyle?: React.CSSProperties;
+	mediaDisplayContainerStyle?: React.CSSProperties;
 }
