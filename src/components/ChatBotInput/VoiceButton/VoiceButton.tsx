@@ -14,6 +14,7 @@ import "./VoiceButton.css";
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
+ * @param setAudioChunks sets the audio chunk if voice input is sent as audio file
  */
 const VoiceButton = ({
 	inputRef,
@@ -21,7 +22,8 @@ const VoiceButton = ({
 	voiceToggledOn,
 	handleToggleVoice,
 	triggerSendVoiceInput,
-	setInputLength
+	setInputLength,
+	setAudioChunks
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
@@ -29,6 +31,7 @@ const VoiceButton = ({
 	handleToggleVoice: () => void;
 	triggerSendVoiceInput: () => void;
 	setInputLength: Dispatch<SetStateAction<number>>;
+	setAudioChunks: Dispatch<SetStateAction<BlobPart[]>>;
 }) => {
 
 	// handles options for bot
@@ -37,7 +40,8 @@ const VoiceButton = ({
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
-			startVoiceRecording(botOptions, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
+			startVoiceRecording(botOptions, handleToggleVoice, triggerSendVoiceInput,
+				setInputLength, setAudioChunks, inputRef);
 		} else {
 			stopVoiceRecording();
 		}

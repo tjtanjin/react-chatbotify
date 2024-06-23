@@ -129,6 +129,7 @@ const defaultOptions = {
 		timeoutPeriod: 10000,
 		autoSendDisabled: false,
 		autoSendPeriod: 1000,
+		sendAsAudio: false,
 		icon: voiceIcon,
 	},
 	footer: {

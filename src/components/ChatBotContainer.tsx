@@ -771,7 +771,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				{botOptions.theme?.showInputRow &&
 					<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
 						inputRef={inputRef} textAreaDisabled={textAreaDisabled}
-						textAreaSensitiveMode={textAreaSensitiveMode}
+						textAreaSensitiveMode={textAreaSensitiveMode} injectMessage={injectMessage}
 						voiceToggledOn={voiceToggledOn} getCurrPath={getCurrPath}
 						hasFlowStarted={hasFlowStarted} setHasFlowStarted={setHasFlowStarted}
 					/>

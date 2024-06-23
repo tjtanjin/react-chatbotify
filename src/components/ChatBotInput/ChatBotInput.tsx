@@ -10,13 +10,15 @@ import {
 	SetStateAction,
 	Dispatch
 } from "react";
+
 import SendButton from "./SendButton/SendButton";
 import VoiceButton from "./VoiceButton/VoiceButton";
-import { isDesktop } from "../../services/Utils";
+import MediaDisplay from "../ChatBotBody/MediaDisplay/MediaDisplay";
+import { getMediaFileDetails, isDesktop } from "../../services/Utils";
 import { useBotOptions } from "../../context/BotOptionsContext";
+import { Flow } from "../../types/Flow";
 
 import "./ChatBotInput.css";
-import { Flow } from "../../types/Flow";
 
 /**
  * Contains chat input field for user to enter messages.
@@ -30,6 +32,7 @@ import { Flow } from "../../types/Flow";
  * @param handleActionInput handles action input from user
  * @param hasFlowStarted boolean indicating if flow has started
  * @param setHasFlowStarted sets whether the flow has started
+ * @param injectMessage utility function for injecting a message into the messages array
  */
 const ChatBotInput = ({
 	inputRef,
@@ -40,7 +43,8 @@ const ChatBotInput = ({
 	handleToggleVoice,
 	handleActionInput,
 	hasFlowStarted,
-	setHasFlowStarted
+	setHasFlowStarted,
+	injectMessage
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
@@ -51,6 +55,7 @@ const ChatBotInput = ({
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
 	hasFlowStarted: boolean;
 	setHasFlowStarted: Dispatch<SetStateAction<boolean>>;
+	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 }) => {
 
 	// handles options for bot
@@ -62,6 +67,9 @@ const ChatBotInput = ({
 	// tracks length of input
 	const [inputLength, setInputLength] = useState<number>(0);
 
+	// tracks audio chunk (if voice is sent as audio)
+	const [audioChunks, setAudioChunks] = useState<BlobPart[]>([]);
+
 	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
 	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
 	useEffect(() => {
@@ -69,8 +77,14 @@ const ChatBotInput = ({
 		if (!currPath) {
 			return;
 		}
-		handleActionInput(currPath, inputRef.current?.value as string);
-		setInputLength(0);
+
+		if (botOptions.voice?.sendAsAudio) {
+			handleSendAsAudio();
+			setAudioChunks([]);
+		} else {
+			handleActionInput(currPath, inputRef.current?.value as string);
+			setInputLength(0);
+		}
 	}, [voiceInputTrigger])
 
 	// styles for text area
@@ -200,6 +214,22 @@ const ChatBotInput = ({
 		setVoiceInputTrigger(prev => !prev);
 	}
 
+	/**
+	 * Handles sending of voice input as audio file if enabled.
+	 */
+	const handleSendAsAudio = async () => {
+		const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+		const audioFile = new File([audioBlob], 'voice-input.wav', { type: 'audio/wav' });
+		const fileDetails = await getMediaFileDetails(audioFile);
+		if (!fileDetails.fileType || !fileDetails.fileUrl) {
+			return;
+		}
+
+		// sends media display if file details are valid
+		await injectMessage(<MediaDisplay file={audioFile} fileType={fileDetails.fileType}
+			fileUrl={fileDetails.fileUrl}/>, "user");
+	}
+
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
@@ -247,6 +277,7 @@ const ChatBotInput = ({
 					<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}
 						voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
 						triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
+						setAudioChunks={setAudioChunks}
 					/>
 				}
 				<SendButton handleSubmit={handleSubmit}/>

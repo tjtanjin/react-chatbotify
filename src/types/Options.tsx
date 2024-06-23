@@ -107,6 +107,7 @@ export type Options = {
 		timeoutPeriod?: number;
 		autoSendDisabled?: boolean;
 		autoSendPeriod?: number;
+		sendAsAudio?: boolean;
 		icon?: string;
 	},
 	footer?: {

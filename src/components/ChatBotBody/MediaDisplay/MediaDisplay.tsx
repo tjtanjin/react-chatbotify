@@ -59,7 +59,7 @@ const MediaDisplay = ({
 							style={{
 								maxWidth: botOptions.userBubble?.showAvatar ? "65%" : "70%",
 							}}
-							controls className="rcb-media-display-audio"
+							controls className="rcb-media-display-audio rcb-media-entry"
 						>
 							<source src={fileUrl} type={file.type} />
 							Your browser does not support the audio tag.

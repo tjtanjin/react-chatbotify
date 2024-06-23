@@ -7,24 +7,55 @@ const recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
 let inactivityTimer: ReturnType<typeof setTimeout> | null;
 let autoSendTimer: ReturnType<typeof setTimeout>;
 let toggleOn = false;
+let mediaRecorder: MediaRecorder | null = null;
+
+/**
+ * Starts recording user voice input with microphone.
+ * 
+ * @param botOptions options provided to the bot
+ * @param handleToggleVoice handles toggling of voice
+ * @param triggerSendVoiceInput triggers sending of voice input into chat window
+ * @param setInputLength sets the input length to reflect character count & limit
+ * @param setAudioChunk sets the audio chunk if voice input is sent as audio file
+ * @param inputRef reference to textarea for input
+ */
+export const startVoiceRecording = (
+	botOptions: Options,
+	handleToggleVoice: () => void,
+	triggerSendVoiceInput: () => void,
+	setInputLength: Dispatch<SetStateAction<number>>,
+	setAudioChunks: Dispatch<SetStateAction<BlobPart[]>>,
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
+) => {
+	if (botOptions.voice?.sendAsAudio) {
+		// Only use MediaRecorder when sendAsAudio is enabled
+		startAudioRecording(triggerSendVoiceInput, setAudioChunks);
+	} else {
+		// Only use SpeechRecognition when sendAsAudio is disabled
+		startSpeechRecognition(botOptions, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
+	}
+}
 
 /**
  * Starts voice recording for input into textarea.
- * 
+ *
  * @param botOptions options provided to the bot
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
  * @param inputRef reference to textarea for input
  */
-export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () => void,
-	triggerSendVoiceInput: () => void, setInputLength: Dispatch<SetStateAction<number>>,
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>) => {
-
+const startSpeechRecognition = (
+	botOptions: Options,
+	handleToggleVoice: () => void,
+	triggerSendVoiceInput: () => void,
+	setInputLength: Dispatch<SetStateAction<number>>,
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
+) => {
 	if (!recognition) {
 		return;
 	}
-	
+
 	if (!toggleOn) {
 		try {
 			toggleOn = true;
@@ -75,12 +106,48 @@ export const startVoiceRecording = (botOptions: Options, handleToggleVoice: () =
 		}
 	};
 
-	// Start the inactivity timer
 	inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);
 }
 
 /**
- * Stops voice recording.
+ * Starts voice recording for sending as audio file.
+ *
+ * @param triggerSendVoiceInput triggers sending of voice input into chat window
+ * @param setAudioChunk sets the audio chunk if voice input is sent as audio file
+ */
+const startAudioRecording = (
+	triggerSendVoiceInput: () => void,
+	setAudioChunks: Dispatch<SetStateAction<BlobPart[]>>,
+) => {
+	navigator.mediaDevices.getUserMedia({ audio: true })
+		.then(stream => {
+			mediaRecorder = new MediaRecorder(stream);
+
+			if (!toggleOn) {
+				try {
+					toggleOn = true;
+					mediaRecorder.start();
+				} catch {
+					// catches rare dom exception if user spams voice button
+				}
+			}
+
+			mediaRecorder.ondataavailable = event => {
+				setAudioChunks(prev => [...prev, event.data]);
+			};
+
+			mediaRecorder.onstop = () => {
+				triggerSendVoiceInput();
+				stream.getTracks().forEach(track => track.stop());
+			};
+		})
+		.catch(error => {
+			console.error("Unable to use microphone:", error);
+		});
+}
+
+/**
+ * Stops all voice recordings.
  */
 export const stopVoiceRecording = () => {
 	if (!recognition) {
@@ -91,6 +158,15 @@ export const stopVoiceRecording = () => {
 	if (recognition) {
 		recognition.stop();
 	}
+
+	if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+		mediaRecorder.stop();
+		mediaRecorder = null;
+	}
+
+	clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
+	inactivityTimer = null;
+	clearTimeout(autoSendTimer);
 }
 
 /**
@@ -107,7 +183,11 @@ export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botOptions: Options
 
 	if (keepVoiceOn && !toggleOn) {
 		toggleOn = true;
-		recognition.start();
+		if (botOptions.voice?.sendAsAudio) {
+			mediaRecorder?.start();
+		} else {
+			recognition.start();
+		}
 	} else if (!keepVoiceOn) {
 		stopVoiceRecording();
 	}
