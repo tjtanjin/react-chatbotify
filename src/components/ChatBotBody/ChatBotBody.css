@@ -56,8 +56,11 @@
 }
 
 .rcb-bot-message {
-	margin-left: 0;
 	margin-left: 16px;
+}
+
+.rcb-bot-message-offset {
+	margin-left: 50px;
 }
 
 .rcb-bot-message-entry {
@@ -77,6 +80,10 @@
 
 .rcb-user-message {
 	margin-right: 16px;
+}
+
+.rcb-user-message-offset {
+	margin-right: 50px;
 }
 
 .rcb-user-message-entry {

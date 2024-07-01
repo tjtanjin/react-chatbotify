@@ -141,34 +141,51 @@ const ChatBotBody = ({
 	};
 
 	/**
+	 * Determines if the message is the first in a consecutive series from the same sender.
+	 */
+	const isFirstInSeries = (index: number): boolean => {
+		if (index === 0) {
+			return true;
+		}
+		return messages[index].sender !== messages[index - 1].sender;
+	};
+
+	/**
 	 * Renders message from the user.
 	 * 
 	 * @param message message to render
 	 */
-	const renderUserMessage = (message: Message) => {
+	const renderUserMessage = (message: Message, index: number) => {
+		const isNewSender = isFirstInSeries(index);
+		const showAvatar = botOptions.userBubble?.showAvatar && isNewSender;
+		const offsetStyle = isNewSender ? "rcb-user-message" : "rcb-user-message rcb-user-message-offset";
 		return (
-			<>
-				{botOptions?.userBubble?.dangerouslySetInnerHtml ?
+			<div className="rcb-user-message-container">
+				{typeof message.content === "string" ? (
+					botOptions?.userBubble?.dangerouslySetInnerHtml ? (
+						<div
+							style={{ ...userBubbleStyle, display: "inline" }}
+							className={`${offsetStyle} ${userBubbleEntryStyle}`}
+							dangerouslySetInnerHTML={{ __html: message.content }}
+						/>
+					) : (
+						<div
+							style={userBubbleStyle}
+							className={`${offsetStyle} ${userBubbleEntryStyle}`}
+						>
+							{message.content}
+						</div>
+					)
+				) : (
+					message.content
+				)}
+				{showAvatar && (
 					<div
-						style={{...userBubbleStyle, display: "inline" }}
-						className={`rcb-user-message ${userBubbleEntryStyle}`}
-						dangerouslySetInnerHTML={{__html: message.content}}
-					/>
-					:
-					<div
-						style={userBubbleStyle}
-						className={`rcb-user-message ${userBubbleEntryStyle}`}
-					>
-						{message.content}
-					</div>
-				}
-				{botOptions.userBubble?.showAvatar &&
-					<div 
-						style={{backgroundImage: `url(${botOptions.userBubble?.avatar})`}}
+						style={{ backgroundImage: `url(${botOptions.userBubble?.avatar})` }}
 						className="rcb-message-user-avatar"
 					/>
-				}
-			</>
+				)}
+			</div>
 		);
 	};
 
@@ -177,30 +194,37 @@ const ChatBotBody = ({
 	 * 
 	 * @param message message to render
 	 */
-	const renderBotMessage = (message: Message) => {
+	const renderBotMessage = (message: Message, index: number) => {
+		const isNewSender = isFirstInSeries(index);
+		const showAvatar = botOptions.botBubble?.showAvatar && isNewSender;
+		const offsetStyle = isNewSender ? "rcb-bot-message" : "rcb-bot-message rcb-bot-message-offset";
 		return (
-			<>
-				{botOptions.botBubble?.showAvatar &&
+			<div className="rcb-bot-message-container">
+				{showAvatar && (
 					<div
-						style={{backgroundImage: `url(${botOptions.botBubble?.avatar})`}}
+						style={{ backgroundImage: `url(${botOptions.botBubble?.avatar})` }}
 						className="rcb-message-bot-avatar"
 					/>
-				}
-				{botOptions?.botBubble?.dangerouslySetInnerHtml ?
-					<div
-						style={{...botBubbleStyle, display: "inline" }}
-						className={`rcb-bot-message ${botBubbleEntryStyle}`}
-						dangerouslySetInnerHTML={{__html: message.content}}
-					/>
-					:
-					<div
-						style={botBubbleStyle}
-						className={`rcb-bot-message ${botBubbleEntryStyle}`}
-					>
-						{message.content}
-					</div>
-				}
-			</>
+				)}
+				{typeof message.content === "string" ? (
+					botOptions?.botBubble?.dangerouslySetInnerHtml ? (
+						<div
+							style={{ ...botBubbleStyle, display: "inline" }}
+							className={`${offsetStyle} ${botBubbleEntryStyle}`}
+							dangerouslySetInnerHTML={{ __html: message.content }}
+						/>
+					) : (
+						<div
+							style={botBubbleStyle}
+							className={`${offsetStyle} ${botBubbleEntryStyle}`}
+						>
+							{message.content}
+						</div>
+					)
+				) : (
+					message.content
+				)}
+			</div>
 		);
 	};
 	
@@ -212,19 +236,15 @@ const ChatBotBody = ({
 			onScroll={updateIsScrolling}
 		>
 			{messages.map((message, index) => {
-				if (typeof message.content !== "string") {
-					return <div key={index}>{message.content}</div>;
+				if (message.sender === "system") {
+					return <div key={index}>{message.content}</div>
 				}
-		
+
 				return (
-					<div 
-						key={index} 
-						className={message.sender === "user"
-							? "rcb-user-message-container"
-							: "rcb-bot-message-container"
-						}
-					>
-						{message.sender === "user" ? renderUserMessage(message) : renderBotMessage(message)}
+					<div key={index}>
+						{message.sender === "user"
+							? renderUserMessage(message, index)
+							: renderBotMessage(message, index)}
 					</div>
 				);
 			})}

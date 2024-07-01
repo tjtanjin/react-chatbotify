@@ -60,7 +60,13 @@ function App() {
 				return "What's my favourite color? Click the button below to find out my answer!"
 			},
 			render: (
-				<div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: 10}}>
+				<div style={{
+					width: "100%",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					marginTop: 10
+				}}>
 					<button 
 						className="secret-fav-color"
 						onClick={() => alert("black")}>

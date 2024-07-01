@@ -195,13 +195,23 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
 			attributes = addStyleToOptions(classList, attributes, botOptions);
 			attributes = addStyleToCheckboxRows(classList, attributes, botOptions);
 			attributes = addStyleToCheckboxNextButton(classList, attributes, botOptions);
-			const children = renderHTML((node as Element).innerHTML, botOptions);
-			return createElement(tagName, { key: index, ...attributes }, children);
+			//attributes = addStyleToMediaDisplayContainers(classList, attributes, botOptions);
+
+			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
+				'meta', 'source', 'track', 'wbr'];
+			if (voidElements.includes(tagName)) {
+				// void elements must not have children
+				return createElement(tagName, { key: index, ...attributes });
+			} else {
+				const children = renderHTML((node as Element).innerHTML, botOptions);
+				return createElement(tagName, { key: index, ...attributes }, ...children);
+			}
 		}
 	});
   
 	return renderNodes;
 };
+
 
 /**
  * Add styles (that were lost when saving to history) to options container/checkbox container.
@@ -282,6 +292,8 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 	}
 	return attributes;
 }
+
+
 
 export {
 	saveChatHistory,

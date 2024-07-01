@@ -8,6 +8,10 @@
 	width: fit-content;
 }
 
+.rcb-media-display-offset {
+	margin-right: 50px !important;
+}
+
 /* Image Display */
 
 .rcb-media-display-image {

@@ -11,7 +11,7 @@ import { Flow } from "../../types/Flow";
  * @param handleActionInput handles action input from user 
  */
 export const processCheckboxes = (block: Block, path: keyof Flow,
-	injectMessage: (content: string | JSX.Element, sender?: string) => void,
+	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>,
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const checkboxes = block.checkboxes;

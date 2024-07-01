@@ -347,15 +347,15 @@ const viewHistory = async () => {
     await driver.wait(until.elementIsVisible(viewHistoryElement), WAIT_DURATION);
     await viewHistoryElement.click();
     await sleep(WAIT_DURATION);
-    const replyElements = await driver.findElements(By.className("rcb-bot-message"));
-    const expectedReplyCount = 14;
+    const replyElements = await driver.findElements(By.className("rcb-bot-message-container"));
+    const expectedReplyCount = 18;
     if (replyElements.length != expectedReplyCount) {
         throw new Error(`Load history failed: Expected ${expectedReplyCount} ` +
             `bot messages but received ${replyElements.length}`);
     }
 
     const expectedSendCount = 13;
-    const sendElements = await driver.findElements(By.className("rcb-user-message"));
+    const sendElements = await driver.findElements(By.className("rcb-user-message-container"));
     if (sendElements.length != expectedSendCount) {
         throw new Error(`Load history failed: Expected ${expectedSendCount} ` +
             `user messages but received ${sendElements.length}`);

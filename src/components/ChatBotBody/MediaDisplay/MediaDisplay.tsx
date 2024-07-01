@@ -34,7 +34,7 @@ const MediaDisplay = ({
 	return (
 		<>
 			{fileUrl ?
-				<div className="rcb-user-message-container">
+				<>
 					{fileType === 'image' && fileUrl && (
 						<div
 							style={mediaDisplayContainerStyle}
@@ -65,13 +65,7 @@ const MediaDisplay = ({
 							Your browser does not support the audio tag.
 						</audio>
 					)}
-					{botOptions.userBubble?.showAvatar &&
-						<div 
-							style={{backgroundImage: `url(${botOptions.userBubble?.avatar})`}}
-							className="rcb-message-user-avatar"
-						/>
-					}
-				</div>
+				</>
 				:
 				<></>
 			}
