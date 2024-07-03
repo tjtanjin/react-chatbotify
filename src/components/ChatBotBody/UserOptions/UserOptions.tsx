@@ -3,9 +3,9 @@ import { useEffect, useState, MouseEvent } from "react";
 
 import { useBotOptions } from "../../../context/BotOptionsContext";
 import { usePaths } from "../../../context/PathsContext";
+import { Flow } from "../../../types/Flow";
 
 import "./UserOptions.css";
-import { Flow } from "../../../types/Flow";
 
 /**
  * Supports showing of options for user to select.

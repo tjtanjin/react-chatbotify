@@ -182,6 +182,9 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
 						styleObject[reactCompliantKey] = value;
 					});
 					acc[attributeName] = styleObject;
+				} else if ((tagName === "audio" || tagName === "video")
+					&& attributeName === "controls" && attr.value === "") {
+					acc[attributeName] = "true";
 				} else {
 					acc[attributeName] = attr.value;
 				}
@@ -195,7 +198,7 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
 			attributes = addStyleToOptions(classList, attributes, botOptions);
 			attributes = addStyleToCheckboxRows(classList, attributes, botOptions);
 			attributes = addStyleToCheckboxNextButton(classList, attributes, botOptions);
-			//attributes = addStyleToMediaDisplayContainers(classList, attributes, botOptions);
+			attributes = addStyleToMediaDisplayContainer(classList, attributes, botOptions);
 
 			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 				'meta', 'source', 'track', 'wbr'];
@@ -293,7 +296,26 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 	return attributes;
 }
 
-
+/**
+ * Add styles (that were lost when saving to history) to options.
+ *
+ * @param classList array of classes the element has
+ * @param attributes current attributes the element has
+ * @param botOptions options provided to the bot
+ */
+const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
+	botOptions: Options) => {
+	if (classList.contains("rcb-media-display-image-container")
+		|| classList.contains("rcb-media-display-video-container")) {
+		attributes["style"] = {
+			...(attributes["style"] as CSSProperties),
+			backgroundColor: botOptions.theme?.primaryColor,
+			maxWidth: botOptions.userBubble?.showAvatar ? "65%" : "70%",
+			...botOptions.mediaDisplayContainerStyle
+		}
+	}
+	return attributes;
+}
 
 export {
 	saveChatHistory,
