@@ -1,8 +1,8 @@
 import { Options } from "../types/Options";
 
-import chatButton from "../assets/chat_button.png";
-import actionDisabledIcon from "../assets/action_disabled_icon.png";
-import botAvatar from "../assets/bot_avatar.png";
+import chatButton from "../assets/chat_button.svg";
+import actionDisabledIcon from "../assets/action_disabled_icon.svg";
+import botAvatar from "../assets/bot_avatar.svg";
 import userAvatar from "../assets/user_avatar.svg";
 import chatIcon from "../assets/chat_icon.svg";
 import fileAttachmentIcon from "../assets/file_attachment_icon.svg";
