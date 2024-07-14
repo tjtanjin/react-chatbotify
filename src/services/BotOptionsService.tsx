@@ -1,6 +1,5 @@
 import { Options } from "../types/Options";
 
-import chatButton from "../assets/chat_button.svg";
 import actionDisabledIcon from "../assets/action_disabled_icon.svg";
 import botAvatar from "../assets/bot_avatar.svg";
 import userAvatar from "../assets/user_avatar.svg";
@@ -138,7 +137,12 @@ const defaultOptions = {
 				onClick={() => window.open("https://react-chatbotify.tjtanjin.com")}
 			>
 				<span>Powered By </span>
-				<img style={{width: 10, height: 10}} src={chatButton}/>
+				<img style={{
+					borderRadius: "50%",
+					width: 14, height: 14, backgroundImage: `url(${chatIcon}),
+					linear-gradient(to right, #42b0c5, #491d8d)`
+				}}>
+				</img>
 				<span style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
 		),
