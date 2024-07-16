@@ -34,7 +34,7 @@ const SendButton = ({
 	};
 	
 	// styles for send icon
-	const sendIconStyle = {
+	const sendIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${botOptions.chatInput?.sendButtonIcon})`,
 	};
 
