@@ -1,9 +1,8 @@
 import { BUTTON } from "./Utils";
 import { Options } from "../types/Options";
 
-import chatButton from "../assets/chat_button.png";
-import actionDisabledIcon from "../assets/action_disabled_icon.png";
-import botAvatar from "../assets/bot_avatar.png";
+import actionDisabledIcon from "../assets/action_disabled_icon.svg";
+import botAvatar from "../assets/bot_avatar.svg";
 import userAvatar from "../assets/user_avatar.svg";
 import chatIcon from "../assets/chat_icon.svg";
 import fileAttachmentIcon from "../assets/file_attachment_icon.svg";
@@ -34,6 +33,7 @@ const defaultOptions = {
 		embedded: false,
 		desktopEnabled: true,
 		mobileEnabled: true,
+		flowStartTrigger: "ON_LOAD",
 	},
 	tooltip: {
 		mode: "CLOSE",
@@ -44,10 +44,11 @@ const defaultOptions = {
 	},
 	header: {
 		title: (
-			<h3 style={{cursor: "pointer", margin: 0}} onClick={
+			<div style={{cursor: "pointer", margin: 0, fontSize: 20, fontWeight: "bold"}} onClick={
 				() => window.open("https://github.com/tjtanjin/")
-			}>Tan Jin
-			</h3>
+			}>
+				Tan Jin
+			</div>
 		),
 		showAvatar: true,
 		avatar: botAvatar,
@@ -60,6 +61,7 @@ const defaultOptions = {
 		volume: 0.2,
 		icon: notificationIcon,
 		sound: notificationSound,
+		showCount: true,
 	},
 	audio: {
 		disabled: true,
@@ -76,9 +78,11 @@ const defaultOptions = {
 		storageKey: "rcb-history",
 		viewChatHistoryButtonText: "Load Chat History ⟳",
 		chatHistoryLineBreakText: "----- Previous Chat History -----",
+		autoLoad: false,
 	},
 	chatInput: {
 		disabled: false,
+		allowNewline: false,
 		enabledPlaceholderText: "Type your message...",
 		disabledPlaceholderText: "",
 		showCharacterCount: false,
@@ -98,12 +102,19 @@ const defaultOptions = {
 		messagePromptText: "New Messages ↓",
 		messagePromptOffset: 30,
 	},
+	sensitiveInput: {
+		maskInTextArea: true,
+		maskInUserBubble: true,
+		asterisksCount: 10,
+		hideInUserBubble: false,
+	},
 	userBubble: {
 		animate: true,
 		showAvatar: false,
 		avatar: userAvatar,
 		simStream: false,
 		streamSpeed: 30,
+		dangerouslySetInnerHtml: false,
 	},
 	botBubble: {
 		animate: true,
@@ -111,25 +122,31 @@ const defaultOptions = {
 		avatar: botAvatar,
 		simStream: false,
 		streamSpeed: 30,
+		dangerouslySetInnerHtml: false,
 	},
 	voice: {
 		disabled: true,
 		defaultToggledOn: false,
+		language: "en-US",
 		timeoutPeriod: 10000,
 		autoSendDisabled: false,
 		autoSendPeriod: 1000,
+		sendAsAudio: false,
 		icon: voiceIcon,
 	},
 	footer: {
 		text: (
-			<div style={{cursor: "pointer"}} 
+			<div style={{cursor: "pointer", display: "flex", flexDirection: "row", alignItems: "center", columnGap: 3}} 
 				onClick={() => window.open("https://react-chatbotify.tjtanjin.com")}
 			>
 				<span>Powered By </span>
-				<span style={{fontWeight: "bold"}}>
-					<img style={{width: 10, height: 10}} src={chatButton}></img>
-					<span> React ChatBotify</span>
-				</span>
+				<img style={{
+					borderRadius: "50%",
+					width: 14, height: 14, backgroundImage: `url(${chatIcon}),
+					linear-gradient(to right, #42b0c5, #491d8d)`
+				}}>
+				</img>
+				<span style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
 		),
 		buttons: [BUTTON.FILE_ATTACHMENT_BUTTON, BUTTON.EMOJI_PICKER_BUTTON]
@@ -139,6 +156,7 @@ const defaultOptions = {
 		multiple: true,
 		accept: ".png",
 		icon: fileAttachmentIcon,
+		showMediaDisplay: true,
 	},
 	emoji: {
 		disabled: false,
@@ -181,6 +199,7 @@ const defaultOptions = {
 	chatMessagePromptHoveredStyle: {},
 	footerStyle: {},
 	loadingSpinnerStyle: {},
+	mediaDisplayContainerStyle: {},
 }
 
 /**

@@ -51,6 +51,9 @@ const run = async() => {
     await executeTest(toggleAudio);
     await executeTest(toggleVoice);
     await executeTest(viewHistory);
+    await executeTest(charLimit);
+    await executeTest(newMessagePrompt);
+    await executeTest(scrollToBottom);
     showTestSummary();
     await driver.quit();
 };
@@ -74,7 +77,7 @@ const openChatWindow = async () => {
 
 const sendName = async () => {
     const textAreaElement = await driver.findElement(By.className("rcb-chat-input-textarea"));
-    await driver.wait(until.elementIsVisible(textAreaElement), WAIT_DURATION);
+    await sleep(WAIT_DURATION);
     await textAreaElement.sendKeys("Tan Jin", Key.RETURN);
     const expectedText = "Hey Tan Jin!";
     await sleep(WAIT_DURATION);
@@ -344,20 +347,81 @@ const viewHistory = async () => {
     await driver.wait(until.elementIsVisible(viewHistoryElement), WAIT_DURATION);
     await viewHistoryElement.click();
     await sleep(WAIT_DURATION);
-    const replyElements = await driver.findElements(By.className("rcb-bot-message"));
-    const expectedReplyCount = 14;
+    const replyElements = await driver.findElements(By.className("rcb-bot-message-container"));
+    const expectedReplyCount = 18;
     if (replyElements.length != expectedReplyCount) {
         throw new Error(`Load history failed: Expected ${expectedReplyCount} ` +
             `bot messages but received ${replyElements.length}`);
     }
 
     const expectedSendCount = 13;
-    const sendElements = await driver.findElements(By.className("rcb-user-message"));
+    const sendElements = await driver.findElements(By.className("rcb-user-message-container"));
     if (sendElements.length != expectedSendCount) {
         throw new Error(`Load history failed: Expected ${expectedSendCount} ` +
             `user messages but received ${sendElements.length}`);
     }
 }
+
+const charLimit = async () => {
+    const charCounterElements = await driver.findElements(By.className("rcb-chat-input-char-counter"));
+    if (charCounterElements.length > 0) {
+
+        const charCounterText = await charCounterElements[0].getText();
+        const characterLimit = parseInt(charCounterText.split('/')[1], 10);
+
+        const textAreaElement = await driver.findElement(By.className("rcb-chat-input-textarea"));
+        await driver.wait(until.elementIsVisible(textAreaElement), WAIT_DURATION);
+        const longString = "a".repeat(characterLimit + 10);
+        await textAreaElement.sendKeys(longString);
+        const textAreaValue = await textAreaElement.getAttribute("value");
+        if (textAreaValue.length > characterLimit) {
+            throw new Error(`Character limit exceeded: Expected max ${characterLimit} characters but found ${textAreaValue.length}`);
+        }
+    }
+};
+
+const newMessagePrompt = async () => {
+    const textAreaElement = await driver.findElement(By.className("rcb-chat-input-textarea"));
+    await textAreaElement.sendKeys("Hello", Key.RETURN);
+
+    const chatWindowElement = await driver.findElement(By.className("rcb-chat-body-container"));
+    await driver.executeScript("arguments[0].scrollTop = 0", chatWindowElement);
+
+    await sleep(WAIT_DURATION);
+
+    const messagePrompt = await driver.findElements(By.className("rcb-message-prompt-container"));
+    if (messagePrompt.length === 0) {
+        throw new Error("Message prompt container element not found.");
+    }
+    const messagePromptClasses = await messagePrompt[0].getAttribute("class");
+
+    if (!messagePromptClasses.includes("visible") || messagePromptClasses.includes("hidden")) {
+        throw new Error("New message prompt was not shown when new messages were received.");
+    }
+};
+
+
+const scrollToBottom = async () => {
+
+    const chatWindowElement = await driver.findElement(By.className("rcb-chat-body-container"));
+    const messagePrompt = await driver.findElement(By.className("rcb-message-prompt-container"));
+    await messagePrompt.click();
+
+    await sleep(WAIT_DURATION);
+
+    const isScrolledToBottom = await driver.executeScript(
+        "const element = arguments[0];" +
+        "const scrollPosition = element.scrollTop + element.offsetHeight;" +
+        "const totalContentHeight = element.scrollHeight;" +
+        "const tolerance = 5; /* pixels allowed for inaccuracy */" +
+        "return scrollPosition >= totalContentHeight - tolerance;",
+        chatWindowElement
+      );
+    
+    if (!isScrolledToBottom) {
+      throw new Error("Chat did not auto-scroll to the bottom when the new message prompt was clicked.");
+    }
+};
 
 const showTestSummary = () => {
     console.log(errors);
@@ -370,5 +434,7 @@ const showTestSummary = () => {
         process.exit(1);
     }
 }
+
+
 
 run();

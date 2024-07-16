@@ -14,7 +14,7 @@ export const processPath = async (block: Block, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const nextPath = block.path;
-	if (nextPath == null) {
+	if (!nextPath) {
 		return false;
 	}
 
@@ -28,11 +28,10 @@ export const processPath = async (block: Block, params: Params,
 		parsedPath = await parsedPath;
 	}
 
-	if (parsedPath == null) {
+	if (!parsedPath) {
 		return false;
 	}
-	// eslint-disable-next-line
-	// @ts-ignore
-	setPaths(prev => [...prev, parsedPath]);
+	const path = parsedPath;
+	setPaths(prev => [...prev, path]);
 	return true;
 }

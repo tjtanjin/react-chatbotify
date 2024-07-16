@@ -17,6 +17,7 @@ export type Options = {
 		embedded?: boolean;
 		desktopEnabled?: boolean;
 		mobileEnabled?: boolean;
+		flowStartTrigger?: string;
 	},
 	tooltip?: {
 		mode?: string;
@@ -38,6 +39,7 @@ export type Options = {
 		volume?: number;
 		icon?: string;
 		sound?: string;
+		showCount?: boolean;
 	},
 	audio?: {
 		disabled?: boolean;
@@ -54,9 +56,11 @@ export type Options = {
 		storageKey?: string;
 		viewChatHistoryButtonText?: string;
 		chatHistoryLineBreakText?: string;
+		autoLoad?: boolean;
 	},
 	chatInput?: {
 		disabled?: boolean;
+		allowNewline?: boolean;
 		enabledPlaceholderText?: string;
 		disabledPlaceholderText?: string;
 		showCharacterCount?: boolean;
@@ -76,12 +80,19 @@ export type Options = {
 		messagePromptText?: string;
 		messagePromptOffset?: number;
 	},
+	sensitiveInput?: {
+		maskInTextArea?: boolean;
+		maskInUserBubble?: boolean;
+		asterisksCount?: number;
+		hideInUserBubble?: boolean;
+	},
 	userBubble?: {
 		animate?: boolean;
 		showAvatar?: boolean;
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
+		dangerouslySetInnerHtml?: boolean;
 	},
 	botBubble?: {
 		animate?: boolean;
@@ -89,13 +100,16 @@ export type Options = {
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
+		dangerouslySetInnerHtml?: boolean;
 	},
 	voice?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
+		language?: string;
 		timeoutPeriod?: number;
 		autoSendDisabled?: boolean;
 		autoSendPeriod?: number;
+		sendAsAudio?: boolean;
 		icon?: string;
 	},
 	footer?: {
@@ -107,6 +121,7 @@ export type Options = {
 		multiple?: boolean;
 		accept?: string;
 		icon?: string;
+		showMediaDisplay?: boolean;
 	}
 	emoji?: {
 		disabled?: boolean;
@@ -149,4 +164,5 @@ export type Options = {
 	chatMessagePromptHoveredStyle?: React.CSSProperties;
 	footerStyle?: React.CSSProperties;
 	loadingSpinnerStyle?: React.CSSProperties;
+	mediaDisplayContainerStyle?: React.CSSProperties;
 }

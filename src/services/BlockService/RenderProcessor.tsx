@@ -10,7 +10,7 @@ import { Params } from "../../types/Params";
 export const processRender = async (block: Block, params: Params) => {
 
 	const element = block.render;
-	if (element == null) {
+	if (!element) {
 		return;
 	}
 
@@ -20,7 +20,7 @@ export const processRender = async (block: Block, params: Params) => {
 			content = await content;
 		}
 
-		if (content == null) {
+		if (!content) {
 			return;
 		}
 		await params.injectMessage(content);

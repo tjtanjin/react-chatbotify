@@ -1,10 +1,11 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
-import { usePaths } from "../../context/PathsContext";
+import { useBotOptions } from "../../../context/BotOptionsContext";
+import { usePaths } from "../../../context/PathsContext";
 
 import "./UserCheckboxes.css";
+import { Flow } from "../../../types/Flow";
 
 /**
  * Supports showing of checkboxes for user to mark.
@@ -22,8 +23,8 @@ const UserCheckboxes = ({
 }: {
 	checkboxes: {items: Array<string>, max?: number, min?: number};
 	checkedItems: Set<string>;
-	path: string;
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>;
+	path: keyof Flow;
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot

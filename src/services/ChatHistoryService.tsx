@@ -11,18 +11,18 @@ let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
 let historyDisabled = false;
+let historyMessages: Message[] = [];
 
 /**
  * Updates the messages array with a new message appended at the end and saves chat history if enabled.
  * 
  * @param messages messages containing current conversation with the bot
  */
-const saveChatHistory = async (messages: Message[], chatHistory: string) => {
+const saveChatHistory = async (messages: Message[]) => {
 	if (historyDisabled) {
 		return;
 	}
 	
-	const historyMessages = getHistoryMessages(chatHistory);
 	const messagesToSave: Message[] = [];
 	const offset = historyLoaded ? historyMessages.length : 0;
 
@@ -42,7 +42,7 @@ const saveChatHistory = async (messages: Message[], chatHistory: string) => {
 		}
 	}
 
-	let parsedMessages = messagesToSave.map(parseMessageToString);
+	let parsedMessages: Message[] = messagesToSave.map(parseMessageToString);
 	if (parsedMessages.length < historyMaxEntries) {
 		const difference = historyMaxEntries - parsedMessages.length;
 		parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
@@ -76,6 +76,7 @@ const setHistoryStorageValues = (botOptions: Options) => {
 	historyStorageKey = botOptions.chatHistory?.storageKey as string;
 	historyMaxEntries = botOptions.chatHistory?.maxEntries as number;
 	historyDisabled = botOptions.chatHistory?.disabled as boolean;
+	historyMessages = getHistoryMessages(localStorage.getItem(historyStorageKey) as string);
 }
 
 /**
@@ -130,9 +131,18 @@ const loadChatHistory = (botOptions: Options, chatHistory: string, setMessages: 
 			setTimeout(() => {
 				setMessages((prevMessages) => {
 					prevMessages.shift();
-					const lineBreakMessage = {
-						content: <ChatHistoryLineBreak/>,
-						sender: "system"
+					// if autoload, line break is invisible
+					let lineBreakMessage;
+					if (botOptions.chatHistory?.autoLoad) {
+						lineBreakMessage = {
+							content: <></>,
+							sender: "system"
+						}
+					} else {
+						lineBreakMessage = {
+							content: <ChatHistoryLineBreak/>,
+							sender: "system"
+						}
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
@@ -172,6 +182,9 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
 						styleObject[reactCompliantKey] = value;
 					});
 					acc[attributeName] = styleObject;
+				} else if ((tagName === "audio" || tagName === "video")
+					&& attributeName === "controls" && attr.value === "") {
+					acc[attributeName] = "true";
 				} else {
 					acc[attributeName] = attr.value;
 				}
@@ -185,13 +198,23 @@ const renderHTML = (html: string, botOptions: Options): ReactNode[] => {
 			attributes = addStyleToOptions(classList, attributes, botOptions);
 			attributes = addStyleToCheckboxRows(classList, attributes, botOptions);
 			attributes = addStyleToCheckboxNextButton(classList, attributes, botOptions);
-			const children = renderHTML((node as Element).innerHTML, botOptions);
-			return createElement(tagName, { key: index, ...attributes }, children);
+			attributes = addStyleToMediaDisplayContainer(classList, attributes, botOptions);
+
+			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
+				'meta', 'source', 'track', 'wbr'];
+			if (voidElements.includes(tagName)) {
+				// void elements must not have children
+				return createElement(tagName, { key: index, ...attributes });
+			} else {
+				const children = renderHTML((node as Element).innerHTML, botOptions);
+				return createElement(tagName, { key: index, ...attributes }, ...children);
+			}
 		}
 	});
   
 	return renderNodes;
 };
+
 
 /**
  * Add styles (that were lost when saving to history) to options container/checkbox container.
@@ -222,8 +245,8 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botOptionStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botOptionStyle?.color || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botOptionStyle?.color || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 			...botOptions.botOptionStyle
 		}
@@ -243,8 +266,8 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botCheckboxRowStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botCheckboxRowStyle?.color || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botCheckboxRowStyle?.color || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 			...botOptions.botCheckboxRowStyle
 		}
@@ -264,10 +287,31 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
-			borderColor: botOptions.botCheckboxNextStyle?.color as string || botOptions.theme?.primaryColor,
+			color: botOptions.botCheckboxNextStyle?.color || botOptions.theme?.primaryColor,
+			borderColor: botOptions.botCheckboxNextStyle?.color || botOptions.theme?.primaryColor,
 			cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
 			...botOptions.botCheckboxNextStyle
+		}
+	}
+	return attributes;
+}
+
+/**
+ * Add styles (that were lost when saving to history) to options.
+ *
+ * @param classList array of classes the element has
+ * @param attributes current attributes the element has
+ * @param botOptions options provided to the bot
+ */
+const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
+	botOptions: Options) => {
+	if (classList.contains("rcb-media-display-image-container")
+		|| classList.contains("rcb-media-display-video-container")) {
+		attributes["style"] = {
+			...(attributes["style"] as CSSProperties),
+			backgroundColor: botOptions.theme?.primaryColor,
+			maxWidth: botOptions.userBubble?.showAvatar ? "65%" : "70%",
+			...botOptions.mediaDisplayContainerStyle
 		}
 	}
 	return attributes;

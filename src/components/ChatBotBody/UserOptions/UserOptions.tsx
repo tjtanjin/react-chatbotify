@@ -1,8 +1,9 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
-import { usePaths } from "../../context/PathsContext";
+import { useBotOptions } from "../../../context/BotOptionsContext";
+import { usePaths } from "../../../context/PathsContext";
+import { Flow } from "../../../types/Flow";
 
 import "./UserOptions.css";
 
@@ -19,8 +20,8 @@ const UserOptions= ({
 	handleActionInput
 }: {
 	options: string[];
-	path: string;
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>;
+	path: keyof Flow;
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot

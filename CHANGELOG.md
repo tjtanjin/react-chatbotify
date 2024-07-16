@@ -1,5 +1,67 @@
 # CHANGELOG.md
 
+## v1.7.0 (10-06-2024)
+
+**Added:**
+- Added a new `language` property to the `voice` section for managing voice input language
+- Added a new `flowStartTrigger` property to the `theme` section for managing when flow starts
+
+**Fixed:**
+- Fixed an issue where embedded chatbot notifications are played while chatbot is visible
+
+**Note:**
+
+This release has a minor breaking change for developers who are using advance custom paths. If you are currently initializing paths with `["start"]`, note that specifying the `start` block is no longer needed. This means you can simply use `[]` as shown in the updated custom paths example [here](https://react-chatbotify.tjtanjin.com/docs/examples/custom_paths).
+
+## v1.6.3 (05-06-2024)
+
+**Fixed:**
+- Fixed a rare issue where streaming of messages can sometimes cause `undefined` to appear
+
+## v1.6.2 (25-05-2024)
+
+**Added:**
+- Added a new `allowNewline` property to the `chatInput` section which determines if user input can contain newline (`\n`)
+- The notifications feature is now properly supported for embedded chatbots and will chime only if the chatbot is scrolled out of view
+
+**Fixed:**
+- Fixed an issue where voice detection may not be properly disabled while the chatbot is still streaming messages
+- Fixed an issue where **shift + enter** submits user input instead of attempting to add newline
+- Fixed an issue where newline is automatically converted to whitespace in user and bot bubbles
+
+## v1.6.1 (19-05-2024)
+
+**Added:**
+- Added a new `showCount` property to the `notification` section which allows showing/hiding of unread message count on the top right corner of chatbot button
+
+**Fixed:**
+- Improved performance for streaming messages
+- Fixed an issue where streaming messages while `dangerouslySetInnerHtml` is set to `true` will pause briefly on encountering html tags
+- Fixed an issue where notification sound may occasionally chime when chatbot is embedded
+- Fixed an issue where textarea styles may be inconsistent when disabled/focused
+- Fixed an issue where the bot may crash on rare occasions when users spam the voice button
+- Fixed an issue where embedded chatbot will force input focus on new messages even when scrolled out of page view
+
+## v1.6.0 (11-05-2024)
+
+**Added:**
+- Added a new `sensitiveInput` configuration section to cater for sensitive information (refer to [API documentation](https://react-chatbotify.tjtanjin.com/docs/api/bot_options#sensitiveinput))
+- Added a new `autoLoad` property to the `chatHistory` section which allows chat history messages to be automatically loaded on start
+- Added a new `dangerouslySetInnerHtml` property to both `userBubble` and `botBubble` which allows setting of raw HTML content (use with caution)
+
+**Fixed:**
+- Fixed several type definitions within the library itself
+- Fixed an issue where the load chat history button can appear distorted if given a long text string
+- Fixed an issue where some chat history messages may not be saved when using real-time stream
+- Fixed an issue where chat input textarea may resize when focused on some occasions
+- Fixed selection of emoji causing textarea to lose focus
+- Improved performance for saving chat history
+- Further reduced assets file size
+
+**Note:**
+
+This update contains significant additions but they have been documented on the [API documentation](https://react-chatbotify.tjtanjin.com/docs/api/bot_options#sensitiveinput) and you will also find new live examples for [Sensitive Input](https://react-chatbotify.tjtanjin.com/docs/examples/sensitive_input) and [Markup Message](https://react-chatbotify.tjtanjin.com/docs/examples/markup_message). This will be one of the last few (if not the last) release before v2.0.0 arrives. Feel free to join [discord](https://discord.gg/6R4DK4G5Zh) to stay up to date!
+
 ## v1.5.2 (08-04-2024)
 
 **Added:**

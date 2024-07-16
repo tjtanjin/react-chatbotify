@@ -11,10 +11,11 @@ import { preProcessBlock, postProcessBlock } from "../services/BlockService/Bloc
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
-import { isDesktop } from "../services/Utils";
+import { isChatBotVisible, isDesktop, parseMarkupMessage } from "../services/Utils";
 import { useBotOptions } from "../context/BotOptionsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
+import { Block } from "../types/Block";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Params } from "../types/Params";
@@ -41,16 +42,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const chatBodyRef = useRef<HTMLDivElement>(null);
 
 	// references textarea for user input
-	const inputRef = useRef<HTMLTextAreaElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
 
 	// references a temporarily stored user input for use in attribute params
 	const paramsInputRef = useRef<string>("");
 
 	// tracks if chat bot is streaming messages
 	const isBotStreamingRef = useRef<boolean>(false);
-
-	// tracks history messages loaded on start
-	const historyMessages = useRef<string>("");
 
 	// checks if voice should be toggled back on after a user input
 	const keepVoiceOnRef = useRef<boolean>(false);
@@ -61,7 +59,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const gainNodeRef = useRef<AudioNode | null>(null);
 
 	// tracks if user has interacted with page
-	const [hasInteracted, setHasInteracted] = useState<boolean>(false);
+	const [hasInteractedPage, setHasInteractedPage] = useState<boolean>(false);
+
+	// tracks if flow has started
+	const [hasFlowStarted, setHasFlowStarted] = useState<boolean>(false);
 
 	// tracks if notification is toggled on
 	const [notificationToggledOn, setNotificationToggledOn] = useState<boolean>(true);
@@ -74,6 +75,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks if textarea is disabled
 	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(false);
+
+	// tracks if textarea is in sensitive mode
+	const [textAreaSensitiveMode, setTextAreaSensitiveMode] = useState<boolean>(false);
 
 	// tracks if chat history is being loaded
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
@@ -112,17 +116,20 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
 		setAudioToggledOn(botOptions.audio?.defaultToggledOn as boolean);
 		setVoiceToggledOn(botOptions.voice?.defaultToggledOn as boolean);
-		historyMessages.current = localStorage.getItem(botOptions.chatHistory?.storageKey as string) as string;
 		if (botOptions.chatHistory?.disabled) {
 			localStorage.removeItem(botOptions.chatHistory?.storageKey as string);
 		} else {
 			const chatHistory = localStorage.getItem(botOptions.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
+				// note: must always render this button even if autoload (chat history logic relies on system message)
 				const messageContent = {
 					content: <ChatHistoryButton chatHistory={chatHistory} showChatHistory={showChatHistory} />,
 					sender: "system"
 				};
 				setMessages([messageContent]);
+				if (botOptions.chatHistory?.autoLoad) {
+					loadChatHistory(botOptions, chatHistory, setMessages, setTextAreaDisabled);
+				}
 			}
 		}
 
@@ -133,19 +140,26 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		};
 	}, []);
 
+	// triggers update to chat history options
+	useEffect(() => {
+		setHistoryStorageValues(botOptions);
+	}, [botOptions.chatHistory?.storageKey, botOptions.chatHistory?.maxEntries, botOptions.chatHistory?.disabled]);
+
 	// used to handle virtualkeyboard api (if supported on browser)
 	useEffect(() => {
 		// if is desktop or is embedded bot, nothing to resize
 		if (isDesktop || botOptions.theme?.embedded) {
 			return;
 		}
-
-		if ("virtualKeyboard" in navigator) {
-			// @ts-expect-error virtualkeyboard type unknown
+		
+		if (navigator.virtualKeyboard) {
 			navigator.virtualKeyboard.overlaysContent = true;
-			// @ts-expect-error virtualkeyboard type unknown
 			navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
-				const { x, y, width, height } = event.target.boundingRect;
+				if (!event.target) {
+					return;
+				}
+
+				const { x, y, width, height } = (event.target as VirtualKeyboard).boundingRect;
 				// width does not need adjustments so only height is adjusted
 				if (x == 0 && y == 0 && width == 0 && height == 0) {
 					// delay added as it takes time for keyboard to appear and resize the viewport height
@@ -171,14 +185,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// triggers check for notifications and saving of chat history
 	useEffect(() => {
-		saveChatHistory(messages, historyMessages.current);
+		saveChatHistory(messages);
 		handleNotifications();
 	}, [messages.length]);
 
-	// triggers update to chat history options
+	// saves messages once a stream ends
 	useEffect(() => {
-		setHistoryStorageValues(botOptions);
-	}, [botOptions.chatHistory?.storageKey, botOptions.chatHistory?.maxEntries, botOptions.chatHistory?.disabled]);
+		if (!isBotStreamingRef.current) {
+			saveChatHistory(messages);
+		}
+	}, [isBotStreamingRef.current])
 
 	// resets unread count on opening chat and handles scrolling/resizing window on mobile devices
 	useEffect(() => {
@@ -226,39 +242,48 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// performs pre-processing when paths change
 	useEffect(() => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
 
 		// if path is invalid, nothing to process (i.e. becomes dead end!)
-		if (block == null) {
+		if (!block) {
+			setIsBotTyping(false);
 			return;
 		}
 
-		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
 		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current,
 			injectMessage, streamMessage, openChat};
-		callNewBlock(currPath, params);
+		callNewBlock(currPath, block, params);
 	}, [paths]);
+
+	useEffect(() => {
+		if (hasFlowStarted || botOptions.theme?.flowStartTrigger === "ON_LOAD") {
+			setPaths(["start"]);
+		}
+	}, [hasFlowStarted]);
 
 	/**
 	 * Calls the new block for preprocessing upon change to path.
 	 * 
 	 * @param currPath the current path
+	 * @param block the current block
 	 * @param params parameters that may be used in the block
 	 */
-	const callNewBlock = async (currPath: string, params: Params) => {
+	const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
+		// when bot first loads, disable textarea first to allow uninterrupted sending of initial messages
 		if (currPath === "start") {
 			setTextAreaDisabled(true);
 		}
 
-		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setPaths,
-			setTimeoutId, handleActionInput);
+		await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setTextAreaSensitiveMode,
+			setPaths, setTimeoutId, handleActionInput);
 
 		// cleanup logic after preprocessing of a block
 		setIsBotTyping(false);
 		updateTextArea();
+		syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botOptions);
 
 		// cleanup logic after preprocessing of a block (affects only streaming messages)
 		isBotStreamingRef.current = false
@@ -297,7 +322,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Checks for initial user interaction (required to play audio/notification sound).
 	 */
 	const handleFirstInteraction = () => {
-		setHasInteracted(true);
+		setHasInteractedPage(true);
+		if (!hasFlowStarted && botOptions.theme?.flowStartTrigger === "ON_PAGE_INTERACT") {
+			setHasFlowStarted(true);
+		}
 
 		// workaround for getting audio to play on mobile
 		const utterance = new SpeechSynthesisUtterance();
@@ -329,8 +357,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		const message = messages[messages.length - 1]
-		// if message is null or sent by user or is bot typing, return
-		if (message == null || message.sender === "user" || isBotTyping) {
+		// if message is null or sent by user or is bot typing or bot is embedded, return
+		if (!message || message.sender === "user" || isBotTyping || (botOptions.theme?.embedded
+			&& isChatBotVisible(chatBodyRef.current as HTMLDivElement))) {
 			return;
 		}
 
@@ -340,7 +369,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		setUnreadCount(prev => prev + 1);
-		if (!botOptions.notification?.disabled && notificationToggledOn && hasInteracted && audioBufferRef.current) {
+		if (!botOptions.notification?.disabled && notificationToggledOn
+			&& hasInteractedPage && audioBufferRef.current) {
 			const source = audioContextRef.current.createBufferSource();
 			source.buffer = audioBufferRef.current;
 			source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
@@ -352,7 +382,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Retrieves current path for user.
 	 */
 	const getCurrPath = () => {
-		return paths.length > 0 ? paths[paths.length -1] : null;
+		return paths.length > 0 ? paths[paths.length - 1] : null;
 	}
 
 	/**
@@ -378,9 +408,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			&& message.sender === "user" && botOptions?.userBubble?.simStream;
 
 		if (isBotStream) {
-			await simulateStream(message, botOptions.botBubble?.streamSpeed as number);
+			const streamSpeed = botOptions.botBubble?.streamSpeed as number;
+			const useMarkup = botOptions.botBubble?.dangerouslySetInnerHtml as boolean;
+			await simulateStream(message, streamSpeed, useMarkup);
 		} else if (isUserStream) {
-			await simulateStream(message, botOptions.userBubble?.streamSpeed as number);
+			const streamSpeed = botOptions.userBubble?.streamSpeed as number;
+			const useMarkup = botOptions.userBubble?.dangerouslySetInnerHtml as boolean;
+			await simulateStream(message, streamSpeed, useMarkup);
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
@@ -391,9 +425,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * 
 	 * @param message message to stream
 	 * @param streamSpeed speed to stream the message
+	 * @param useMarkup boolean indicating whether markup is used
 	 */
-	const simulateStream = async (message: Message, streamSpeed: number) => {
-		// when simulating stream, disable text area and stop bot typing
+	const simulateStream = async (message: Message, streamSpeed: number, useMarkup: boolean) => {
+		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
 		// set an initial empty message to be used for streaming
@@ -401,39 +436,40 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		isBotStreamingRef.current = true
 
 		// initialize default message to empty with stream index position 0
+		let streamMessage = message.content as string | string[];
+		if (useMarkup) {
+			streamMessage = parseMarkupMessage(streamMessage as string);
+		}
 		let streamIndex = 0;
-		const streamMessage = message.content as string;
+		const endStreamIndex = streamMessage.length;
 		message.content = "";
 
 		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
 			const intervalId = setInterval(() => {
+				// consider streaming done once end index is reached or exceeded
+				// when streaming is done, remove task and resolve the promise
+				if (streamIndex >= endStreamIndex) {
+					clearInterval(intervalId);
+					resolve();
+					return;
+				}
+
 				setMessages((prevMessages) => {
 					const updatedMessages = [...prevMessages];
-		
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
 						if (updatedMessages[i].sender === message.sender
 							&& typeof updatedMessages[i].content === "string") {
-							message.content = streamMessage.slice(0, streamIndex + 1);
-							updatedMessages[i] = message;
+							const character = streamMessage[streamIndex];
+							if (character) {
+								message.content += character;
+								updatedMessages[i] = message;
+							}
+							streamIndex++;
 							break;
 						}
 					}
-
-					// for simulated streaming, manually trigger save chat history of streamed message at the end
-					if (streamIndex === streamMessage.length - 1) {
-						saveChatHistory(updatedMessages, historyMessages.current);
-					}
-				
 					return updatedMessages;
 				});
-
-				streamIndex++;
-
-				// when streaming is done, remove task, unlock text area, and resolve the promise
-				if (streamIndex === streamMessage.length) {
-					clearInterval(intervalId);
-					resolve();
-				}
 			}, streamSpeed);
 		});
 
@@ -470,7 +506,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		
 			return updatedMessages;
 		});
-		// todo: test streaming across multiple blocks, and also saving history for stream messages
 	}
 
 	/**
@@ -489,14 +524,40 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const updateTextArea = () => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
-		if (block.chatDisabled != null) {
-			setTextAreaDisabled(block.chatDisabled);
+
+		if (!block) {
+			return;
+		}
+
+		const shouldDisableTextArea = block.chatDisabled 
+			? block.chatDisabled
+			: botOptions.chatInput?.disabled as boolean;
+		setTextAreaDisabled(shouldDisableTextArea);
+
+		if (!shouldDisableTextArea) {
+			setTimeout(() => {
+				if (botOptions.theme?.embedded) {
+					// for embedded chatbot, only do input focus if chatbot is still visible on page
+					if (isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
+						inputRef.current?.focus();
+					}
+				} else {
+					// prevent chatbot from forcing input focus on load
+					if (currPath !== "start") {
+						inputRef.current?.focus();
+					}
+				}
+			}, 100)
+		}
+
+		if (block.isSensitive) {
+			setTextAreaSensitiveMode(block.isSensitive);
 		} else {
-			setTextAreaDisabled(botOptions.chatInput?.disabled as boolean);
+			setTextAreaSensitiveMode(false);
 		}
 	}
 
@@ -537,7 +598,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param userInput input provided by the user
 	 * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
 	 */
-	const handleActionInput = async (path: string, userInput: string, sendUserInput = true) => {
+	const handleActionInput = async (path: keyof Flow, userInput: string, sendUserInput = true) => {
 		clearTimeout(timeoutId);
 		userInput = userInput.trim();
 		paramsInputRef.current = userInput;
@@ -548,7 +609,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// Add user message to messages array
 		if (sendUserInput) {
-			await injectMessage(userInput, "user");
+			await handleSendUserInput(userInput);
 		}
 
 		if (chatBodyRef.current) {
@@ -582,11 +643,34 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				setIsBotTyping(false);
 			}
 		}, botOptions.chatInput?.botDelay);
+	}
 
-		// short delay before auto-focusing back on textinput, required if textinput was disabled by blockspam option
-		setTimeout(() => {
-			inputRef.current?.focus();
-		}, botOptions.chatInput?.botDelay as number + 100);
+	/**
+	 * Handles sending of user input to check if should send as plain text or sensitive info.
+	 * 
+	* @param userInput input provided by the user
+	 */
+	const handleSendUserInput = async (userInput: string) => {
+		const currPath = getCurrPath();
+		if (!currPath) {
+			return;
+		}
+
+		const block = flow[currPath];
+		if (!block) {
+			return;
+		}
+
+		if (block.isSensitive) {
+			if (botOptions?.sensitiveInput?.hideInUserBubble) {
+				return;
+			} else if (botOptions?.sensitiveInput?.maskInUserBubble) {
+				await injectMessage("*".repeat(botOptions.sensitiveInput?.asterisksCount as number || 10), "user");
+				return;
+			}
+		}
+
+		await injectMessage(userInput, "user");
 	}
 
 	/**
@@ -626,6 +710,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
+				// checks if user is interacting with chatbot for the first time
+				if (!hasFlowStarted && botOptions.theme?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+					setHasFlowStarted(true);
+				}
+
 				// if not on mobile, should remove focus
 				if (isDesktop) {
 					inputRef.current?.blur();
@@ -681,8 +770,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				/>
 				{botOptions.theme?.showInputRow &&
 					<ChatBotInput handleToggleVoice={handleToggleVoice} handleActionInput={handleActionInput} 
-						inputRef={inputRef} textAreaDisabled={textAreaDisabled} 
+						inputRef={inputRef} textAreaDisabled={textAreaDisabled}
+						textAreaSensitiveMode={textAreaSensitiveMode} injectMessage={injectMessage}
 						voiceToggledOn={voiceToggledOn} getCurrPath={getCurrPath}
+						hasFlowStarted={hasFlowStarted} setHasFlowStarted={setHasFlowStarted}
 					/>
 				}
 				{botOptions.theme?.showFooter &&

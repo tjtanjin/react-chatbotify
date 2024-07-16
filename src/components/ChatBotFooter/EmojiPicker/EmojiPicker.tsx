@@ -14,7 +14,7 @@ const EmojiPicker = ({
 	inputRef,
 	textAreaDisabled
 }: {
-	inputRef: RefObject<HTMLTextAreaElement>;
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
 }) => {
 
@@ -81,7 +81,14 @@ const EmojiPicker = ({
 		event.preventDefault();
 		if (inputRef.current) {
 			inputRef.current.value = inputRef.current.value + emoji;
-			inputRef.current?.focus();
+			setTimeout(() => {
+				const inputElement = inputRef.current;
+				if (inputElement) {
+					inputElement.focus();
+					const length = inputElement.value.length;
+					inputElement.setSelectionRange(length, length);
+				}
+			}, 50)
 		}
 		setShowPopup(false);
 	};

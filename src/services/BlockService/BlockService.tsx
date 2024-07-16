@@ -9,6 +9,7 @@ import { processPath } from "./PathProcessor";
 import { processRender } from "./RenderProcessor";
 import { processTransition } from "./TransitionProcessor";
 import { Params } from "../../types/Params";
+import { Block } from "../../types/Block";
 
 /**
  * Handles the preprocessing within a block.
@@ -17,19 +18,25 @@ import { Params } from "../../types/Params";
  * @param path path associated with the current block
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
+ * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
  */
-export const preProcessBlock = async (flow: Flow, path: string, params: Params,
-	setTextAreaDisabled: (inputDisabled: boolean) => void, setPaths: Dispatch<SetStateAction<string[]>>,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
-	handleActionInput: (path: string, userInput: string, sendUserInput: boolean) => Promise<void>) => {
+export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
+	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
+	setPaths: Dispatch<SetStateAction<string[]>>, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
 
 	const block = flow[path];
-	const attributes = Object.keys(block);
-	for (const attribute of attributes) {
-		switch (attribute) {
+
+	if (!block) {
+		throw new Error("Block is not valid.");
+	}
+
+	for (const attribute of Object.keys(block)) {
+		const attributeAsFlowKeyType = attribute as keyof Block;
+		switch (attributeAsFlowKeyType) {
 		case "message":
 			await processMessage(block, params);
 			break;
@@ -47,8 +54,14 @@ export const preProcessBlock = async (flow: Flow, path: string, params: Params,
 			break;
 		
 		case "chatDisabled":
-			if (block.chatDisabled != null) {
+			if (block.chatDisabled) {
 				setTextAreaDisabled(block.chatDisabled);
+			}
+			break;
+
+		case "isSensitive":
+			if (block.isSensitive) {
+				setTextAreaSensitiveMode(block.isSensitive);
 			}
 			break;
 
@@ -66,11 +79,16 @@ export const preProcessBlock = async (flow: Flow, path: string, params: Params,
  * @param params contains utilities that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
-export const postProcessBlock = async (flow: Flow, path: string, params: Params,
+export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const block = flow[path];
-	const attributes = Object.keys(block);
+
+	if (!block) {
+		throw new Error("Block is not valid.");
+	}
+
+	const attributes = Object.keys(block) as (keyof Block)[];
 	for (const attribute of attributes) {
 		if (attribute === "function") {
 			await processFunction(block, params);

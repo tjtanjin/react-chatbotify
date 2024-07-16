@@ -1,11 +1,12 @@
 import ChatBot from "./components/ChatBot";
+import { Flow } from "./types/Flow";
 import { Params } from "./types/Params";
 
 function App() {
 
 	// Serves as an example flow used during the development phase - covers all possible attributes in a block.
 	// restore to default state before running selenium tests (or update the test cases if necessary)!
-	const flow = {
+	const flow: Flow = {
 		start: {
 			message: "Hello! What is your name?",
 			path: "ask_age_group",
@@ -59,7 +60,13 @@ function App() {
 				return "What's my favourite color? Click the button below to find out my answer!"
 			},
 			render: (
-				<div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: 10}}>
+				<div style={{
+					width: "100%",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					marginTop: 10
+				}}>
 					<button 
 						className="secret-fav-color"
 						onClick={() => alert("black")}>

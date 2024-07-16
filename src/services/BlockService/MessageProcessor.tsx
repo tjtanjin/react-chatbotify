@@ -10,7 +10,7 @@ import { Params } from "../../types/Params";
 export const processMessage = async (block: Block, params: Params) => {
 
 	const replyMessage = block.message;
-	if (replyMessage == null) {
+	if (!replyMessage) {
 		return;
 	}
 	
@@ -26,7 +26,7 @@ export const processMessage = async (block: Block, params: Params) => {
 		parsedMessage = await parsedMessage;
 	}
 
-	if (parsedMessage == null) {
+	if (!parsedMessage) {
 		return;
 	}
 

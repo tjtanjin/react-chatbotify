@@ -1,5 +1,7 @@
 import { ChangeEvent, RefObject, useEffect, useState } from "react";
 
+import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
+import { getMediaFileDetails } from "../../../services/Utils";
 import { useBotOptions } from "../../../context/BotOptionsContext";
 import { usePaths } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
@@ -28,14 +30,14 @@ const FileAttachmentButton = ({
 	getPrevPath,
 	handleActionInput
 }: {
-	inputRef: RefObject<HTMLTextAreaElement>;
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	flow: Flow;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
-	getCurrPath: () => string | null;
-	getPrevPath: () => string | null;
-	handleActionInput: (path: string, userInput: string, sendUserInput?: boolean) => Promise<void>;
+	getCurrPath: () => keyof Flow | null;
+	getPrevPath: () => keyof Flow | null;
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
 	// handles options for bot
@@ -50,13 +52,13 @@ const FileAttachmentButton = ({
 	// checks if attachments are allowed on every path traversal into another block
 	useEffect(() => {
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
 
 		// if path is invalid, nothing to process (i.e. becomes dead end!)
-		if (block == null) {
+		if (!block) {
 			return;
 		}
 		setBlockAllowsAttachment(typeof block.file === "function");
@@ -69,20 +71,38 @@ const FileAttachmentButton = ({
 	 */
 	const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files;
-		if (files == null) {
+		if (!files) {
 			return;
 		}
 
 		const currPath = getCurrPath();
-		if (currPath == null) {
+		if (!currPath) {
 			return;
 		}
 		const block = flow[currPath];
+		if (!block) {
+			return;
+		}
+
 		const fileHandler = block.file
 		if (fileHandler != null) {
 			const fileNames = [];
 			for (let i = 0; i < files.length; i++) {
 				fileNames.push(files[i].name);
+				// checks if media (i.e. image, video, audio should be displayed)
+				if (!botOptions.fileAttachment?.showMediaDisplay) {
+					continue;
+				}
+
+				// retrieves file details and skips if not image, video or audio
+				const fileDetails = await getMediaFileDetails(files[i]);
+				if (!fileDetails.fileType || !fileDetails.fileUrl) {
+					continue;
+				}
+
+				// sends media display if file details are valid
+				await injectMessage(<MediaDisplay file={files[i]} fileType={fileDetails.fileType}
+					fileUrl={fileDetails.fileUrl}/>, "user");
 			}
 			await handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),

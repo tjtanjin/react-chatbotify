@@ -2,7 +2,6 @@
 
 .rcb-checkbox-container {
 	display: flex;
-	flex-direction: column;
 	padding-top: 12px;
 	margin-left: 16px;
 	flex-wrap: wrap;
