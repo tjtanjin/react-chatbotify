@@ -9,21 +9,23 @@ import { PathsContext } from "../context/PathsContext";
 import { Options } from "../types/Options";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
+import { Theme } from "../types/Theme";
 
 /**
  * Initializes providers for chatbot.
  *
  * @param flow conversation flow for the bot
  * @param options options to setup the bot
+ * @param themes themes to apply to the bot
  */
 const ChatBot = ({
-	theme,
 	flow,
-	options
+	options,
+	themes,
 }: {
-	theme?: string | Array<string>,
 	flow?: Flow,
 	options?: Options
+	themes?: undefined | Theme | Array<Theme>,
 }) => {
 
 	// handles loading of chatbot only when options is loaded
@@ -50,7 +52,7 @@ const ChatBot = ({
 	 * Loads bot options.
 	 */
 	const loadOptions = async () => {
-		const combinedOptions = await parseBotOptions(options, theme);
+		const combinedOptions = await parseBotOptions(options, themes);
 		setBotOptions(combinedOptions);
 		setOptionsLoaded(true);
 	}

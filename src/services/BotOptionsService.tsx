@@ -1,5 +1,7 @@
+import { processAndFetchThemeOptions } from "./ThemeService";
 import { BUTTON } from "./Utils";
 import { Options } from "../types/Options";
+import { Theme } from "../types/Theme";
 
 import actionDisabledIcon from "../assets/action_disabled_icon.svg";
 import botAvatar from "../assets/bot_avatar.svg";
@@ -210,66 +212,28 @@ export const getDefaultBotOptions = () => {
 }
 
 /**
- * Retrieves the options for a theme via CDN.
- * 
- * @param theme theme to retrieve options for
- */
-const getThemeOptions = async (theme: string): Promise<Options> => {
-	try {
-		// prepare json and css urls
-		const themeBaseUrl = import.meta.env.VITE_THEME_BASE_CDN_URL;
-    
-		if(!themeBaseUrl) {
-			throw Error('base url not found in .env file');
-		}
-    
-		const jsonFile = "options.json";
-		const cssFile = "styles.css";
-		const jsonUrl = `${themeBaseUrl}/${theme}/${jsonFile}`;
-		const cssUrl = `${themeBaseUrl}/${theme}/${cssFile}`;
-
-		// load css
-		const link = document.createElement('link');
-		link.rel = 'stylesheet';
-		link.href = cssUrl;
-		document.head.appendChild(link);
-
-		// load json
-		const response = await fetch(jsonUrl);
-		if (!response.ok) {
-			console.log(`Failed to fetch theme ${theme}`);
-			return {}
-		}
-		return await response.json();
-	} catch (error) {
-		console.log(`Failed to fetch theme ${theme} - ${error}`);
-		return {}
-	}
-}
-
-/**
  * Parses default options with user provided options to generate final bot options.
  * 
  * @param providedOptions options provided by the user to the bot
  * @param theme theme provided by the user to the bot
  */
 export const parseBotOptions = async (providedOptions: Options | undefined,
-	theme: string | undefined | Array<string>): Promise<Options> => {
+	themes: undefined | Theme | Array<Theme>): Promise<Options> => {
 	
 	// if no provided options or theme, then just load default options
-	if (providedOptions == null && theme == null) {
+	if (providedOptions == null && themes == undefined) {
 		return defaultOptions;
 	}
 
 	let combinedOptions = defaultOptions;
-	if (theme != null) {
-		if (Array.isArray(theme)) {
-			for (const selectedTheme of theme) {
-				const themeOptions = await getThemeOptions(selectedTheme);
+	if (themes != null) {
+		if (Array.isArray(themes)) {
+			for (const theme of themes) {
+				const themeOptions = await processAndFetchThemeOptions(theme);
 				combinedOptions = getCombinedOptions(themeOptions, defaultOptions);
 			}
 		} else {
-			const themeOptions = await getThemeOptions(theme);
+			const themeOptions = await processAndFetchThemeOptions(themes);
 			combinedOptions = getCombinedOptions(themeOptions, defaultOptions);
 		}
 	}
