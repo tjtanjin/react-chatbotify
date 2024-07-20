@@ -276,7 +276,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		const params = {prevPath: getPrevPath(), userInput: paramsInputRef.current,
+		const params = {prevPath: getPrevPath(), goToPath: goToPath, userInput: paramsInputRef.current,
 			injectMessage, streamMessage, openChat};
 
 		// calls the new block for preprocessing upon change to path.
@@ -409,6 +409,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const getPrevPath = useCallback(() => {
 		return paths.length > 1 ? paths[paths.length - 2] : null;
 	}, [paths])
+
+	/**
+	 * Handles going directly to a path.
+	 */
+	const goToPath = useCallback((pathToGo: keyof Flow) => {
+		setPaths(prev => [...prev, pathToGo]);
+	}, [])
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -636,7 +643,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}, 400);
 
 		setTimeout(async () => {
-			const params = {prevPath: getPrevPath(), userInput, injectMessage, streamMessage, openChat};
+			const params = {prevPath: getPrevPath(), goToPath: goToPath, userInput, 
+				injectMessage, streamMessage,openChat
+			};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
 				updateInputFields();
@@ -752,10 +761,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	
 	const fileAttachmentButtonComponentMap = useMemo(() => ({
 		[Button.FILE_ATTACHMENT_BUTTON]: () => createFileAttachmentButton(inputRef, flow, blockAllowsAttachment,
-			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, handleActionInput
+			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, goToPath, handleActionInput
 		)
 	}), [inputRef, flow, blockAllowsAttachment, injectMessage, streamMessage, openChat,
-		getCurrPath, getPrevPath, handleActionInput
+		getCurrPath, getPrevPath, goToPath, handleActionInput
 	]);
 	
 	const buttonComponentMap = useMemo(() => ({

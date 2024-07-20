@@ -28,6 +28,7 @@ const FileAttachmentButton = ({
 	openChat,
 	getCurrPath,
 	getPrevPath,
+	goToPath,
 	handleActionInput
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
@@ -38,6 +39,7 @@ const FileAttachmentButton = ({
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => keyof Flow | null;
 	getPrevPath: () => keyof Flow | null;
+	goToPath: (pathToGo: keyof Flow) => void;
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
@@ -86,7 +88,7 @@ const FileAttachmentButton = ({
 			}
 			await handleActionInput(currPath, "📄 " + fileNames.join(", "), settings.chatInput?.sendAttachmentOutput);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				injectMessage, streamMessage, openChat, files});
+				goToPath: goToPath, injectMessage, streamMessage, openChat, files});
 		}
 	};
 
