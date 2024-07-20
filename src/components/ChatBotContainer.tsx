@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, MouseEvent, useMemo } from "react";
+import { useEffect, useState, useRef, MouseEvent, useMemo, useCallback } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -310,7 +310,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	/**
 	 * Sets up the notifications feature (initial toggle status and sound).
 	 */
-	const setUpNotifications = async () => {
+	const setUpNotifications = useCallback(async () => {
 		setNotificationToggledOn(botOptions.notification?.defaultToggledOn as boolean);
 	
 		const notificationSound = botOptions.notification?.sound;
@@ -334,12 +334,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
-	}
+	}, [botOptions.notification?.defaultToggledOn, botOptions.notification?.sound, botOptions.notification?.volume]);
 
 	/**
 	 * Checks for initial user interaction (required to play audio/notification sound).
 	 */
-	const handleFirstInteraction = () => {
+	const handleFirstInteraction = useCallback(() => {
 		setHasInteractedPage(true);
 		if (!hasFlowStarted && botOptions.theme?.flowStartTrigger === "ON_PAGE_INTERACT") {
 			setHasFlowStarted(true);
@@ -354,21 +354,21 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("touchstart", handleFirstInteraction);
 		};
 		window.speechSynthesis.speak(utterance);
-	}
+	}, [botOptions.theme?.flowStartTrigger, hasFlowStarted]);
 
 	/**
 	 * Modifies botoptions to open/close the chat window.
 	 * 
 	 * @param isOpen boolean indicating whether to open/close the chat window
 	 */
-	const openChat = (isOpen: boolean) => {
+	const openChat = useCallback((isOpen: boolean) => {
 		setBotOptions({...botOptions, isOpen});
-	}
+	}, [botOptions, setBotOptions]);
 
 	/**
 	 * Handles notification count update and notification sound.
 	 */
-	const handleNotifications = () => {
+	const handleNotifications = useCallback(() => {
 		// if no audio context or no messages, return
 		if (!audioContextRef.current || messages.length === 0) {
 			return;
@@ -394,21 +394,21 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
 			source.start();
 		}
-	}
+	}, [botOptions, messages, isBotTyping, isScrolling, notificationToggledOn, hasInteractedPage]);
 
 	/**
 	 * Retrieves current path for user.
 	 */
-	const getCurrPath = () => {
+	const getCurrPath = useCallback(() => {
 		return paths.length > 0 ? paths[paths.length - 1] : null;
-	};
+	}, [paths])
 
 	/**
 	 * Retrieves previous path for user.
 	 */
-	const getPrevPath = () => {
+	const getPrevPath = useCallback(() => {
 		return paths.length > 1 ? paths[paths.length - 2] : null;
-	};
+	}, [paths])
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -416,7 +416,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const injectMessage = async (content: string | JSX.Element, sender = "bot") => {
+	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, sender: sender};
 		processAudio(botOptions, audioToggledOn, message);
 
@@ -436,7 +436,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
-	}
+	}, [botOptions, audioToggledOn]);
 
 	/**
 	 * Simulates the streaming of a message from the bot.
@@ -501,7 +501,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const streamMessage = async (content: string | JSX.Element, sender = "bot") => {
+	const streamMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, sender: sender};
 
 		// if has no stream yet, add an initial message and set streaming to true
@@ -524,23 +524,23 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		
 			return updatedMessages;
 		});
-	}
+	}, [])
 
 	/**
 	 * Loads and shows chat history in the chat window.
 	 * 
 	 * @param chatHistory chat history content to show
 	 */
-	const showChatHistory = (chatHistory: string) => {
+	const showChatHistory = useCallback((chatHistory: string) => {
 		setIsLoadingChatHistory(true);
 		setTextAreaDisabled(true);
 		loadChatHistory(botOptions, chatHistory, setMessages, setTextAreaDisabled);
-	}
+	}, [botOptions]);
 
 	/**
 	 * Updates input fields (textarea and file attachment) state based on current block.
 	 */
-	const updateInputFields = () => {
+	const updateInputFields = useCallback(() => {
 		const currPath = getCurrPath();
 		if (!currPath) {
 			return;
@@ -578,19 +578,19 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		} else {
 			setTextAreaSensitiveMode(false);
 		}
-	}
+	}, [paths]);
 
 	/**
 	 * Handles toggling of voice.
 	 * 
 	 * @param event mouse event
 	 */
-	const handleToggleVoice = () => {
+	const handleToggleVoice = useCallback(() => {
 		if (textAreaDisabled) {
 			return;
 		}
 		setVoiceToggledOn(prev => !prev);
-	}
+	}, [textAreaDisabled]);
 
 	/**
 	 * Handles action input from the user which includes text, files and emoji.
@@ -599,7 +599,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param userInput input provided by the user
 	 * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
 	 */
-	const handleActionInput = async (path: keyof Flow, userInput: string, sendUserInput = true) => {
+	const handleActionInput = useCallback(async (path: keyof Flow, userInput: string, sendUserInput = true) => {
 		clearTimeout(timeoutId);
 		userInput = userInput.trim();
 		paramsInputRef.current = userInput;
@@ -644,14 +644,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				setIsBotTyping(false);
 			}
 		}, botOptions.chatInput?.botDelay);
-	}
+	}, [timeoutId, voiceToggledOn, botOptions, flow, getPrevPath, injectMessage, streamMessage, openChat,
+		postProcessBlock, setPaths, updateInputFields
+	]);
 
 	/**
 	 * Handles sending of user input to check if should send as plain text or sensitive info.
 	 * 
 	 * @param userInput input provided by the user
 	 */
-	const handleSendUserInput = async (userInput: string) => {
+	const handleSendUserInput = useCallback(async (userInput: string) => {
 		const currPath = getCurrPath();
 		if (!currPath) {
 			return;
@@ -672,21 +674,21 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		await injectMessage(userInput, "user");
-	}
+	}, [flow, getCurrPath, botOptions, injectMessage]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.
 	 * 
 	 * @param event form event or mouse event
 	 */
-	const handleSubmit = () => {
+	const handleSubmit = useCallback(() => {
 		const currPath = getCurrPath();
 		if (!currPath) {
 			return;
 		}
 		handleActionInput(currPath, inputRef.current?.value as string);
 		setInputLength(0);
-	}
+	}, [getCurrPath, handleActionInput, setInputLength])
 
 	/**
 	 * Retrieves class name for window state.
@@ -724,9 +726,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// these hooks handle the rendering of buttons
 	const staticButtonComponentMap = useMemo(() => ({
-		[Button.CLOSE_CHAT_BUTTON]: () => createCloseChatButton(),
-		[Button.SEND_MESSAGE_BUTTON]: () => createSendButton(handleSubmit)
+		[Button.CLOSE_CHAT_BUTTON]: () => createCloseChatButton()
 	}), []);
+
+	const sendButtonComponentMap = useMemo(() => ({
+		[Button.SEND_MESSAGE_BUTTON]: () => createSendButton(handleSubmit)
+	}), [handleSubmit]);
 	
 	const audioButtonComponentMap = useMemo(() => ({
 		[Button.AUDIO_BUTTON]: () => createAudioButton(audioToggledOn, setAudioToggledOn)
@@ -741,16 +746,21 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		[Button.VOICE_MESSAGE_BUTTON]: () => createVoiceButton(inputRef, textAreaDisabled, voiceToggledOn,
 			handleToggleVoice, getCurrPath, handleActionInput, injectMessage, setInputLength
 		)
-	}), [inputRef, textAreaDisabled, voiceToggledOn]);
+	}), [inputRef, textAreaDisabled, voiceToggledOn, handleToggleVoice, getCurrPath, handleActionInput,
+		injectMessage, setInputLength
+	]);
 	
 	const fileAttachmentButtonComponentMap = useMemo(() => ({
 		[Button.FILE_ATTACHMENT_BUTTON]: () => createFileAttachmentButton(inputRef, flow, blockAllowsAttachment,
 			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, handleActionInput
 		)
-	}), [inputRef, flow, blockAllowsAttachment]);
+	}), [inputRef, flow, blockAllowsAttachment, injectMessage, streamMessage, openChat,
+		getCurrPath, getPrevPath, handleActionInput
+	]);
 	
 	const buttonComponentMap = useMemo(() => ({
 		...staticButtonComponentMap,
+		...sendButtonComponentMap,
 		...audioButtonComponentMap,
 		...notificationButtonComponentMap,
 		...inputButtonComponentMap,
