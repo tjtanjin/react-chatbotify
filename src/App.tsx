@@ -1,6 +1,6 @@
 import ChatBot from "./components/ChatBot";
 import { Flow } from "./types/Flow";
-import { Params } from "./types/Params";
+import { BlockParams } from "./types/BlockParams";
 
 function App() {
 
@@ -12,19 +12,19 @@ function App() {
 			path: "ask_age_group",
 		},
 		ask_age_group: {
-			message: (params: Params) => `Hey ${params.userInput}! Nice to meet you, what is your age group?`,
+			message: (params: BlockParams) => `Hey ${params.userInput}! Nice to meet you, what is your age group?`,
 			options: ["child", "teen", "adult"],
 			chatDisabled: true,
 			path: () => "ask_math_question",
 		},
 		ask_math_question: {
-			message: (params: Params) => {
+			message: (params: BlockParams) => {
 				if (params.prevPath == "incorrect_answer") {
 					return;
 				}
 				return `I see you're a ${params.userInput}. Let's do a quick test! What is 1 + 1?`
 			},
-			path: (params: Params) => {
+			path: (params: BlockParams) => {
 				if (params.userInput != "2") {
 					return "incorrect_answer"
 				} else {
@@ -39,12 +39,12 @@ function App() {
 		ask_favourite_pet: {
 			message: "Interesting! Pick any 2 pets below.",
 			checkboxes: {items: ["Dog", "Cat", "Rabbit", "Hamster"], min:2, max: 2},
-			function: (params: Params) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
+			function: (params: BlockParams) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
 			path: "ask_height",
 		},
 		ask_height: {
 			message: "What is your height (cm)?",
-			path: (params: Params) => {
+			path: (params: BlockParams) => {
 				if (isNaN(Number(params.userInput))) {
 					params.injectMessage("Height needs to be a number!");
 					return;
@@ -53,7 +53,7 @@ function App() {
 			}
 		},
 		ask_weather: {
-			message: (params: Params) => {
+			message: (params: BlockParams) => {
 				if (params.prevPath == "incorrect_answer") {
 					return;
 				}
@@ -74,7 +74,7 @@ function App() {
 					</button>
 				</div>
 			),
-			path: (params: Params) => {
+			path: (params: BlockParams) => {
 				if (params.userInput.toLowerCase() != "black") {
 					return "incorrect_answer"
 				} else {
@@ -88,8 +88,8 @@ function App() {
 			path: "ask_image"
 		},
 		ask_image: {
-			message: (params: Params) => `${params.userInput}? Interesting. Could you share an image of that?`,
-			file: (params: Params) => console.log(params.files),
+			message: (params: BlockParams) => `${params.userInput}? Interesting. Could you share an image of that?`,
+			file: (params: BlockParams) => console.log(params.files),
 			path: "end"
 		},
 		end: {
@@ -103,7 +103,7 @@ function App() {
 		incorrect_answer: {
 			message: "Your answer is incorrect, try again!",
 			transition: {duration: 0},
-			path: (params: Params) => params.prevPath
+			path: (params: BlockParams) => params.prevPath
 		},
 	}
 

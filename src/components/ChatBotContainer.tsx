@@ -29,7 +29,7 @@ import { usePaths } from "../context/PathsContext";
 import { Block } from "../types/Block";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
-import { Params } from "../types/Params";
+import { BlockParams } from "../types/BlockParams";
 import { Button } from "../constants/Button";
 
 import "./ChatBotContainer.css";
@@ -280,7 +280,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			injectMessage, streamMessage, openChat};
 
 		// calls the new block for preprocessing upon change to path.
-		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
+		const callNewBlock = async (currPath: keyof Flow, block: Block, params: BlockParams) => {
 			// when bot first loads, disable textarea first to allow uninterrupted sending of initial messages
 			if (currPath === "start") {
 				setTextAreaDisabled(true);

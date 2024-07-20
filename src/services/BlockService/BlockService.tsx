@@ -8,7 +8,7 @@ import { processOptions } from "./OptionProcessor";
 import { processPath } from "./PathProcessor";
 import { processRender } from "./RenderProcessor";
 import { processTransition } from "./TransitionProcessor";
-import { Params } from "../../types/Params";
+import { BlockParams } from "../../types/BlockParams";
 import { Block } from "../../types/Block";
 
 /**
@@ -23,7 +23,7 @@ import { Block } from "../../types/Block";
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
  */
-export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
+export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: BlockParams,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
 	setPaths: Dispatch<SetStateAction<string[]>>, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
@@ -79,7 +79,7 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
  * @param params contains utilities that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
-export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
+export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: BlockParams,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const block = flow[path];

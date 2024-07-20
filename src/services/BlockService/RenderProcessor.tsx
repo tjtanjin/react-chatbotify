@@ -1,5 +1,5 @@
 import { Block } from "../../types/Block";
-import { Params } from "../../types/Params";
+import { BlockParams } from "../../types/BlockParams";
 
 /**
  * Handles processing of render in current block.
@@ -7,7 +7,7 @@ import { Params } from "../../types/Params";
  * @param block current block being processed
  * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
  */
-export const processRender = async (block: Block, params: Params) => {
+export const processRender = async (block: Block, params: BlockParams) => {
 
 	const element = block.render;
 	if (!element) {

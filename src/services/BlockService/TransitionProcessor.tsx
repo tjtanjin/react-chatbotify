@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import { postProcessBlock} from "./BlockService";
 import { Flow } from "../../types/Flow";
-import { Params } from "../../types/Params";
+import { BlockParams } from "../../types/BlockParams";
 
 /**
  * Handles processing of transition in current block.
@@ -14,7 +14,7 @@ import { Params } from "../../types/Params";
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const processTransition = async (flow: Flow, path: keyof Flow, params: Params,
+export const processTransition = async (flow: Flow, path: keyof Flow, params: BlockParams,
 	setPaths: Dispatch<SetStateAction<string[]>>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 

@@ -6,7 +6,7 @@ import { Block } from "./types/Block";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
 import { Settings } from "./types/Settings";
-import { Params } from "./types/Params";
+import { BlockParams } from "./types/BlockParams";
 import { Button } from "./constants/Button";
 import { DefaultSettings } from "./constants/DefaultSettings";
 
@@ -18,6 +18,6 @@ export { Button };
 export { DefaultSettings };
 
 // type exports
-export type { Block, Flow, Message, Settings as Options, Params };
+export type { Block, Flow, Message, Settings as Options, BlockParams as Params };
 
 export default ChatBot;

@@ -3,7 +3,7 @@ import { Flow } from "./Flow";
 /**
  * Defines the accessible data for use in dynamic attributes.
  */
-export type Params = {
+export type BlockParams = {
 	userInput: string,
 	prevPath: keyof Flow | null
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
