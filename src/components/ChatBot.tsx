@@ -121,14 +121,14 @@ const ChatBot = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return optionsLoaded && (isDesktop && settings.theme?.desktopEnabled)
-			|| (!isDesktop && settings.theme?.mobileEnabled);
+		return optionsLoaded && (isDesktop && settings.general?.desktopEnabled)
+			|| (!isDesktop && settings.general?.mobileEnabled);
 	}
 
 	return (
 		<>
 			{shouldShowChatBot() &&
-				<div style={{fontFamily: settings.theme?.fontFamily}}>
+				<div style={{fontFamily: settings.general?.fontFamily}}>
 					{renderChatBot()}
 				</div>
 			}

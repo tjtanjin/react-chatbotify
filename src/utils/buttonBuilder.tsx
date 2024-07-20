@@ -28,7 +28,7 @@ export const getButtonConfig = (
 ): ButtonConfig => {
 	const buttonDisabledMap = {
 		[Button.AUDIO_BUTTON]: settings.audio?.disabled,
-		[Button.CLOSE_CHAT_BUTTON]: settings.theme?.embedded,
+		[Button.CLOSE_CHAT_BUTTON]: settings.general?.embedded,
 		[Button.EMOJI_PICKER_BUTTON]: settings.emoji?.disabled,
 		[Button.FILE_ATTACHMENT_BUTTON]: settings.fileAttachment?.disabled,
 		[Button.NOTIFICATION_BUTTON]: settings.notification?.disabled,

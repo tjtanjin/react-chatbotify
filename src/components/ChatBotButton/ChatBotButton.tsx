@@ -26,7 +26,7 @@ const ChatBotButton = ({
 	// styles for chat button
 	const chatButtonStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.chatButton?.icon}),
-			linear-gradient(to right, ${settings.theme?.secondaryColor}, ${settings.theme?.primaryColor})`,
+			linear-gradient(to right, ${settings.general?.secondaryColor}, ${settings.general?.primaryColor})`,
 		width: 75,
 		height: 75,
 		...settings.chatButtonStyle
@@ -34,7 +34,7 @@ const ChatBotButton = ({
 	
 	return (
 		<>
-			{!settings.theme?.embedded &&
+			{!settings.general?.embedded &&
 				<button
 					aria-label="Open Chat"
 					style={chatButtonStyle}

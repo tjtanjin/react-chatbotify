@@ -171,7 +171,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	// used to handle virtualkeyboard api (if supported on browser)
 	useEffect(() => {
 		// if is desktop or is embedded bot, nothing to resize
-		if (isDesktop || settings.theme?.embedded) {
+		if (isDesktop || settings.general?.embedded) {
 			return;
 		}
 		
@@ -302,7 +302,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [paths]);
 
 	useEffect(() => {
-		if (hasFlowStarted || settings.theme?.flowStartTrigger === "ON_LOAD") {
+		if (hasFlowStarted || settings.general?.flowStartTrigger === "ON_LOAD") {
 			setPaths(["start"]);
 		}
 	}, [hasFlowStarted]);
@@ -341,7 +341,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const handleFirstInteraction = useCallback(() => {
 		setHasInteractedPage(true);
-		if (!hasFlowStarted && settings.theme?.flowStartTrigger === "ON_PAGE_INTERACT") {
+		if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_PAGE_INTERACT") {
 			setHasFlowStarted(true);
 		}
 
@@ -354,7 +354,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("touchstart", handleFirstInteraction);
 		};
 		window.speechSynthesis.speak(utterance);
-	}, [settings.theme?.flowStartTrigger, hasFlowStarted]);
+	}, [settings.general?.flowStartTrigger, hasFlowStarted]);
 
 	/**
 	 * Modifies botoptions to open/close the chat window.
@@ -376,7 +376,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		const message = messages[messages.length - 1]
 		// if message is null or sent by user or is bot typing or bot is embedded, return
-		if (!message || message.sender === "user" || isBotTyping || (settings.theme?.embedded
+		if (!message || message.sender === "user" || isBotTyping || (settings.general?.embedded
 			&& isChatBotVisible(chatBodyRef.current as HTMLDivElement))) {
 			return;
 		}
@@ -566,7 +566,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		if (!shouldDisableTextArea) {
 			setTimeout(() => {
-				if (settings.theme?.embedded) {
+				if (settings.general?.embedded) {
 					// for embedded chatbot, only do input focus if chatbot is still visible on page
 					if (isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
 						inputRef.current?.focus();
@@ -704,7 +704,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const getWindowStateClass = () => {
 		const windowClass = "rcb-chat-bot ";
-		if (settings.theme?.embedded) {
+		if (settings.general?.embedded) {
 			return windowClass + "rcb-window-embedded";
 		} else if (settings.isOpen) {
 			return windowClass + "rcb-window-open";
@@ -717,7 +717,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Retrieves styles for chat window.
 	 */
 	const getChatWindowStyle = () => {
-		if (!isDesktop && !settings.theme?.embedded) {
+		if (!isDesktop && !settings.general?.embedded) {
 			return {
 				...settings.chatWindowStyle,
 				borderRadius: "0px",
@@ -789,7 +789,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		<div 
 			onMouseDown={(event: MouseEvent) => {
 				// checks if user is interacting with chatbot for the first time
-				if (!hasFlowStarted && settings.theme?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+				if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
 					setHasFlowStarted(true);
 				}
 
@@ -805,7 +805,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			<ChatBotTooltip/>
 			<ChatBotButton unreadCount={unreadCount}/>
 			{/* styles and prevents background from scrolling on mobile when chat window is open */}
-			{settings.isOpen && !isDesktop && !settings.theme?.embedded &&
+			{settings.isOpen && !isDesktop && !settings.general?.embedded &&
 				<>
 					<style>
 						{`
@@ -834,7 +834,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				style={getChatWindowStyle()}
 				className="rcb-chat-window"
 			>
-				{settings.theme?.showHeader &&
+				{settings.general?.showHeader &&
 					<ChatBotHeader buttons={headerButtons}/>
 				}
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
@@ -843,7 +843,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					isScrolling={isScrolling} setIsScrolling={setIsScrolling}
 					unreadCount={unreadCount} setUnreadCount={setUnreadCount}
 				/>
-				{settings.theme?.showInputRow &&
+				{settings.general?.showInputRow &&
 					<ChatBotInput
 						inputRef={inputRef} textAreaDisabled={textAreaDisabled}
 						textAreaSensitiveMode={textAreaSensitiveMode} inputLength={inputLength}
@@ -851,7 +851,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 						hasFlowStarted={hasFlowStarted} setHasFlowStarted={setHasFlowStarted} buttons={chatInputButtons}
 					/>
 				}
-				{settings.theme?.showFooter &&
+				{settings.general?.showFooter &&
 					<ChatBotFooter buttons={footerButtons}/>
 				}
 			</div>

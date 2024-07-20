@@ -26,8 +26,8 @@ const ChatHistoryButton = ({
 
 	// styles for view chat history hovered button
 	const chatHistoryButtonHoveredStyle: React.CSSProperties = {
-		color: settings.theme?.primaryColor,
-		borderColor: settings.theme?.primaryColor,
+		color: settings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
 		...settings.chatHistoryButtonHoveredStyle
 	};
 

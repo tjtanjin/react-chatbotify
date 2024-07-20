@@ -6,7 +6,7 @@ export type Settings = {
 	isOpen?: boolean;
 
 	// configurations
-	theme?: {
+	general?: {
 		primaryColor?: string;
 		secondaryColor?: string;
 		fontFamily?: string;

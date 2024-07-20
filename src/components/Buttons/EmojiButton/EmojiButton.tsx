@@ -32,7 +32,7 @@ const EmojiButton = ({
 
 	// styles emoji button when disabled
 	const emojiButtonDisabledStyle: React.CSSProperties = {
-		cursor: `url(${settings.theme?.actionDisabledIcon}), auto`,
+		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 	};
 
 	// handles click events for showing/dismissing emoji popup

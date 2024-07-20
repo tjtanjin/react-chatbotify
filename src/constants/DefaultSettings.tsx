@@ -20,7 +20,7 @@ export const DefaultSettings: Settings = {
 	isOpen: false,
 
 	// configurations
-	theme: {
+	general: {
 		primaryColor: "#42b0c5",
 		secondaryColor: "#491d8d",
 		fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', " +

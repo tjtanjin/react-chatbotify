@@ -26,7 +26,7 @@ const MediaDisplay = ({
 
 	// styles for media display
 	const mediaDisplayContainerStyle: CSSProperties = {
-		backgroundColor: settings.theme?.primaryColor,
+		backgroundColor: settings.general?.primaryColor,
 		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 		...settings.mediaDisplayContainerStyle
 	};

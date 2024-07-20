@@ -245,9 +245,9 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: settings.botOptionStyle?.color || settings.theme?.primaryColor,
-			borderColor: settings.botOptionStyle?.color || settings.theme?.primaryColor,
-			cursor: `url(${settings.theme?.actionDisabledIcon}), auto`,
+			color: settings.botOptionStyle?.color || settings.general?.primaryColor,
+			borderColor: settings.botOptionStyle?.color || settings.general?.primaryColor,
+			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...settings.botOptionStyle
 		}
 	}
@@ -266,9 +266,9 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: settings.botCheckboxRowStyle?.color || settings.theme?.primaryColor,
-			borderColor: settings.botCheckboxRowStyle?.color || settings.theme?.primaryColor,
-			cursor: `url(${settings.theme?.actionDisabledIcon}), auto`,
+			color: settings.botCheckboxRowStyle?.color || settings.general?.primaryColor,
+			borderColor: settings.botCheckboxRowStyle?.color || settings.general?.primaryColor,
+			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...settings.botCheckboxRowStyle
 		}
 	}
@@ -287,9 +287,9 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: settings.botCheckboxNextStyle?.color || settings.theme?.primaryColor,
-			borderColor: settings.botCheckboxNextStyle?.color || settings.theme?.primaryColor,
-			cursor: `url(${settings.theme?.actionDisabledIcon}), auto`,
+			color: settings.botCheckboxNextStyle?.color || settings.general?.primaryColor,
+			borderColor: settings.botCheckboxNextStyle?.color || settings.general?.primaryColor,
+			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...settings.botCheckboxNextStyle
 		}
 	}
@@ -309,7 +309,7 @@ const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[
 		|| classList.contains("rcb-media-display-video-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			backgroundColor: settings.theme?.primaryColor,
+			backgroundColor: settings.general?.primaryColor,
 			maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 			...settings.mediaDisplayContainerStyle
 		}

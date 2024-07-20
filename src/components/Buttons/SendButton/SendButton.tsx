@@ -23,13 +23,13 @@ const SendButton = ({
 
 	// styles for send button
 	const sendButtonStyle: React.CSSProperties = {
-		backgroundColor: settings.theme?.primaryColor,
+		backgroundColor: settings.general?.primaryColor,
 		...settings.sendButtonStyle
 	};
 
 	// styles for hovered send button
 	const sendButtonHoveredStyle: React.CSSProperties = {
-		backgroundColor: settings.theme?.secondaryColor,
+		backgroundColor: settings.general?.secondaryColor,
 		...settings.sendButtonHoveredStyle
 	};
 	

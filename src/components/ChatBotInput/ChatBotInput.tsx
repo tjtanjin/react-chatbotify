@@ -64,7 +64,7 @@ const ChatBotInput = ({
 	// styles for focused text area
 	const textAreaFocusedStyle: React.CSSProperties = {
 		outline: !textAreaDisabled ? "none" : "",
-		boxShadow: !textAreaDisabled ? `0 0 5px ${settings.theme?.primaryColor}` : "",
+		boxShadow: !textAreaDisabled ? `0 0 5px ${settings.general?.primaryColor}` : "",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...settings.chatInputAreaStyle, // by default inherit the base style for input area
 		...settings.chatInputAreaFocusedStyle,
@@ -72,7 +72,7 @@ const ChatBotInput = ({
 
 	// styles for disabled text area
 	const textAreaDisabledStyle: React.CSSProperties = {
-		cursor: `url(${settings.theme?.actionDisabledIcon}), auto`,
+		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 		caretColor: "transparent",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...settings.chatInputAreaStyle, // by default inherit the base style for input area
@@ -166,7 +166,7 @@ const ChatBotInput = ({
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
 				// checks if user is interacting with chatbot for the first time
-				if (!hasFlowStarted && settings.theme?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+				if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
 					setHasFlowStarted(true);
 				}
 			}}

@@ -63,8 +63,8 @@ const ChatBotTooltip = () => {
 		transform: `translateX(-${tooltipOffset}px)`,
 		right: (settings.chatButtonStyle?.width as number || 75) + 40,
 		bottom: 30,
-		backgroundColor: settings.theme?.secondaryColor,
-		color: settings.theme?.secondaryColor,
+		backgroundColor: settings.general?.secondaryColor,
+		color: settings.general?.secondaryColor,
 		...settings.tooltipStyle
 	};
 
@@ -75,7 +75,7 @@ const ChatBotTooltip = () => {
 	
 	return (
 		<>
-			{!settings.theme?.embedded &&
+			{!settings.general?.embedded &&
 				<div 
 					style={tooltipStyle}
 					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}

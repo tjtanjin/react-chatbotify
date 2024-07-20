@@ -38,9 +38,9 @@ const UserOptions= ({
 
 	// styles for bot option
 	const botOptionStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${settings.theme?.actionDisabledIcon}), auto` : "pointer",
-		color: settings.theme?.primaryColor,
-		borderColor: settings.theme?.primaryColor,
+		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		color: settings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
 		backgroundColor: "#fff",
 		...settings.botOptionStyle
 	};
@@ -48,8 +48,8 @@ const UserOptions= ({
 	// styles for bot hovered option
 	const botOptionHoveredStyle: React.CSSProperties = {
 		color: "#fff" ,
-		borderColor: settings.theme?.primaryColor,
-		backgroundColor: settings.theme?.primaryColor,
+		borderColor: settings.general?.primaryColor,
+		backgroundColor: settings.general?.primaryColor,
 		...settings.botOptionHoveredStyle
 	};
 

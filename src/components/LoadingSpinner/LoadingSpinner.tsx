@@ -12,7 +12,7 @@ const LoadingSpinner = () => {
 
 	// styles for spinner
 	const loadingSpinnerStyle: React.CSSProperties = {
-		borderTop: `4px solid ${settings.theme?.primaryColor}`,
+		borderTop: `4px solid ${settings.general?.primaryColor}`,
 		...settings.loadingSpinnerStyle
 	};
 

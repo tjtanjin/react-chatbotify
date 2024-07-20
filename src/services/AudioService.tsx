@@ -47,7 +47,7 @@ const speak = (message: string, language: string, voiceNames: string[], rate: nu
  */
 export const processAudio = (settings: Settings, voiceToggledOn: boolean, message: Message) => {
 	if (settings.audio?.disabled || message.sender === "user" || typeof message.content !== "string"
-		|| (!settings?.isOpen && !settings.theme?.embedded) || !voiceToggledOn) {
+		|| (!settings?.isOpen && !settings.general?.embedded) || !voiceToggledOn) {
 		return;
 	}
 
