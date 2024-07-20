@@ -1,32 +1,32 @@
-import { processAndFetchThemeOptions } from "./ThemeService";
-import { Options } from "../types/Options";
+import { processAndFetchThemeOptions } from "../services/ThemeService";
+import { Settings } from "../types/Settings";
 import { Theme } from "../types/Theme";
-import { DefaultOptions } from "../constants/DefaultOptions";
+import { DefaultSettings } from "../constants/DefaultSettings";
 
 /**
- * Parses default options with user provided options to generate final bot options.
+ * Parses default settings with user provided options to generate final bot settings.
  * 
  * @param providedOptions options provided by the user to the bot
  * @param theme theme provided by the user to the bot
  */
-export const parseBotOptions = async (providedOptions: Options | undefined,
-	themes: undefined | Theme | Array<Theme>): Promise<Options> => {
+export const parseSettings = async (providedOptions: Settings | undefined,
+	themes: undefined | Theme | Array<Theme>): Promise<Settings> => {
 	
 	// if no provided options or theme, then just load default options
 	if (providedOptions == null && themes == undefined) {
-		return DefaultOptions;
+		return DefaultSettings;
 	}
 
-	let combinedOptions = DefaultOptions;
+	let combinedOptions = DefaultSettings;
 	if (themes != null) {
 		if (Array.isArray(themes)) {
 			for (const theme of themes) {
 				const themeOptions = await processAndFetchThemeOptions(theme);
-				combinedOptions = getCombinedOptions(themeOptions, DefaultOptions);
+				combinedOptions = getCombinedOptions(themeOptions, DefaultSettings);
 			}
 		} else {
 			const themeOptions = await processAndFetchThemeOptions(themes);
-			combinedOptions = getCombinedOptions(themeOptions, DefaultOptions);
+			combinedOptions = getCombinedOptions(themeOptions, DefaultSettings);
 		}
 	}
 
@@ -48,7 +48,7 @@ export const parseBotOptions = async (providedOptions: Options | undefined,
  * @param providedOptions options provided by the user to the bot
  * @param baseOptions the base options that the provided options will overwrite
  */
-const getCombinedOptions = (preferredOptions: Options, baseOptions: Options): Options => {
+const getCombinedOptions = (preferredOptions: Settings, baseOptions: Settings): Settings => {
 	const stack: Array<{ source: object, target: object }> = [{ source: preferredOptions, target: baseOptions }];
 	
 	while (stack.length > 0) {

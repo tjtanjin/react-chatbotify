@@ -1,7 +1,7 @@
 
 import { Fragment } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import "./ChatBotFooter.css";
 
@@ -16,16 +16,16 @@ const ChatBotFooter = ({
 	buttons: JSX.Element[];
 }) => {
 	// handles options for bot
-	const { botOptions } = useBotOptions();
+	const { settings } = useSettings();
 
 	return (
-		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
+		<div style={settings.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
 				{buttons?.map((button: JSX.Element, index: number) => 
 					<Fragment key={index}>{button}</Fragment>
 				)}
 			</div>
-			<span>{botOptions.footer?.text}</span>
+			<span>{settings.footer?.text}</span>
 		</div>
 	);
 };

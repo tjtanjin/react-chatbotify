@@ -1,7 +1,7 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useBotOptions } from "../../../context/BotOptionsContext";
+import { useSettings } from "../../../context/SettingsContext";
 import { usePaths } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
 
@@ -25,7 +25,7 @@ const UserOptions= ({
 }) => {
 
 	// handles options for bot
-	const { botOptions } = useBotOptions();
+	const { settings } = useSettings();
 
 	// handles paths of the user
 	const { paths } = usePaths();
@@ -38,19 +38,19 @@ const UserOptions= ({
 
 	// styles for bot option
 	const botOptionStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${botOptions.theme?.actionDisabledIcon}), auto` : "pointer",
-		color: botOptions.theme?.primaryColor,
-		borderColor: botOptions.theme?.primaryColor,
+		cursor: disabled ? `url(${settings.theme?.actionDisabledIcon}), auto` : "pointer",
+		color: settings.theme?.primaryColor,
+		borderColor: settings.theme?.primaryColor,
 		backgroundColor: "#fff",
-		...botOptions.botOptionStyle
+		...settings.botOptionStyle
 	};
 
 	// styles for bot hovered option
 	const botOptionHoveredStyle: React.CSSProperties = {
 		color: "#fff" ,
-		borderColor: botOptions.theme?.primaryColor,
-		backgroundColor: botOptions.theme?.primaryColor,
-		...botOptions.botOptionHoveredStyle
+		borderColor: settings.theme?.primaryColor,
+		backgroundColor: settings.theme?.primaryColor,
+		...settings.botOptionHoveredStyle
 	};
 
 	// when moving on from current path, we also want to disable options
@@ -84,7 +84,7 @@ const UserOptions= ({
 	};
 
 	return (
-		<div className={`rcb-options-container ${botOptions.botBubble?.showAvatar ? "rcb-options-offset" : ""}`}>
+		<div className={`rcb-options-container ${settings.botBubble?.showAvatar ? "rcb-options-offset" : ""}`}>
 			{options.map((key, index) => {
 				const isHovered = hoveredElements[index] && !disabled;
 		
@@ -102,7 +102,7 @@ const UserOptions= ({
 							}
 
 							setDisabled(true);
-							handleActionInput(path, key, botOptions.chatInput?.sendOptionOutput as boolean);
+							handleActionInput(path, key, settings.chatInput?.sendOptionOutput as boolean);
 						}}
 					>
 						{key}

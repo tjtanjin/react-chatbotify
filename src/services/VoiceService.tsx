@@ -1,6 +1,6 @@
 import { RefObject, Dispatch, SetStateAction } from "react";
 
-import { Options } from "../types/Options";
+import { Settings } from "../types/Settings";
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
@@ -12,7 +12,7 @@ let mediaRecorder: MediaRecorder | null = null;
 /**
  * Starts recording user voice input with microphone.
  * 
- * @param botOptions options provided to the bot
+ * @param settings options provided to the bot
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
@@ -20,33 +20,33 @@ let mediaRecorder: MediaRecorder | null = null;
  * @param inputRef reference to textarea for input
  */
 export const startVoiceRecording = (
-	botOptions: Options,
+	settings: Settings,
 	handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
 	setAudioChunks: Dispatch<SetStateAction<BlobPart[]>>,
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
 ) => {
-	if (botOptions.voice?.sendAsAudio) {
+	if (settings.voice?.sendAsAudio) {
 		// Only use MediaRecorder when sendAsAudio is enabled
 		startAudioRecording(triggerSendVoiceInput, setAudioChunks);
 	} else {
 		// Only use SpeechRecognition when sendAsAudio is disabled
-		startSpeechRecognition(botOptions, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
+		startSpeechRecognition(settings, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
 	}
 }
 
 /**
  * Starts voice recording for input into textarea.
  *
- * @param botOptions options provided to the bot
+ * @param settings options provided to the bot
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
  * @param inputRef reference to textarea for input
  */
 const startSpeechRecognition = (
-	botOptions: Options,
+	settings: Settings,
 	handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
@@ -59,15 +59,15 @@ const startSpeechRecognition = (
 	if (!toggleOn) {
 		try {
 			toggleOn = true;
-			recognition.lang = botOptions.voice?.language as string;
+			recognition.lang = settings.voice?.language as string;
 			recognition.start();
 		} catch {
 			// catches rare dom exception if user spams voice button
 		}
 	}
 
-	const inactivityPeriod = botOptions.voice?.timeoutPeriod;
-	const autoSendPeriod = botOptions.voice?.autoSendPeriod;
+	const inactivityPeriod = settings.voice?.timeoutPeriod;
+	const autoSendPeriod = settings.voice?.autoSendPeriod;
 
 	recognition.onresult = event => {
 		clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
@@ -77,7 +77,7 @@ const startSpeechRecognition = (
 		const voiceInput = event.results[event.results.length - 1][0].transcript;
 
 		if (inputRef.current) {
-			const characterLimit = botOptions.chatInput?.characterLimit
+			const characterLimit = settings.chatInput?.characterLimit
 			const newInput = inputRef.current.value + voiceInput;
 			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
 				inputRef.current.value = newInput.slice(0, characterLimit);
@@ -88,7 +88,7 @@ const startSpeechRecognition = (
 		}
 
 		inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);
-		if (!botOptions.voice?.autoSendDisabled) {
+		if (!settings.voice?.autoSendDisabled) {
 			autoSendTimer = setTimeout(triggerSendVoiceInput, autoSendPeriod);
 		}
 	};
@@ -173,17 +173,17 @@ export const stopVoiceRecording = () => {
  * Syncs voice toggle to textarea state (voice should not be enabled if textarea is disabled).
  * 
  * @param keepVoiceOn boolean indicating if voice was on and thus is to be kept toggled on
- * @param botOptions options provided to the bot
+ * @param settings options provided to the bot
  */
-export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botOptions: Options) => {
+export const syncVoiceWithChatInput = (keepVoiceOn: boolean, settings: Settings) => {
 
-	if (botOptions.voice?.disabled || !botOptions.chatInput?.blockSpam || !recognition) {
+	if (settings.voice?.disabled || !settings.chatInput?.blockSpam || !recognition) {
 		return;
 	}
 
 	if (keepVoiceOn && !toggleOn) {
 		toggleOn = true;
-		if (botOptions.voice?.sendAsAudio) {
+		if (settings.voice?.sendAsAudio) {
 			mediaRecorder?.start();
 		} else {
 			recognition.start();

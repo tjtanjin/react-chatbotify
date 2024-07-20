@@ -1,7 +1,7 @@
 /**
  * Defines the configurable options/styles for the chat bot.
  */
-export type Options = {
+export type Settings = {
 	// tracks state of chat window, also the default state to load it in
 	isOpen?: boolean;
 
@@ -130,7 +130,7 @@ export type Options = {
 	},
 	advance?: {
 		useCustomMessages?: boolean;
-		useCustomBotOptions?: boolean;
+		useCustomSettings?: boolean;
 		useCustomPaths?: boolean;
 	},
 

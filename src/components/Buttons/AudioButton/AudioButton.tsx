@@ -1,6 +1,6 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 
-import { useBotOptions } from "../../../context/BotOptionsContext";
+import { useSettings } from "../../../context/SettingsContext";
 
 import "./AudioButton.css";
 
@@ -18,11 +18,11 @@ const AudioButton = ({
 	setAudioToggledOn: Dispatch<SetStateAction<boolean>>;
 }) => {
 	// handles options for bot
-	const { botOptions } = useBotOptions();
+	const { settings } = useSettings();
 
 	return (
 		<div
-			style={{backgroundImage: `url(${botOptions.audio?.icon})`}}
+			style={{backgroundImage: `url(${settings.audio?.icon})`}}
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
 				setAudioToggledOn(prev => !prev);

@@ -1,4 +1,4 @@
-import { useBotOptions } from "../../context/BotOptionsContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import "./ChatBotButton.css";
 
@@ -14,35 +14,35 @@ const ChatBotButton = ({
 }) => {
 
 	// handles options for bot
-	const { botOptions, setBotOptions } = useBotOptions();
+	const { settings, setSettings } = useSettings();
 
 	/**
 	 * Toggles the chat window.
 	 */
 	const toggleChatWindow = () => {
-		setBotOptions({...botOptions, isOpen: !botOptions.isOpen});
+		setSettings({...settings, isOpen: !settings.isOpen});
 	};
 
 	// styles for chat button
 	const chatButtonStyle: React.CSSProperties = {
-		backgroundImage: `url(${botOptions.chatButton?.icon}),
-			linear-gradient(to right, ${botOptions.theme?.secondaryColor}, ${botOptions.theme?.primaryColor})`,
+		backgroundImage: `url(${settings.chatButton?.icon}),
+			linear-gradient(to right, ${settings.theme?.secondaryColor}, ${settings.theme?.primaryColor})`,
 		width: 75,
 		height: 75,
-		...botOptions.chatButtonStyle
+		...settings.chatButtonStyle
 	};
 	
 	return (
 		<>
-			{!botOptions.theme?.embedded &&
+			{!settings.theme?.embedded &&
 				<button
 					aria-label="Open Chat"
 					style={chatButtonStyle}
-					className={`rcb-toggle-button ${botOptions.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
+					className={`rcb-toggle-button ${settings.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}
 				>
-					{!botOptions.notification?.disabled && botOptions.notification?.showCount &&
-						<span style={botOptions.notificationBadgeStyle} className="rcb-badge">
+					{!settings.notification?.disabled && settings.notification?.showCount &&
+						<span style={settings.notificationBadgeStyle} className="rcb-badge">
 							{unreadCount}
 						</span>
 					}

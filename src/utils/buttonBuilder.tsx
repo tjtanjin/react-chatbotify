@@ -8,7 +8,7 @@ import NotificationButton from "../components/Buttons/NotificationButton/Notific
 import VoiceButton from "../components/Buttons/VoiceButton/VoiceButton";
 import SendButton from "../components/Buttons/SendButton/SendButton";
 import { ButtonConfig } from "../types/internal/ButtonConfig";
-import { Options } from "../types/Options";
+import { Settings } from "../types/Settings";
 import { Flow } from "../types/Flow";
 import { Button } from "../constants/Button";
 
@@ -19,21 +19,21 @@ const isButton = (value: string): value is (keyof typeof Button) => {
 
 /**
  * Retrieves the button configurations for header, chat input and footer then builds the buttons.
- * @param botOptions options provided to the bot to determine buttons shown
+ * @param settings options provided to the bot to determine buttons shown
  * @param buttonComponentMap a mapping between default buttons and their components
  */
 export const getButtonConfig = (
-	botOptions: Options,
+	settings: Settings,
 	buttonComponentMap: {[x: string]: () => JSX.Element}
 ): ButtonConfig => {
 	const buttonDisabledMap = {
-		[Button.AUDIO_BUTTON]: botOptions.audio?.disabled,
-		[Button.CLOSE_CHAT_BUTTON]: botOptions.theme?.embedded,
-		[Button.EMOJI_PICKER_BUTTON]: botOptions.emoji?.disabled,
-		[Button.FILE_ATTACHMENT_BUTTON]: botOptions.fileAttachment?.disabled,
-		[Button.NOTIFICATION_BUTTON]: botOptions.notification?.disabled,
+		[Button.AUDIO_BUTTON]: settings.audio?.disabled,
+		[Button.CLOSE_CHAT_BUTTON]: settings.theme?.embedded,
+		[Button.EMOJI_PICKER_BUTTON]: settings.emoji?.disabled,
+		[Button.FILE_ATTACHMENT_BUTTON]: settings.fileAttachment?.disabled,
+		[Button.NOTIFICATION_BUTTON]: settings.notification?.disabled,
 		[Button.SEND_MESSAGE_BUTTON]: false,
-		[Button.VOICE_MESSAGE_BUTTON]: botOptions.voice?.disabled
+		[Button.VOICE_MESSAGE_BUTTON]: settings.voice?.disabled
 	};
 
 	// cache to store created buttons
@@ -66,9 +66,9 @@ export const getButtonConfig = (
 			.filter((button) => button !== null) as JSX.Element[];
 	};
 
-	const headerButtons = mapButtons(botOptions.header?.buttons);
-	const chatInputButtons = mapButtons(botOptions.chatInput?.buttons);
-	const footerButtons = mapButtons(botOptions.footer?.buttons);
+	const headerButtons = mapButtons(settings.header?.buttons);
+	const chatInputButtons = mapButtons(settings.chatInput?.buttons);
+	const footerButtons = mapButtons(settings.footer?.buttons);
 
 	return { header: headerButtons, chatInput: chatInputButtons, footer: footerButtons };
 }

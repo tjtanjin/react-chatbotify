@@ -68,7 +68,7 @@ Each part and its relevant files are seated in its own folder so it's relatively
 
 ### Assets
 
-As its name suggest, the *assets* folder contains **media content** that are used by the chatbot - which includes **images** and **sound**. These are centrally imported and loaded within the *BotOptionsService* file during initialisation.
+As its name suggest, the *assets* folder contains **media content** that are used by the chatbot - which includes **images** and **sound**. These are centrally imported and loaded within the *SettingsParser* file during initialisation.
 
 ### Components
 
@@ -80,11 +80,11 @@ Without boring you with the details, the more obvious components would be the *C
 
 The chatbot uses **3 contexts** for managing global information as well as exposing advance functionalities to developers:
 
-- BotOptionsContext
+- SettingsContext
 - MessagesContext
 - PathsContext
 
-As their names suggest, *BotOptionsContext* is used to manage bot options, *MessagesContext* handles chat messages while *PathsContext* deals with the paths for the chatbot. These context are also **exported for advanced users** to have even more granular control over the chatbot.
+As their names suggest, *SettingsContext* is used to manage bot options, *MessagesContext* handles chat messages while *PathsContext* deals with the paths for the chatbot. These context are also **exported for advanced users** to have even more granular control over the chatbot.
 
 ### Services
 

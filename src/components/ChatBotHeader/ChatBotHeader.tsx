@@ -1,6 +1,6 @@
 import React, { Fragment  } from "react";
 
-import { useBotOptions } from "../../context/BotOptionsContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import "./ChatBotHeader.css";
 
@@ -15,25 +15,25 @@ const ChatBotHeader = ({
 	buttons: JSX.Element[]
 }) => {
 	// handles options for bot
-	const { botOptions } = useBotOptions();
+	const { settings } = useSettings();
 
 	// styles for header
 	const headerStyle: React.CSSProperties = {
-		background: `linear-gradient(to right, ${botOptions.theme?.secondaryColor },
-			${botOptions.theme?.primaryColor})`,
-		...botOptions.headerStyle
+		background: `linear-gradient(to right, ${settings.theme?.secondaryColor },
+			${settings.theme?.primaryColor})`,
+		...settings.headerStyle
 	}
 
 	return (
 		<div style={headerStyle} className="rcb-chat-header-container">
 			<div className="rcb-chat-header">
-				{botOptions.header?.showAvatar &&
+				{settings.header?.showAvatar &&
 					<div 
-						style={{backgroundImage: `url(${botOptions.header?.avatar})`}} 
+						style={{backgroundImage: `url(${settings.header?.avatar})`}} 
 						className="rcb-bot-avatar"
 					/>
 				}
-				{botOptions.header?.title}
+				{settings.header?.title}
 			</div>
 			<div className="rcb-chat-header">
 				{buttons?.map((button: JSX.Element, index: number) => 

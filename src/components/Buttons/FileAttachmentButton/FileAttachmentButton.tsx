@@ -2,7 +2,7 @@ import { ChangeEvent, RefObject } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
-import { useBotOptions } from "../../../context/BotOptionsContext";
+import { useSettings } from "../../../context/SettingsContext";
 import { Flow } from "../../../types/Flow";
 
 import "./FileAttachmentButton.css";
@@ -42,7 +42,7 @@ const FileAttachmentButton = ({
 }) => {
 
 	// handles options for bot
-	const { botOptions } = useBotOptions();
+	const { settings } = useSettings();
 
 	/**
 	 * Handles file uploads from user.
@@ -70,7 +70,7 @@ const FileAttachmentButton = ({
 			for (let i = 0; i < files.length; i++) {
 				fileNames.push(files[i].name);
 				// checks if media (i.e. image, video, audio should be displayed)
-				if (!botOptions.fileAttachment?.showMediaDisplay) {
+				if (!settings.fileAttachment?.showMediaDisplay) {
 					continue;
 				}
 
@@ -84,7 +84,7 @@ const FileAttachmentButton = ({
 				await injectMessage(<MediaDisplay file={files[i]} fileType={fileDetails.fileType}
 					fileUrl={fileDetails.fileUrl}/>, "user");
 			}
-			await handleActionInput(currPath, "📄 " + fileNames.join(", "), botOptions.chatInput?.sendAttachmentOutput);
+			await handleActionInput(currPath, "📄 " + fileNames.join(", "), settings.chatInput?.sendAttachmentOutput);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
 				injectMessage, streamMessage, openChat, files});
 		}
@@ -98,23 +98,23 @@ const FileAttachmentButton = ({
 						className="rcb-attach-input"
 						type="file"
 						onChange={handleUpload}
-						multiple={botOptions.fileAttachment?.multiple}
-						accept={botOptions.fileAttachment?.accept}
+						multiple={settings.fileAttachment?.multiple}
+						accept={settings.fileAttachment?.accept}
 					/>
 					<span
-						style={{backgroundImage: `url(${botOptions.fileAttachment?.icon})`}}
+						style={{backgroundImage: `url(${settings.fileAttachment?.icon})`}}
 						className="rcb-attach-icon-enabled"
 					/>
 				</label>
 			) : (
 				<label 
 					className="rcb-attach-button-disabled"
-					style={{cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`}}
+					style={{cursor: `url(${settings.theme?.actionDisabledIcon}), auto`}}
 				>
 					<input disabled type="file" />
 					<span 
 						style={{
-							backgroundImage: `url(${botOptions.fileAttachment?.icon})`
+							backgroundImage: `url(${settings.fileAttachment?.icon})`
 						}} 
 						className="rcb-attach-icon-disabled"
 					>

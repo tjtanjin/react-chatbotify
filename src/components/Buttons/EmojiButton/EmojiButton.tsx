@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, RefObject } from "react";
 
-import { useBotOptions } from "../../../context/BotOptionsContext";
+import { useSettings } from "../../../context/SettingsContext";
 
 import "./EmojiButton.css";
 
@@ -19,7 +19,7 @@ const EmojiButton = ({
 }) => {
 
 	// handles options for bot
-	const { botOptions } = useBotOptions();
+	const { settings } = useSettings();
 
 	// reference to popup
 	const popupRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const EmojiButton = ({
 
 	// styles emoji button when disabled
 	const emojiButtonDisabledStyle: React.CSSProperties = {
-		cursor: `url(${botOptions.theme?.actionDisabledIcon}), auto`,
+		cursor: `url(${settings.theme?.actionDisabledIcon}), auto`,
 	};
 
 	// handles click events for showing/dismissing emoji popup
@@ -116,13 +116,13 @@ const EmojiButton = ({
 				onMouseDown={togglePopup}
 			>
 				<span
-					style={{backgroundImage: `url(${botOptions.emoji?.icon})`}}
+					style={{backgroundImage: `url(${settings.emoji?.icon})`}}
 					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}
 				/>
 			</div>
 			{showPopup && (
 				<div className="rcb-emoji-button-popup" ref={popupRef}>
-					{botOptions.emoji?.list?.map((emoji, index) => (
+					{settings.emoji?.list?.map((emoji, index) => (
 						<span
 							key={index}
 							className="rcb-emoji"

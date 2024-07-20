@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
-import { parseBotOptions } from "../services/BotOptionsService";
+import { parseSettings } from "../utils/SettingsParser";
 import { isDesktop } from "../utils/displayChecker";
-import { BotOptionsContext } from "../context/BotOptionsContext";
+import { SettingsContext } from "../context/SettingsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
-import { Options } from "../types/Options";
+import { Settings } from "../types/Settings";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Theme } from "../types/Theme";
@@ -25,7 +25,7 @@ const ChatBot = ({
 	themes,
 }: {
 	flow?: Flow,
-	options?: Options
+	options?: Settings
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
 
@@ -33,7 +33,7 @@ const ChatBot = ({
 	const [optionsLoaded, setOptionsLoaded] = useState<boolean>(false);
 
 	// handles setting of options for the chat bot
-	const [botOptions, setBotOptions] = useState<Options>({});
+	const [settings, setSettings] = useState<Settings>({});
 
 	// handles messages between user and the chat bot
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -53,8 +53,8 @@ const ChatBot = ({
 	 * Loads bot options.
 	 */
 	const loadOptions = async () => {
-		const combinedOptions = await parseBotOptions(options, themes);
-		setBotOptions(combinedOptions);
+		const combinedOptions = await parseSettings(options, themes);
+		setSettings(combinedOptions);
 		setOptionsLoaded(true);
 	}
 
@@ -63,11 +63,11 @@ const ChatBot = ({
 	 * 
 	 * @param children child element to wrap around
 	 */
-	const wrapBotOptionsProvider = (children: JSX.Element) => {
+	const wrapSettingsProvider = (children: JSX.Element) => {
 		return (
-			<BotOptionsContext.Provider value={{botOptions, setBotOptions}}>
+			<SettingsContext.Provider value={{settings, setSettings}}>
 				{children}
-			</BotOptionsContext.Provider>
+			</SettingsContext.Provider>
 		);
 	};
 
@@ -102,16 +102,16 @@ const ChatBot = ({
 	 */
 	const renderChatBot = () => {
 		let result = <ChatBotContainer flow={parsedFlow}/>;
-		if (!botOptions.advance?.useCustomMessages) {
+		if (!settings.advance?.useCustomMessages) {
 			result = wrapMessagesProvider(result);
 		}
 
-		if (!botOptions.advance?.useCustomPaths) {
+		if (!settings.advance?.useCustomPaths) {
 			result = wrapPathsProvider(result);
 		}
 
-		if (!botOptions.advance?.useCustomBotOptions) {
-			result = wrapBotOptionsProvider(result);
+		if (!settings.advance?.useCustomSettings) {
+			result = wrapSettingsProvider(result);
 		}
 
 		return result;
@@ -121,14 +121,14 @@ const ChatBot = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return optionsLoaded && (isDesktop && botOptions.theme?.desktopEnabled)
-			|| (!isDesktop && botOptions.theme?.mobileEnabled);
+		return optionsLoaded && (isDesktop && settings.theme?.desktopEnabled)
+			|| (!isDesktop && settings.theme?.mobileEnabled);
 	}
 
 	return (
 		<>
 			{shouldShowChatBot() &&
-				<div style={{fontFamily: botOptions.theme?.fontFamily}}>
+				<div style={{fontFamily: settings.theme?.fontFamily}}>
 					{renderChatBot()}
 				</div>
 			}

@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-import { useBotOptions } from "../../../context/BotOptionsContext";
+import { useSettings } from "../../../context/SettingsContext";
 
 import "./CloseChatButton.css";
 
@@ -9,14 +9,14 @@ import "./CloseChatButton.css";
  */
 const CloseChatButton = () => {
 	// handles options for bot
-	const { botOptions, setBotOptions } = useBotOptions();
+	const { settings, setSettings } = useSettings();
 
 	return (
 		<div
-			style={{backgroundImage: `url(${botOptions.header?.closeChatIcon})`}}
+			style={{backgroundImage: `url(${settings.header?.closeChatIcon})`}}
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
-				setBotOptions({...botOptions, isOpen: false});
+				setSettings({...settings, isOpen: false});
 			}}
 			className="rcb-close-chat-icon"
 		>

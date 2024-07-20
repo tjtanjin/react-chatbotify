@@ -1,4 +1,4 @@
-import { Options } from "react-chatbotify";
+import { Settings } from "../types/Settings";
 import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
@@ -8,7 +8,7 @@ const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
  * 
  * @param theme theme to process and retrieve options for
  */
-export const processAndFetchThemeOptions = async (theme: Theme): Promise<Options> => {
+export const processAndFetchThemeOptions = async (theme: Theme): Promise<Settings> => {
 	const { name, version, base_url = DEFAULT_URL } = theme;
 
 	let themeVersion = version;

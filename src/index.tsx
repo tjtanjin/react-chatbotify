@@ -1,23 +1,23 @@
 import ChatBot from "./components/ChatBot";
-import { BotOptionsContext } from "./context/BotOptionsContext";
+import { SettingsContext } from "./context/SettingsContext";
 import { MessagesContext } from "./context/MessagesContext";
 import { PathsContext } from "./context/PathsContext";
 import { Block } from "./types/Block";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
-import { Options } from "./types/Options";
+import { Settings } from "./types/Settings";
 import { Params } from "./types/Params";
 import { Button } from "./constants/Button";
-import { DefaultOptions } from "./constants/DefaultOptions";
+import { DefaultSettings } from "./constants/DefaultSettings";
 
 // context exports
-export { BotOptionsContext, MessagesContext, PathsContext };
+export { SettingsContext, MessagesContext, PathsContext };
 
 // constant exports
 export { Button };
-export { DefaultOptions };
+export { DefaultSettings };
 
 // type exports
-export type { Block, Flow, Message, Options, Params };
+export type { Block, Flow, Message, Settings as Options, Params };
 
 export default ChatBot;
