@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { isDesktop } from "../../utils/displayChecker";
-import { useSettings } from "../../context/SettingsContext";
+import { useBotSettings } from "../../context/BotSettingsContext";
 
 import "./ChatBotTooltip.css";
 
@@ -11,7 +11,7 @@ import "./ChatBotTooltip.css";
 const ChatBotTooltip = () => {
 
 	// handles options for bot
-	const { settings, setSettings } = useSettings();
+	const { botSettings, setBotSettings } = useBotSettings();
 
 	// tracks whether to show tooltip
 	const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -24,20 +24,20 @@ const ChatBotTooltip = () => {
 
 	// checks if tooltip should be shown
 	useEffect(() => {
-		const mode = settings.tooltip?.mode;
+		const mode = botSettings.tooltip?.mode;
 		if (mode === "ALWAYS") {
 			if (isDesktop) {
 				let offset;
-				if (settings.isOpen) {
-					offset = (settings.chatWindowStyle?.width as number || 375) -
-					(settings.chatButtonStyle?.width as number || 75)
+				if (botSettings.isOpen) {
+					offset = (botSettings.chatWindowStyle?.width as number || 375) -
+					(botSettings.chatButtonStyle?.width as number || 75)
 				} else {
 					offset = 0;
 				}
 				setTooltipOffset(offset);
 				setShowTooltip(true);
 			} else {
-				if (settings.isOpen) {
+				if (botSettings.isOpen) {
 					setShowTooltip(false);
 				} else {
 					setShowTooltip(true);
@@ -53,19 +53,19 @@ const ChatBotTooltip = () => {
 				setShowTooltip(false);
 			}
 		} else if (mode === "CLOSE") {
-			setShowTooltip(!settings.isOpen);
+			setShowTooltip(!botSettings.isOpen);
 		}
 
-	}, [settings.isOpen]);
+	}, [botSettings.isOpen]);
 
 	// styles for tooltip
 	const tooltipStyle: React.CSSProperties = {
 		transform: `translateX(-${tooltipOffset}px)`,
-		right: (settings.chatButtonStyle?.width as number || 75) + 40,
+		right: (botSettings.chatButtonStyle?.width as number || 75) + 40,
 		bottom: 30,
-		backgroundColor: settings.general?.secondaryColor,
-		color: settings.general?.secondaryColor,
-		...settings.tooltipStyle
+		backgroundColor: botSettings.general?.secondaryColor,
+		color: botSettings.general?.secondaryColor,
+		...botSettings.tooltipStyle
 	};
 
 	// styles for tooltip tail
@@ -75,13 +75,13 @@ const ChatBotTooltip = () => {
 	
 	return (
 		<>
-			{!settings.general?.embedded &&
+			{!botSettings.general?.embedded &&
 				<div 
 					style={tooltipStyle}
 					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}
-					onClick={() => setSettings({...settings, isOpen: true})}
+					onClick={() => setBotSettings({...botSettings, isOpen: true})}
 				>
-					<span style={{ color: "#fff" }}>{settings.tooltip?.text}</span>
+					<span style={{ color: "#fff" }}>{botSettings.tooltip?.text}</span>
 					<span className="rcb-chat-tooltip-tail" style={tooltipTailStyle}></span>
 				</div>
 			}

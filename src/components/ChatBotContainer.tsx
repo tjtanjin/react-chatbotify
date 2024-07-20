@@ -23,7 +23,7 @@ import {
 	createVoiceButton,
 	getButtonConfig
 } from "../utils/buttonBuilder";
-import { useSettings } from "../context/SettingsContext";
+import { useBotSettings } from "../context/BotSettingsContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
 import { Block } from "../types/Block";
@@ -42,7 +42,7 @@ import "./ChatBotContainer.css";
 const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// handles setting of options for the chat bot
-	const { settings, setSettings } = useSettings();
+	const { botSettings, setBotSettings } = useBotSettings();
 
 	// handles messages between user and the chat bot
 	const { messages, setMessages } = useMessages();
@@ -136,13 +136,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		window.addEventListener("touchstart", handleFirstInteraction);
 
 		setUpNotifications();
-		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
-		setAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
-		setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
-		if (settings.chatHistory?.disabled) {
-			localStorage.removeItem(settings.chatHistory?.storageKey as string);
+		setTextAreaDisabled(botSettings.chatInput?.disabled as boolean);
+		setAudioToggledOn(botSettings.audio?.defaultToggledOn as boolean);
+		setVoiceToggledOn(botSettings.voice?.defaultToggledOn as boolean);
+		if (botSettings.chatHistory?.disabled) {
+			localStorage.removeItem(botSettings.chatHistory?.storageKey as string);
 		} else {
-			const chatHistory = localStorage.getItem(settings.chatHistory?.storageKey as string);
+			const chatHistory = localStorage.getItem(botSettings.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
 				const messageContent = {
@@ -150,8 +150,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					sender: "system"
 				};
 				setMessages([messageContent]);
-				if (settings.chatHistory?.autoLoad) {
-					loadChatHistory(settings, chatHistory, setMessages, setTextAreaDisabled);
+				if (botSettings.chatHistory?.autoLoad) {
+					loadChatHistory(botSettings, chatHistory, setMessages, setTextAreaDisabled);
 				}
 			}
 		}
@@ -165,13 +165,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// triggers update to chat history options
 	useEffect(() => {
-		setHistoryStorageValues(settings);
-	}, [settings.chatHistory?.storageKey, settings.chatHistory?.maxEntries, settings.chatHistory?.disabled]);
+		setHistoryStorageValues(botSettings);
+	}, [botSettings.chatHistory?.storageKey, botSettings.chatHistory?.maxEntries, botSettings.chatHistory?.disabled]);
 
 	// used to handle virtualkeyboard api (if supported on browser)
 	useEffect(() => {
 		// if is desktop or is embedded bot, nothing to resize
-		if (isDesktop || settings.general?.embedded) {
+		if (isDesktop || botSettings.general?.embedded) {
 			return;
 		}
 		
@@ -221,7 +221,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// resets unread count on opening chat and handles scrolling/resizing window on mobile devices
 	useEffect(() => {
-		if (settings.isOpen) {
+		if (botSettings.isOpen) {
 			setUnreadCount(0);
 			setViewportHeight(window.visualViewport?.height as number);
 			setViewportWidth(window.visualViewport?.width as number);
@@ -246,7 +246,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.visualViewport?.removeEventListener("resize", handleResize);
 		};
 
-		if (settings.isOpen) {
+		if (botSettings.isOpen) {
 			cleanupScrollEventListeners();
 			document.body.style.position = "fixed";
 			window.addEventListener("scroll", handleMobileScrollOpened);
@@ -260,7 +260,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		return cleanupScrollEventListeners;
-	}, [settings.isOpen]);
+	}, [botSettings.isOpen]);
 
 	// performs pre-processing when paths change
 	useEffect(() => {
@@ -292,7 +292,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			// cleanup logic after preprocessing of a block
 			setIsBotTyping(false);
 			updateInputFields();
-			syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, settings);
+			syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botSettings);
 
 			// cleanup logic after preprocessing of a block (affects only streaming messages)
 			isBotStreamingRef.current = false
@@ -302,7 +302,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [paths]);
 
 	useEffect(() => {
-		if (hasFlowStarted || settings.general?.flowStartTrigger === "ON_LOAD") {
+		if (hasFlowStarted || botSettings.general?.flowStartTrigger === "ON_LOAD") {
 			setPaths(["start"]);
 		}
 	}, [hasFlowStarted]);
@@ -311,12 +311,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Sets up the notifications feature (initial toggle status and sound).
 	 */
 	const setUpNotifications = useCallback(async () => {
-		setNotificationToggledOn(settings.notification?.defaultToggledOn as boolean);
+		setNotificationToggledOn(botSettings.notification?.defaultToggledOn as boolean);
 	
-		const notificationSound = settings.notification?.sound;
+		const notificationSound = botSettings.notification?.sound;
 		audioContextRef.current = new AudioContext();
 		const gainNode = audioContextRef.current.createGain();
-		gainNode.gain.value = settings.notification?.volume || 0.2;
+		gainNode.gain.value = botSettings.notification?.volume || 0.2;
 		gainNodeRef.current = gainNode;
 
 		let audioSource;
@@ -334,14 +334,14 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
-	}, [settings.notification?.defaultToggledOn, settings.notification?.sound, settings.notification?.volume]);
+	}, [botSettings.notification?.defaultToggledOn, botSettings.notification?.sound, botSettings.notification?.volume]);
 
 	/**
 	 * Checks for initial user interaction (required to play audio/notification sound).
 	 */
 	const handleFirstInteraction = useCallback(() => {
 		setHasInteractedPage(true);
-		if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_PAGE_INTERACT") {
+		if (!hasFlowStarted && botSettings.general?.flowStartTrigger === "ON_PAGE_INTERACT") {
 			setHasFlowStarted(true);
 		}
 
@@ -354,7 +354,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			window.removeEventListener("touchstart", handleFirstInteraction);
 		};
 		window.speechSynthesis.speak(utterance);
-	}, [settings.general?.flowStartTrigger, hasFlowStarted]);
+	}, [botSettings.general?.flowStartTrigger, hasFlowStarted]);
 
 	/**
 	 * Modifies botoptions to open/close the chat window.
@@ -362,8 +362,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param isOpen boolean indicating whether to open/close the chat window
 	 */
 	const openChat = useCallback((isOpen: boolean) => {
-		setSettings({...settings, isOpen});
-	}, [settings, setSettings]);
+		setBotSettings({...botSettings, isOpen});
+	}, [botSettings, setBotSettings]);
 
 	/**
 	 * Handles notification count update and notification sound.
@@ -376,25 +376,25 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		const message = messages[messages.length - 1]
 		// if message is null or sent by user or is bot typing or bot is embedded, return
-		if (!message || message.sender === "user" || isBotTyping || (settings.general?.embedded
+		if (!message || message.sender === "user" || isBotTyping || (botSettings.general?.embedded
 			&& isChatBotVisible(chatBodyRef.current as HTMLDivElement))) {
 			return;
 		}
 
 		// if chat is open but user is not scrolling, return
-		if (settings.isOpen && !isScrolling) {
+		if (botSettings.isOpen && !isScrolling) {
 			return;
 		}
 
 		setUnreadCount(prev => prev + 1);
-		if (!settings.notification?.disabled && notificationToggledOn
+		if (!botSettings.notification?.disabled && notificationToggledOn
 			&& hasInteractedPage && audioBufferRef.current) {
 			const source = audioContextRef.current.createBufferSource();
 			source.buffer = audioBufferRef.current;
 			source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
 			source.start();
 		}
-	}, [settings, messages, isBotTyping, isScrolling, notificationToggledOn, hasInteractedPage]);
+	}, [botSettings, messages, isBotTyping, isScrolling, notificationToggledOn, hasInteractedPage]);
 
 	/**
 	 * Retrieves current path for user.
@@ -425,25 +425,25 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 		const message = {content: content, sender: sender};
-		processAudio(settings, audioToggledOn, message);
+		processAudio(botSettings, audioToggledOn, message);
 
 		const isBotStream = typeof message.content === "string"
-			&& message.sender === "bot" && settings?.botBubble?.simStream;
+			&& message.sender === "bot" && botSettings?.botBubble?.simStream;
 		const isUserStream = typeof message.content === "string"
-			&& message.sender === "user" && settings?.userBubble?.simStream;
+			&& message.sender === "user" && botSettings?.userBubble?.simStream;
 
 		if (isBotStream) {
-			const streamSpeed = settings.botBubble?.streamSpeed as number;
-			const useMarkup = settings.botBubble?.dangerouslySetInnerHtml as boolean;
+			const streamSpeed = botSettings.botBubble?.streamSpeed as number;
+			const useMarkup = botSettings.botBubble?.dangerouslySetInnerHtml as boolean;
 			await simulateStream(message, streamSpeed, useMarkup);
 		} else if (isUserStream) {
-			const streamSpeed = settings.userBubble?.streamSpeed as number;
-			const useMarkup = settings.userBubble?.dangerouslySetInnerHtml as boolean;
+			const streamSpeed = botSettings.userBubble?.streamSpeed as number;
+			const useMarkup = botSettings.userBubble?.dangerouslySetInnerHtml as boolean;
 			await simulateStream(message, streamSpeed, useMarkup);
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
-	}, [settings, audioToggledOn]);
+	}, [botSettings, audioToggledOn]);
 
 	/**
 	 * Simulates the streaming of a message from the bot.
@@ -541,8 +541,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const showChatHistory = useCallback((chatHistory: string) => {
 		setIsLoadingChatHistory(true);
 		setTextAreaDisabled(true);
-		loadChatHistory(settings, chatHistory, setMessages, setTextAreaDisabled);
-	}, [settings]);
+		loadChatHistory(botSettings, chatHistory, setMessages, setTextAreaDisabled);
+	}, [botSettings]);
 
 	/**
 	 * Updates input fields (textarea and file attachment) state based on current block.
@@ -560,13 +560,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		const shouldDisableTextArea = block.chatDisabled 
 			? block.chatDisabled
-			: settings.chatInput?.disabled as boolean;
+			: botSettings.chatInput?.disabled as boolean;
 		setTextAreaDisabled(shouldDisableTextArea);
 		setBlockAllowsAttachment(typeof block.file === "function");
 
 		if (!shouldDisableTextArea) {
 			setTimeout(() => {
-				if (settings.general?.embedded) {
+				if (botSettings.general?.embedded) {
 					// for embedded chatbot, only do input focus if chatbot is still visible on page
 					if (isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
 						inputRef.current?.focus();
@@ -630,13 +630,13 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			inputRef.current.value = "";
 		}
 
-		if (settings.chatInput?.blockSpam) {
+		if (botSettings.chatInput?.blockSpam) {
 			setTextAreaDisabled(true);
 		}
 
 		// used for voice
 		keepVoiceOnRef.current = voiceToggledOn;
-		syncVoiceWithChatInput(false, settings);
+		syncVoiceWithChatInput(false, botSettings);
 		
 		setTimeout(() => {
 			setIsBotTyping(true);
@@ -649,11 +649,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
 				updateInputFields();
-				syncVoiceWithChatInput(keepVoiceOnRef.current, settings);
+				syncVoiceWithChatInput(keepVoiceOnRef.current, botSettings);
 				setIsBotTyping(false);
 			}
-		}, settings.chatInput?.botDelay);
-	}, [timeoutId, voiceToggledOn, settings, flow, getPrevPath, injectMessage, streamMessage, openChat,
+		}, botSettings.chatInput?.botDelay);
+	}, [timeoutId, voiceToggledOn, botSettings, flow, getPrevPath, injectMessage, streamMessage, openChat,
 		postProcessBlock, setPaths, updateInputFields
 	]);
 
@@ -674,16 +674,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		if (block.isSensitive) {
-			if (settings?.sensitiveInput?.hideInUserBubble) {
+			if (botSettings?.sensitiveInput?.hideInUserBubble) {
 				return;
-			} else if (settings?.sensitiveInput?.maskInUserBubble) {
-				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number || 10), "user");
+			} else if (botSettings?.sensitiveInput?.maskInUserBubble) {
+				await injectMessage("*".repeat(botSettings.sensitiveInput?.asterisksCount as number || 10), "user");
 				return;
 			}
 		}
 
 		await injectMessage(userInput, "user");
-	}, [flow, getCurrPath, settings, injectMessage]);
+	}, [flow, getCurrPath, botSettings, injectMessage]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.
@@ -704,9 +704,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const getWindowStateClass = () => {
 		const windowClass = "rcb-chat-bot ";
-		if (settings.general?.embedded) {
+		if (botSettings.general?.embedded) {
 			return windowClass + "rcb-window-embedded";
-		} else if (settings.isOpen) {
+		} else if (botSettings.isOpen) {
 			return windowClass + "rcb-window-open";
 		} else {
 			return windowClass + "rcb-window-close"
@@ -717,9 +717,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Retrieves styles for chat window.
 	 */
 	const getChatWindowStyle = () => {
-		if (!isDesktop && !settings.general?.embedded) {
+		if (!isDesktop && !botSettings.general?.embedded) {
 			return {
-				...settings.chatWindowStyle,
+				...botSettings.chatWindowStyle,
 				borderRadius: "0px",
 				left: "0px",
 				right: "auto",
@@ -729,7 +729,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				height: `${viewportHeight}px`,
 			}
 		} else {
-			return settings.chatWindowStyle;
+			return botSettings.chatWindowStyle;
 		}
 	}
 
@@ -779,17 +779,17 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	]);
 	
 	useEffect(() => {
-		const buttonConfig = getButtonConfig(settings, buttonComponentMap);
+		const buttonConfig = getButtonConfig(botSettings, buttonComponentMap);
 		setHeaderButtons(buttonConfig.header);
 		setChatInputButtons(buttonConfig.chatInput);
 		setFooterButtons(buttonConfig.footer);
-	}, [settings, buttonComponentMap]);
+	}, [botSettings, buttonComponentMap]);
 
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
 				// checks if user is interacting with chatbot for the first time
-				if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+				if (!hasFlowStarted && botSettings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
 					setHasFlowStarted(true);
 				}
 
@@ -805,7 +805,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			<ChatBotTooltip/>
 			<ChatBotButton unreadCount={unreadCount}/>
 			{/* styles and prevents background from scrolling on mobile when chat window is open */}
-			{settings.isOpen && !isDesktop && !settings.general?.embedded &&
+			{botSettings.isOpen && !isDesktop && !botSettings.general?.embedded &&
 				<>
 					<style>
 						{`
@@ -834,7 +834,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				style={getChatWindowStyle()}
 				className="rcb-chat-window"
 			>
-				{settings.general?.showHeader &&
+				{botSettings.general?.showHeader &&
 					<ChatBotHeader buttons={headerButtons}/>
 				}
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
@@ -843,7 +843,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					isScrolling={isScrolling} setIsScrolling={setIsScrolling}
 					unreadCount={unreadCount} setUnreadCount={setUnreadCount}
 				/>
-				{settings.general?.showInputRow &&
+				{botSettings.general?.showInputRow &&
 					<ChatBotInput
 						inputRef={inputRef} textAreaDisabled={textAreaDisabled}
 						textAreaSensitiveMode={textAreaSensitiveMode} inputLength={inputLength}
@@ -851,7 +851,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 						hasFlowStarted={hasFlowStarted} setHasFlowStarted={setHasFlowStarted} buttons={chatInputButtons}
 					/>
 				}
-				{settings.general?.showFooter &&
+				{botSettings.general?.showFooter &&
 					<ChatBotFooter buttons={footerButtons}/>
 				}
 			</div>

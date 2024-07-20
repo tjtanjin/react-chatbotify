@@ -1,6 +1,6 @@
 import { useState, MouseEvent } from "react";
 
-import { useSettings } from "../../context/SettingsContext";
+import { useBotSettings } from "../../context/BotSettingsContext";
 
 import "./ChatHistoryButton.css";
 
@@ -19,16 +19,16 @@ const ChatHistoryButton = ({
 }) => {
 
 	// handles options for bot
-	const { settings } = useSettings();
+	const { botSettings } = useBotSettings();
 
 	// tracks if view history button is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
 	// styles for view chat history hovered button
 	const chatHistoryButtonHoveredStyle: React.CSSProperties = {
-		color: settings.general?.primaryColor,
-		borderColor: settings.general?.primaryColor,
-		...settings.chatHistoryButtonHoveredStyle
+		color: botSettings.general?.primaryColor,
+		borderColor: botSettings.general?.primaryColor,
+		...botSettings.chatHistoryButtonHoveredStyle
 	};
 
 	/**
@@ -50,7 +50,7 @@ const ChatHistoryButton = ({
 			<div
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? chatHistoryButtonHoveredStyle : settings.chatHistoryButtonStyle}
+				style={isHovered ? chatHistoryButtonHoveredStyle : botSettings.chatHistoryButtonStyle}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					showChatHistory(chatHistory);
@@ -58,7 +58,7 @@ const ChatHistoryButton = ({
 				className="rcb-view-history-button"
 			>
 				<p>
-					{settings.chatHistory?.viewChatHistoryButtonText}
+					{botSettings.chatHistory?.viewChatHistoryButtonText}
 				</p>
 			</div>
 		</div>

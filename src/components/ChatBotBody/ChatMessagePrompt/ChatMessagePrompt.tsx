@@ -1,6 +1,6 @@
 import { RefObject, useState, MouseEvent, Dispatch, SetStateAction } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
+import { useBotSettings } from "../../../context/BotSettingsContext";
 
 import "./ChatMessagePrompt.css";
 
@@ -25,16 +25,16 @@ const ChatMessagePrompt = ({
 }) => {
 
 	// handles options for bot
-	const { settings } = useSettings();
+	const { botSettings } = useBotSettings();
 
 	// tracks if chat message prompt is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
 	// styles for chat message prompt hovered
 	const chatMessagePromptHoveredStyle: React.CSSProperties = {
-		color: settings.general?.primaryColor,
-		borderColor: settings.general?.primaryColor,
-		...settings.chatMessagePromptHoveredStyle
+		color: botSettings.general?.primaryColor,
+		borderColor: botSettings.general?.primaryColor,
+		...botSettings.chatMessagePromptHoveredStyle
 	};
 
 	/**
@@ -97,7 +97,7 @@ const ChatMessagePrompt = ({
      */
 	const getMessagePromptVisibility = () => {
 		const shouldShowPrompt = chatBodyRef.current
-            && settings.chatWindow?.showMessagePrompt
+            && botSettings.chatWindow?.showMessagePrompt
             && isScrolling
             && unreadCount > 0;
 		return shouldShowPrompt ? "visible" : "hidden";
@@ -108,14 +108,14 @@ const ChatMessagePrompt = ({
 			<div
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? chatMessagePromptHoveredStyle : settings.chatMessagePromptStyle}
+				style={isHovered ? chatMessagePromptHoveredStyle : botSettings.chatMessagePromptStyle}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					scrollToBottom(600);
 				}}
 				className="rcb-message-prompt-text"
 			>
-				{settings.chatWindow?.messagePromptText}
+				{botSettings.chatWindow?.messagePromptText}
 			</div>
 		</div>
 	);

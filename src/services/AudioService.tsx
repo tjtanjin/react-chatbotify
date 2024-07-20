@@ -41,16 +41,16 @@ const speak = (message: string, language: string, voiceNames: string[], rate: nu
 /**
  * Handles logic for whether a bot message should be read out.
  * 
- * @param settings options provide to the bot
+ * @param botSettings options provide to the bot
  * @param voiceToggledOn boolean indicating if voice is toggled on
  * @param message message to read out
  */
-export const processAudio = (settings: Settings, voiceToggledOn: boolean, message: Message) => {
-	if (settings.audio?.disabled || message.sender === "user" || typeof message.content !== "string"
-		|| (!settings?.isOpen && !settings.general?.embedded) || !voiceToggledOn) {
+export const processAudio = (botSettings: Settings, voiceToggledOn: boolean, message: Message) => {
+	if (botSettings.audio?.disabled || message.sender === "user" || typeof message.content !== "string"
+		|| (!botSettings?.isOpen && !botSettings.general?.embedded) || !voiceToggledOn) {
 		return;
 	}
 
-	speak(message.content, settings.audio?.language as string, settings.audio?.voiceNames as string[],
-		settings.audio?.rate as number, settings.audio?.volume as number);
+	speak(message.content, botSettings.audio?.language as string, botSettings.audio?.voiceNames as string[],
+		botSettings.audio?.rate as number, botSettings.audio?.volume as number);
 }

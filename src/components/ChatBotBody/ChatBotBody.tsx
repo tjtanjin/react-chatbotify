@@ -1,7 +1,7 @@
 import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
-import { useSettings } from "../../context/SettingsContext";
+import { useBotSettings } from "../../context/BotSettingsContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
 
@@ -46,34 +46,34 @@ const ChatBotBody = ({
 }) => {
 
 	// handles options for bot
-	const { settings } = useSettings();
+	const { botSettings } = useBotSettings();
 
 	// handles messages between user and the chat bot
 	const { messages } = useMessages();
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
-		...settings?.bodyStyle,
-		scrollbarWidth: settings.chatWindow?.showScrollbar ? "auto" : "none",
+		...botSettings?.bodyStyle,
+		scrollbarWidth: botSettings.chatWindow?.showScrollbar ? "auto" : "none",
 	}
 
 	// styles for user bubble
 	const userBubbleStyle: CSSProperties = {
-		backgroundColor: settings.general?.primaryColor,
+		backgroundColor: botSettings.general?.primaryColor,
 		color: "#fff",
-		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
-		...settings.userBubbleStyle
+		maxWidth: botSettings.userBubble?.showAvatar ? "65%" : "70%",
+		...botSettings.userBubbleStyle
 	};
-	const userBubbleEntryStyle = settings.userBubble?.animate ? "rcb-user-message-entry" : "";
+	const userBubbleEntryStyle = botSettings.userBubble?.animate ? "rcb-user-message-entry" : "";
 
 	// styles for bot bubble
 	const botBubbleStyle: CSSProperties = {
-		backgroundColor: settings.general?.secondaryColor,
+		backgroundColor: botSettings.general?.secondaryColor,
 		color: "#fff",
-		maxWidth: settings.botBubble?.showAvatar ? "65%" : "70%",
-		...settings.botBubbleStyle
+		maxWidth: botSettings.botBubble?.showAvatar ? "65%" : "70%",
+		...botSettings.botBubbleStyle
 	};
-	const botBubbleEntryStyle = settings.botBubble?.animate ? "rcb-bot-message-entry" : "";
+	const botBubbleEntryStyle = botSettings.botBubble?.animate ? "rcb-bot-message-entry" : "";
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
@@ -89,9 +89,9 @@ const ChatBotBody = ({
 			return;
 		}
 
-		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
+		if (botSettings.chatWindow?.autoJumpToBottom || !isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (settings.isOpen) {
+			if (botSettings.isOpen) {
 				setUnreadCount(0);
 			}
 		}
@@ -108,7 +108,7 @@ const ChatBotBody = ({
 
 		if (!isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (settings.isOpen) {
+			if (botSettings.isOpen) {
 				setUnreadCount(0);
 			}
 		}
@@ -130,7 +130,7 @@ const ChatBotBody = ({
 		}
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
 		setIsScrolling(
-			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset || 30)
+			scrollTop + clientHeight < scrollHeight - (botSettings.chatWindow?.messagePromptOffset || 30)
 		);
 
 		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
@@ -157,12 +157,12 @@ const ChatBotBody = ({
 	 */
 	const renderUserMessage = (message: Message, index: number) => {
 		const isNewSender = isFirstInSeries(index);
-		const showAvatar = settings.userBubble?.showAvatar && isNewSender;
+		const showAvatar = botSettings.userBubble?.showAvatar && isNewSender;
 		const offsetStyle = isNewSender ? "rcb-user-message" : "rcb-user-message rcb-user-message-offset";
 		return (
 			<div className="rcb-user-message-container">
 				{typeof message.content === "string" ? (
-					settings?.userBubble?.dangerouslySetInnerHtml ? (
+					botSettings?.userBubble?.dangerouslySetInnerHtml ? (
 						<div
 							style={{ ...userBubbleStyle, display: "inline" }}
 							className={`${offsetStyle} ${userBubbleEntryStyle}`}
@@ -181,7 +181,7 @@ const ChatBotBody = ({
 				)}
 				{showAvatar && (
 					<div
-						style={{ backgroundImage: `url(${settings.userBubble?.avatar})` }}
+						style={{ backgroundImage: `url(${botSettings.userBubble?.avatar})` }}
 						className="rcb-message-user-avatar"
 					/>
 				)}
@@ -196,18 +196,18 @@ const ChatBotBody = ({
 	 */
 	const renderBotMessage = (message: Message, index: number) => {
 		const isNewSender = isFirstInSeries(index);
-		const showAvatar = settings.botBubble?.showAvatar && isNewSender;
+		const showAvatar = botSettings.botBubble?.showAvatar && isNewSender;
 		const offsetStyle = isNewSender ? "rcb-bot-message" : "rcb-bot-message rcb-bot-message-offset";
 		return (
 			<div className="rcb-bot-message-container">
 				{showAvatar && (
 					<div
-						style={{ backgroundImage: `url(${settings.botBubble?.avatar})` }}
+						style={{ backgroundImage: `url(${botSettings.botBubble?.avatar})` }}
 						className="rcb-message-bot-avatar"
 					/>
 				)}
 				{typeof message.content === "string" ? (
-					settings?.botBubble?.dangerouslySetInnerHtml ? (
+					botSettings?.botBubble?.dangerouslySetInnerHtml ? (
 						<div
 							style={{ ...botBubbleStyle, display: "inline" }}
 							className={`${offsetStyle} ${botBubbleEntryStyle}`}
@@ -250,9 +250,9 @@ const ChatBotBody = ({
 			})}
 			{isBotTyping && (
 				<div className="rcb-bot-message-container">
-					{settings.botBubble?.showAvatar &&
+					{botSettings.botBubble?.showAvatar &&
 						<div 
-							style={{backgroundImage: `url(${settings.botBubble?.avatar})`}}
+							style={{backgroundImage: `url(${botSettings.botBubble?.avatar})`}}
 							className="rcb-message-bot-avatar"
 						/>
 					}

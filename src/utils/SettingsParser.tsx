@@ -4,7 +4,7 @@ import { Theme } from "../types/Theme";
 import { DefaultSettings } from "../constants/DefaultSettings";
 
 /**
- * Parses default settings with user provided options to generate final bot settings.
+ * Parses default settings with user provided options to generate final bot botSettings.
  * 
  * @param providedOptions options provided by the user to the bot
  * @param theme theme provided by the user to the bot

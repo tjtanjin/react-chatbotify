@@ -6,7 +6,7 @@ import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
 
-// variables used to track history, updated when settings.chatHistory value changes
+// variables used to track history, updated when botSettings.chatHistory value changes
 let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
@@ -70,12 +70,12 @@ const getHistoryMessages = (chatHistory: string) => {
 /**
  * Sets the currently used history storage key.
  * 
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  */
-const setHistoryStorageValues = (settings: Settings) => {
-	historyStorageKey = settings.chatHistory?.storageKey as string;
-	historyMaxEntries = settings.chatHistory?.maxEntries as number;
-	historyDisabled = settings.chatHistory?.disabled as boolean;
+const setHistoryStorageValues = (botSettings: Settings) => {
+	historyStorageKey = botSettings.chatHistory?.storageKey as string;
+	historyMaxEntries = botSettings.chatHistory?.maxEntries as number;
+	historyDisabled = botSettings.chatHistory?.disabled as boolean;
 	historyMessages = getHistoryMessages(localStorage.getItem(historyStorageKey) as string);
 }
 
@@ -100,12 +100,12 @@ const parseMessageToString = (message: Message) => {
 /**
  * Loads chat history into the chat window for user view.
  * 
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  * @param chatHistory chat history to show
  * @param setMessages setter for updating messages
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
-const loadChatHistory = (settings: Settings, chatHistory: string, setMessages: Dispatch<SetStateAction<Message[]>>, 
+const loadChatHistory = (botSettings: Settings, chatHistory: string, setMessages: Dispatch<SetStateAction<Message[]>>, 
 	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
@@ -122,7 +122,7 @@ const loadChatHistory = (settings: Settings, chatHistory: string, setMessages: D
 
 			const parsedMessages = JSON.parse(chatHistory).map((message: Message) => {
 				if (message.type === "object") {
-					const element = renderHTML(message.content as string, settings);
+					const element = renderHTML(message.content as string, botSettings);
 					return { ...message, content: element };
 				}
 				return message;
@@ -133,7 +133,7 @@ const loadChatHistory = (settings: Settings, chatHistory: string, setMessages: D
 					prevMessages.shift();
 					// if autoload, line break is invisible
 					let lineBreakMessage;
-					if (settings.chatHistory?.autoLoad) {
+					if (botSettings.chatHistory?.autoLoad) {
 						lineBreakMessage = {
 							content: <></>,
 							sender: "system"
@@ -146,11 +146,11 @@ const loadChatHistory = (settings: Settings, chatHistory: string, setMessages: D
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setTextAreaDisabled(settings.chatInput?.disabled || false);
+				setTextAreaDisabled(botSettings.chatInput?.disabled || false);
 			}, 500)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
-			localStorage.removeItem(settings.chatHistory?.storageKey as string);
+			localStorage.removeItem(botSettings.chatHistory?.storageKey as string);
 		}
 	}
 }
@@ -159,9 +159,9 @@ const loadChatHistory = (settings: Settings, chatHistory: string, setMessages: D
  * Renders html string to a react node.
  * 
  * @param html string to render
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  */
-const renderHTML = (html: string, settings: Settings): ReactNode[] => {
+const renderHTML = (html: string, botSettings: Settings): ReactNode[] => {
 	const parser = new DOMParser();
 	const parsedHtml = parser.parseFromString(html, "text/html");
 	const nodes = Array.from(parsedHtml.body.childNodes);
@@ -192,13 +192,13 @@ const renderHTML = (html: string, settings: Settings): ReactNode[] => {
 			}, {} as { [key: string]: string | CSSProperties });
 
 			const classList = (node as Element).classList;
-			if (settings.botBubble?.showAvatar) {
+			if (botSettings.botBubble?.showAvatar) {
 				attributes = addStyleToContainers(classList, attributes);
 			}
-			attributes = addStyleToOptions(classList, attributes, settings);
-			attributes = addStyleToCheckboxRows(classList, attributes, settings);
-			attributes = addStyleToCheckboxNextButton(classList, attributes, settings);
-			attributes = addStyleToMediaDisplayContainer(classList, attributes, settings);
+			attributes = addStyleToOptions(classList, attributes, botSettings);
+			attributes = addStyleToCheckboxRows(classList, attributes, botSettings);
+			attributes = addStyleToCheckboxNextButton(classList, attributes, botSettings);
+			attributes = addStyleToMediaDisplayContainer(classList, attributes, botSettings);
 
 			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 				'meta', 'source', 'track', 'wbr'];
@@ -206,7 +206,7 @@ const renderHTML = (html: string, settings: Settings): ReactNode[] => {
 				// void elements must not have children
 				return createElement(tagName, { key: index, ...attributes });
 			} else {
-				const children = renderHTML((node as Element).innerHTML, settings);
+				const children = renderHTML((node as Element).innerHTML, botSettings);
 				return createElement(tagName, { key: index, ...attributes }, ...children);
 			}
 		}
@@ -238,17 +238,17 @@ const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string
  * 
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  */
 const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	settings: Settings) => {
+	botSettings: Settings) => {
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: settings.botOptionStyle?.color || settings.general?.primaryColor,
-			borderColor: settings.botOptionStyle?.color || settings.general?.primaryColor,
-			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
-			...settings.botOptionStyle
+			color: botSettings.botOptionStyle?.color || botSettings.general?.primaryColor,
+			borderColor: botSettings.botOptionStyle?.color || botSettings.general?.primaryColor,
+			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+			...botSettings.botOptionStyle
 		}
 	}
 	return attributes;
@@ -259,17 +259,17 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
  * 
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  */
 const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	settings: Settings) => {
+	botSettings: Settings) => {
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: settings.botCheckboxRowStyle?.color || settings.general?.primaryColor,
-			borderColor: settings.botCheckboxRowStyle?.color || settings.general?.primaryColor,
-			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
-			...settings.botCheckboxRowStyle
+			color: botSettings.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
+			borderColor: botSettings.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
+			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+			...botSettings.botCheckboxRowStyle
 		}
 	}
 	return attributes;
@@ -280,17 +280,17 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
  * 
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  */
 const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	settings: Settings) => {
+	botSettings: Settings) => {
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: settings.botCheckboxNextStyle?.color || settings.general?.primaryColor,
-			borderColor: settings.botCheckboxNextStyle?.color || settings.general?.primaryColor,
-			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
-			...settings.botCheckboxNextStyle
+			color: botSettings.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
+			borderColor: botSettings.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
+			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+			...botSettings.botCheckboxNextStyle
 		}
 	}
 	return attributes;
@@ -301,17 +301,17 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
  *
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param settings options provided to the bot
+ * @param botSettings options provided to the bot
  */
 const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	settings: Settings) => {
+	botSettings: Settings) => {
 	if (classList.contains("rcb-media-display-image-container")
 		|| classList.contains("rcb-media-display-video-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			backgroundColor: settings.general?.primaryColor,
-			maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
-			...settings.mediaDisplayContainerStyle
+			backgroundColor: botSettings.general?.primaryColor,
+			maxWidth: botSettings.userBubble?.showAvatar ? "65%" : "70%",
+			...botSettings.mediaDisplayContainerStyle
 		}
 	}
 	return attributes;

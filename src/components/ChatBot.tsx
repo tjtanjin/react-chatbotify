@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ChatBotContainer from "./ChatBotContainer";
 import { parseSettings } from "../utils/SettingsParser";
 import { isDesktop } from "../utils/displayChecker";
-import { SettingsContext } from "../context/SettingsContext";
+import { BotSettingsContext } from "../context/BotSettingsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
 import { Settings } from "../types/Settings";
@@ -16,24 +16,24 @@ import { welcomeFlow } from "../constants/internal/WelcomeFlow";
  * Initializes providers for chatbot.
  *
  * @param flow conversation flow for the bot
- * @param options options to setup the bot
+ * @param botSettings settings to setup the bot
  * @param themes themes to apply to the bot
  */
 const ChatBot = ({
 	flow,
-	options,
+	settings,
 	themes,
 }: {
 	flow?: Flow,
-	options?: Settings
+	settings?: Settings
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
 
 	// handles loading of chatbot only when options is loaded
-	const [optionsLoaded, setOptionsLoaded] = useState<boolean>(false);
+	const [settingsLoaded, setSettingsLoaded] = useState<boolean>(false);
 
 	// handles setting of options for the chat bot
-	const [settings, setSettings] = useState<Settings>({});
+	const [botSettings, setBotSettings] = useState<Settings>({});
 
 	// handles messages between user and the chat bot
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -46,16 +46,16 @@ const ChatBot = ({
 
 	// load options on start
 	useEffect(() => {
-		loadOptions()
+		loadSettings()
 	}, []);
 
 	/**
-	 * Loads bot options.
+	 * Loads bot settings.
 	 */
-	const loadOptions = async () => {
-		const combinedOptions = await parseSettings(options, themes);
-		setSettings(combinedOptions);
-		setOptionsLoaded(true);
+	const loadSettings = async () => {
+		const combinedSettings = await parseSettings(settings, themes);
+		setBotSettings(combinedSettings);
+		setSettingsLoaded(true);
 	}
 
 	/**
@@ -65,9 +65,9 @@ const ChatBot = ({
 	 */
 	const wrapSettingsProvider = (children: JSX.Element) => {
 		return (
-			<SettingsContext.Provider value={{settings, setSettings}}>
+			<BotSettingsContext.Provider value={{botSettings, setBotSettings}}>
 				{children}
-			</SettingsContext.Provider>
+			</BotSettingsContext.Provider>
 		);
 	};
 
@@ -102,15 +102,15 @@ const ChatBot = ({
 	 */
 	const renderChatBot = () => {
 		let result = <ChatBotContainer flow={parsedFlow}/>;
-		if (!settings.advance?.useCustomMessages) {
+		if (!botSettings.advance?.useCustomMessages) {
 			result = wrapMessagesProvider(result);
 		}
 
-		if (!settings.advance?.useCustomPaths) {
+		if (!botSettings.advance?.useCustomPaths) {
 			result = wrapPathsProvider(result);
 		}
 
-		if (!settings.advance?.useCustomSettings) {
+		if (!botSettings.advance?.useCustomSettings) {
 			result = wrapSettingsProvider(result);
 		}
 
@@ -121,14 +121,14 @@ const ChatBot = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return optionsLoaded && (isDesktop && settings.general?.desktopEnabled)
-			|| (!isDesktop && settings.general?.mobileEnabled);
+		return settingsLoaded && (isDesktop && botSettings.general?.desktopEnabled)
+			|| (!isDesktop && botSettings.general?.mobileEnabled);
 	}
 
 	return (
 		<>
 			{shouldShowChatBot() &&
-				<div style={{fontFamily: settings.general?.fontFamily}}>
+				<div style={{fontFamily: botSettings.general?.fontFamily}}>
 					{renderChatBot()}
 				</div>
 			}

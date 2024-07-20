@@ -1,5 +1,5 @@
 import ChatBot from "./components/ChatBot";
-import { SettingsContext } from "./context/SettingsContext";
+import { BotSettingsContext } from "./context/BotSettingsContext";
 import { MessagesContext } from "./context/MessagesContext";
 import { PathsContext } from "./context/PathsContext";
 import { Block } from "./types/Block";
@@ -11,7 +11,7 @@ import { Button } from "./constants/Button";
 import { DefaultSettings } from "./constants/DefaultSettings";
 
 // context exports
-export { SettingsContext, MessagesContext, PathsContext };
+export { BotSettingsContext, MessagesContext, PathsContext };
 
 // constant exports
 export { Button };

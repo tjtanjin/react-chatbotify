@@ -3,7 +3,7 @@ import { RefObject, Dispatch, SetStateAction, useEffect, MouseEvent, useState, u
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
-import { useSettings } from "../../../context/SettingsContext";
+import { useBotSettings } from "../../../context/BotSettingsContext";
 import { Flow } from "../../../types/Flow";
 
 import "./VoiceButton.css";
@@ -41,7 +41,7 @@ const VoiceButton = ({
 }) => {
 
 	// handles options for bot
-	const { settings } = useSettings();
+	const { botSettings } = useBotSettings();
 
 	// tracks audio chunk (if voice is sent as audio)
 	const audioChunksRef = useRef<BlobPart[]>([]);
@@ -54,7 +54,7 @@ const VoiceButton = ({
 			return;
 		}
 
-		if (settings.voice?.sendAsAudio) {
+		if (botSettings.voice?.sendAsAudio) {
 			handleSendAsAudio();
 			audioChunksRef.current = [];
 		} else {
@@ -66,7 +66,7 @@ const VoiceButton = ({
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
-			startVoiceRecording(settings, handleToggleVoice, triggerSendVoiceInput,
+			startVoiceRecording(botSettings, handleToggleVoice, triggerSendVoiceInput,
 				setInputLength, audioChunksRef, inputRef);
 		} else {
 			stopVoiceRecording();
@@ -105,7 +105,7 @@ const VoiceButton = ({
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}
 		>
 			<span className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
-				style={{backgroundImage: `url(${settings.voice?.icon})`}}
+				style={{backgroundImage: `url(${botSettings.voice?.icon})`}}
 			/>
 		</div>
 	);

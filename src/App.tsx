@@ -113,7 +113,7 @@ function App() {
 				<div style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: `calc(20vh)`}}>
 					<ChatBot
 						flow={flow}
-						options={{
+						settings={{
 							audio: {disabled: false},
 							chatInput: {botDelay: 1000},
 							userBubble: {showAvatar: true},
