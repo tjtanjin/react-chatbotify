@@ -16,7 +16,7 @@ let mediaRecorder: MediaRecorder | null = null;
  * @param handleToggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
- * @param setAudioChunk sets the audio chunk if voice input is sent as audio file
+ * @param audioChunksRef: reference to audio chunks
  * @param inputRef reference to textarea for input
  */
 export const startVoiceRecording = (
@@ -24,12 +24,12 @@ export const startVoiceRecording = (
 	handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
-	setAudioChunks: Dispatch<SetStateAction<BlobPart[]>>,
+	audioChunksRef: RefObject<BlobPart[]>,
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
 ) => {
 	if (settings.voice?.sendAsAudio) {
 		// Only use MediaRecorder when sendAsAudio is enabled
-		startAudioRecording(triggerSendVoiceInput, setAudioChunks);
+		startAudioRecording(triggerSendVoiceInput, audioChunksRef);
 	} else {
 		// Only use SpeechRecognition when sendAsAudio is disabled
 		startSpeechRecognition(settings, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
@@ -113,11 +113,11 @@ const startSpeechRecognition = (
  * Starts voice recording for sending as audio file (auto send does not work for media recordings).
  *
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
- * @param setAudioChunk sets the audio chunk if voice input is sent as audio file
+ * @param audioChunksRef: reference to audio chunks
  */
 const startAudioRecording = (
 	triggerSendVoiceInput: () => void,
-	setAudioChunks: Dispatch<SetStateAction<BlobPart[]>>,
+	audioChunksRef: RefObject<BlobPart[]>
 ) => {
 	navigator.mediaDevices.getUserMedia({ audio: true })
 		.then(stream => {
@@ -133,7 +133,9 @@ const startAudioRecording = (
 			}
 
 			mediaRecorder.ondataavailable = event => {
-				setAudioChunks(prev => [...prev, event.data]);
+				if (audioChunksRef.current) {
+					audioChunksRef.current.push(event.data);
+				}
 			};
 
 			mediaRecorder.onstop = () => {

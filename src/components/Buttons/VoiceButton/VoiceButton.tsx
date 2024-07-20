@@ -1,4 +1,4 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, MouseEvent, useState } from "react";
+import { RefObject, Dispatch, SetStateAction, useEffect, MouseEvent, useState, useRef } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
@@ -44,7 +44,7 @@ const VoiceButton = ({
 	const { settings } = useSettings();
 
 	// tracks audio chunk (if voice is sent as audio)
-	const [audioChunks, setAudioChunks] = useState<BlobPart[]>([]);
+	const audioChunksRef = useRef<BlobPart[]>([]);
 
 	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
 	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
@@ -56,7 +56,7 @@ const VoiceButton = ({
 
 		if (settings.voice?.sendAsAudio) {
 			handleSendAsAudio();
-			setAudioChunks([]);
+			audioChunksRef.current = [];
 		} else {
 			handleActionInput(currPath, inputRef.current?.value as string);
 			setInputLength(0);
@@ -67,7 +67,7 @@ const VoiceButton = ({
 	useEffect(() => {
 		if (voiceToggledOn) {
 			startVoiceRecording(settings, handleToggleVoice, triggerSendVoiceInput,
-				setInputLength, setAudioChunks, inputRef);
+				setInputLength, audioChunksRef, inputRef);
 		} else {
 			stopVoiceRecording();
 		}
@@ -84,7 +84,7 @@ const VoiceButton = ({
 	 * Handles sending of voice input as audio file if enabled.
 	 */
 	const handleSendAsAudio = async () => {
-		const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+		const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
 		const audioFile = new File([audioBlob], 'voice-input.wav', { type: 'audio/wav' });
 		const fileDetails = await getMediaFileDetails(audioFile);
 		if (!fileDetails.fileType || !fileDetails.fileUrl) {
