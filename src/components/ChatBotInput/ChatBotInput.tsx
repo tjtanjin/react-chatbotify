@@ -204,7 +204,7 @@ const ChatBotInput = ({
 				/>
 			}
 			<div className="rcb-chat-input-button-container">
-				{buttons?.map((button: any, index: number) => 
+				{buttons?.map((button: JSX.Element, index: number) => 
 					<Fragment key={index}>{button}</Fragment>
 				)}
 				{botOptions.chatInput?.showCharacterCount

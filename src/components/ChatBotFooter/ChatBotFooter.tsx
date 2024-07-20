@@ -21,7 +21,7 @@ const ChatBotFooter = ({
 	return (
 		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
-				{buttons?.map((button: any, index: number) => 
+				{buttons?.map((button: JSX.Element, index: number) => 
 					<Fragment key={index}>{button}</Fragment>
 				)}
 			</div>

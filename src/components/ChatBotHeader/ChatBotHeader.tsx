@@ -36,7 +36,7 @@ const ChatBotHeader = ({
 				{botOptions.header?.title}
 			</div>
 			<div className="rcb-chat-header">
-				{buttons?.map((button: any, index: number) => 
+				{buttons?.map((button: JSX.Element, index: number) => 
 					<Fragment key={index}>{button}</Fragment>
 				)}
 			</div>
