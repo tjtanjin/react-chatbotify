@@ -74,7 +74,7 @@ As its name suggest, the *assets* folder contains **media content** that are use
 
 While end-users may perceive the entire chatbot as one entire component, it is actually made up of **many smaller components**. A quick glance at the *components* folder will give you an idea of how many parts are actually being put together.
 
-Without boring you with the details, the more obvious components would be the *ChatBotHeader*, *ChatBotBody* and *ChatBotFooter*. However, you may notice that even something seemingly minor such as the *EmojiPicker* is also its own component. Depending on **how complex the functionality** for a part is, it may be created as a standalone component. On the other hand, simpler features such as the minimize/close chat button is not designed as a standalone component.
+Without boring you with the details, the more obvious components would be the *ChatBotHeader*, *ChatBotBody* and *ChatBotFooter*. However, you may notice that even something seemingly minor such as the *EmojiButton* is also its own component. Depending on **how complex the functionality** for a part is, it may be created as a standalone component. On the other hand, simpler features such as the minimize/close chat button is not designed as a standalone component.
 
 ### Context
 

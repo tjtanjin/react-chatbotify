@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import { parseBotOptions } from "../services/BotOptionsService";
-import { defaultFlow, isDesktop } from "../services/Utils";
+import { isDesktop } from "../utils/displayChecker";
 import { BotOptionsContext } from "../context/BotOptionsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
@@ -10,6 +10,7 @@ import { Options } from "../types/Options";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Theme } from "../types/Theme";
+import { welcomeFlow } from "../constants/internal/WelcomeFlow";
 
 /**
  * Initializes providers for chatbot.
@@ -41,7 +42,7 @@ const ChatBot = ({
 	const [paths, setPaths] = useState<string[]>([]);
 
 	// provides a default welcome flow if no user flow provided
-	const parsedFlow: Flow = flow ?? defaultFlow;
+	const parsedFlow: Flow = flow ?? welcomeFlow;
 
 	// load options on start
 	useEffect(() => {

@@ -12,7 +12,7 @@ import "./SendButton.css";
 const SendButton = ({
 	handleSubmit
 }: {
-	handleSubmit: (event: MouseEvent) => void;
+	handleSubmit: () => void;
 }) => {
 
 	// handles options for bot
@@ -57,7 +57,10 @@ const SendButton = ({
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			style={isHovered ? sendButtonHoveredStyle : sendButtonStyle}
-			onMouseDown={handleSubmit}
+			onMouseDown={(event: MouseEvent) => {
+				event?.preventDefault();
+				handleSubmit();
+			}}
 			className="rcb-send-button"
 		>
 			<span className="rcb-send-icon" style={sendIconStyle} />

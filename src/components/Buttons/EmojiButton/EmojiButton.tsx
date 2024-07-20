@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, RefObject } from "react";
 
 import { useBotOptions } from "../../../context/BotOptionsContext";
 
-import "./EmojiPicker.css";
+import "./EmojiButton.css";
 
 /**
  * Supports selecting of emojis.
@@ -10,7 +10,7 @@ import "./EmojiPicker.css";
  * @param inputRef reference to the textarea
  * @param textAreaDisabled boolean indicating if textarea is disabled
  */
-const EmojiPicker = ({
+const EmojiButton = ({
 	inputRef,
 	textAreaDisabled
 }: {
@@ -121,7 +121,7 @@ const EmojiPicker = ({
 				/>
 			</div>
 			{showPopup && (
-				<div className="rcb-emoji-picker-popup" ref={popupRef}>
+				<div className="rcb-emoji-button-popup" ref={popupRef}>
 					{botOptions.emoji?.list?.map((emoji, index) => (
 						<span
 							key={index}
@@ -139,4 +139,4 @@ const EmojiPicker = ({
 	);
 };
 
-export default EmojiPicker;
+export default EmojiButton;

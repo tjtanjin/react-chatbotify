@@ -1,0 +1,32 @@
+/* Close Chat Icon */
+
+.rcb-close-chat-icon {
+	position: relative;
+	display: inline-block;
+	background-size: cover;
+	width: 30px;
+	height: 30px;
+	border: none;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+.rcb-close-chat-icon::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 0;
+	height: 0;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	opacity: 0;
+	transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.rcb-close-chat-icon:hover::after {
+	width: 130%;
+	height: 130%;
+	opacity: 1;
+}

@@ -1,5 +1,4 @@
 import ChatBot from "./components/ChatBot";
-import { getDefaultBotOptions } from "./services/BotOptionsService";
 import { BotOptionsContext } from "./context/BotOptionsContext";
 import { MessagesContext } from "./context/MessagesContext";
 import { PathsContext } from "./context/PathsContext";
@@ -8,30 +7,17 @@ import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
 import { Options } from "./types/Options";
 import { Params } from "./types/Params";
-import { BUTTON } from "./services/Utils";
+import { Button } from "./constants/Button";
+import { DefaultOptions } from "./constants/DefaultOptions";
 
-/**
- * Exports for developer use.
- */
-export {
-	// provides the default options
-	getDefaultBotOptions,
+// context exports
+export { BotOptionsContext, MessagesContext, PathsContext };
 
-	// advance usage
-	BotOptionsContext,
-	MessagesContext,
-	PathsContext,
+// constant exports
+export { Button };
+export { DefaultOptions };
 
-	// exposes buttons for ordering
-	BUTTON,
-};
-
-export type {
-	Block,
-	Flow,
-	Message,
-	Options,
-	Params
-};
+// type exports
+export type { Block, Flow, Message, Options, Params };
 
 export default ChatBot;

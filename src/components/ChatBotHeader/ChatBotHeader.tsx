@@ -1,32 +1,21 @@
-import React, { MouseEvent } from "react";
+import React, { Fragment  } from "react";
 
 import { useBotOptions } from "../../context/BotOptionsContext";
-import { BUTTON } from "../../services/Utils";
 
 import "./ChatBotHeader.css";
 
 /**
- * Contains bot avatar, name, notifications, audio and close chat icon.
+ * Contains header buttons and avatar.
  * 
- * @param notificationToggledOn boolean indicating if notification is toggled on
- * @param audioToggledOn boolean indicating if audio is toggled on
- * @param handleToggleNotification handles toggling of notification
- * @param handleToggleAudio handles toggling of audio
+ * @param buttons list of buttons to render in the header
  */
 const ChatBotHeader = ({
-	notificationToggledOn,
-	audioToggledOn,
-	handleToggleNotification,
-	handleToggleAudio
+	buttons
 }: {
-	notificationToggledOn: boolean;
-	audioToggledOn: boolean;
-	handleToggleNotification: () => void;
-	handleToggleAudio: () => void;
+	buttons: JSX.Element[]
 }) => {
-
 	// handles options for bot
-	const { botOptions, setBotOptions } = useBotOptions();
+	const { botOptions } = useBotOptions();
 
 	// styles for header
 	const headerStyle: React.CSSProperties = {
@@ -35,107 +24,21 @@ const ChatBotHeader = ({
 		...botOptions.headerStyle
 	}
 
-	// icons in header
-	const headerImages = {
-		headerAvatar: {
-			backgroundImage: `url(${botOptions.header?.avatar})`,
-		},
-		notificationIcon: {
-			backgroundImage: `url(${botOptions.notification?.icon})`,
-		},
-		audioIcon: {
-			backgroundImage: `url(${botOptions.audio?.icon})`,
-		},
-		closeChatIcon: {
-			backgroundImage: `url(${botOptions.header?.closeChatIcon})`,
-		}
-	};
-
-	/**
-	 * Handles closing of chat window.
-	 */
-	const handleCloseChat = () => {
-		setBotOptions({...botOptions, isOpen: false});
-	}
-
-	/**
-	 * Renders notification button.
-	 */
-
-	const renderNotificationButton = () => {
-		return (
-			<div
-				style={headerImages.notificationIcon}
-				onMouseDown={(event: MouseEvent) => {
-					event.preventDefault();
-					handleToggleNotification();
-				}}
-				className={`rcb-notification-icon-${
-					notificationToggledOn ? "on" : "off"
-				}`}
-			></div>
-		);
-	};
-
-	/**
-	 * Renders audio button.
-	 */
-
-	const renderAudioButton = () => {
-		return (
-			<div
-				style={headerImages.audioIcon}
-				onMouseDown={(event: MouseEvent) => {
-					event.preventDefault();
-					handleToggleAudio();
-				}}
-				className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}
-			></div>
-		);
-	};
-
-
-	/**
-	 * Renders close chat button.
-	 */
-	const renderCloseChatButton = () => {
-		return (
-			<div
-				style={headerImages.closeChatIcon}
-				onMouseDown={(event: MouseEvent) => {
-					event.stopPropagation();
-					handleCloseChat();
-				}}
-				className="rcb-close-chat-icon"
-			>
-			</div>
-		)
-	}
-
 	return (
 		<div style={headerStyle} className="rcb-chat-header-container">
 			<div className="rcb-chat-header">
 				{botOptions.header?.showAvatar &&
-					<div style={headerImages.headerAvatar} className="rcb-bot-avatar"/>
+					<div 
+						style={{backgroundImage: `url(${botOptions.header?.avatar})`}} 
+						className="rcb-bot-avatar"
+					/>
 				}
 				{botOptions.header?.title}
 			</div>
 			<div className="rcb-chat-header">
-				{botOptions.header?.buttons?.map((button, index) => {
-					if (
-						button === BUTTON.NOTIFICATION_BUTTON &&
-						!botOptions.notification?.disabled &&
-						!botOptions.theme?.embedded
-					) {
-						return <React.Fragment key={index}>{renderNotificationButton()}</React.Fragment>;
-					} else if (button === BUTTON.AUDIO_BUTTON && !botOptions.audio?.disabled) {
-						return <React.Fragment key={index}>{renderAudioButton()}</React.Fragment>;
-					} else if (button === BUTTON.CLOSE_CHAT_BUTTON && !botOptions.theme?.embedded) {
-						return <React.Fragment key={index}>{renderCloseChatButton()}</React.Fragment>;
-					} else if (React.isValidElement(button)) {
-						return <React.Fragment key={index}>{button}</React.Fragment>;
-					}				
-				})}
+				{buttons?.map((button: any, index: number) => 
+					<Fragment key={index}>{button}</Fragment>
+				)}
 			</div>
 		</div>
 	);

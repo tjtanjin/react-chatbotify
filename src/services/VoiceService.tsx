@@ -110,7 +110,7 @@ const startSpeechRecognition = (
 }
 
 /**
- * Starts voice recording for sending as audio file.
+ * Starts voice recording for sending as audio file (auto send does not work for media recordings).
  *
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setAudioChunk sets the audio chunk if voice input is sent as audio file

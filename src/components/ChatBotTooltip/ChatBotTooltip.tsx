@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { isDesktop } from "../../services/Utils";
+import { isDesktop } from "../../utils/displayChecker";
 import { useBotOptions } from "../../context/BotOptionsContext";
 
 import "./ChatBotTooltip.css";

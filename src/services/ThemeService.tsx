@@ -11,7 +11,7 @@ const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
 export const processAndFetchThemeOptions = async (theme: Theme): Promise<Options> => {
 	const { name, version, base_url = DEFAULT_URL } = theme;
 
-    let themeVersion = version;
+	let themeVersion = version;
 
 	// if version is not specified, get from meta.json
 	if (!version) {

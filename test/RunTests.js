@@ -228,9 +228,9 @@ const clickHint = async () => {
 }
 
 const sendEmojiColorGuess = async () => {
-    const emojiPickerElement = await driver.findElement(By.className("rcb-emoji-button-enabled"));
-    await driver.wait(until.elementIsVisible(emojiPickerElement), WAIT_DURATION);
-    emojiPickerElement.click();
+    const emojiButtonElement = await driver.findElement(By.className("rcb-emoji-button-enabled"));
+    await driver.wait(until.elementIsVisible(emojiButtonElement), WAIT_DURATION);
+    emojiButtonElement.click();
     await sleep(WAIT_DURATION);
     const emojiElements = await driver.findElements(By.className("rcb-emoji"));
     emojiElements[0].click();

@@ -1,21 +1,16 @@
 import React, {
 	useState,
 	ChangeEvent,
-	FormEvent,
 	KeyboardEvent,
 	RefObject,
-	useEffect,
 	MouseEvent,
 	SetStateAction,
 	Dispatch,
+	Fragment,
 } from "react";
 
-import SendButton from "./SendButton/SendButton";
-import VoiceButton from "./VoiceButton/VoiceButton";
-import MediaDisplay from "../ChatBotBody/MediaDisplay/MediaDisplay";
-import { BUTTON, getMediaFileDetails, isDesktop } from "../../services/Utils";
+import { isDesktop } from "../../utils/displayChecker";
 import { useBotOptions } from "../../context/BotOptionsContext";
-import { Flow } from "../../types/Flow";
 
 import "./ChatBotInput.css";
 
@@ -25,36 +20,33 @@ import "./ChatBotInput.css";
  * @param inputRef reference to the textarea
  * @param textAreaDisabled boolean indicating if textarea is disabled
  * @param textAreaSensitveMode boolean indicating is textarea is in sensitve mode
- * @param voiceToggledOn boolean indicating if voice is toggled on
- * @param getCurrPath retrieves the current path of user
- * @param handleToggleVoice handles toggling of voice
- * @param handleActionInput handles action input from user
+ * @param inputLength current length of input in text area
+ * @param setInputLength sets the input length to reflect character count & limit
+ * @param handleSubmit handles submission of user input
  * @param hasFlowStarted boolean indicating if flow has started
  * @param setHasFlowStarted sets whether the flow has started
- * @param injectMessage utility function for injecting a message into the messages array
+ * @param buttons list of buttons to render in the chat input
  */
 const ChatBotInput = ({
 	inputRef,
 	textAreaDisabled,
 	textAreaSensitiveMode,
-	voiceToggledOn,
-	getCurrPath,
-	handleToggleVoice,
-	handleActionInput,
+	inputLength,
+	setInputLength,
+	handleSubmit,
 	hasFlowStarted,
 	setHasFlowStarted,
-	injectMessage
+	buttons
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	textAreaDisabled: boolean;
 	textAreaSensitiveMode: boolean;
-	voiceToggledOn: boolean;
-	getCurrPath: () => keyof Flow | null;
-	handleToggleVoice: () => void;
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
+	inputLength: number;
+	setInputLength: Dispatch<SetStateAction<number>>;
+	handleSubmit: () => void
 	hasFlowStarted: boolean;
 	setHasFlowStarted: Dispatch<SetStateAction<boolean>>;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	buttons: JSX.Element[];
 }) => {
 
 	// handles options for bot
@@ -62,29 +54,6 @@ const ChatBotInput = ({
 
 	// tracks if chat input is focused
 	const [isFocused, setIsFocused] = useState<boolean>(false);
-
-	// tracks length of input
-	const [inputLength, setInputLength] = useState<number>(0);
-
-	// tracks audio chunk (if voice is sent as audio)
-	const [audioChunks, setAudioChunks] = useState<BlobPart[]>([]);
-
-	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
-	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
-	useEffect(() => {
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-
-		if (botOptions.voice?.sendAsAudio) {
-			handleSendAsAudio();
-			setAudioChunks([]);
-		} else {
-			handleActionInput(currPath, inputRef.current?.value as string);
-			setInputLength(0);
-		}
-	}, [voiceInputTrigger])
 
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {
@@ -157,7 +126,8 @@ const ChatBotInput = ({
 				}
 				return;
 			}
-			handleSubmit(event);
+			event.preventDefault();
+			handleSubmit();
 		}
 	};
 
@@ -166,7 +136,7 @@ const ChatBotInput = ({
 	 * 
 	 * @param event textarea change event
 	 */
-	const handleTextareaValueChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	const handleTextAreaValueChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (textAreaDisabled && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
@@ -191,64 +161,6 @@ const ChatBotInput = ({
 		}
 	};
 
-	/**
-	 * Handles submission of user input via enter key or send button.
-	 * 
-	 * @param event form event or mouse event
-	 */
-	const handleSubmit = (event: (FormEvent | MouseEvent)) => {
-		event.preventDefault();
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-		handleActionInput(currPath, inputRef.current?.value as string);
-		setInputLength(0);
-	};
-
-	/**
-	 * Handles submission of user voice input.
-	 */
-	const triggerSendVoiceInput = () => {
-		setVoiceInputTrigger(prev => !prev);
-	}
-
-	/**
-	 * Renders voice button
-	 */
-	const renderVoiceButton = () => {
-		return (
-			<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}
-				voiceToggledOn={voiceToggledOn} handleToggleVoice={handleToggleVoice}
-				triggerSendVoiceInput={triggerSendVoiceInput} setInputLength={setInputLength}
-				setAudioChunks={setAudioChunks}
-			/>
-		)
-	}
-
-	/**
-	 * Renders send button
-	 */
-	const renderSendButton = () => {
-		return (<SendButton handleSubmit={handleSubmit}/>)
-	}
-
-	/*
-	 * Handles sending of voice input as audio file if enabled.
-	 */
-	const handleSendAsAudio = async () => {
-		const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-		const audioFile = new File([audioBlob], 'voice-input.wav', { type: 'audio/wav' });
-		const fileDetails = await getMediaFileDetails(audioFile);
-		if (!fileDetails.fileType || !fileDetails.fileUrl) {
-			return;
-		}
-
-		// sends media display if file details are valid
-		await injectMessage(<MediaDisplay file={audioFile} fileType={fileDetails.fileType}
-			fileUrl={fileDetails.fileUrl}/>, "user");
-	}
-
 	return (
 		<div 
 			onMouseDown={(event: MouseEvent) => {
@@ -271,7 +183,7 @@ const ChatBotInput = ({
 						? textAreaDisabledStyle
 						: (isFocused ? textAreaFocusedStyle : textAreaStyle)}
 					placeholder={placeholder}
-					onChange={handleTextareaValueChange}
+					onChange={handleTextAreaValueChange}
 					onKeyDown={handleKeyDown}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
@@ -285,22 +197,16 @@ const ChatBotInput = ({
 					rows={1}
 					className="rcb-chat-input-textarea"
 					placeholder={placeholder}
-					onChange={handleTextareaValueChange}
+					onChange={handleTextAreaValueChange}
 					onKeyDown={handleKeyDown}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
 				/>
 			}
 			<div className="rcb-chat-input-button-container">
-				{botOptions.chatInput?.buttons?.map((button, index) => {
-					if (button === BUTTON.SEND_MESSAGE_BUTTON) {
-						return <React.Fragment key={index}>{renderSendButton()}</React.Fragment>
-					} else if (button === BUTTON.VOICE_MESSAGE_BUTTON && !botOptions.voice?.disabled && isDesktop) {
-						return <React.Fragment key={index}>{renderVoiceButton()}</React.Fragment>
-					} else if (React.isValidElement(button)) {
-						return <React.Fragment key={index}>{button}</React.Fragment>
-					}
-				})}
+				{buttons?.map((button: any, index: number) => 
+					<Fragment key={index}>{button}</Fragment>
+				)}
 				{botOptions.chatInput?.showCharacterCount
 					&& botOptions.chatInput?.characterLimit != null
 					&& botOptions.chatInput?.characterLimit > 0

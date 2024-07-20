@@ -25,12 +25,7 @@ export default ({mode}) => {
           globals: {
             react: "React",
           },
-          // todo: deprecate and remove in 2.0.0, breaking change!
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name === "style.css") return "react-chatbotify.css";
-            return assetInfo.name;
-          },
-          intro: 'import "./react-chatbotify.css";',
+          intro: 'import "./style.css";',
         },
       },
       outDir: "../dist",
@@ -45,7 +40,8 @@ export default ({mode}) => {
       react({
         include: "**/*.{jsx,tsx}",
       }),
-      dts()
+      dts(),
+      eslint()
     ],
     server: {
       port: 3000,

@@ -1,9 +1,8 @@
-import { ChangeEvent, RefObject, useEffect, useState } from "react";
+import { ChangeEvent, RefObject } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
-import { getMediaFileDetails } from "../../../services/Utils";
+import { getMediaFileDetails } from "../../../utils/mediaFileParser";
 import { useBotOptions } from "../../../context/BotOptionsContext";
-import { usePaths } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
 
 import "./FileAttachmentButton.css";
@@ -23,6 +22,7 @@ import "./FileAttachmentButton.css";
 const FileAttachmentButton = ({
 	inputRef,
 	flow,
+	blockAllowsAttachment,
 	injectMessage,
 	streamMessage,
 	openChat,
@@ -32,6 +32,7 @@ const FileAttachmentButton = ({
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	flow: Flow;
+	blockAllowsAttachment: boolean;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
@@ -42,27 +43,6 @@ const FileAttachmentButton = ({
 
 	// handles options for bot
 	const { botOptions } = useBotOptions();
-
-	// handles paths of the user
-	const { paths } = usePaths();
-
-	// handles whether attachments are allowed for the current block that user is in
-	const [blockAllowsAttachment, setBlockAllowsAttachment] = useState<boolean>(false);
-
-	// checks if attachments are allowed on every path traversal into another block
-	useEffect(() => {
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-		const block = flow[currPath];
-
-		// if path is invalid, nothing to process (i.e. becomes dead end!)
-		if (!block) {
-			return;
-		}
-		setBlockAllowsAttachment(typeof block.file === "function");
-	}, [paths]);
 
 	/**
 	 * Handles file uploads from user.

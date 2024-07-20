@@ -1,78 +1,29 @@
 
-import React, { RefObject } from "react";
+import { Fragment } from "react";
 
-import EmojiPicker from "./EmojiPicker/EmojiPicker";
-import FileAttachmentButton from "./FileAttachmentButton/FileAttachmentButton";
 import { useBotOptions } from "../../context/BotOptionsContext";
-import { BUTTON } from "../../services/Utils";
-import { Flow } from "../../types/Flow";
 
 import "./ChatBotFooter.css";
 
 /**
- * Contains attachment button, emoji button and footer text.
+ * Contains footer buttons and text.
  * 
- * @param inputRef reference to the textarea
- * @param flow conversation flow for the bot
- * @param textAreaDisabled boolean indicating if textarea is disabled
- * @param injectMessage utility function for injecting a message into the messages array
- * @param streamMessage utility function for streaming a message into the messages array
- * @param openChat utility function to open/close chat window
- * @param getCurrPath retrieves current path for the user
- * @param getPrevPath retrieves previous path for the user
- * @param handleActionInput handles action input from user 
+ * @param buttons list of buttons to render in the footer
  */
 const ChatBotFooter = ({
-	inputRef,
-	flow,
-	textAreaDisabled,
-	injectMessage,
-	streamMessage,
-	openChat,
-	getCurrPath,
-	getPrevPath,
-	handleActionInput
+	buttons
 }: {
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
-	flow: Flow;
-	textAreaDisabled: boolean;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
-	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
-	openChat: (isOpen: boolean) => void;
-	getCurrPath: () => keyof Flow | null;
-	getPrevPath: () => keyof Flow | null;
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
+	buttons: JSX.Element[];
 }) => {
-
 	// handles options for bot
 	const { botOptions } = useBotOptions();
-
-	const renderFileAttachment = () => {
-		return (
-			<FileAttachmentButton inputRef={inputRef}
-				flow={flow} getCurrPath={getCurrPath} openChat={openChat}
-				getPrevPath={getPrevPath} handleActionInput={handleActionInput} injectMessage={injectMessage}
-				streamMessage={streamMessage}
-			/>
-		)
-	}
-
-	const renderEmojiPicker = () => {
-		return (<EmojiPicker inputRef={inputRef} textAreaDisabled={textAreaDisabled}/>)
-	}
 
 	return (
 		<div style={botOptions.footerStyle} className="rcb-chat-footer-container">
 			<div className="rcb-chat-footer">
-				{botOptions.footer?.buttons?.map((button, index) => {
-					if (button === BUTTON.FILE_ATTACHMENT_BUTTON && !botOptions.fileAttachment?.disabled) {
-						return <React.Fragment key={index}>{renderFileAttachment()}</React.Fragment>;
-					} else if (button === BUTTON.EMOJI_PICKER_BUTTON && !botOptions.emoji?.disabled) {
-						return <React.Fragment key={index}>{renderEmojiPicker()}</React.Fragment>;
-					} else if (React.isValidElement(button)) {
-						return <React.Fragment key={index}>{button}</React.Fragment>;
-					}
-				})}
+				{buttons?.map((button: any, index: number) => 
+					<Fragment key={index}>{button}</Fragment>
+				)}
 			</div>
 			<span>{botOptions.footer?.text}</span>
 		</div>
