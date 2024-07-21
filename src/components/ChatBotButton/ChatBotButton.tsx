@@ -1,4 +1,5 @@
 import { useBotSettings } from "../../context/BotSettingsContext";
+import { useBotStyles } from "../../context/BotStylesContext";
 
 import "./ChatBotButton.css";
 
@@ -13,8 +14,11 @@ const ChatBotButton = ({
 	unreadCount: number;
 }) => {
 
-	// handles options for bot
+	// handles settings for bot
 	const { botSettings, setBotSettings } = useBotSettings();
+
+	// handles styles for bot
+	const { botStyles } = useBotStyles();
 
 	/**
 	 * Toggles the chat window.
@@ -29,7 +33,7 @@ const ChatBotButton = ({
 			linear-gradient(to right, ${botSettings.general?.secondaryColor}, ${botSettings.general?.primaryColor})`,
 		width: 75,
 		height: 75,
-		...botSettings.chatButtonStyle
+		...botStyles.chatButtonStyle
 	};
 	
 	return (
@@ -42,7 +46,7 @@ const ChatBotButton = ({
 					onClick={toggleChatWindow}
 				>
 					{!botSettings.notification?.disabled && botSettings.notification?.showCount &&
-						<span style={botSettings.notificationBadgeStyle} className="rcb-badge">
+						<span style={botStyles.notificationBadgeStyle} className="rcb-badge">
 							{unreadCount}
 						</span>
 					}

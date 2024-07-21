@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
-import { parseSettings } from "../utils/SettingsParser";
+import { parseConfig } from "../utils/SettingsParser";
 import { isDesktop } from "../utils/displayChecker";
 import { BotSettingsContext } from "../context/BotSettingsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
 import { Settings } from "../types/Settings";
+import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Theme } from "../types/Theme";
 import { welcomeFlow } from "../constants/internal/WelcomeFlow";
+import { BotStylesContext } from "../context/BotStylesContext";
 
 /**
  * Initializes providers for chatbot.
@@ -22,18 +24,23 @@ import { welcomeFlow } from "../constants/internal/WelcomeFlow";
 const ChatBot = ({
 	flow,
 	settings,
+	styles,
 	themes,
 }: {
 	flow?: Flow,
 	settings?: Settings
+	styles?: Styles,
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
 
 	// handles loading of chatbot only when options is loaded
-	const [settingsLoaded, setSettingsLoaded] = useState<boolean>(false);
+	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
 
-	// handles setting of options for the chat bot
+	// handles setting of settings for the chat bot
 	const [botSettings, setBotSettings] = useState<Settings>({});
+
+	// handles setting of styles for the chat bot
+	const [botStyles, setBotStyles] = useState<Styles>({});
 
 	// handles messages between user and the chat bot
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -46,20 +53,21 @@ const ChatBot = ({
 
 	// load options on start
 	useEffect(() => {
-		loadSettings()
+		loadConfig()
 	}, []);
 
 	/**
 	 * Loads bot settings.
 	 */
-	const loadSettings = async () => {
-		const combinedSettings = await parseSettings(settings, themes);
-		setBotSettings(combinedSettings);
-		setSettingsLoaded(true);
+	const loadConfig = async () => {
+		const combinedConfig = await parseConfig(settings, styles, themes);
+		setBotSettings(combinedConfig.settings);
+		setBotStyles(combinedConfig.styles);
+		setConfigLoaded(true);
 	}
 
 	/**
-	 * Wraps bot options provider around child element.
+	 * Wraps bot settings provider around child element.
 	 * 
 	 * @param children child element to wrap around
 	 */
@@ -70,6 +78,20 @@ const ChatBot = ({
 			</BotSettingsContext.Provider>
 		);
 	};
+
+	/**
+	 * Wraps bot styles provider around child element.
+	 * 
+	 * @param children child element to wrap around
+	 */
+	const wrapStylesProvider = (children: JSX.Element) => {
+		return (
+			<BotStylesContext.Provider value={{botStyles, setBotStyles}}>
+				{children}
+			</BotStylesContext.Provider>
+		);
+	};
+
 
 	/**
 	 * Wraps paths provider around child element.
@@ -114,6 +136,10 @@ const ChatBot = ({
 			result = wrapSettingsProvider(result);
 		}
 
+		if (!botSettings.advance?.useCustomStyles) {
+			result = wrapStylesProvider(result);
+		}
+
 		return result;
 	}
 
@@ -121,7 +147,7 @@ const ChatBot = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return settingsLoaded && (isDesktop && botSettings.general?.desktopEnabled)
+		return configLoaded && (isDesktop && botSettings.general?.desktopEnabled)
 			|| (!isDesktop && botSettings.general?.mobileEnabled);
 	}
 

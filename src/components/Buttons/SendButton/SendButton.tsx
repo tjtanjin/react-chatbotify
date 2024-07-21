@@ -1,6 +1,7 @@
 import { useState, MouseEvent } from "react";
 
 import { useBotSettings } from "../../../context/BotSettingsContext";
+import { useBotStyles } from "../../../context/BotStylesContext";
 
 import "./SendButton.css";
 
@@ -15,8 +16,11 @@ const SendButton = ({
 	handleSubmit: () => void;
 }) => {
 
-	// handles options for bot
+	// handles settings for bot
 	const { botSettings } = useBotSettings();
+
+	// handles styles for bot
+	const { botStyles } = useBotStyles();
 
 	// tracks if send button is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -24,13 +28,13 @@ const SendButton = ({
 	// styles for send button
 	const sendButtonStyle: React.CSSProperties = {
 		backgroundColor: botSettings.general?.primaryColor,
-		...botSettings.sendButtonStyle
+		...botStyles.sendButtonStyle
 	};
 
 	// styles for hovered send button
 	const sendButtonHoveredStyle: React.CSSProperties = {
 		backgroundColor: botSettings.general?.secondaryColor,
-		...botSettings.sendButtonHoveredStyle
+		...botStyles.sendButtonHoveredStyle
 	};
 	
 	// styles for send icon

@@ -1,14 +1,15 @@
 import { Settings } from "../types/Settings";
+import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
 
 /**
- * Processes information for a given theme and retrieves its options via CDN.
+ * Processes information for a given theme and retrieves its settings via CDN.
  * 
- * @param theme theme to process and retrieve options for
+ * @param theme theme to process and retrieve settings for
  */
-export const processAndFetchThemeOptions = async (theme: Theme): Promise<Settings> => {
+export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
 	const { name, version, base_url = DEFAULT_URL } = theme;
 
 	let themeVersion = version;
@@ -28,31 +29,40 @@ export const processAndFetchThemeOptions = async (theme: Theme): Promise<Setting
 		}
 	}
 
-	// construct urls for styles.css and options.json
-	const stylesUrl = `${base_url}/${name}/${themeVersion}/styles.css`;
-	const optionsUrl = `${base_url}/${name}/${themeVersion}/options.json`;
+	// construct urls for styles.css, settings.json and settings.json
+	const cssStylesUrl = `${base_url}/${name}/${themeVersion}/styles.css`;
+	const settingsUrl = `${base_url}/${name}/${themeVersion}/settings.json`;
+	const stylesUrl = `${base_url}/${name}/${themeVersion}/styles.json`;
 
-	// fetch and apply styles
+	// fetch and apply css styles
 	try {
-		const stylesResponse = await fetch(stylesUrl);
-		if (!stylesResponse.ok) {
-			throw new Error(`Failed to fetch styles.css from ${stylesUrl}`);
+		const cssStylesResponse = await fetch(cssStylesUrl);
+		if (!cssStylesResponse.ok) {
+			throw new Error(`Failed to fetch styles.css from ${cssStylesUrl}`);
 		}
-		const stylesText = await stylesResponse.text();
-		const styleSheet = document.createElement("style");
-		styleSheet.type = "text/css";
-		styleSheet.innerText = stylesText;
-		document.head.appendChild(styleSheet);
+		const cssStylesText = await cssStylesResponse.text();
+		const cssStyleSheet = document.createElement("style");
+		cssStyleSheet.type = "text/css";
+		cssStyleSheet.innerText = cssStylesText;
+		document.head.appendChild(cssStyleSheet);
 	} catch (error) {
 		console.error("Error fetching styles.css:", error);
 	}
 
-	// fetch and return options
-	const optionsResponse = await fetch(optionsUrl);
-	if (!optionsResponse.ok) {
-		throw new Error(`Failed to fetch options.json from ${optionsUrl}`);
+	// fetch and return settings
+	const settingsResponse = await fetch(settingsUrl);
+	if (!settingsResponse.ok) {
+		throw new Error(`Failed to fetch settings.json from ${settingsUrl}`);
 	}
-	const options = await optionsResponse.json();
-	return options;
+	const settings = await settingsResponse.json();
+
+	// fetch and return styles
+	const stylesResponse = await fetch(stylesUrl);
+	if (!stylesResponse.ok) {
+		throw new Error(`Failed to fetch styles.json from ${stylesUrl}`);
+	}
+	const styles = await stylesResponse.json();
+
+	return {settings, styles}
 
 }

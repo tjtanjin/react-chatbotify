@@ -1,0 +1,36 @@
+import { Styles } from "../types/Styles"
+
+// default options provided to the bot
+export const DefaultStyles: Styles = {
+	// styles
+	tooltipStyle: {},
+	chatButtonStyle: {},
+	notificationBadgeStyle: {},
+	chatWindowStyle: {},
+	headerStyle: {},
+	bodyStyle: {},
+	chatInputContainerStyle: {},
+	chatInputAreaStyle: {},
+	chatInputAreaFocusedStyle: {},
+	chatInputAreaDisabledStyle: {},
+	userBubbleStyle: {},
+	botBubbleStyle: {},
+	botOptionStyle: {},
+	botOptionHoveredStyle: {},
+	botCheckboxRowStyle: {},
+	botCheckboxNextStyle: {},
+	botCheckMarkStyle: {},
+	botCheckMarkSelectedStyle: {},
+	sendButtonStyle: {},
+	sendButtonHoveredStyle: {},
+	characterLimitStyle: {},
+	characterLimitReachedStyle: {},
+	chatHistoryButtonStyle: {},
+	chatHistoryButtonHoveredStyle: {},
+	chatHistoryLineBreakStyle: {},
+	chatMessagePromptStyle: {},
+	chatMessagePromptHoveredStyle: {},
+	footerStyle: {},
+	loadingSpinnerStyle: {},
+	mediaDisplayContainerStyle: {},
+}

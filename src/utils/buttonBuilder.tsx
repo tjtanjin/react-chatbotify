@@ -47,15 +47,18 @@ export const getButtonConfig = (
 		return buttons
 			.map(button => {
 				// for each default button present, check if it is enabled
-				if (typeof button === "string" && isButton(button) && !buttonDisabledMap[button]) {
-					if (buttonCache[button]) {
-						return buttonCache[button];
-					}
-					const buttonCondition = buttonComponentMap[button];
-					if (typeof buttonCondition === "function") {
-						const createdButton = buttonCondition();
-						buttonCache[button] = createdButton;
-						return createdButton;
+				if (typeof button === "string") {
+					if (isButton(button) && !buttonDisabledMap[button]) {
+						if (buttonCache[button]) {
+							return buttonCache[button];
+						}
+						const buttonCondition = buttonComponentMap[button];
+						if (typeof buttonCondition === "function") {
+							const createdButton = buttonCondition();
+							buttonCache[button] = createdButton;
+							return createdButton;
+						}
+						return null;
 					}
 					return null;
 				}

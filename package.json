@@ -21,18 +21,6 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./constants": {
-      "import": "./dist/constants",
-      "require": "./dist/constants"
-    },
-    "./context": {
-      "import": "./dist/context",
-      "require": "./dist/context"
-    },
-    "./types": {
-      "import": "./dist/types",
-      "require": "./dist/types"
     }
   },
   "scripts": {

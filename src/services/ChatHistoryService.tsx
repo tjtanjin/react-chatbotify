@@ -5,6 +5,7 @@ import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistory
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
+import { Styles } from "../types/Styles";
 
 // variables used to track history, updated when botSettings.chatHistory value changes
 let historyLoaded = false;
@@ -105,8 +106,8 @@ const parseMessageToString = (message: Message) => {
  * @param setMessages setter for updating messages
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
-const loadChatHistory = (botSettings: Settings, chatHistory: string, setMessages: Dispatch<SetStateAction<Message[]>>, 
-	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
+const loadChatHistory = (botSettings: Settings, botStyles: Styles, chatHistory: string,
+	setMessages: Dispatch<SetStateAction<Message[]>>, setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
 	if (chatHistory != null) {
@@ -122,7 +123,7 @@ const loadChatHistory = (botSettings: Settings, chatHistory: string, setMessages
 
 			const parsedMessages = JSON.parse(chatHistory).map((message: Message) => {
 				if (message.type === "object") {
-					const element = renderHTML(message.content as string, botSettings);
+					const element = renderHTML(message.content as string, botSettings, botStyles);
 					return { ...message, content: element };
 				}
 				return message;
@@ -161,7 +162,7 @@ const loadChatHistory = (botSettings: Settings, chatHistory: string, setMessages
  * @param html string to render
  * @param botSettings options provided to the bot
  */
-const renderHTML = (html: string, botSettings: Settings): ReactNode[] => {
+const renderHTML = (html: string, botSettings: Settings, botStyles: Styles): ReactNode[] => {
 	const parser = new DOMParser();
 	const parsedHtml = parser.parseFromString(html, "text/html");
 	const nodes = Array.from(parsedHtml.body.childNodes);
@@ -195,10 +196,10 @@ const renderHTML = (html: string, botSettings: Settings): ReactNode[] => {
 			if (botSettings.botBubble?.showAvatar) {
 				attributes = addStyleToContainers(classList, attributes);
 			}
-			attributes = addStyleToOptions(classList, attributes, botSettings);
-			attributes = addStyleToCheckboxRows(classList, attributes, botSettings);
-			attributes = addStyleToCheckboxNextButton(classList, attributes, botSettings);
-			attributes = addStyleToMediaDisplayContainer(classList, attributes, botSettings);
+			attributes = addStyleToOptions(classList, attributes, botSettings, botStyles);
+			attributes = addStyleToCheckboxRows(classList, attributes, botSettings, botStyles);
+			attributes = addStyleToCheckboxNextButton(classList, attributes, botSettings, botStyles);
+			attributes = addStyleToMediaDisplayContainer(classList, attributes, botSettings, botStyles);
 
 			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 				'meta', 'source', 'track', 'wbr'];
@@ -206,7 +207,7 @@ const renderHTML = (html: string, botSettings: Settings): ReactNode[] => {
 				// void elements must not have children
 				return createElement(tagName, { key: index, ...attributes });
 			} else {
-				const children = renderHTML((node as Element).innerHTML, botSettings);
+				const children = renderHTML((node as Element).innerHTML, botSettings, botStyles);
 				return createElement(tagName, { key: index, ...attributes }, ...children);
 			}
 		}
@@ -241,14 +242,14 @@ const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string
  * @param botSettings options provided to the bot
  */
 const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings) => {
+	botSettings: Settings, botStyles: Styles) => {
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botSettings.botOptionStyle?.color || botSettings.general?.primaryColor,
-			borderColor: botSettings.botOptionStyle?.color || botSettings.general?.primaryColor,
+			color: botStyles.botOptionStyle?.color || botSettings.general?.primaryColor,
+			borderColor: botStyles.botOptionStyle?.color || botSettings.general?.primaryColor,
 			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
-			...botSettings.botOptionStyle
+			...botStyles.botOptionStyle
 		}
 	}
 	return attributes;
@@ -262,14 +263,14 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
  * @param botSettings options provided to the bot
  */
 const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings) => {
+	botSettings: Settings, botStyles: Styles) => {
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botSettings.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
-			borderColor: botSettings.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
+			color: botStyles.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
+			borderColor: botStyles.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
 			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
-			...botSettings.botCheckboxRowStyle
+			...botStyles.botCheckboxRowStyle
 		}
 	}
 	return attributes;
@@ -283,14 +284,14 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
  * @param botSettings options provided to the bot
  */
 const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings) => {
+	botSettings: Settings, botStyles: Styles) => {
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botSettings.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
-			borderColor: botSettings.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
+			color: botStyles.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
+			borderColor: botStyles.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
 			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
-			...botSettings.botCheckboxNextStyle
+			...botStyles.botCheckboxNextStyle
 		}
 	}
 	return attributes;
@@ -304,14 +305,14 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
  * @param botSettings options provided to the bot
  */
 const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings) => {
+	botSettings: Settings, botStyles: Styles) => {
 	if (classList.contains("rcb-media-display-image-container")
 		|| classList.contains("rcb-media-display-video-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
 			backgroundColor: botSettings.general?.primaryColor,
 			maxWidth: botSettings.userBubble?.showAvatar ? "65%" : "70%",
-			...botSettings.mediaDisplayContainerStyle
+			...botStyles.mediaDisplayContainerStyle
 		}
 	}
 	return attributes;

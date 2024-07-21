@@ -25,6 +25,7 @@ import {
 	getButtonConfig
 } from "../utils/buttonBuilder";
 import { useBotSettings } from "../context/BotSettingsContext";
+import { useBotStyles } from "../context/BotStylesContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
 import { Block } from "../types/Block";
@@ -42,8 +43,11 @@ import "./ChatBotContainer.css";
  */
 const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
-	// handles setting of options for the chat bot
+	// handles setting of settings for the chat bot
 	const { botSettings, setBotSettings } = useBotSettings();
+
+	// handles setting of styles for the chat bot
+	const { botStyles } = useBotStyles();
 
 	// handles messages between user and the chat bot
 	const { messages, setMessages } = useMessages();
@@ -152,7 +156,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				};
 				setMessages([messageContent]);
 				if (botSettings.chatHistory?.autoLoad) {
-					loadChatHistory(botSettings, chatHistory, setMessages, setTextAreaDisabled);
+					loadChatHistory(botSettings, botStyles, chatHistory, setMessages, setTextAreaDisabled);
 				}
 			}
 		}
@@ -541,7 +545,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const showChatHistory = useCallback((chatHistory: string) => {
 		setIsLoadingChatHistory(true);
 		setTextAreaDisabled(true);
-		loadChatHistory(botSettings, chatHistory, setMessages, setTextAreaDisabled);
+		loadChatHistory(botSettings, botStyles, chatHistory, setMessages, setTextAreaDisabled);
 	}, [botSettings]);
 
 	/**
@@ -710,7 +714,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const getChatWindowStyle = () => {
 		if (!isDesktop && !botSettings.general?.embedded) {
 			return {
-				...botSettings.chatWindowStyle,
+				...botStyles.chatWindowStyle,
 				borderRadius: "0px",
 				left: "0px",
 				right: "auto",
@@ -720,7 +724,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				height: `${viewportHeight}px`,
 			}
 		} else {
-			return botSettings.chatWindowStyle;
+			return botStyles.chatWindowStyle;
 		}
 	}
 

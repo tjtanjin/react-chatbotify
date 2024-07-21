@@ -118,8 +118,10 @@ function App() {
 							chatInput: {botDelay: 1000},
 							userBubble: {showAvatar: true},
 							botBubble: {showAvatar: true},
-							voice: {disabled: false}
+							voice: {disabled: false},
+							notification: {disabled: true}
 						}}
+						//themes={{name: "retro"}}
 					></ChatBot>
 				</div>
 			</header>

@@ -10,13 +10,13 @@ import { Settings } from "./types/Settings";
 import { Theme } from "./types/Theme";
 import { Button } from "./constants/Button";
 import { DefaultSettings } from "./constants/DefaultSettings";
+import { DefaultStyles } from "./constants/DefaultStyles";
 
 // context exports
 export { BotSettingsContext, MessagesContext, PathsContext };
 
 // constant exports
-export { Button };
-export { DefaultSettings };
+export { Button, DefaultSettings, DefaultStyles };
 
 // type exports
 export type { Block, BlockParams, Flow, Message, Settings, Theme };
