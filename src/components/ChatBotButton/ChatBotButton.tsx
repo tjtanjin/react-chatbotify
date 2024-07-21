@@ -4,7 +4,7 @@ import { useBotStyles } from "../../context/BotStylesContext";
 import "./ChatBotButton.css";
 
 /**
- * Toggles opening and closing of the chat window when theme.embedded is false.
+ * Toggles opening and closing of the chat window when general.embedded is false.
  * 
  * @param unreadCount number of unread messages from the bot
  */

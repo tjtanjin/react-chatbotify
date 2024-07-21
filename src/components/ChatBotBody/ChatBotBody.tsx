@@ -162,7 +162,10 @@ const ChatBotBody = ({
 	const renderUserMessage = (message: Message, index: number) => {
 		const isNewSender = isFirstInSeries(index);
 		const showAvatar = botSettings.userBubble?.showAvatar && isNewSender;
-		const offsetStyle = isNewSender ? "rcb-user-message" : "rcb-user-message rcb-user-message-offset";
+		let offsetStyle = "rcb-user-message";
+		if (!isNewSender && botSettings.userBubble?.showAvatar) {
+			offsetStyle += " rcb-user-message-offset";
+		}
 		return (
 			<div className="rcb-user-message-container">
 				{typeof message.content === "string" ? (
@@ -201,7 +204,10 @@ const ChatBotBody = ({
 	const renderBotMessage = (message: Message, index: number) => {
 		const isNewSender = isFirstInSeries(index);
 		const showAvatar = botSettings.botBubble?.showAvatar && isNewSender;
-		const offsetStyle = isNewSender ? "rcb-bot-message" : "rcb-bot-message rcb-bot-message-offset";
+		let offsetStyle = "rcb-bot-message";
+		if (!isNewSender && botSettings.botBubble?.showAvatar) {
+			offsetStyle += " rcb-bot-message-offset";
+		}
 		return (
 			<div className="rcb-bot-message-container">
 				{showAvatar && (
