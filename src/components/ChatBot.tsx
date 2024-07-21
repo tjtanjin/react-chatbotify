@@ -38,10 +38,10 @@ const ChatBot = ({
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
 
 	// handles setting of settings for the chat bot
-	const [botSettings, setBotSettings] = useState<Settings>({});
+	const [botSettings, setBotSettings] = useState<BotSettings>({});
 
 	// handles setting of styles for the chat bot
-	const [botStyles, setBotStyles] = useState<Styles>({});
+	const [botStyles, setBotStyles] = useState<BotStyles>({});
 
 	// handles messages between user and the chat bot
 	const [messages, setMessages] = useState<Message[]>([]);
