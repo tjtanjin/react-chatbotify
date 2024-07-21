@@ -12,7 +12,7 @@ export type Block = {
 	checkboxes?: {items: Array<string>, max?: number, min?: number} |
 		((params: BlockParams) => {items: Array<string>, max?: number, min?: number}) |
 		((params: BlockParams) => Promise<{items: Array<string>, max?: number, min?: number}>);
-	render?: JSX.Element | void | ((params: BlockParams) => JSX.Element | void) |
+	component?: JSX.Element | void | ((params: BlockParams) => JSX.Element | void) |
 	((params: BlockParams) => Promise<JSX.Element | void>);
 	chatDisabled?: boolean | ((params: BlockParams) => boolean) | ((params: BlockParams) => Promise<boolean>);
 	isSensitive?: boolean | ((params: BlockParams) => boolean) | ((params: BlockParams) => Promise<boolean>);

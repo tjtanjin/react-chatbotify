@@ -59,7 +59,7 @@ function App() {
 				}
 				return "What's my favourite color? Click the button below to find out my answer!"
 			},
-			render: (
+			component: (
 				<div style={{
 					width: "100%",
 					display: "flex",

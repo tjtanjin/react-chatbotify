@@ -6,7 +6,7 @@ import { processFunction } from "./FunctionProcessor";
 import { processMessage } from "./MessageProcessor";
 import { processOptions } from "./OptionProcessor";
 import { processPath } from "./PathProcessor";
-import { processRender } from "./RenderProcessor";
+import { processComponent } from "./ComponentProcessor";
 import { processTransition } from "./TransitionProcessor";
 import { BlockParams } from "../../types/BlockParams";
 import { Block } from "../../types/Block";
@@ -51,8 +51,8 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Bloc
 			await processCheckboxes(block, path, handleActionInput, params);
 			break;
 		
-		case "render":
-			await processRender(block, params);
+		case "component":
+			await processComponent(block, params);
 			break;
 		
 		case "chatDisabled":
