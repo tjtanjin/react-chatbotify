@@ -76,7 +76,7 @@ const getCombinedConfig = (preferredConfig: BotSettings | BotStyles, baseConfig:
 			} else if (
 				typeof source[keyAsObjectType] === 'object' && 
 				source[keyAsObjectType] !== null && 
-				keyAsObjectType !== 'buttons'
+				!Array.isArray(source[keyAsObjectType])
 			) {
 				stack.push({ source: source[keyAsObjectType], target: target[keyAsObjectType] });
 			} else {
