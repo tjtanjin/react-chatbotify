@@ -1,18 +1,18 @@
-import { BotSettings } from "../types/BotSettings"
-import { Button } from "./Button";
+import { BotSettings } from "../../types/BotSettings"
+import { Button } from "../Button";
 
-import actionDisabledIcon from "../assets/action_disabled_icon.svg";
-import botAvatar from "../assets/bot_avatar.svg";
-import userAvatar from "../assets/user_avatar.svg";
-import chatIcon from "../assets/chat_icon.svg";
-import fileAttachmentIcon from "../assets/file_attachment_icon.svg";
-import notificationIcon from "../assets/notification_icon.svg";
-import closeChatIcon from "../assets/close_chat_icon.svg";
-import sendButtonIcon from "../assets/send_icon.svg";
-import voiceIcon from "../assets/voice_icon.svg";
-import emojiIcon from "../assets/emoji_icon.svg";
-import audioIcon from "../assets/audio_icon.svg";
-import notificationSound from "../assets/notification_sound.wav";
+import actionDisabledIcon from "../../assets/action_disabled_icon.svg";
+import botAvatar from "../../assets/bot_avatar.svg";
+import userAvatar from "../../assets/user_avatar.svg";
+import chatIcon from "../../assets/chat_icon.svg";
+import fileAttachmentIcon from "../../assets/file_attachment_icon.svg";
+import notificationIcon from "../../assets/notification_icon.svg";
+import closeChatIcon from "../../assets/close_chat_icon.svg";
+import sendButtonIcon from "../../assets/send_icon.svg";
+import voiceIcon from "../../assets/voice_icon.svg";
+import emojiIcon from "../../assets/emoji_icon.svg";
+import audioIcon from "../../assets/audio_icon.svg";
+import notificationSound from "../../assets/notification_sound.wav";
 
 // default options provided to the bot
 export const DefaultSettings: BotSettings = {
@@ -139,14 +139,14 @@ export const DefaultSettings: BotSettings = {
 			<div style={{cursor: "pointer", display: "flex", flexDirection: "row", alignItems: "center", columnGap: 3}} 
 				onClick={() => window.open("https://react-chatbotify.tjtanjin.com")}
 			>
-				<span>Powered By </span>
-				<img style={{
+				<span key={0}>Powered By </span>
+				<img key={1} style={{
 					borderRadius: "50%",
 					width: 14, height: 14, backgroundImage: `url(${chatIcon}),
 					linear-gradient(to right, #42b0c5, #491d8d)`
 				}}>
 				</img>
-				<span style={{fontWeight: "bold"}}> React ChatBotify</span>
+				<span key={2} style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
 		),
 		buttons: [Button.FILE_ATTACHMENT_BUTTON, Button.EMOJI_PICKER_BUTTON]

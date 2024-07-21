@@ -4,8 +4,22 @@ import { processAndFetchThemeConfig } from "../services/ThemeService";
 import { BotSettings } from "../types/BotSettings";
 import { BotStyles } from "../types/BotStyles";
 import { Theme } from "../types/Theme";
-import { DefaultSettings } from "../constants/DefaultSettings";
-import { DefaultStyles } from "../constants/DefaultStyles";
+import { DefaultSettings } from "../constants/internal/DefaultSettings";
+import { DefaultStyles } from "../constants/internal/DefaultStyles";
+
+/**
+ * Retrieves default values for bot settings.
+ */
+export const getDefaultBotSettings = (): BotSettings => {
+	return deepClone(DefaultSettings);
+}
+
+/**
+ * Retrieves default values for bot styles.
+ */
+export const getDefaultBotStyles = (): BotStyles => {
+	return deepClone(DefaultStyles);
+}
 
 /**
  * Parses default settings and styles with user provided config to generate final bot bot settings and styles.
@@ -18,23 +32,25 @@ export const parseConfig = async (providedSettings: BotSettings | undefined,
 	providedStyles: BotStyles | undefined,
 	themes: undefined | Theme | Array<Theme>): Promise<{settings: BotSettings, styles: BotStyles}> => {
 
+	let combinedSettings = getDefaultBotSettings();
+	let combinedStyles = getDefaultBotStyles();
 
-	let combinedStyles = DefaultStyles;
-	let combinedSettings = DefaultSettings;
+	// process themes first
 	if (themes != null) {
 		if (Array.isArray(themes)) {
 			for (const theme of themes) {
 				const themeConfig = await processAndFetchThemeConfig(theme);
-				combinedSettings = getCombinedConfig(themeConfig.settings, DefaultSettings) as BotSettings;
-				combinedStyles = getCombinedConfig(themeConfig.styles, DefaultStyles) as BotStyles;
+				combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as BotSettings;
+				combinedStyles = getCombinedConfig(themeConfig.styles, combinedStyles) as BotStyles;
 			}
 		} else {
 			const themeConfig = await processAndFetchThemeConfig(themes);
-			combinedSettings = getCombinedConfig(themeConfig.settings, DefaultSettings) as BotSettings;
-			combinedStyles = getCombinedConfig(themeConfig.styles, DefaultStyles) as BotStyles;
+			combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as BotSettings;
+			combinedStyles = getCombinedConfig(themeConfig.styles, combinedStyles) as BotStyles;
 		}
 	}
 
+	// process provided settings/styles
 	if (providedSettings != null) {
 		combinedSettings = getCombinedConfig(providedSettings, combinedSettings) as BotSettings;
 	}
@@ -62,7 +78,7 @@ const getCombinedConfig = (preferredConfig: BotSettings | BotStyles, baseConfig:
 
 	const stack: Array<{ source: object, target: object }> = [{ source: preferredConfig, target: baseConfig }];
 	
-	while (stack.length > 0) {
+	while (stack.length) {
 		const poppedItem = stack.pop();
 		if (poppedItem == null) {
 			continue;
@@ -87,3 +103,47 @@ const getCombinedConfig = (preferredConfig: BotSettings | BotStyles, baseConfig:
 
 	return baseConfig;
 }
+
+/**
+ * Deep clones a javascript object.
+ * 
+ * @param obj object to clone
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
+	if (obj === null || typeof obj !== 'object') {
+		return obj;
+	}
+
+	const root: { [key: string]: any } = Array.isArray(obj) ? [] : {};
+	const stack: Array<{ source: { [key: string]: any }, target: { [key: string]: any } }> =
+		[{ source: obj, target: root }];
+	const seen = new WeakMap<{ [key: string]: any }, { [key: string]: any }>();
+	seen.set(obj, root);
+
+	while (stack.length) {
+		const { source, target } = stack.pop()!;
+        
+		for (const key in source) {
+			if (Object.prototype.hasOwnProperty.call(source, key)) {
+				const value = source[key];
+                
+				if (value && typeof value === 'object') {
+					if (seen.has(value)) {
+						target[key] = seen.get(value);
+					} else {
+						const clone: { [key: string]: any } = Array.isArray(value) ? [] : {};
+						seen.set(value, clone);
+						target[key] = clone;
+						stack.push({ source: value, target: clone });
+					}
+				} else {
+					target[key] = value;
+				}
+			}
+		}
+	}
+
+	return root;
+};
+/* eslint-enable @typescript-eslint/no-explicit-any */

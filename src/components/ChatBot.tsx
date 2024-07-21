@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
-import { parseConfig } from "../utils/SettingsParser";
+import { parseConfig } from "../utils/configParser";
 import { isDesktop } from "../utils/displayChecker";
 import { BotSettingsContext } from "../context/BotSettingsContext";
 import { MessagesContext } from "../context/MessagesContext";

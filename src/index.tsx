@@ -1,4 +1,6 @@
 import ChatBot from "./components/ChatBot";
+import { getDefaultBotSettings } from "./utils/configParser";
+import { getDefaultBotStyles } from "./utils/configParser";
 import { BotSettingsContext } from "./context/BotSettingsContext";
 import { BotStylesContext } from "./context/BotStylesContext";
 import { MessagesContext } from "./context/MessagesContext";
@@ -11,8 +13,9 @@ import { BotSettings } from "./types/BotSettings";
 import { BotStyles } from "./types/BotStyles";
 import { Theme } from "./types/Theme";
 import { Button } from "./constants/Button";
-import { DefaultSettings } from "./constants/DefaultSettings";
-import { DefaultStyles } from "./constants/DefaultStyles";
+
+// util exports
+export { getDefaultBotSettings, getDefaultBotStyles };
 
 // context exports
 export { BotSettingsContext, BotStylesContext, MessagesContext, PathsContext };
@@ -21,6 +24,7 @@ export { BotSettingsContext, BotStylesContext, MessagesContext, PathsContext };
 export type { Block, BlockParams, Flow, Message, BotSettings, BotStyles, Theme };
 
 // constant exports
-export { Button, DefaultSettings, DefaultStyles };
+export { Button };
 
+// chatbot export
 export default ChatBot;
