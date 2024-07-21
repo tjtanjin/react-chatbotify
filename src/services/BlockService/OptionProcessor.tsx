@@ -1,5 +1,6 @@
 import UserOptions from "../../components/ChatBotBody/UserOptions/UserOptions";
 import { Block } from "../../types/Block";
+import { BlockParams } from "../../types/BlockParams";
 import { Flow } from "../../types/Flow";
 
 /**
@@ -7,18 +8,29 @@ import { Flow } from "../../types/Flow";
  * 
  * @param block current block being processed
  * @param path path associated with the current block
- * @param injectMessage utility function for injecting a message into the messages array
- * @param handleActionInput handles action input from user 
+ * @param handleActionInput handles action input from user
+ * @param params contains parameters that can be used/passed into attributes
  */
-export const processOptions = (block: Block, path: keyof Flow,
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>,
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
+export const processOptions = async (block: Block, path: keyof Flow,
+	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>,
+	params: BlockParams) => {
 
 	const options = block.options;
 	if (!options) {
 		return;
 	}
 
-	const content = <UserOptions options={options} path={path} handleActionInput={handleActionInput} />
-	injectMessage(content);
+	let parsedOptions;
+	if (typeof options === "function") {
+		parsedOptions = options(params);
+		if (parsedOptions instanceof Promise) {
+			parsedOptions = await parsedOptions;
+		}
+	} else {
+		parsedOptions = options;
+	}
+
+
+	const content = <UserOptions options={parsedOptions} path={path} handleActionInput={handleActionInput} />
+	params.injectMessage(content);
 }

@@ -7,7 +7,7 @@ import { BlockParams } from "../../types/BlockParams";
  * Handles processing of path in current block.
  * 
  * @param block current block being processed
- * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
+ * @param params contains parameters that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
 export const processPath = async (block: Block, params: BlockParams,

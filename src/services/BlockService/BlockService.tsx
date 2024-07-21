@@ -10,13 +10,15 @@ import { processRender } from "./RenderProcessor";
 import { processTransition } from "./TransitionProcessor";
 import { BlockParams } from "../../types/BlockParams";
 import { Block } from "../../types/Block";
+import { processChatDisabled } from "./ChatDisabledProcessor";
+import { processIsSensitive } from "./IsSensitiveProcessor";
 
 /**
  * Handles the preprocessing within a block.
  * 
  * @param flow conversation flow for the bot
  * @param path path associated with the current block
- * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
+ * @param params contains parameters that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
  * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setPaths updates the paths taken by the user
@@ -42,11 +44,11 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Bloc
 			break;
 		
 		case "options":
-			processOptions(block, path, params.injectMessage, handleActionInput);
+			await processOptions(block, path, handleActionInput, params);
 			break;
 		
 		case "checkboxes":
-			processCheckboxes(block, path, params.injectMessage, handleActionInput);
+			await processCheckboxes(block, path, handleActionInput, params);
 			break;
 		
 		case "render":
@@ -54,15 +56,11 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Bloc
 			break;
 		
 		case "chatDisabled":
-			if (block.chatDisabled) {
-				setTextAreaDisabled(block.chatDisabled);
-			}
+			await processChatDisabled(block, setTextAreaDisabled, params);
 			break;
 
 		case "isSensitive":
-			if (block.isSensitive) {
-				setTextAreaSensitiveMode(block.isSensitive);
-			}
+			await processIsSensitive(block, setTextAreaSensitiveMode, params);
 			break;
 
 		case "transition":

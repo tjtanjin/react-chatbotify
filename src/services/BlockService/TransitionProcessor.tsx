@@ -10,7 +10,7 @@ import { BlockParams } from "../../types/BlockParams";
  * @param messages messages containing current conversation with the bot
  * @param flow conversation flow for the bot
  * @param path path associated with the current block
- * @param params contains userInput, prevPath and injectMessage that can be used/passed into attributes
+ * @param params contains parameters that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */

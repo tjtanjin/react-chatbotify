@@ -8,6 +8,7 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
+import { processIsSensitive } from "../services/BlockService/IsSensitiveProcessor";
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
@@ -89,7 +90,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(false);
 
 	// tracks if textarea is disabled
-	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(false);
+	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(true);
 
 	// tracks if textarea is in sensitive mode
 	const [textAreaSensitiveMode, setTextAreaSensitiveMode] = useState<boolean>(false);
@@ -281,17 +282,16 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: BlockParams) => {
-			// when bot first loads, disable textarea first to allow uninterrupted sending of initial messages
-			if (currPath === "start") {
-				setTextAreaDisabled(true);
-			}
-
 			await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setTextAreaSensitiveMode,
 				setPaths, setTimeoutId, handleActionInput);
 
 			// cleanup logic after preprocessing of a block
 			setIsBotTyping(false);
-			updateInputFields();
+			if (!block.chatDisabled) {
+				setTextAreaDisabled(botSettings.chatInput?.disabled as boolean);
+			}
+			setBlockAllowsAttachment(typeof block.file === "function");
+			updateTextAreaFocus(currPath);
 			syncVoiceWithChatInput(keepVoiceOnRef.current && !block.chatDisabled, botSettings);
 
 			// cleanup logic after preprocessing of a block (affects only streaming messages)
@@ -545,26 +545,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [botSettings]);
 
 	/**
-	 * Updates input fields (textarea and file attachment) state based on current block.
+	 * Updates text area focus based on current block's text area.
 	 */
-	const updateInputFields = useCallback(() => {
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-		const block = flow[currPath];
-
-		if (!block) {
-			return;
-		}
-
-		const shouldDisableTextArea = block.chatDisabled 
-			? block.chatDisabled
-			: botSettings.chatInput?.disabled as boolean;
-		setTextAreaDisabled(shouldDisableTextArea);
-		setBlockAllowsAttachment(typeof block.file === "function");
-
-		if (!shouldDisableTextArea) {
+	const updateTextAreaFocus = useCallback((currPath: string) => {
+		if (!textAreaDisabled) {
 			setTimeout(() => {
 				if (botSettings.general?.embedded) {
 					// for embedded chatbot, only do input focus if chatbot is still visible on page
@@ -579,13 +563,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				}
 			}, 100)
 		}
-
-		if (block.isSensitive) {
-			setTextAreaSensitiveMode(block.isSensitive);
-		} else {
-			setTextAreaSensitiveMode(false);
-		}
-	}, [paths]);
+	}, [textAreaDisabled]);
 
 	/**
 	 * Handles toggling of voice.
@@ -648,13 +626,26 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
-				updateInputFields();
+				const currPath = getCurrPath();
+				if (!currPath) {
+					return;
+				}
+
+				const block = flow[currPath];
+				if (!block) {
+					return;
+				}
+				if (!block.chatDisabled) {
+					setTextAreaDisabled(botSettings.chatInput?.disabled as boolean);
+				}
+				processIsSensitive(block, setTextAreaSensitiveMode, params);
+				setBlockAllowsAttachment(typeof block.file === "function");
 				syncVoiceWithChatInput(keepVoiceOnRef.current, botSettings);
 				setIsBotTyping(false);
 			}
 		}, botSettings.chatInput?.botDelay);
 	}, [timeoutId, voiceToggledOn, botSettings, flow, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, updateInputFields
+		postProcessBlock, setPaths, updateTextAreaFocus
 	]);
 
 	/**
@@ -673,7 +664,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		if (block.isSensitive) {
+		if (textAreaSensitiveMode) {
 			if (botSettings?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (botSettings?.sensitiveInput?.maskInUserBubble) {
@@ -683,7 +674,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		await injectMessage(userInput, "user");
-	}, [flow, getCurrPath, botSettings, injectMessage]);
+	}, [flow, getCurrPath, botSettings, injectMessage, textAreaSensitiveMode]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.
