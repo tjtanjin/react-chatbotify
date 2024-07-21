@@ -3,10 +3,11 @@ import { BotSettingsContext } from "./context/BotSettingsContext";
 import { MessagesContext } from "./context/MessagesContext";
 import { PathsContext } from "./context/PathsContext";
 import { Block } from "./types/Block";
+import { BlockParams } from "./types/BlockParams";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
 import { Settings } from "./types/Settings";
-import { BlockParams } from "./types/BlockParams";
+import { Theme } from "./types/Theme";
 import { Button } from "./constants/Button";
 import { DefaultSettings } from "./constants/DefaultSettings";
 
@@ -18,6 +19,6 @@ export { Button };
 export { DefaultSettings };
 
 // type exports
-export type { Block, Flow, Message, Settings as Options, BlockParams as Params };
+export type { Block, BlockParams, Flow, Message, Settings, Theme };
 
 export default ChatBot;
