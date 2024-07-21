@@ -4,8 +4,8 @@ import ReactDOMServer from "react-dom/server";
 import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistoryLineBreak";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { Message } from "../types/Message";
-import { Settings } from "../types/Settings";
-import { Styles } from "../types/Styles";
+import { BotSettings } from "../types/BotSettings";
+import { BotStyles } from "../types/BotStyles";
 
 // variables used to track history, updated when botSettings.chatHistory value changes
 let historyLoaded = false;
@@ -73,7 +73,7 @@ const getHistoryMessages = (chatHistory: string) => {
  * 
  * @param botSettings options provided to the bot
  */
-const setHistoryStorageValues = (botSettings: Settings) => {
+const setHistoryStorageValues = (botSettings: BotSettings) => {
 	historyStorageKey = botSettings.chatHistory?.storageKey as string;
 	historyMaxEntries = botSettings.chatHistory?.maxEntries as number;
 	historyDisabled = botSettings.chatHistory?.disabled as boolean;
@@ -106,7 +106,7 @@ const parseMessageToString = (message: Message) => {
  * @param setMessages setter for updating messages
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
-const loadChatHistory = (botSettings: Settings, botStyles: Styles, chatHistory: string,
+const loadChatHistory = (botSettings: BotSettings, botStyles: BotStyles, chatHistory: string,
 	setMessages: Dispatch<SetStateAction<Message[]>>, setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
@@ -162,7 +162,7 @@ const loadChatHistory = (botSettings: Settings, botStyles: Styles, chatHistory: 
  * @param html string to render
  * @param botSettings options provided to the bot
  */
-const renderHTML = (html: string, botSettings: Settings, botStyles: Styles): ReactNode[] => {
+const renderHTML = (html: string, botSettings: BotSettings, botStyles: BotStyles): ReactNode[] => {
 	const parser = new DOMParser();
 	const parsedHtml = parser.parseFromString(html, "text/html");
 	const nodes = Array.from(parsedHtml.body.childNodes);
@@ -242,7 +242,7 @@ const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string
  * @param botSettings options provided to the bot
  */
 const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings, botStyles: Styles) => {
+	botSettings: BotSettings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
@@ -263,7 +263,7 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
  * @param botSettings options provided to the bot
  */
 const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings, botStyles: Styles) => {
+	botSettings: BotSettings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
@@ -284,7 +284,7 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
  * @param botSettings options provided to the bot
  */
 const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings, botStyles: Styles) => {
+	botSettings: BotSettings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
@@ -305,7 +305,7 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
  * @param botSettings options provided to the bot
  */
 const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: Settings, botStyles: Styles) => {
+	botSettings: BotSettings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-media-display-image-container")
 		|| classList.contains("rcb-media-display-video-container")) {
 		attributes["style"] = {

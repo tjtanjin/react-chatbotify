@@ -1,15 +1,15 @@
 import { useContext, createContext, Dispatch, SetStateAction } from "react";
 
-import { Styles } from "../types/Styles";
+import { BotStyles } from "../types/BotStyles";
 
 /**
  * Creates the useBotStyles() hook to manage bot botStyles.
  */
-type StylesContextType = {
-	botStyles: Styles;
-	setBotStyles: Dispatch<SetStateAction<Styles>>;
+type BotStylesContextType = {
+	botStyles: BotStyles;
+	setBotStyles: Dispatch<SetStateAction<BotStyles>>;
 }
-const BotStylesContext = createContext<StylesContextType>({botStyles: {}, setBotStyles: () => null});
+const BotStylesContext = createContext<BotStylesContextType>({botStyles: {}, setBotStyles: () => null});
 const useBotStyles = () => useContext(BotStylesContext);
 
 export {

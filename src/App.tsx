@@ -119,9 +119,8 @@ function App() {
 							userBubble: {showAvatar: true},
 							botBubble: {showAvatar: true},
 							voice: {disabled: false},
-							notification: {disabled: true}
 						}}
-						//themes={{name: "retro"}}
+						themes={{name: "retro"}}
 					></ChatBot>
 				</div>
 			</header>

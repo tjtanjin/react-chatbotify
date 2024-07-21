@@ -6,7 +6,8 @@ import { Block } from "./types/Block";
 import { BlockParams } from "./types/BlockParams";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
-import { Settings } from "./types/Settings";
+import { BotSettings } from "./types/BotSettings";
+import { BotStyles } from "./types/BotStyles";
 import { Theme } from "./types/Theme";
 import { Button } from "./constants/Button";
 import { DefaultSettings } from "./constants/DefaultSettings";
@@ -19,6 +20,6 @@ export { BotSettingsContext, MessagesContext, PathsContext };
 export { Button, DefaultSettings, DefaultStyles };
 
 // type exports
-export type { Block, BlockParams, Flow, Message, Settings, Theme };
+export type { Block, BlockParams, Flow, Message, BotSettings, BotStyles, Theme };
 
 export default ChatBot;

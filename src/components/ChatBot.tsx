@@ -6,8 +6,8 @@ import { isDesktop } from "../utils/displayChecker";
 import { BotSettingsContext } from "../context/BotSettingsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
-import { Settings } from "../types/Settings";
-import { Styles } from "../types/Styles";
+import { BotSettings } from "../types/BotSettings";
+import { BotStyles } from "../types/BotStyles";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Theme } from "../types/Theme";
@@ -18,7 +18,8 @@ import { BotStylesContext } from "../context/BotStylesContext";
  * Initializes providers for chatbot.
  *
  * @param flow conversation flow for the bot
- * @param botSettings settings to setup the bot
+ * @param settings settings to setup the bot
+ * @param styles styles to setup the bot
  * @param themes themes to apply to the bot
  */
 const ChatBot = ({
@@ -28,8 +29,8 @@ const ChatBot = ({
 	themes,
 }: {
 	flow?: Flow,
-	settings?: Settings
-	styles?: Styles,
+	settings?: BotSettings
+	styles?: BotStyles,
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
 

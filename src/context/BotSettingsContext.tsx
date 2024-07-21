@@ -1,15 +1,15 @@
 import { useContext, createContext, Dispatch, SetStateAction } from "react";
 
-import { Settings } from "../types/Settings";
+import { BotSettings } from "../types/BotSettings";
 
 /**
  * Creates the useBotSettings() hook to manage bot botSettings.
  */
-type SettingsContextType = {
-	botSettings: Settings;
-	setBotSettings: Dispatch<SetStateAction<Settings>>;
+type BotSettingsContextType = {
+	botSettings: BotSettings;
+	setBotSettings: Dispatch<SetStateAction<BotSettings>>;
 }
-const BotSettingsContext = createContext<SettingsContextType>({botSettings: {}, setBotSettings: () => null});
+const BotSettingsContext = createContext<BotSettingsContextType>({botSettings: {}, setBotSettings: () => null});
 const useBotSettings = () => useContext(BotSettingsContext);
 
 export {

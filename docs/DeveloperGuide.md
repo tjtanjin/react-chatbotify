@@ -78,13 +78,14 @@ Without boring you with the details, the more obvious components would be the *C
 
 ### Context
 
-The chatbot uses **3 contexts** for managing global information as well as exposing advance functionalities to developers:
+The chatbot uses **4 contexts** for managing global information as well as exposing advance functionalities to developers:
 
-- SettingsContext
+- BotSettingsContext
+- BotStylesContext
 - MessagesContext
 - PathsContext
 
-As their names suggest, *SettingsContext* is used to manage bot options, *MessagesContext* handles chat messages while *PathsContext* deals with the paths for the chatbot. These context are also **exported for advanced users** to have even more granular control over the chatbot.
+As their names suggest, *BotSettingsContext* is used to manage bot settings, *BotStylesContext* is used to manage bot styles, *MessagesContext* handles chat messages while *PathsContext* deals with the paths for the chatbot. These contexts are also **exported for advanced users** to have even more granular control over the chatbot.
 
 ### Services
 

@@ -8,7 +8,7 @@ import NotificationButton from "../components/Buttons/NotificationButton/Notific
 import VoiceButton from "../components/Buttons/VoiceButton/VoiceButton";
 import SendButton from "../components/Buttons/SendButton/SendButton";
 import { ButtonConfig } from "../types/internal/ButtonConfig";
-import { Settings } from "../types/Settings";
+import { BotSettings } from "../types/BotSettings";
 import { Flow } from "../types/Flow";
 import { Button } from "../constants/Button";
 
@@ -23,7 +23,7 @@ const isButton = (value: string): value is (keyof typeof Button) => {
  * @param buttonComponentMap a mapping between default buttons and their components
  */
 export const getButtonConfig = (
-	botSettings: Settings,
+	botSettings: BotSettings,
 	buttonComponentMap: {[x: string]: () => JSX.Element}
 ): ButtonConfig => {
 	const buttonDisabledMap = {

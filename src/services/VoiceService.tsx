@@ -1,6 +1,6 @@
 import { RefObject, Dispatch, SetStateAction } from "react";
 
-import { Settings } from "../types/Settings";
+import { BotSettings } from "../types/BotSettings";
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
@@ -20,7 +20,7 @@ let mediaRecorder: MediaRecorder | null = null;
  * @param inputRef reference to textarea for input
  */
 export const startVoiceRecording = (
-	botSettings: Settings,
+	botSettings: BotSettings,
 	handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
@@ -46,7 +46,7 @@ export const startVoiceRecording = (
  * @param inputRef reference to textarea for input
  */
 const startSpeechRecognition = (
-	botSettings: Settings,
+	botSettings: BotSettings,
 	handleToggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
@@ -177,7 +177,7 @@ export const stopVoiceRecording = () => {
  * @param keepVoiceOn boolean indicating if voice was on and thus is to be kept toggled on
  * @param botSettings options provided to the bot
  */
-export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botSettings: Settings) => {
+export const syncVoiceWithChatInput = (keepVoiceOn: boolean, botSettings: BotSettings) => {
 
 	if (botSettings.voice?.disabled || !botSettings.chatInput?.blockSpam || !recognition) {
 		return;

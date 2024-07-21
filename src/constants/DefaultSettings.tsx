@@ -1,4 +1,4 @@
-import { Settings } from "../types/Settings"
+import { BotSettings } from "../types/BotSettings"
 import { Button } from "./Button";
 
 import actionDisabledIcon from "../assets/action_disabled_icon.svg";
@@ -15,7 +15,7 @@ import audioIcon from "../assets/audio_icon.svg";
 import notificationSound from "../assets/notification_sound.wav";
 
 // default options provided to the bot
-export const DefaultSettings: Settings = {
+export const DefaultSettings: BotSettings = {
 	// tracks state of chat window, also the default state to load it in
 	isOpen: false,
 

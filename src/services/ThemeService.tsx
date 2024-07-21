@@ -1,5 +1,5 @@
-import { Settings } from "../types/Settings";
-import { Styles } from "../types/Styles";
+import { BotSettings } from "../types/BotSettings";
+import { BotStyles } from "../types/BotStyles";
 import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
@@ -9,7 +9,7 @@ const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
  * 
  * @param theme theme to process and retrieve settings for
  */
-export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
+export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: BotSettings, styles: BotStyles}> => {
 	const { name, version, base_url = DEFAULT_URL } = theme;
 
 	let themeVersion = version;
