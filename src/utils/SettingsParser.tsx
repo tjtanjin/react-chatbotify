@@ -1,3 +1,5 @@
+import { isValidElement } from "react";
+
 import { processAndFetchThemeConfig } from "../services/ThemeService";
 import { BotSettings } from "../types/BotSettings";
 import { BotStyles } from "../types/BotStyles";
@@ -6,7 +8,7 @@ import { DefaultSettings } from "../constants/DefaultSettings";
 import { DefaultStyles } from "../constants/DefaultStyles";
 
 /**
- * Parses default settings with user provided options to generate final bot botSettings.
+ * Parses default settings and styles with user provided config to generate final bot bot settings and styles.
  * 
  * @param providedSettings settings provided by the user to the bot
  * @param providedStyles styles provided by the user to the bot
@@ -50,15 +52,15 @@ export const parseConfig = async (providedSettings: BotSettings | undefined,
 }
 
 /**
- * Combines default and provided options.
+ * Combines default and provided config.
  * 
- * @param providedOptions options provided by the user to the bot
- * @param baseOptions the base options that the provided options will overwrite
+ * @param preferredConfig config provided by the user to the bot
+ * @param baseConfig the base config that the provided config will overwrite
  */
-const getCombinedConfig = (preferredOptions: BotSettings | BotStyles, baseConfig: BotSettings |
+const getCombinedConfig = (preferredConfig: BotSettings | BotStyles, baseConfig: BotSettings |
 	BotStyles): BotSettings | BotStyles => {
 
-	const stack: Array<{ source: object, target: object }> = [{ source: preferredOptions, target: baseConfig }];
+	const stack: Array<{ source: object, target: object }> = [{ source: preferredConfig, target: baseConfig }];
 	
 	while (stack.length > 0) {
 		const poppedItem = stack.pop();
@@ -69,7 +71,9 @@ const getCombinedConfig = (preferredOptions: BotSettings | BotStyles, baseConfig
 		const { source, target } = poppedItem;
 		for (const key of Object.keys(source)) {
 			const keyAsObjectType = key as keyof object;
-			if (
+			if (isValidElement(source[keyAsObjectType])) {
+				target[keyAsObjectType] = source[keyAsObjectType];
+			} else if (
 				typeof source[keyAsObjectType] === 'object' && 
 				source[keyAsObjectType] !== null && 
 				keyAsObjectType !== 'buttons'
