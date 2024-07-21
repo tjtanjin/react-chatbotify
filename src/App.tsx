@@ -120,7 +120,6 @@ function App() {
 							botBubble: {showAvatar: true},
 							voice: {disabled: false},
 						}}
-						themes={{name: "retro"}}
 					></ChatBot>
 				</div>
 			</header>
