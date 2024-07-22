@@ -1,7 +1,7 @@
 import React, { Fragment  } from "react";
 
 import { useSettings } from "../../context/SettingsContext";
-import { useBotStyles } from "../../context/BotStylesContext";
+import { useStyles } from "../../context/StylesContext";
 
 import "./ChatBotHeader.css";
 
@@ -19,13 +19,13 @@ const ChatBotHeader = ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// styles for header
 	const headerStyle: React.CSSProperties = {
 		background: `linear-gradient(to right, ${settings.general?.secondaryColor },
 			${settings.general?.primaryColor})`,
-		...botStyles.headerStyle
+		...styles.headerStyle
 	}
 
 	return (

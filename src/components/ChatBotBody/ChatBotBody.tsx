@@ -2,7 +2,7 @@ import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEve
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import { useSettings } from "../../context/SettingsContext";
-import { useBotStyles } from "../../context/BotStylesContext";
+import { useStyles } from "../../context/StylesContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
 
@@ -50,14 +50,14 @@ const ChatBotBody = ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// handles messages between user and the chat bot
 	const { messages } = useMessages();
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
-		...botStyles?.bodyStyle,
+		...styles?.bodyStyle,
 		scrollbarWidth: settings.chatWindow?.showScrollbar ? "auto" : "none",
 	}
 
@@ -66,7 +66,7 @@ const ChatBotBody = ({
 		backgroundColor: settings.general?.primaryColor,
 		color: "#fff",
 		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
-		...botStyles.userBubbleStyle
+		...styles.userBubbleStyle
 	};
 	const userBubbleEntryStyle = settings.userBubble?.animate ? "rcb-user-message-entry" : "";
 
@@ -75,7 +75,7 @@ const ChatBotBody = ({
 		backgroundColor: settings.general?.secondaryColor,
 		color: "#fff",
 		maxWidth: settings.botBubble?.showAvatar ? "65%" : "70%",
-		...botStyles.botBubbleStyle
+		...styles.botBubbleStyle
 	};
 	const botBubbleEntryStyle = settings.botBubble?.animate ? "rcb-bot-message-entry" : "";
 

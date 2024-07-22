@@ -1,7 +1,7 @@
-import { BotStyles } from "../../types/BotStyles"
+import { Styles } from "../../types/Styles"
 
 // default options provided to the bot
-export const DefaultStyles: BotStyles = {
+export const DefaultStyles: Styles = {
 	// styles
 	tooltipStyle: {},
 	chatButtonStyle: {},

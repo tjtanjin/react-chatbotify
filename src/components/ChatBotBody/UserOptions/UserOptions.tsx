@@ -2,7 +2,7 @@
 import { useEffect, useState, MouseEvent } from "react";
 
 import { useSettings } from "../../../context/SettingsContext";
-import { useBotStyles } from "../../../context/BotStylesContext";
+import { useStyles } from "../../../context/StylesContext";
 import { usePaths } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
 
@@ -29,7 +29,7 @@ const UserOptions= ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// handles paths of the user
 	const { paths } = usePaths();
@@ -46,7 +46,7 @@ const UserOptions= ({
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
 		backgroundColor: "#fff",
-		...botStyles.botOptionStyle
+		...styles.botOptionStyle
 	};
 
 	// styles for bot hovered option
@@ -54,7 +54,7 @@ const UserOptions= ({
 		color: "#fff" ,
 		borderColor: settings.general?.primaryColor,
 		backgroundColor: settings.general?.primaryColor,
-		...botStyles.botOptionHoveredStyle
+		...styles.botOptionHoveredStyle
 	};
 
 	// when moving on from current path, we also want to disable options

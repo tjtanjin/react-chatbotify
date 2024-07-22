@@ -1,5 +1,5 @@
 import { useSettings } from "../../context/SettingsContext";
-import { useBotStyles } from "../../context/BotStylesContext";
+import { useStyles } from "../../context/StylesContext";
 
 import "./LoadingSpinner.css";
 
@@ -12,12 +12,12 @@ const LoadingSpinner = () => {
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// styles for spinner
 	const loadingSpinnerStyle: React.CSSProperties = {
 		borderTop: `4px solid ${settings.general?.primaryColor}`,
-		...botStyles.loadingSpinnerStyle
+		...styles.loadingSpinnerStyle
 	};
 
 	return (

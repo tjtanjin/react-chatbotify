@@ -1,5 +1,5 @@
 import { useSettings } from "../../context/SettingsContext";
-import { useBotStyles } from "../../context/BotStylesContext";
+import { useStyles } from "../../context/StylesContext";
 
 import "./ChatHistoryLineBreak.css";
 
@@ -12,11 +12,11 @@ const ChatHistoryLineBreak = () => {
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	return (
 		<div className="rcb-line-break-container">
-			<div style={botStyles.chatHistoryLineBreakStyle} className="rcb-line-break-text">
+			<div style={styles.chatHistoryLineBreakStyle} className="rcb-line-break-text">
 				{settings.chatHistory?.chatHistoryLineBreakText}
 			</div>
 		</div>

@@ -1,7 +1,7 @@
 import { RefObject, useState, MouseEvent, Dispatch, SetStateAction } from "react";
 
 import { useSettings } from "../../../context/SettingsContext";
-import { useBotStyles } from "../../../context/BotStylesContext";
+import { useStyles } from "../../../context/StylesContext";
 
 import "./ChatMessagePrompt.css";
 
@@ -29,7 +29,7 @@ const ChatMessagePrompt = ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// tracks if chat message prompt is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const ChatMessagePrompt = ({
 	const chatMessagePromptHoveredStyle: React.CSSProperties = {
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
-		...botStyles.chatMessagePromptHoveredStyle
+		...styles.chatMessagePromptHoveredStyle
 	};
 
 	/**
@@ -112,7 +112,7 @@ const ChatMessagePrompt = ({
 			<div
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? chatMessagePromptHoveredStyle : botStyles.chatMessagePromptStyle}
+				style={isHovered ? chatMessagePromptHoveredStyle : styles.chatMessagePromptStyle}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					scrollToBottom(600);

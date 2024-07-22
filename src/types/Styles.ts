@@ -1,7 +1,7 @@
 /**
  * Defines the styles for the chat bot.
  */
-export type BotStyles = {
+export type Styles = {
 	// styles
 	tooltipStyle?: React.CSSProperties;
 	chatButtonStyle?: React.CSSProperties;

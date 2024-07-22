@@ -2,7 +2,7 @@
 import { useEffect, useState, MouseEvent } from "react";
 
 import { useSettings } from "../../../context/SettingsContext";
-import { useBotStyles } from "../../../context/BotStylesContext";
+import { useStyles } from "../../../context/StylesContext";
 import { usePaths } from "../../../context/PathsContext";
 
 import "./UserCheckboxes.css";
@@ -32,7 +32,7 @@ const UserCheckboxes = ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// handles paths of the user
 	const { paths } = usePaths();
@@ -48,7 +48,7 @@ const UserCheckboxes = ({
 		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
-		...botStyles.botCheckboxRowStyle
+		...styles.botCheckboxRowStyle
 	};
 
 	// styles for bot checkbox next button
@@ -57,14 +57,14 @@ const UserCheckboxes = ({
 			? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
-		...botStyles.botCheckboxNextStyle
+		...styles.botCheckboxNextStyle
 	};
 
 	// styles for bot checkmark
 	const botCheckMarkStyle: React.CSSProperties = {
 		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
 		color: "transparent",
-		...botStyles.botCheckMarkStyle
+		...styles.botCheckMarkStyle
 	};
 
 	// styles for bot selected checkmark
@@ -73,7 +73,7 @@ const UserCheckboxes = ({
 		color: "#fff",
 		borderColor: settings.general?.primaryColor,
 		backgroundColor: settings.general?.primaryColor,
-		...botStyles.botCheckMarkSelectedStyle
+		...styles.botCheckMarkSelectedStyle
 	};
 
 	// when moving on from current path, we also want to disable checkboxes

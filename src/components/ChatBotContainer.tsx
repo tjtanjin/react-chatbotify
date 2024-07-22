@@ -25,7 +25,7 @@ import {
 	getButtonConfig
 } from "../utils/buttonBuilder";
 import { useSettings } from "../context/SettingsContext";
-import { useBotStyles } from "../context/BotStylesContext";
+import { useStyles } from "../context/StylesContext";
 import { useMessages } from "../context/MessagesContext";
 import { usePaths } from "../context/PathsContext";
 import { Block } from "../types/Block";
@@ -47,7 +47,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const { settings, setSettings } = useSettings();
 
 	// handles setting of styles for the chat bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// handles messages between user and the chat bot
 	const { messages, setMessages } = useMessages();
@@ -156,7 +156,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				};
 				setMessages([messageContent]);
 				if (settings.chatHistory?.autoLoad) {
-					loadChatHistory(settings, botStyles, chatHistory, setMessages, setTextAreaDisabled);
+					loadChatHistory(settings, styles, chatHistory, setMessages, setTextAreaDisabled);
 				}
 			}
 		}
@@ -545,7 +545,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const showChatHistory = useCallback((chatHistory: string) => {
 		setIsLoadingChatHistory(true);
 		setTextAreaDisabled(true);
-		loadChatHistory(settings, botStyles, chatHistory, setMessages, setTextAreaDisabled);
+		loadChatHistory(settings, styles, chatHistory, setMessages, setTextAreaDisabled);
 	}, [settings]);
 
 	/**
@@ -714,7 +714,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const getChatWindowStyle = () => {
 		if (!isDesktop && !settings.general?.embedded) {
 			return {
-				...botStyles.chatWindowStyle,
+				...styles.chatWindowStyle,
 				borderRadius: "0px",
 				left: "0px",
 				right: "auto",
@@ -724,7 +724,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				height: `${viewportHeight}px`,
 			}
 		} else {
-			return botStyles.chatWindowStyle;
+			return styles.chatWindowStyle;
 		}
 	}
 

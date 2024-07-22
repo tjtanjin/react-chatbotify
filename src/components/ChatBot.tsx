@@ -7,12 +7,12 @@ import { SettingsContext } from "../context/SettingsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
 import { Settings } from "../types/Settings";
-import { BotStyles } from "../types/BotStyles";
+import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Theme } from "../types/Theme";
 import { welcomeFlow } from "../constants/internal/WelcomeFlow";
-import { BotStylesContext } from "../context/BotStylesContext";
+import { StylesContext } from "../context/StylesContext";
 
 /**
  * Initializes providers for chatbot.
@@ -30,7 +30,7 @@ const ChatBot = ({
 }: {
 	flow?: Flow,
 	settings?: Settings
-	styles?: BotStyles,
+	styles?: Styles,
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
 
@@ -41,7 +41,7 @@ const ChatBot = ({
 	const [botSettings, setBotSettings] = useState<Settings>({});
 
 	// handles setting of styles for the chat bot
-	const [botStyles, setBotStyles] = useState<BotStyles>({});
+	const [botStyles, setBotStyles] = useState<Styles>({});
 
 	// handles messages between user and the chat bot
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -81,15 +81,15 @@ const ChatBot = ({
 	};
 
 	/**
-	 * Wraps bot styles provider around child element.
+	 * Wraps styles provider around child element.
 	 * 
 	 * @param children child element to wrap around
 	 */
 	const wrapStylesProvider = (children: JSX.Element) => {
 		return (
-			<BotStylesContext.Provider value={{botStyles, setBotStyles}}>
+			<StylesContext.Provider value={{styles: botStyles, setStyles: setBotStyles}}>
 				{children}
-			</BotStylesContext.Provider>
+			</StylesContext.Provider>
 		);
 	};
 

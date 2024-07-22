@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { isDesktop } from "../../utils/displayChecker";
 import { useSettings } from "../../context/SettingsContext";
-import { useBotStyles } from "../../context/BotStylesContext";
+import { useStyles } from "../../context/StylesContext";
 
 import "./ChatBotTooltip.css";
 
@@ -15,7 +15,7 @@ const ChatBotTooltip = () => {
 	const { settings, setSettings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// tracks whether to show tooltip
 	const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -33,8 +33,8 @@ const ChatBotTooltip = () => {
 			if (isDesktop) {
 				let offset;
 				if (settings.isOpen) {
-					offset = (botStyles.chatWindowStyle?.width as number || 375) -
-					(botStyles.chatButtonStyle?.width as number || 75)
+					offset = (styles.chatWindowStyle?.width as number || 375) -
+					(styles.chatButtonStyle?.width as number || 75)
 				} else {
 					offset = 0;
 				}
@@ -65,11 +65,11 @@ const ChatBotTooltip = () => {
 	// styles for tooltip
 	const tooltipStyle: React.CSSProperties = {
 		transform: `translateX(-${tooltipOffset}px)`,
-		right: (botStyles.chatButtonStyle?.width as number || 75) + 40,
+		right: (styles.chatButtonStyle?.width as number || 75) + 40,
 		bottom: 30,
 		backgroundColor: settings.general?.secondaryColor,
 		color: settings.general?.secondaryColor,
-		...botStyles.tooltipStyle
+		...styles.tooltipStyle
 	};
 
 	// styles for tooltip tail

@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 
 import { useSettings } from '../../../context/SettingsContext';
-import { useBotStyles } from '../../../context/BotStylesContext';
+import { useStyles } from '../../../context/StylesContext';
 
 import './MediaDisplay.css';
 
@@ -26,13 +26,13 @@ const MediaDisplay = ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// styles for media display
 	const mediaDisplayContainerStyle: CSSProperties = {
 		backgroundColor: settings.general?.primaryColor,
 		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
-		...botStyles.mediaDisplayContainerStyle
+		...styles.mediaDisplayContainerStyle
 	};
 
 	return (

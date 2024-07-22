@@ -11,7 +11,7 @@ import React, {
 
 import { isDesktop } from "../../utils/displayChecker";
 import { useSettings } from "../../context/SettingsContext";
-import { useBotStyles } from "../../context/BotStylesContext";
+import { useStyles } from "../../context/StylesContext";
 
 import "./ChatBotInput.css";
 
@@ -54,7 +54,7 @@ const ChatBotInput = ({
 	const { settings } = useSettings();
 
 	// handles styles for bot
-	const { botStyles } = useBotStyles();
+	const { styles } = useStyles();
 
 	// tracks if chat input is focused
 	const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -62,7 +62,7 @@ const ChatBotInput = ({
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {
 		boxSizing: isDesktop ? "content-box" : "border-box",
-		...botStyles.chatInputAreaStyle,
+		...styles.chatInputAreaStyle,
 	};
 
 	// styles for focused text area
@@ -70,8 +70,8 @@ const ChatBotInput = ({
 		outline: !textAreaDisabled ? "none" : "",
 		boxShadow: !textAreaDisabled ? `0 0 5px ${settings.general?.primaryColor}` : "",
 		boxSizing: isDesktop ? "content-box" : "border-box",
-		...botStyles.chatInputAreaStyle, // by default inherit the base style for input area
-		...botStyles.chatInputAreaFocusedStyle,
+		...styles.chatInputAreaStyle, // by default inherit the base style for input area
+		...styles.chatInputAreaFocusedStyle,
 	};
 
 	// styles for disabled text area
@@ -79,20 +79,20 @@ const ChatBotInput = ({
 		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 		caretColor: "transparent",
 		boxSizing: isDesktop ? "content-box" : "border-box",
-		...botStyles.chatInputAreaStyle, // by default inherit the base style for input area
-		...botStyles.chatInputAreaDisabledStyle,
+		...styles.chatInputAreaStyle, // by default inherit the base style for input area
+		...styles.chatInputAreaDisabledStyle,
 	};
 
 	// styles for character limit
 	const characterLimitStyle: React.CSSProperties = {
 		color: "#989898",
-		...botStyles.characterLimitStyle
+		...styles.characterLimitStyle
 	};
 
 	// styles for character limit reached
 	const characterLimitReachedStyle: React.CSSProperties = {
 		color: "#ff0000",
-		...botStyles.characterLimitReachedStyle
+		...styles.characterLimitReachedStyle
 	};
 
 	// styles for input placeholder
@@ -174,7 +174,7 @@ const ChatBotInput = ({
 					setHasFlowStarted(true);
 				}
 			}}
-			style={botStyles.chatInputContainerStyle} 
+			style={styles.chatInputContainerStyle} 
 			className="rcb-chat-input"
 		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
