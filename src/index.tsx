@@ -6,7 +6,7 @@ import { StylesContext } from "./context/StylesContext";
 import { MessagesContext } from "./context/MessagesContext";
 import { PathsContext } from "./context/PathsContext";
 import { Block } from "./types/Block";
-import { AttributeParams } from "./types/AttributeParams";
+import { Params } from "./types/Params";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
 import { Settings } from "./types/Settings";
@@ -21,7 +21,7 @@ export { getDefaultSettings, getDefaultStyles };
 export { SettingsContext, StylesContext, MessagesContext, PathsContext };
 
 // type exports
-export type { Block, AttributeParams, Flow, Message, Settings, Styles, Theme };
+export type { Block, Params, Flow, Message, Settings, Styles, Theme };
 
 // constant exports
 export { Button };

@@ -1,5 +1,5 @@
 import { Block } from "../../types/Block";
-import { AttributeParams } from "../../types/AttributeParams";
+import { Params } from "../../types/Params";
 
 /**
  * Handles processing of chat disabled in current block.
@@ -9,7 +9,7 @@ import { AttributeParams } from "../../types/AttributeParams";
  * @param params contains parameters that can be used/passed into attributes
  */
 export const processChatDisabled = async (block: Block, setTextAreaDisabled: (inputDisabled: boolean) => void,
-	params: AttributeParams) => {
+	params: Params) => {
 
 	const chatDisabled = block.chatDisabled;
 	if (!chatDisabled) {

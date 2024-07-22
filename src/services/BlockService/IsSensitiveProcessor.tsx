@@ -1,5 +1,5 @@
 import { Block } from "../../types/Block";
-import { AttributeParams } from "../../types/AttributeParams";
+import { Params } from "../../types/Params";
 
 /**
  * Handles processing of is sensitive in current block.
@@ -9,7 +9,7 @@ import { AttributeParams } from "../../types/AttributeParams";
  * @param params contains parameters that can be used/passed into attributes
  */
 export const processIsSensitive = async (block: Block, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
-	params: AttributeParams) => {
+	params: Params) => {
 
 	const isSensitive = block.isSensitive;
 	if (!isSensitive) {

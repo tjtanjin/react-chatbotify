@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 import { Block } from "../../types/Block";
-import { AttributeParams } from "../../types/AttributeParams";
+import { Params } from "../../types/Params";
 
 /**
  * Handles processing of path in current block.
@@ -10,7 +10,7 @@ import { AttributeParams } from "../../types/AttributeParams";
  * @param params contains parameters that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
-export const processPath = async (block: Block, params: AttributeParams,
+export const processPath = async (block: Block, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const nextPath = block.path;

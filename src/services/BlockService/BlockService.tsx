@@ -8,7 +8,7 @@ import { processOptions } from "./OptionProcessor";
 import { processPath } from "./PathProcessor";
 import { processComponent } from "./ComponentProcessor";
 import { processTransition } from "./TransitionProcessor";
-import { AttributeParams } from "../../types/AttributeParams";
+import { Params } from "../../types/Params";
 import { Block } from "../../types/Block";
 import { processChatDisabled } from "./ChatDisabledProcessor";
 import { processIsSensitive } from "./IsSensitiveProcessor";
@@ -25,7 +25,7 @@ import { processIsSensitive } from "./IsSensitiveProcessor";
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param handleActionInput handles action input from user 
  */
-export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: AttributeParams,
+export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
 	setPaths: Dispatch<SetStateAction<string[]>>, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
@@ -77,7 +77,7 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Attr
  * @param params contains utilities that can be used/passed into attributes
  * @param setPaths updates the paths taken by the user
  */
-export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: AttributeParams,
+export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
 	setPaths: Dispatch<SetStateAction<string[]>>) => {
 
 	const block = flow[path];

@@ -1,5 +1,5 @@
 import { Flow } from "../../types/Flow";
-import { AttributeParams } from "../../types/AttributeParams";
+import { Params } from "../../types/Params";
 
 // default welcome options
 const helpOptions = ["Quickstart", "API Docs", "Examples", "Github", "Discord"];
@@ -32,7 +32,7 @@ export const welcomeFlow: Flow = {
 	},
 	process_options: {
 		transition: {duration: 0},
-		path: (params: AttributeParams) => {
+		path: (params: Params) => {
 			let link = "";
 			switch (params.userInput) {
 			case "Quickstart":

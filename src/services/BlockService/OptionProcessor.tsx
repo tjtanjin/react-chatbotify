@@ -1,6 +1,6 @@
 import UserOptions from "../../components/ChatBotBody/UserOptions/UserOptions";
 import { Block } from "../../types/Block";
-import { AttributeParams } from "../../types/AttributeParams";
+import { Params } from "../../types/Params";
 import { Flow } from "../../types/Flow";
 
 /**
@@ -13,7 +13,7 @@ import { Flow } from "../../types/Flow";
  */
 export const processOptions = async (block: Block, path: keyof Flow,
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>,
-	params: AttributeParams) => {
+	params: Params) => {
 
 	const options = block.options;
 	if (!options) {
