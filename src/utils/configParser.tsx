@@ -122,8 +122,12 @@ const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
 	seen.set(obj, root);
 
 	while (stack.length) {
-		const { source, target } = stack.pop()!;
-        
+		const poppedItem = stack.pop();
+		if (poppedItem == null) {
+			continue;
+		}
+
+		const { source, target } = poppedItem;
 		for (const key in source) {
 			if (Object.prototype.hasOwnProperty.call(source, key)) {
 				const value = source[key];
