@@ -1,5 +1,5 @@
 import { Block } from "../../types/Block";
-import { BlockParams } from "../../types/BlockParams";
+import { AttributeParams } from "../../types/AttributeParams";
 
 /**
  * Handles processing of component in current block.
@@ -7,7 +7,7 @@ import { BlockParams } from "../../types/BlockParams";
  * @param block current block being processed
  * @param params contains parameters that can be used/passed into attributes
  */
-export const processComponent = async (block: Block, params: BlockParams) => {
+export const processComponent = async (block: Block, params: AttributeParams) => {
 
 	const element = block.component;
 	if (!element) {

@@ -6,7 +6,7 @@ import { BotStylesContext } from "./context/BotStylesContext";
 import { MessagesContext } from "./context/MessagesContext";
 import { PathsContext } from "./context/PathsContext";
 import { Block } from "./types/Block";
-import { BlockParams } from "./types/BlockParams";
+import { AttributeParams } from "./types/AttributeParams";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
 import { BotSettings } from "./types/BotSettings";
@@ -21,7 +21,7 @@ export { getDefaultBotSettings, getDefaultBotStyles };
 export { BotSettingsContext, BotStylesContext, MessagesContext, PathsContext };
 
 // type exports
-export type { Block, BlockParams, Flow, Message, BotSettings, BotStyles, Theme };
+export type { Block, AttributeParams, Flow, Message, BotSettings, BotStyles, Theme };
 
 // constant exports
 export { Button };

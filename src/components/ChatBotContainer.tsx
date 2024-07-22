@@ -31,7 +31,7 @@ import { usePaths } from "../context/PathsContext";
 import { Block } from "../types/Block";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
-import { BlockParams } from "../types/BlockParams";
+import { AttributeParams } from "../types/AttributeParams";
 import { Button } from "../constants/Button";
 
 import "./ChatBotContainer.css";
@@ -285,7 +285,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			injectMessage, streamMessage, openChat};
 
 		// calls the new block for preprocessing upon change to path.
-		const callNewBlock = async (currPath: keyof Flow, block: Block, params: BlockParams) => {
+		const callNewBlock = async (currPath: keyof Flow, block: Block, params: AttributeParams) => {
 			await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setTextAreaSensitiveMode,
 				setPaths, setTimeoutId, handleActionInput);
 
