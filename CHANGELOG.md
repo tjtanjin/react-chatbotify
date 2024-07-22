@@ -11,7 +11,7 @@
 
 **Note:**
 
-This release has a minor breaking change for developers who are using advance custom paths. If you are currently initializing paths with `["start"]`, note that specifying the `start` block is no longer needed. This means you can simply use `[]` as shown in the updated custom paths example [here](https://react-chatbotify.tjtanjin.com/docs/examples/custom_paths).
+This release has a minor breaking change for developers who are using advance custom paths. If you are currently initializing paths with `["start"]`, note that specifying the `start` block is no longer needed. This means you can simply use `[]` as shown in the updated custom paths example [here](https://react-chatbotify.com/docs/examples/custom_paths).
 
 ## v1.6.3 (05-06-2024)
 
@@ -45,7 +45,7 @@ This release has a minor breaking change for developers who are using advance cu
 ## v1.6.0 (11-05-2024)
 
 **Added:**
-- Added a new `sensitiveInput` configuration section to cater for sensitive information (refer to [API documentation](https://react-chatbotify.tjtanjin.com/docs/api/bot_options#sensitiveinput))
+- Added a new `sensitiveInput` configuration section to cater for sensitive information (refer to [API documentation](https://react-chatbotify.com/docs/api/bot_options#sensitiveinput))
 - Added a new `autoLoad` property to the `chatHistory` section which allows chat history messages to be automatically loaded on start
 - Added a new `dangerouslySetInnerHtml` property to both `userBubble` and `botBubble` which allows setting of raw HTML content (use with caution)
 
@@ -60,7 +60,7 @@ This release has a minor breaking change for developers who are using advance cu
 
 **Note:**
 
-This update contains significant additions but they have been documented on the [API documentation](https://react-chatbotify.tjtanjin.com/docs/api/bot_options#sensitiveinput) and you will also find new live examples for [Sensitive Input](https://react-chatbotify.tjtanjin.com/docs/examples/sensitive_input) and [Markup Message](https://react-chatbotify.tjtanjin.com/docs/examples/markup_message). This will be one of the last few (if not the last) release before v2.0.0 arrives. Feel free to join [discord](https://discord.gg/6R4DK4G5Zh) to stay up to date!
+This update contains significant additions but they have been documented on the [API documentation](https://react-chatbotify.com/docs/api/bot_options#sensitiveinput) and you will also find new live examples for [Sensitive Input](https://react-chatbotify.com/docs/examples/sensitive_input) and [Markup Message](https://react-chatbotify.com/docs/examples/markup_message). This will be one of the last few (if not the last) release before v2.0.0 arrives. Feel free to join [discord](https://discord.gg/6R4DK4G5Zh) to stay up to date!
 
 ## v1.5.2 (08-04-2024)
 
@@ -95,7 +95,7 @@ This update contains significant additions but they have been documented on the 
 ## v1.4.0 (22-03-2024)
 
 **Added:**
-- A new `chatWindow` section has been added into the [**Configurations**](https://react-chatbotify.tjtanjin.com/docs/introduction/bot_options#configurations) category with the following default values:
+- A new `chatWindow` section has been added into the [**Configurations**](https://react-chatbotify.com/docs/introduction/bot_options#configurations) category with the following default values:
   ```
   chatWindow: {
     showScrollbar: false,
@@ -105,7 +105,7 @@ This update contains significant additions but they have been documented on the 
     messagePromptOffset: 30,
   }
   ```
-  Explanations for what each property does can be found on the [**documentation website**](https://react-chatbotify.tjtanjin.com/docs/introduction/bot_options#configurations).
+  Explanations for what each property does can be found on the [**documentation website**](https://react-chatbotify.com/docs/introduction/bot_options#configurations).
 
 **Fixed:**
 - Fixed an occasional issue where stream messages do not autoscroll when user is at the bottom of the chat
@@ -141,7 +141,7 @@ Initially planned for only bug fixes, I eventually added a whole new `chatWindow
 - Added `params.streamMessage` parameter that allows real-time streaming of messages (great for integration with LLMs)
 
 **Modified:**
-- The `isUser` field within [`Message`](https://react-chatbotify.tjtanjin.com/docs/introduction/conversations#message) component has been replaced with `sender`.
+- The `isUser` field within [`Message`](https://react-chatbotify.com/docs/introduction/conversations#message) component has been replaced with `sender`.
 - Both `params.injectMessage` and newly added `params.streamMessage` are now **async** functions (previously, `params.injectMessage` was **non-async**)
 
 **Miscellaneous:**
@@ -149,7 +149,7 @@ Initially planned for only bug fixes, I eventually added a whole new `chatWindow
 
 **Note:**
 
-The [documentation website](https://react-chatbotify.tjtanjin.com/docs/introduction/bot_options/) has been updated to reflect all the latest information. A possible "breaking" change would be `params.injectMessage` which is now **async**. Depending on your existing usage, there might not be a need to make any changes. However, if you are using multiple `params.injectMessage` in quick succession, this could mean multiple messages are being sent at once without the use of **await**.
+The [documentation website](https://react-chatbotify.com/docs/introduction/bot_options/) has been updated to reflect all the latest information. A possible "breaking" change would be `params.injectMessage` which is now **async**. Depending on your existing usage, there might not be a need to make any changes. However, if you are using multiple `params.injectMessage` in quick succession, this could mean multiple messages are being sent at once without the use of **await**.
 
 ## v1.2.0 (12-02-2024)
 
@@ -173,7 +173,7 @@ The above fixes are important for users who wish to properly support the chatbot
 
 **Note:**
 
-The above additions have been updated on the [documentation website](https://react-chatbotify.tjtanjin.com/docs/introduction/bot_options/) for reference.
+The above additions have been updated on the [documentation website](https://react-chatbotify.com/docs/introduction/bot_options/) for reference.
 
 ## v1.0.6 (10-09-2023)
 

@@ -73,12 +73,12 @@ Typescript
 - https://github.com/tjtanjin/react-chatbotify
 
 ### Quickstart
-For a thorough walkthrough on getting started, you may refer to the [**Quickstart Guide**](https://react-chatbotify.tjtanjin.com/docs/introduction/quickstart/) on the [**Documentation Website**](https://react-chatbotify.tjtanjin.com/).
+For a thorough walkthrough on getting started, you may refer to the [**Quickstart Guide**](https://react-chatbotify.com/docs/introduction/quickstart/) on the [**Documentation Website**](https://react-chatbotify.com/).
 
 ### Documentation
 A full documentation (along with a **live playground**) for the library can be found at the following link:
 
-- https://react-chatbotify.tjtanjin.com/
+- https://react-chatbotify.com/
 
 Examples on the website are also run on a live editor so feel free to explore to your heart's content!
 

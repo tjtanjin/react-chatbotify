@@ -1,6 +1,6 @@
 # React ChatBotify Showcases
 
-Welcome to the React ChatBotify Showcases! This file highlights the incredible projects built by our community using [React ChatBotify](https://react-chatbotify.tjtanjin.com). Explore these diverse projects for inspiration and see what's possible with our library.
+Welcome to the React ChatBotify Showcases! This file highlights the incredible projects built by our community using [React ChatBotify](https://react-chatbotify.com). Explore these diverse projects for inspiration and see what's possible with our library.
 
 ## What's Inside
 
@@ -22,7 +22,7 @@ Each project includes a brief description, links to the live website, the option
 
 **Description:** A documentation website for the React ChatBotify library
 
-**Website Link:** https://react-chatbotify.tjtanjin.com
+**Website Link:** https://react-chatbotify.com
 
 **Repository Link:** https://github.com/tjtanjin/react-chatbotify-docs
 

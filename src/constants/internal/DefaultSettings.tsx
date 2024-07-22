@@ -137,7 +137,7 @@ export const DefaultSettings: Settings = {
 	footer: {
 		text: (
 			<div style={{cursor: "pointer", display: "flex", flexDirection: "row", alignItems: "center", columnGap: 3}} 
-				onClick={() => window.open("https://react-chatbotify.tjtanjin.com")}
+				onClick={() => window.open("https://react-chatbotify.com")}
 			>
 				<span key={0}>Powered By </span>
 				<img key={1} style={{

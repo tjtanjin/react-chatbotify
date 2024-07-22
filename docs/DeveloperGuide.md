@@ -89,13 +89,13 @@ As their names suggest, *SettingsContext* is used to manage settings for the cha
 
 ### Services
 
-Files within the *services* folder deal with the **bulk of the logic** within the chatbot. You can infer from the file names what each file is responsible for processing. A vast majority of the processing logic concerns the [**attributes**](https://react-chatbotify.tjtanjin.com/docs/introduction/conversations#attributes) within a [**block**](https://react-chatbotify.tjtanjin.com/docs/introduction/conversations#block).
+Files within the *services* folder deal with the **bulk of the logic** within the chatbot. You can infer from the file names what each file is responsible for processing. A vast majority of the processing logic concerns the [**attributes**](https://react-chatbotify.com/docs/introduction/conversations#attributes) within a [**block**](https://react-chatbotify.com/docs/introduction/conversations#block).
 
 There are also a handful of initialisation logic for bot options, audio and voice services.
 
 ### Types
 
-Lastly, the *types* folder contains type definitions that are required for **typescript projects**. Typescript support is covered [here](https://react-chatbotify.tjtanjin.com/docs/introduction/typescript).
+Lastly, the *types* folder contains type definitions that are required for **typescript projects**. Typescript support is covered [here](https://react-chatbotify.com/docs/introduction/typescript).
 
 ## Code Documentation
 
