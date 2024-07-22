@@ -32,7 +32,7 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	// construct urls for styles.css, settings.json and settings.json
 	const cssStylesUrl = `${base_url}/${name}/${themeVersion}/styles.css`;
 	const settingsUrl = `${base_url}/${name}/${themeVersion}/settings.json`;
-	const stylesUrl = `${base_url}/${name}/${themeVersion}/styles.json`;
+	const inlineStylesUrl = `${base_url}/${name}/${themeVersion}/styles.json`;
 
 	// fetch and apply css styles
 	try {
@@ -57,12 +57,12 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	const settings = await settingsResponse.json();
 
 	// fetch and return styles
-	const stylesResponse = await fetch(stylesUrl);
-	if (!stylesResponse.ok) {
-		throw new Error(`Failed to fetch styles.json from ${stylesUrl}`);
+	const inlineStylesResponse = await fetch(inlineStylesUrl);
+	if (!inlineStylesResponse.ok) {
+		throw new Error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
 	}
-	const styles = await stylesResponse.json();
+	const inlineStyles = await inlineStylesResponse.json();
 
-	return {settings, styles}
+	return {settings, styles: inlineStyles}
 
 }
