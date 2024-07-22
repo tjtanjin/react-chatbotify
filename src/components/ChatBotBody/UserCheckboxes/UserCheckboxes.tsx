@@ -1,7 +1,7 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useBotSettings } from "../../../context/BotSettingsContext";
+import { useSettings } from "../../../context/SettingsContext";
 import { useBotStyles } from "../../../context/BotStylesContext";
 import { usePaths } from "../../../context/PathsContext";
 
@@ -29,7 +29,7 @@ const UserCheckboxes = ({
 }) => {
 
 	// handles settings for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	// handles styles for bot
 	const { botStyles } = useBotStyles();
@@ -45,34 +45,34 @@ const UserCheckboxes = ({
 
 	// styles for bot checkbox row items
 	const botCheckboxRowStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${botSettings.general?.actionDisabledIcon}), auto` : "pointer",
-		color: botSettings.general?.primaryColor,
-		borderColor: botSettings.general?.primaryColor,
+		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		color: settings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
 		...botStyles.botCheckboxRowStyle
 	};
 
 	// styles for bot checkbox next button
 	const botCheckboxNextStyle: React.CSSProperties = {
 		cursor: disabled || checkedBoxes.size < (checkboxes.min as number) 
-			? `url(${botSettings.general?.actionDisabledIcon}), auto` : "pointer",
-		color: botSettings.general?.primaryColor,
-		borderColor: botSettings.general?.primaryColor,
+			? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		color: settings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
 		...botStyles.botCheckboxNextStyle
 	};
 
 	// styles for bot checkmark
 	const botCheckMarkStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${botSettings.general?.actionDisabledIcon}), auto` : "pointer",
+		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
 		color: "transparent",
 		...botStyles.botCheckMarkStyle
 	};
 
 	// styles for bot selected checkmark
 	const botCheckMarkSelectedStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${botSettings.general?.actionDisabledIcon}), auto` : "pointer",
+		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
 		color: "#fff",
-		borderColor: botSettings.general?.primaryColor,
-		backgroundColor: botSettings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
+		backgroundColor: settings.general?.primaryColor,
 		...botStyles.botCheckMarkSelectedStyle
 	};
 
@@ -107,7 +107,7 @@ const UserCheckboxes = ({
 	};
 
 	return (
-		<div className={`rcb-checkbox-container ${botSettings.botBubble?.showAvatar ? "rcb-checkbox-offset" : ""}`}>
+		<div className={`rcb-checkbox-container ${settings.botBubble?.showAvatar ? "rcb-checkbox-offset" : ""}`}>
 			{checkboxes.items.map((key) => {
 		
 				return (
@@ -138,7 +138,7 @@ const UserCheckboxes = ({
 					event.preventDefault();
 					const userInput = Array.from(checkedItems).join(", ");
 					setDisabled(true);
-					handleActionInput(path, userInput, botSettings.chatInput?.sendCheckboxOutput as boolean);
+					handleActionInput(path, userInput, settings.chatInput?.sendCheckboxOutput as boolean);
 				}}
 			>
 			</button>

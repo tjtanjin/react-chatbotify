@@ -1,7 +1,7 @@
 /**
  * Defines the configurable options/styles for the chat bot.
  */
-export type BotSettings = {
+export type Settings = {
 	// tracks state of chat window, also the default state to load it in
 	isOpen?: boolean;
 

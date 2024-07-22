@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import ChatBotContainer from "./ChatBotContainer";
 import { parseConfig } from "../utils/configParser";
 import { isDesktop } from "../utils/displayChecker";
-import { BotSettingsContext } from "../context/BotSettingsContext";
+import { SettingsContext } from "../context/SettingsContext";
 import { MessagesContext } from "../context/MessagesContext";
 import { PathsContext } from "../context/PathsContext";
-import { BotSettings } from "../types/BotSettings";
+import { Settings } from "../types/Settings";
 import { BotStyles } from "../types/BotStyles";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
@@ -29,7 +29,7 @@ const ChatBot = ({
 	themes,
 }: {
 	flow?: Flow,
-	settings?: BotSettings
+	settings?: Settings
 	styles?: BotStyles,
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
@@ -38,7 +38,7 @@ const ChatBot = ({
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
 
 	// handles setting of settings for the chat bot
-	const [botSettings, setBotSettings] = useState<BotSettings>({});
+	const [botSettings, setBotSettings] = useState<Settings>({});
 
 	// handles setting of styles for the chat bot
 	const [botStyles, setBotStyles] = useState<BotStyles>({});
@@ -58,7 +58,7 @@ const ChatBot = ({
 	}, []);
 
 	/**
-	 * Loads bot settings.
+	 * Loads settings for the chatbot.
 	 */
 	const loadConfig = async () => {
 		const combinedConfig = await parseConfig(settings, styles, themes);
@@ -68,15 +68,15 @@ const ChatBot = ({
 	}
 
 	/**
-	 * Wraps bot settings provider around child element.
+	 * Wraps settings provider around child element.
 	 * 
 	 * @param children child element to wrap around
 	 */
 	const wrapSettingsProvider = (children: JSX.Element) => {
 		return (
-			<BotSettingsContext.Provider value={{botSettings, setBotSettings}}>
+			<SettingsContext.Provider value={{settings: botSettings, setSettings: setBotSettings}}>
 				{children}
-			</BotSettingsContext.Provider>
+			</SettingsContext.Provider>
 		);
 	};
 

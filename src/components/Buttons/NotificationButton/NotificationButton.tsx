@@ -1,6 +1,6 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 
-import { useBotSettings } from "../../../context/BotSettingsContext";
+import { useSettings } from "../../../context/SettingsContext";
 
 import "./NotificationButton.css";
 
@@ -18,11 +18,11 @@ const NotificationButton = ({
 	setNotificationToggledOn: Dispatch<SetStateAction<boolean>>;
 }) => {
 	// handles options for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	return (
 		<div
-			style={{backgroundImage: `url(${botSettings.notification?.icon})`}}
+			style={{backgroundImage: `url(${settings.notification?.icon})`}}
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
 				setNotificationToggledOn(prev => !prev);

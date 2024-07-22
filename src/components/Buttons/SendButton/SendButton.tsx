@@ -1,6 +1,6 @@
 import { useState, MouseEvent } from "react";
 
-import { useBotSettings } from "../../../context/BotSettingsContext";
+import { useSettings } from "../../../context/SettingsContext";
 import { useBotStyles } from "../../../context/BotStylesContext";
 
 import "./SendButton.css";
@@ -17,7 +17,7 @@ const SendButton = ({
 }) => {
 
 	// handles settings for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	// handles styles for bot
 	const { botStyles } = useBotStyles();
@@ -27,19 +27,19 @@ const SendButton = ({
 
 	// styles for send button
 	const sendButtonStyle: React.CSSProperties = {
-		backgroundColor: botSettings.general?.primaryColor,
+		backgroundColor: settings.general?.primaryColor,
 		...botStyles.sendButtonStyle
 	};
 
 	// styles for hovered send button
 	const sendButtonHoveredStyle: React.CSSProperties = {
-		backgroundColor: botSettings.general?.secondaryColor,
+		backgroundColor: settings.general?.secondaryColor,
 		...botStyles.sendButtonHoveredStyle
 	};
 	
 	// styles for send icon
 	const sendIconStyle: React.CSSProperties = {
-		backgroundImage: `url(${botSettings.chatInput?.sendButtonIcon})`,
+		backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
 	};
 
 	/**

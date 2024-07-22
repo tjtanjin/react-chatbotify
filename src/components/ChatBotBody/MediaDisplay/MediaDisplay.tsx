@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 
-import { useBotSettings } from '../../../context/BotSettingsContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { useBotStyles } from '../../../context/BotStylesContext';
 
 import './MediaDisplay.css';
@@ -23,15 +23,15 @@ const MediaDisplay = ({
 }) => {
 
 	// handles settings for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	// handles styles for bot
 	const { botStyles } = useBotStyles();
 
 	// styles for media display
 	const mediaDisplayContainerStyle: CSSProperties = {
-		backgroundColor: botSettings.general?.primaryColor,
-		maxWidth: botSettings.userBubble?.showAvatar ? "65%" : "70%",
+		backgroundColor: settings.general?.primaryColor,
+		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 		...botStyles.mediaDisplayContainerStyle
 	};
 
@@ -61,7 +61,7 @@ const MediaDisplay = ({
 					{fileType === 'audio' && fileUrl && (
 						<audio
 							style={{
-								maxWidth: botSettings.userBubble?.showAvatar ? "65%" : "70%",
+								maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 							}}
 							controls className="rcb-media-display-audio rcb-media-entry"
 						>

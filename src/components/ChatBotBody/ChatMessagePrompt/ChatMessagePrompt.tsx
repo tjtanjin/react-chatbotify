@@ -1,6 +1,6 @@
 import { RefObject, useState, MouseEvent, Dispatch, SetStateAction } from "react";
 
-import { useBotSettings } from "../../../context/BotSettingsContext";
+import { useSettings } from "../../../context/SettingsContext";
 import { useBotStyles } from "../../../context/BotStylesContext";
 
 import "./ChatMessagePrompt.css";
@@ -26,7 +26,7 @@ const ChatMessagePrompt = ({
 }) => {
 
 	// handles settings for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	// handles styles for bot
 	const { botStyles } = useBotStyles();
@@ -36,8 +36,8 @@ const ChatMessagePrompt = ({
 
 	// styles for chat message prompt hovered
 	const chatMessagePromptHoveredStyle: React.CSSProperties = {
-		color: botSettings.general?.primaryColor,
-		borderColor: botSettings.general?.primaryColor,
+		color: settings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
 		...botStyles.chatMessagePromptHoveredStyle
 	};
 
@@ -101,7 +101,7 @@ const ChatMessagePrompt = ({
      */
 	const getMessagePromptVisibility = () => {
 		const shouldShowPrompt = chatBodyRef.current
-            && botSettings.chatWindow?.showMessagePrompt
+            && settings.chatWindow?.showMessagePrompt
             && isScrolling
             && unreadCount > 0;
 		return shouldShowPrompt ? "visible" : "hidden";
@@ -119,7 +119,7 @@ const ChatMessagePrompt = ({
 				}}
 				className="rcb-message-prompt-text"
 			>
-				{botSettings.chatWindow?.messagePromptText}
+				{settings.chatWindow?.messagePromptText}
 			</div>
 		</div>
 	);

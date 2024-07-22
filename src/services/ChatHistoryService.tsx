@@ -4,10 +4,10 @@ import ReactDOMServer from "react-dom/server";
 import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistoryLineBreak";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { Message } from "../types/Message";
-import { BotSettings } from "../types/BotSettings";
+import { Settings } from "../types/Settings";
 import { BotStyles } from "../types/BotStyles";
 
-// variables used to track history, updated when botSettings.chatHistory value changes
+// variables used to track history, updated when settings.chatHistory value changes
 let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
@@ -71,12 +71,12 @@ const getHistoryMessages = (chatHistory: string) => {
 /**
  * Sets the currently used history storage key.
  * 
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  */
-const setHistoryStorageValues = (botSettings: BotSettings) => {
-	historyStorageKey = botSettings.chatHistory?.storageKey as string;
-	historyMaxEntries = botSettings.chatHistory?.maxEntries as number;
-	historyDisabled = botSettings.chatHistory?.disabled as boolean;
+const setHistoryStorageValues = (settings: Settings) => {
+	historyStorageKey = settings.chatHistory?.storageKey as string;
+	historyMaxEntries = settings.chatHistory?.maxEntries as number;
+	historyDisabled = settings.chatHistory?.disabled as boolean;
 	historyMessages = getHistoryMessages(localStorage.getItem(historyStorageKey) as string);
 }
 
@@ -101,12 +101,12 @@ const parseMessageToString = (message: Message) => {
 /**
  * Loads chat history into the chat window for user view.
  * 
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  * @param chatHistory chat history to show
  * @param setMessages setter for updating messages
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
-const loadChatHistory = (botSettings: BotSettings, botStyles: BotStyles, chatHistory: string,
+const loadChatHistory = (settings: Settings, botStyles: BotStyles, chatHistory: string,
 	setMessages: Dispatch<SetStateAction<Message[]>>, setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
@@ -123,7 +123,7 @@ const loadChatHistory = (botSettings: BotSettings, botStyles: BotStyles, chatHis
 
 			const parsedMessages = JSON.parse(chatHistory).map((message: Message) => {
 				if (message.type === "object") {
-					const element = renderHTML(message.content as string, botSettings, botStyles);
+					const element = renderHTML(message.content as string, settings, botStyles);
 					return { ...message, content: element };
 				}
 				return message;
@@ -134,7 +134,7 @@ const loadChatHistory = (botSettings: BotSettings, botStyles: BotStyles, chatHis
 					prevMessages.shift();
 					// if autoload, line break is invisible
 					let lineBreakMessage;
-					if (botSettings.chatHistory?.autoLoad) {
+					if (settings.chatHistory?.autoLoad) {
 						lineBreakMessage = {
 							content: <></>,
 							sender: "system"
@@ -147,11 +147,11 @@ const loadChatHistory = (botSettings: BotSettings, botStyles: BotStyles, chatHis
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setTextAreaDisabled(botSettings.chatInput?.disabled || false);
+				setTextAreaDisabled(settings.chatInput?.disabled || false);
 			}, 500)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
-			localStorage.removeItem(botSettings.chatHistory?.storageKey as string);
+			localStorage.removeItem(settings.chatHistory?.storageKey as string);
 		}
 	}
 }
@@ -160,9 +160,9 @@ const loadChatHistory = (botSettings: BotSettings, botStyles: BotStyles, chatHis
  * Renders html string to a react node.
  * 
  * @param html string to render
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  */
-const renderHTML = (html: string, botSettings: BotSettings, botStyles: BotStyles): ReactNode[] => {
+const renderHTML = (html: string, settings: Settings, botStyles: BotStyles): ReactNode[] => {
 	const parser = new DOMParser();
 	const parsedHtml = parser.parseFromString(html, "text/html");
 	const nodes = Array.from(parsedHtml.body.childNodes);
@@ -193,13 +193,13 @@ const renderHTML = (html: string, botSettings: BotSettings, botStyles: BotStyles
 			}, {} as { [key: string]: string | CSSProperties });
 
 			const classList = (node as Element).classList;
-			if (botSettings.botBubble?.showAvatar) {
+			if (settings.botBubble?.showAvatar) {
 				attributes = addStyleToContainers(classList, attributes);
 			}
-			attributes = addStyleToOptions(classList, attributes, botSettings, botStyles);
-			attributes = addStyleToCheckboxRows(classList, attributes, botSettings, botStyles);
-			attributes = addStyleToCheckboxNextButton(classList, attributes, botSettings, botStyles);
-			attributes = addStyleToMediaDisplayContainer(classList, attributes, botSettings, botStyles);
+			attributes = addStyleToOptions(classList, attributes, settings, botStyles);
+			attributes = addStyleToCheckboxRows(classList, attributes, settings, botStyles);
+			attributes = addStyleToCheckboxNextButton(classList, attributes, settings, botStyles);
+			attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, botStyles);
 
 			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 				'meta', 'source', 'track', 'wbr'];
@@ -207,7 +207,7 @@ const renderHTML = (html: string, botSettings: BotSettings, botStyles: BotStyles
 				// void elements must not have children
 				return createElement(tagName, { key: index, ...attributes });
 			} else {
-				const children = renderHTML((node as Element).innerHTML, botSettings, botStyles);
+				const children = renderHTML((node as Element).innerHTML, settings, botStyles);
 				return createElement(tagName, { key: index, ...attributes }, ...children);
 			}
 		}
@@ -239,16 +239,16 @@ const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string
  * 
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  */
 const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: BotSettings, botStyles: BotStyles) => {
+	settings: Settings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botStyles.botOptionStyle?.color || botSettings.general?.primaryColor,
-			borderColor: botStyles.botOptionStyle?.color || botSettings.general?.primaryColor,
-			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+			color: botStyles.botOptionStyle?.color || settings.general?.primaryColor,
+			borderColor: botStyles.botOptionStyle?.color || settings.general?.primaryColor,
+			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...botStyles.botOptionStyle
 		}
 	}
@@ -260,16 +260,16 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
  * 
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  */
 const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: BotSettings, botStyles: BotStyles) => {
+	settings: Settings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botStyles.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
-			borderColor: botStyles.botCheckboxRowStyle?.color || botSettings.general?.primaryColor,
-			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+			color: botStyles.botCheckboxRowStyle?.color || settings.general?.primaryColor,
+			borderColor: botStyles.botCheckboxRowStyle?.color || settings.general?.primaryColor,
+			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...botStyles.botCheckboxRowStyle
 		}
 	}
@@ -281,16 +281,16 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
  * 
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  */
 const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: BotSettings, botStyles: BotStyles) => {
+	settings: Settings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: botStyles.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
-			borderColor: botStyles.botCheckboxNextStyle?.color || botSettings.general?.primaryColor,
-			cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+			color: botStyles.botCheckboxNextStyle?.color || settings.general?.primaryColor,
+			borderColor: botStyles.botCheckboxNextStyle?.color || settings.general?.primaryColor,
+			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...botStyles.botCheckboxNextStyle
 		}
 	}
@@ -302,16 +302,16 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
  *
  * @param classList array of classes the element has
  * @param attributes current attributes the element has
- * @param botSettings options provided to the bot
+ * @param settings options provided to the bot
  */
 const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties},
-	botSettings: BotSettings, botStyles: BotStyles) => {
+	settings: Settings, botStyles: BotStyles) => {
 	if (classList.contains("rcb-media-display-image-container")
 		|| classList.contains("rcb-media-display-video-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			backgroundColor: botSettings.general?.primaryColor,
-			maxWidth: botSettings.userBubble?.showAvatar ? "65%" : "70%",
+			backgroundColor: settings.general?.primaryColor,
+			maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 			...botStyles.mediaDisplayContainerStyle
 		}
 	}

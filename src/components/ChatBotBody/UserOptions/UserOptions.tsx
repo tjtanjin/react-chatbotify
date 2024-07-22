@@ -1,7 +1,7 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useBotSettings } from "../../../context/BotSettingsContext";
+import { useSettings } from "../../../context/SettingsContext";
 import { useBotStyles } from "../../../context/BotStylesContext";
 import { usePaths } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
@@ -26,7 +26,7 @@ const UserOptions= ({
 }) => {
 
 	// handles settings for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	// handles styles for bot
 	const { botStyles } = useBotStyles();
@@ -42,9 +42,9 @@ const UserOptions= ({
 
 	// styles for bot option
 	const botOptionStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${botSettings.general?.actionDisabledIcon}), auto` : "pointer",
-		color: botSettings.general?.primaryColor,
-		borderColor: botSettings.general?.primaryColor,
+		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		color: settings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
 		backgroundColor: "#fff",
 		...botStyles.botOptionStyle
 	};
@@ -52,8 +52,8 @@ const UserOptions= ({
 	// styles for bot hovered option
 	const botOptionHoveredStyle: React.CSSProperties = {
 		color: "#fff" ,
-		borderColor: botSettings.general?.primaryColor,
-		backgroundColor: botSettings.general?.primaryColor,
+		borderColor: settings.general?.primaryColor,
+		backgroundColor: settings.general?.primaryColor,
 		...botStyles.botOptionHoveredStyle
 	};
 
@@ -88,7 +88,7 @@ const UserOptions= ({
 	};
 
 	return (
-		<div className={`rcb-options-container ${botSettings.botBubble?.showAvatar ? "rcb-options-offset" : ""}`}>
+		<div className={`rcb-options-container ${settings.botBubble?.showAvatar ? "rcb-options-offset" : ""}`}>
 			{options.map((key, index) => {
 				const isHovered = hoveredElements[index] && !disabled;
 		
@@ -106,7 +106,7 @@ const UserOptions= ({
 							}
 
 							setDisabled(true);
-							handleActionInput(path, key, botSettings.chatInput?.sendOptionOutput as boolean);
+							handleActionInput(path, key, settings.chatInput?.sendOptionOutput as boolean);
 						}}
 					>
 						{key}

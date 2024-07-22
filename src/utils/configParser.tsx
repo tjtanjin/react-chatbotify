@@ -1,16 +1,16 @@
 import { isValidElement } from "react";
 
 import { processAndFetchThemeConfig } from "../services/ThemeService";
-import { BotSettings } from "../types/BotSettings";
+import { Settings } from "../types/Settings";
 import { BotStyles } from "../types/BotStyles";
 import { Theme } from "../types/Theme";
 import { DefaultSettings } from "../constants/internal/DefaultSettings";
 import { DefaultStyles } from "../constants/internal/DefaultStyles";
 
 /**
- * Retrieves default values for bot settings.
+ * Retrieves default values for chatbot settings.
  */
-export const getDefaultBotSettings = (): BotSettings => {
+export const getDefaultSettings = (): Settings => {
 	return deepClone(DefaultSettings);
 }
 
@@ -22,17 +22,17 @@ export const getDefaultBotStyles = (): BotStyles => {
 }
 
 /**
- * Parses default settings and styles with user provided config to generate final bot bot settings and styles.
+ * Parses default settings and styles with user provided config to generate final settings and styles.
  * 
  * @param providedSettings settings provided by the user to the bot
  * @param providedStyles styles provided by the user to the bot
  * @param theme theme provided by the user to the bot
  */
-export const parseConfig = async (providedSettings: BotSettings | undefined,
+export const parseConfig = async (providedSettings: Settings | undefined,
 	providedStyles: BotStyles | undefined,
-	themes: undefined | Theme | Array<Theme>): Promise<{settings: BotSettings, styles: BotStyles}> => {
+	themes: undefined | Theme | Array<Theme>): Promise<{settings: Settings, styles: BotStyles}> => {
 
-	let combinedSettings = getDefaultBotSettings();
+	let combinedSettings = getDefaultSettings();
 	let combinedStyles = getDefaultBotStyles();
 
 	// process themes first
@@ -40,19 +40,19 @@ export const parseConfig = async (providedSettings: BotSettings | undefined,
 		if (Array.isArray(themes)) {
 			for (const theme of themes) {
 				const themeConfig = await processAndFetchThemeConfig(theme);
-				combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as BotSettings;
+				combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as Settings;
 				combinedStyles = getCombinedConfig(themeConfig.styles, combinedStyles) as BotStyles;
 			}
 		} else {
 			const themeConfig = await processAndFetchThemeConfig(themes);
-			combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as BotSettings;
+			combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as Settings;
 			combinedStyles = getCombinedConfig(themeConfig.styles, combinedStyles) as BotStyles;
 		}
 	}
 
 	// process provided settings/styles
 	if (providedSettings != null) {
-		combinedSettings = getCombinedConfig(providedSettings, combinedSettings) as BotSettings;
+		combinedSettings = getCombinedConfig(providedSettings, combinedSettings) as Settings;
 	}
 
 	if (providedStyles != null) {
@@ -73,8 +73,8 @@ export const parseConfig = async (providedSettings: BotSettings | undefined,
  * @param preferredConfig config provided by the user to the bot
  * @param baseConfig the base config that the provided config will overwrite
  */
-const getCombinedConfig = (preferredConfig: BotSettings | BotStyles, baseConfig: BotSettings |
-	BotStyles): BotSettings | BotStyles => {
+const getCombinedConfig = (preferredConfig: Settings | BotStyles, baseConfig: Settings |
+	BotStyles): Settings | BotStyles => {
 
 	const stack: Array<{ source: object, target: object }> = [{ source: preferredConfig, target: baseConfig }];
 	

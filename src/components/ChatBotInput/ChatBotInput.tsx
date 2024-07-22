@@ -10,7 +10,7 @@ import React, {
 } from "react";
 
 import { isDesktop } from "../../utils/displayChecker";
-import { useBotSettings } from "../../context/BotSettingsContext";
+import { useSettings } from "../../context/SettingsContext";
 import { useBotStyles } from "../../context/BotStylesContext";
 
 import "./ChatBotInput.css";
@@ -51,7 +51,7 @@ const ChatBotInput = ({
 }) => {
 
 	// handles settings for bot
-	const { botSettings } = useBotSettings();
+	const { settings } = useSettings();
 
 	// handles styles for bot
 	const { botStyles } = useBotStyles();
@@ -68,7 +68,7 @@ const ChatBotInput = ({
 	// styles for focused text area
 	const textAreaFocusedStyle: React.CSSProperties = {
 		outline: !textAreaDisabled ? "none" : "",
-		boxShadow: !textAreaDisabled ? `0 0 5px ${botSettings.general?.primaryColor}` : "",
+		boxShadow: !textAreaDisabled ? `0 0 5px ${settings.general?.primaryColor}` : "",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...botStyles.chatInputAreaStyle, // by default inherit the base style for input area
 		...botStyles.chatInputAreaFocusedStyle,
@@ -76,7 +76,7 @@ const ChatBotInput = ({
 
 	// styles for disabled text area
 	const textAreaDisabledStyle: React.CSSProperties = {
-		cursor: `url(${botSettings.general?.actionDisabledIcon}), auto`,
+		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 		caretColor: "transparent",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...botStyles.chatInputAreaStyle, // by default inherit the base style for input area
@@ -97,8 +97,8 @@ const ChatBotInput = ({
 
 	// styles for input placeholder
 	const placeholder = textAreaDisabled
-		? botSettings.chatInput?.disabledPlaceholderText
-		: botSettings.chatInput?.enabledPlaceholderText;
+		? settings.chatInput?.disabledPlaceholderText
+		: settings.chatInput?.enabledPlaceholderText;
 
 	/**
 	 * Handles focus event on chat input.
@@ -125,7 +125,7 @@ const ChatBotInput = ({
 	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (event.key === "Enter") {
 			if (event.shiftKey) {
-				if (!botSettings.chatInput?.allowNewline) {
+				if (!settings.chatInput?.allowNewline) {
 					event.preventDefault();
 				}
 				return;
@@ -148,13 +148,13 @@ const ChatBotInput = ({
 		}
 
 		if (inputRef.current) {
-			const characterLimit = botSettings.chatInput?.characterLimit
+			const characterLimit = settings.chatInput?.characterLimit
 			/*
 			* @params allowNewline Boolean
 			* allowNewline [true] Allow input values to contain line breaks '\n'
 			* allowNewline [false] Replace \n with a space
 			* */
-			const allowNewline = botSettings.chatInput?.allowNewline
+			const allowNewline = settings.chatInput?.allowNewline
 			const newInput = allowNewline ? event.target.value : event.target.value.replace(/\n/g, " ");
 			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
 				inputRef.current.value = newInput.slice(0, characterLimit);
@@ -170,7 +170,7 @@ const ChatBotInput = ({
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
 				// checks if user is interacting with chatbot for the first time
-				if (!hasFlowStarted && botSettings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+				if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
 					setHasFlowStarted(true);
 				}
 			}}
@@ -178,7 +178,7 @@ const ChatBotInput = ({
 			className="rcb-chat-input"
 		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
-			{textAreaSensitiveMode && botSettings.sensitiveInput?.maskInTextArea ?
+			{textAreaSensitiveMode && settings.sensitiveInput?.maskInTextArea ?
 				<input
 					ref={inputRef as RefObject<HTMLInputElement>}
 					type="password"
@@ -211,18 +211,18 @@ const ChatBotInput = ({
 				{buttons?.map((button: JSX.Element, index: number) => 
 					<Fragment key={index}>{button}</Fragment>
 				)}
-				{botSettings.chatInput?.showCharacterCount
-					&& botSettings.chatInput?.characterLimit != null
-					&& botSettings.chatInput?.characterLimit > 0
+				{settings.chatInput?.showCharacterCount
+					&& settings.chatInput?.characterLimit != null
+					&& settings.chatInput?.characterLimit > 0
 					&&
 					<div 
 						className="rcb-chat-input-char-counter"
-						style={inputLength >= botSettings.chatInput?.characterLimit
+						style={inputLength >= settings.chatInput?.characterLimit
 							? characterLimitReachedStyle
 							: characterLimitStyle
 						}
 					>
-						{inputLength}/{botSettings.chatInput?.characterLimit}
+						{inputLength}/{settings.chatInput?.characterLimit}
 					</div>
 				}
 			</div>
