@@ -301,7 +301,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			// cleanup logic after preprocessing of a block (affects only streaming messages)
 			isBotStreamingRef.current = false
 		}
-
 		callNewBlock(currPath, block, params);
 	}, [paths]);
 
@@ -597,7 +596,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		console.log(textAreaSensitiveMode);
 		if (textAreaSensitiveMode) {
 			if (settings?.sensitiveInput?.hideInUserBubble) {
 				return;
@@ -652,6 +650,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTimeout(() => {
 			setIsBotTyping(true);
 		}, 400);
+
+		// after user sends input, set sensitive mode to false first (default)
+		// will be overriden if next block also has isSensitive attribute
+		setTextAreaSensitiveMode(false);
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), goToPath: goToPath, userInput, 
