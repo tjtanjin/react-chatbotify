@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.1 (24-07-2024)
+
+**Note:**
+v2.0.0-beta.1 is a major release with **breaking changes**. All details are available in the [**migration guide**](https://react-chatbotify.com/docs/introduction/migration_v2). 
+
 ## v1.7.0 (10-06-2024)
 
 **Added:**
