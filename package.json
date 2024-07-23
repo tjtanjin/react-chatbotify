@@ -1,6 +1,6 @@
 {
   "name": "react-chatbotify",
-  "homepage": "https://react-chatbotify.tjtanjin.com",
+  "homepage": "https://react-chatbotify..com",
   "keywords": [
     "react",
     "chat",
@@ -11,7 +11,7 @@
   "files": [
     "./dist"
   ],
-  "version": "1.7.0",
+  "version": "2.0.0-beta.1",
   "description": "A modern React library for creating a flexible and extensible chatbot.",
   "type": "module",
   "main": "./dist/index.cjs",
