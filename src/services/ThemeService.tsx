@@ -10,13 +10,13 @@ const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
  * @param theme theme to process and retrieve settings for
  */
 export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
-	const { name, version, base_url = DEFAULT_URL } = theme;
+	const { id, version, base_url = DEFAULT_URL } = theme;
 
 	let themeVersion = version;
 
 	// if version is not specified, get from meta.json
 	if (!version) {
-		const metadataUrl = `${base_url}/${name}/meta.json`;
+		const metadataUrl = `${base_url}/${id}/meta.json`;
 		try {
 			const response = await fetch(metadataUrl);
 			if (!response.ok) {
@@ -30,9 +30,9 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	}
 
 	// construct urls for styles.css, settings.json and settings.json
-	const cssStylesUrl = `${base_url}/${name}/${themeVersion}/styles.css`;
-	const settingsUrl = `${base_url}/${name}/${themeVersion}/settings.json`;
-	const inlineStylesUrl = `${base_url}/${name}/${themeVersion}/styles.json`;
+	const cssStylesUrl = `${base_url}/${id}/${themeVersion}/styles.css`;
+	const settingsUrl = `${base_url}/${id}/${themeVersion}/settings.json`;
+	const inlineStylesUrl = `${base_url}/${id}/${themeVersion}/styles.json`;
 
 	// fetch and apply css styles
 	try {
