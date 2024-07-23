@@ -92,7 +92,6 @@ export const DefaultSettings: Settings = {
 		blockSpam: true,
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
-		sendAttachmentOutput: true,
 		buttons: [Button.VOICE_MESSAGE_BUTTON, Button.SEND_MESSAGE_BUTTON]
 	},
 	chatWindow: {
@@ -156,7 +155,8 @@ export const DefaultSettings: Settings = {
 		multiple: true,
 		accept: ".png",
 		icon: fileAttachmentIcon,
-		showMediaDisplay: true,
+		sendFileName: true,
+		showMediaDisplay: false,
 	},
 	emoji: {
 		disabled: false,

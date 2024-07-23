@@ -70,7 +70,6 @@ export type Settings = {
 		blockSpam?: boolean;
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;
-		sendAttachmentOutput?: boolean;
 		buttons?: Array<JSX.Element | string>;
 	},
 	chatWindow?: {
@@ -121,6 +120,7 @@ export type Settings = {
 		multiple?: boolean;
 		accept?: string;
 		icon?: string;
+		sendFileName?: boolean;
 		showMediaDisplay?: boolean;
 	}
 	emoji?: {

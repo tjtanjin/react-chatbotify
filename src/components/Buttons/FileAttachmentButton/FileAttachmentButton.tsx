@@ -86,7 +86,7 @@ const FileAttachmentButton = ({
 				await injectMessage(<MediaDisplay file={files[i]} fileType={fileDetails.fileType}
 					fileUrl={fileDetails.fileUrl}/>, "user");
 			}
-			await handleActionInput(currPath, "📄 " + fileNames.join(", "), settings.chatInput?.sendAttachmentOutput);
+			await handleActionInput(currPath, "📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
 				goToPath: goToPath, injectMessage, streamMessage, openChat, files});
 		}
