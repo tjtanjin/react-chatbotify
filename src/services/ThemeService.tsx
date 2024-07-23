@@ -20,13 +20,13 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 		try {
 			const response = await fetch(metadataUrl);
 			if (!response.ok) {
-				console.error(`Failed to fetch meta.json from ${metadataUrl}`);
-				return {settings: {}, styles: {}};
+				throw new Error(`Failed to fetch meta.json from ${metadataUrl}`);
 			}
 			const metadata = await response.json();
 			themeVersion = metadata.version;
 		} catch (error) {
 			console.error(`Failed to fetch meta.json from ${metadataUrl}`, error);
+			return {settings: {}, styles: {}};
 		}
 	}
 
@@ -39,7 +39,7 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	try {
 		const cssStylesResponse = await fetch(cssStylesUrl);
 		if (!cssStylesResponse.ok) {
-			console.error(`Failed to fetch styles.css from ${cssStylesUrl}`);
+			throw new Error(`Failed to fetch styles.css from ${cssStylesUrl}`);
 		}
 		const cssStylesText = await cssStylesResponse.text();
 		
