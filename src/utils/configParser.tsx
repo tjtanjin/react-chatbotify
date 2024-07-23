@@ -102,7 +102,11 @@ const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Setti
 			) {
 				stack.push({ source: source[keyAsObjectType], target: target[keyAsObjectType] });
 			} else {
-				target[keyAsObjectType] = source[keyAsObjectType];
+				try {
+					target[keyAsObjectType] = source[keyAsObjectType];
+				} catch {
+					// if error, ignore
+				}
 			}
 		}
 	}
