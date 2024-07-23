@@ -37,6 +37,12 @@ export const parseConfig = async (providedSettings: Settings | undefined,
 
 	// process themes first
 	if (themes != null) {
+		// always remove all theme styles before processing provided themes
+		const existingStyleElements = document.querySelectorAll('[id^="rcb-theme-style"]');
+		existingStyleElements.forEach(element => {
+			element.remove();
+		});
+
 		if (Array.isArray(themes)) {
 			for (const theme of themes) {
 				const themeConfig = await processAndFetchThemeConfig(theme);

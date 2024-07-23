@@ -54,8 +54,8 @@ const ChatBot = ({
 
 	// load options on start
 	useEffect(() => {
-		loadConfig()
-	}, []);
+		loadConfig();
+	}, [themes]);
 
 	/**
 	 * Loads settings for the chatbot.

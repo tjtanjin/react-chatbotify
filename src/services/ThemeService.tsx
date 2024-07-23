@@ -41,10 +41,13 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 			throw new Error(`Failed to fetch styles.css from ${cssStylesUrl}`);
 		}
 		const cssStylesText = await cssStylesResponse.text();
-		const cssStyleSheet = document.createElement("style");
-		cssStyleSheet.type = "text/css";
-		cssStyleSheet.innerText = cssStylesText;
-		document.head.appendChild(cssStyleSheet);
+		
+		// Create and append new style element
+		const cssLinkElement = document.createElement("link");
+		cssLinkElement.id = `rcb-theme-style-${id}`;
+		cssLinkElement.rel = "stylesheet";
+		cssLinkElement.href = `data:text/css;charset=utf-8,${encodeURIComponent(cssStylesText)}`;
+		document.head.appendChild(cssLinkElement);
 	} catch (error) {
 		console.error("Error fetching styles.css:", error);
 	}
@@ -64,5 +67,4 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	const inlineStyles = await inlineStylesResponse.json();
 
 	return {settings, styles: inlineStyles}
-
 }
