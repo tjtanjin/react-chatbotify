@@ -582,6 +582,35 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [textAreaDisabled]);
 
 	/**
+	 * Handles sending of user input to check if should send as plain text or sensitive info.
+	 * 
+	 * @param userInput input provided by the user
+	 */
+	const handleSendUserInput = useCallback(async (userInput: string) => {
+		const currPath = getCurrPath();
+		if (!currPath) {
+			return;
+		}
+
+		const block = flow[currPath];
+		if (!block) {
+			return;
+		}
+
+		console.log(textAreaSensitiveMode);
+		if (textAreaSensitiveMode) {
+			if (settings?.sensitiveInput?.hideInUserBubble) {
+				return;
+			} else if (settings?.sensitiveInput?.maskInUserBubble) {
+				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number || 10), "user");
+				return;
+			}
+		}
+
+		await injectMessage(userInput, "user");
+	}, [flow, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
+
+	/**
 	 * Handles action input from the user which includes text, files and emoji.
 	 * 
 	 * @param path path to process input with
@@ -649,36 +678,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, voiceToggledOn, settings, flow, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, updateTextAreaFocus
+		postProcessBlock, setPaths, updateTextAreaFocus, handleSendUserInput
 	]);
-
-	/**
-	 * Handles sending of user input to check if should send as plain text or sensitive info.
-	 * 
-	 * @param userInput input provided by the user
-	 */
-	const handleSendUserInput = useCallback(async (userInput: string) => {
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-
-		const block = flow[currPath];
-		if (!block) {
-			return;
-		}
-
-		if (textAreaSensitiveMode) {
-			if (settings?.sensitiveInput?.hideInUserBubble) {
-				return;
-			} else if (settings?.sensitiveInput?.maskInUserBubble) {
-				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number || 10), "user");
-				return;
-			}
-		}
-
-		await injectMessage(userInput, "user");
-	}, [flow, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.
