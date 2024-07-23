@@ -20,12 +20,13 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 		try {
 			const response = await fetch(metadataUrl);
 			if (!response.ok) {
-				throw new Error(`Failed to fetch meta.json from ${metadataUrl}`);
+				console.error(`Failed to fetch meta.json from ${metadataUrl}`);
+				return {settings: {}, styles: {}};
 			}
 			const metadata = await response.json();
 			themeVersion = metadata.version;
 		} catch (error) {
-			console.error("Error fetching meta.json:", error);
+			console.error(`Failed to fetch meta.json from ${metadataUrl}`, error);
 		}
 	}
 
@@ -38,7 +39,7 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	try {
 		const cssStylesResponse = await fetch(cssStylesUrl);
 		if (!cssStylesResponse.ok) {
-			throw new Error(`Failed to fetch styles.css from ${cssStylesUrl}`);
+			console.error(`Failed to fetch styles.css from ${cssStylesUrl}`);
 		}
 		const cssStylesText = await cssStylesResponse.text();
 		
@@ -49,22 +50,26 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 		cssLinkElement.href = `data:text/css;charset=utf-8,${encodeURIComponent(cssStylesText)}`;
 		document.head.appendChild(cssLinkElement);
 	} catch (error) {
-		console.error("Error fetching styles.css:", error);
+		console.error(`Failed to fetch styles.css from ${cssStylesUrl}`, error);
 	}
 
 	// fetch and return settings
 	const settingsResponse = await fetch(settingsUrl);
-	if (!settingsResponse.ok) {
-		throw new Error(`Failed to fetch settings.json from ${settingsUrl}`);
+	let settings = {};
+	if (settingsResponse.ok) {
+		settings = await settingsResponse.json();
+	} else {
+		console.error(`Failed to fetch settings.json from ${settingsUrl}`);
 	}
-	const settings = await settingsResponse.json();
 
 	// fetch and return styles
 	const inlineStylesResponse = await fetch(inlineStylesUrl);
-	if (!inlineStylesResponse.ok) {
-		throw new Error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
+	let inlineStyles = {};
+	if (inlineStylesResponse.ok) {
+		inlineStyles = await inlineStylesResponse.json();
+	} else {
+		console.error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
 	}
-	const inlineStyles = await inlineStylesResponse.json();
 
 	return {settings, styles: inlineStyles}
 }
