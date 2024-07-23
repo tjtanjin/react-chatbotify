@@ -129,9 +129,9 @@ export type Settings = {
 		list?: string[] ;
 	},
 	advance?: {
-		useCustomMessages?: boolean;
-		useCustomSettings?: boolean;
-		useCustomPaths?: boolean;
-		useCustomStyles?: boolean;
+		useAdvancedMessages?: boolean;
+		useAdvancedSettings?: boolean;
+		useAdvancedPaths?: boolean;
+		useAdvancedStyles?: boolean;
 	}
 }

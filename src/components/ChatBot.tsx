@@ -125,19 +125,19 @@ const ChatBot = ({
 	 */
 	const renderChatBot = () => {
 		let result = <ChatBotContainer flow={parsedFlow}/>;
-		if (!botSettings.advance?.useCustomMessages) {
+		if (!botSettings.advance?.useAdvancedMessages) {
 			result = wrapMessagesProvider(result);
 		}
 
-		if (!botSettings.advance?.useCustomPaths) {
+		if (!botSettings.advance?.useAdvancedPaths) {
 			result = wrapPathsProvider(result);
 		}
 
-		if (!botSettings.advance?.useCustomSettings) {
+		if (!botSettings.advance?.useAdvancedSettings) {
 			result = wrapSettingsProvider(result);
 		}
 
-		if (!botSettings.advance?.useCustomStyles) {
+		if (!botSettings.advance?.useAdvancedStyles) {
 			result = wrapStylesProvider(result);
 		}
 

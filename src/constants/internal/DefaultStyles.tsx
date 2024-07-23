@@ -1,4 +1,4 @@
-import { Styles } from "../../types/Styles"
+import { Styles } from "../../types/Styles";
 
 // default options provided to the bot
 export const DefaultStyles: Styles = {

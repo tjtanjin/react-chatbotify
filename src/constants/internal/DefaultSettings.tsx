@@ -1,4 +1,4 @@
-import { Settings } from "../../types/Settings"
+import { Settings } from "../../types/Settings";
 import { Button } from "../Button";
 
 import actionDisabledIcon from "../../assets/action_disabled_icon.svg";
@@ -164,9 +164,9 @@ export const DefaultSettings: Settings = {
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	advance: {
-		useCustomMessages: false,
-		useCustomSettings: false,
-		useCustomPaths: false,
-		useCustomStyles: false,
+		useAdvancedMessages: false,
+		useAdvancedSettings: false,
+		useAdvancedPaths: false,
+		useAdvancedStyles: false,
 	}
 }
