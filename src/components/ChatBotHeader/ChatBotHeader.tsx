@@ -23,7 +23,7 @@ const ChatBotHeader = ({
 
 	// styles for header
 	const headerStyle: React.CSSProperties = {
-		background: `linear-gradient(to right, ${settings.general?.secondaryColor },
+		backgroundImage: `linear-gradient(to right, ${settings.general?.secondaryColor},
 			${settings.general?.primaryColor})`,
 		...styles.headerStyle
 	}
