@@ -63,7 +63,7 @@ const ChatBotBody = ({
 
 	// styles for user bubble
 	const userBubbleStyle: CSSProperties = {
-		backgroundColor: settings.general?.primaryColor,
+		background: settings.general?.primaryColor,
 		color: "#fff",
 		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 		...styles.userBubbleStyle
@@ -72,7 +72,7 @@ const ChatBotBody = ({
 
 	// styles for bot bubble
 	const botBubbleStyle: CSSProperties = {
-		backgroundColor: settings.general?.secondaryColor,
+		background: settings.general?.secondaryColor,
 		color: "#fff",
 		maxWidth: settings.botBubble?.showAvatar ? "65%" : "70%",
 		...styles.botBubbleStyle
