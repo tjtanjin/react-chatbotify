@@ -1,5 +1,13 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.2 (25-07-2024)
+
+**Fixed:**
+- Fixed an issue where theme conflicts are not properly resolved
+- Fixed an issue where invalid sections are not caught in themes
+- Fixed an issue where sensitive inputs permanently mask the remaining conversations
+- Fixed an issue where chatbot loses focus in text area when transitioning from a previously disabled state
+
 ## v2.0.0-beta.1 (24-07-2024)
 
 **Note:**
