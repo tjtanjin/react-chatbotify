@@ -291,7 +291,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 			// cleanup logic after preprocessing of a block
 			setIsBotTyping(false);
-			if (!block.chatDisabled) {
+			if (!("chatDisabled" in block)) {
 				setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 			}
 			setBlockAllowsAttachment(typeof block.file === "function");
@@ -551,7 +551,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Updates text area focus based on current block's text area.
 	 */
 	const updateTextAreaFocus = useCallback((currPath: string) => {
-		if (!textAreaDisabled) {
+		if (!inputRef.current?.disabled) {
 			setTimeout(() => {
 				if (settings.general?.embedded) {
 					// for embedded chatbot, only do input focus if chatbot is still visible on page
@@ -566,7 +566,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				}
 			}, 100)
 		}
-	}, [textAreaDisabled]);
+	}, []);
 
 	/**
 	 * Handles toggling of voice.
@@ -574,11 +574,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param event mouse event
 	 */
 	const handleToggleVoice = useCallback(() => {
-		if (textAreaDisabled) {
+		if (inputRef.current?.disabled) {
 			return;
 		}
 		setVoiceToggledOn(prev => !prev);
-	}, [textAreaDisabled]);
+	}, []);
 
 	/**
 	 * Handles sending of user input to check if should send as plain text or sensitive info.
@@ -680,7 +680,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, voiceToggledOn, settings, flow, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, updateTextAreaFocus, handleSendUserInput
+		postProcessBlock, setPaths, handleSendUserInput
 	]);
 
 	/**
