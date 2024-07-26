@@ -1,11 +1,12 @@
 {
   "name": "react-chatbotify",
-  "homepage": "https://react-chatbotify..com",
+  "homepage": "https://react-chatbotify.com",
   "keywords": [
     "react",
     "chat",
     "chatbot",
     "conversational-bot",
+    "conversational-ui",
     "frontend-library"
   ],
   "files": [
