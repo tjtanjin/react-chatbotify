@@ -96,7 +96,7 @@ const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Setti
 			if (isValidElement(source[keyAsObjectType])) {
 				target[keyAsObjectType] = source[keyAsObjectType];
 			} else if (
-				typeof source[keyAsObjectType] === 'object' && 
+				typeof source[keyAsObjectType] === "object" && 
 				source[keyAsObjectType] !== null && 
 				!Array.isArray(source[keyAsObjectType])
 			) {
@@ -121,7 +121,7 @@ const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Setti
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
-	if (obj === null || typeof obj !== 'object') {
+	if (obj === null || typeof obj !== "object") {
 		return obj;
 	}
 
@@ -142,7 +142,7 @@ const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
 			if (Object.prototype.hasOwnProperty.call(source, key)) {
 				const value = source[key];
                 
-				if (value && typeof value === 'object') {
+				if (value && typeof value === "object") {
 					if (seen.has(value)) {
 						target[key] = seen.get(value);
 					} else {

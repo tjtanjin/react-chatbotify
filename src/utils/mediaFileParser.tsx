@@ -8,7 +8,7 @@ export const getMediaFileDetails = async (file: File): Promise<{ fileType: strin
 		return { fileType: null, fileUrl: null };
 	}
 
-	const fileType = file.type.split('/')[0];
+	const fileType = file.type.split("/")[0];
 
 	if (!["image", "video", "audio"].includes(fileType)) {
 		return { fileType: null, fileUrl: null };

@@ -84,8 +84,8 @@ const VoiceButton = ({
 	 * Handles sending of voice input as audio file if enabled.
 	 */
 	const handleSendAsAudio = async () => {
-		const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-		const audioFile = new File([audioBlob], 'voice-input.wav', { type: 'audio/wav' });
+		const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
+		const audioFile = new File([audioBlob], "voice-input.wav", { type: "audio/wav" });
 		const fileDetails = await getMediaFileDetails(audioFile);
 		if (!fileDetails.fileType || !fileDetails.fileUrl) {
 			return;

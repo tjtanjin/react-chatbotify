@@ -1,9 +1,9 @@
-import { CSSProperties } from 'react';
+import { CSSProperties } from "react";
 
-import { useSettings } from '../../../context/SettingsContext';
-import { useStyles } from '../../../context/StylesContext';
+import { useSettings } from "../../../context/SettingsContext";
+import { useStyles } from "../../../context/StylesContext";
 
-import './MediaDisplay.css';
+import "./MediaDisplay.css";
 
 /**
  * Supports showing of media display for users.
@@ -39,7 +39,7 @@ const MediaDisplay = ({
 		<>
 			{fileUrl ?
 				<>
-					{fileType === 'image' && fileUrl && (
+					{fileType === "image" && fileUrl && (
 						<div
 							style={mediaDisplayContainerStyle}
 							className="rcb-media-display-image-container rcb-media-entry"
@@ -47,7 +47,7 @@ const MediaDisplay = ({
 							<img src={fileUrl} alt="Image Display" className="rcb-media-display-image" />
 						</div>
 					)}
-					{fileType === 'video' && fileUrl && (
+					{fileType === "video" && fileUrl && (
 						<div 
 							style={mediaDisplayContainerStyle}
 							className="rcb-media-display-video-container rcb-media-entry"
@@ -58,7 +58,7 @@ const MediaDisplay = ({
 							</video>
 						</div>
 					)}
-					{fileType === 'audio' && fileUrl && (
+					{fileType === "audio" && fileUrl && (
 						<audio
 							style={{
 								maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",

@@ -62,6 +62,12 @@ const ChatBot = ({
 	 */
 	const loadConfig = async () => {
 		const combinedConfig = await parseConfig(settings, styles, themes);
+
+		// is chatbot is currently open, we want to respect its state
+		if ("isOpen" in botSettings) {
+			combinedConfig.settings.isOpen = botSettings.isOpen;
+		}
+
 		setBotSettings(combinedConfig.settings);
 		setBotStyles(combinedConfig.styles);
 		setConfigLoaded(true);

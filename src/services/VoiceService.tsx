@@ -161,7 +161,7 @@ export const stopVoiceRecording = () => {
 		recognition.stop();
 	}
 
-	if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+	if (mediaRecorder && mediaRecorder.state !== "inactive") {
 		mediaRecorder.stop();
 		mediaRecorder = null;
 	}
