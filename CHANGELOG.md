@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.3 (28-07-2024)
+
+**Fixed:**
+- Fixed an issue where themes will override the current `isOpen` value in `settings`, causing it to open/close unexpectedly
+
 ## v2.0.0-beta.2 (25-07-2024)
 
 **Fixed:**
