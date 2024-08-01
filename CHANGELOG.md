@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.4 (02-08-2024)
+
+**Fixed:**
+- Fixed an issue where disabling `chatInput` globally cannot be overriden by block-level `chatDisabled` attribute
+
 ## v2.0.0-beta.3 (28-07-2024)
 
 **Fixed:**

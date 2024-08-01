@@ -101,7 +101,7 @@ If there are any questions pertaining to the application itself (usage or implem
 #### Images
 Credits are to be given for the following images:
 - [Logo](https://www.craiyon.com/)
-- [Bot Avatar](https://www.craiyon.com/)
+- [Bot Avatar (v1)](https://www.craiyon.com/)
 
 #### Sound
 Credits are to be given for the notification sound:
