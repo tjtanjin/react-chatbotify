@@ -12,7 +12,7 @@ export const processChatDisabled = async (block: Block, setTextAreaDisabled: (in
 	params: Params) => {
 
 	const chatDisabled = block.chatDisabled;
-	if (!chatDisabled) {
+	if (chatDisabled == null) {
 		return;
 	}
 
