@@ -4,6 +4,40 @@ import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
 
+const CACHE_KEY = 'chatify-bot-theme-cache';
+const EXPIRY_DAYS = 30;
+
+const getCachedTheme = () => {
+	const cachedTheme = localStorage.getItem(CACHE_KEY);
+	if (!cachedTheme) return null;
+
+	const themeData = JSON.parse(cachedTheme);
+	const now = new Date();
+	const expiryDate = new Date(themeData.expiry);
+
+	if (now > expiryDate) {
+		localStorage.removeItem(CACHE_KEY);
+		return null;
+	}
+
+	return themeData;
+}
+
+const setCachedTheme = (id: string, version: string | undefined, settings: Settings, styles: Styles) => {
+	const now = new Date();
+	const expiryDate = new Date(now.getTime() + EXPIRY_DAYS * 24 * 60 * 60 * 1000);
+
+	const themeCacheData = {
+		id,
+		version,
+		settings,
+		styles,
+		expiryDate
+	};
+
+	localStorage.setItem(CACHE_KEY, JSON.stringify(themeCacheData));
+}
+
 /**
  * Processes information for a given theme and retrieves its settings via CDN.
  * 
@@ -11,6 +45,12 @@ const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
  */
 export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
 	const { id, version, base_url = DEFAULT_URL } = theme;
+
+	const cache = getCachedTheme();
+
+	if (cache && cache.id === id && cache.version === version) {
+		return { settings: cache.settings, styles: cache }
+	}
 
 	let themeVersion = version;
 
@@ -70,6 +110,8 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	} else {
 		console.error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
 	}
+
+	setCachedTheme(id, themeVersion, settings, inlineStyles);
 
 	return {settings, styles: inlineStyles}
 }
