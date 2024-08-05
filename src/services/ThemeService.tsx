@@ -36,7 +36,8 @@ const setCachedTheme = (id: string, version: string | undefined, settings: Setti
 		expiryDate
 	};
 
-	localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}_${version}`, JSON.stringify(themeCacheData));
+	version ? localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}_${version}`, JSON.stringify(themeCacheData))
+		: localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}`);
 }
 
 /**
