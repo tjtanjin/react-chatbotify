@@ -4,11 +4,12 @@ import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
 
-const CACHE_KEY = 'rcb-theme';
+const CACHE_KEY_PREFIX = 'rcb-theme';
 const EXPIRY_DAYS = 30;
 
-const getCachedTheme = (id: string, version: string) => {
-	const cachedTheme = localStorage.getItem(`${CACHE_KEY}_${version}_${id}`);
+const getCachedTheme = (id: string, version: string | undefined) => {
+	const cachedTheme = version ? localStorage.getItem(`${CACHE_KEY_PREFIX}_${version}_${id}`) 
+		: localStorage.getItem(`${CACHE_KEY_PREFIX}_${id}`);
 	if (!cachedTheme) return null;
 
 	const themeData = JSON.parse(cachedTheme);
@@ -16,7 +17,7 @@ const getCachedTheme = (id: string, version: string) => {
 	const expiryDate = new Date(themeData.expiry);
 
 	if (now > expiryDate) {
-		localStorage.removeItem(CACHE_KEY);
+		localStorage.removeItem(CACHE_KEY_PREFIX);
 		return null;
 	}
 
@@ -35,7 +36,7 @@ const setCachedTheme = (id: string, version: string | undefined, settings: Setti
 		expiryDate
 	};
 
-	localStorage.setItem(`${CACHE_KEY}_${id}_${version}`, JSON.stringify(themeCacheData));
+	localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}_${version}`, JSON.stringify(themeCacheData));
 }
 
 /**
@@ -112,7 +113,7 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 		console.error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
 	}
 
-	setCachedTheme(`${CACHE_KEY}_${id}_${version}`, themeVersion, settings, inlineStyles);
+	setCachedTheme(`${CACHE_KEY_PREFIX}_${id}_${version}`, themeVersion, settings, inlineStyles);
 
 	return {settings, styles: inlineStyles}
 }
