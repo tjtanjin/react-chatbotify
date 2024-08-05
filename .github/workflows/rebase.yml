@@ -1,0 +1,33 @@
+name: Automated Rebase
+run-name: rebase
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Runs every Monday at 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: whitelabel
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/langgenius/dify.git
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Rebase whitelabel onto upstream main
+        run: |
+          git checkout whitelabel
+          git rebase upstream/main
+          git push --force-with-lease origin whitelabel
