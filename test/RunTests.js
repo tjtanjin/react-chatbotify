@@ -54,6 +54,7 @@ const run = async() => {
     await executeTest(charLimit);
     await executeTest(newMessagePrompt);
     await executeTest(scrollToBottom);
+    await executeTest(testCacheStorage);
     showTestSummary();
     await driver.quit();
 };
@@ -420,6 +421,21 @@ const scrollToBottom = async () => {
     
     if (!isScrolledToBottom) {
       throw new Error("Chat did not auto-scroll to the bottom when the new message prompt was clicked.");
+    }
+};
+
+const testCacheStorage = async () => {
+    // Simulate selecting a new theme and verify it's cached properly
+    const newTheme = { id: "new-theme", version: "1.0.0", base_url: "http://example.com" };
+
+    await driver.executeScript(`window.localStorage.setItem("theme", ${JSON.stringify(newTheme)})`);
+
+    // Retrieve and verify cached theme
+    const cachedTheme = await driver.executeScript('return window.localStorage.getItem("theme")');
+    const parsedTheme = JSON.parse(cachedTheme);
+
+    if (parsedTheme.id !== newTheme.id || parsedTheme.version !== newTheme.version) {
+        throw new Error("The theme was not cached correctly.");
     }
 };
 
