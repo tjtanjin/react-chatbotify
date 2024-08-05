@@ -4,11 +4,11 @@ import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
 
-const CACHE_KEY = 'chatify-bot-theme-cache';
+const CACHE_KEY = 'rcb-theme';
 const EXPIRY_DAYS = 30;
 
-const getCachedTheme = () => {
-	const cachedTheme = localStorage.getItem(CACHE_KEY);
+const getCachedTheme = (id: string, version: string) => {
+	const cachedTheme = localStorage.getItem(`${CACHE_KEY}_${version}_${id}`);
 	if (!cachedTheme) return null;
 
 	const themeData = JSON.parse(cachedTheme);
@@ -35,7 +35,7 @@ const setCachedTheme = (id: string, version: string | undefined, settings: Setti
 		expiryDate
 	};
 
-	localStorage.setItem(CACHE_KEY, JSON.stringify(themeCacheData));
+	localStorage.setItem(`${CACHE_KEY}_${id}_${version}`, JSON.stringify(themeCacheData));
 }
 
 /**
@@ -46,7 +46,8 @@ const setCachedTheme = (id: string, version: string | undefined, settings: Setti
 export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
 	const { id, version, base_url = DEFAULT_URL } = theme;
 
-	const cache = getCachedTheme();
+	// try to get the theme from cache
+	const cache = getCachedTheme(id, version);
 
 	if (cache && cache.id === id && cache.version === version) {
 		return { settings: cache.settings, styles: cache }
@@ -111,7 +112,7 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 		console.error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
 	}
 
-	setCachedTheme(id, themeVersion, settings, inlineStyles);
+	setCachedTheme(`${CACHE_KEY}_${id}_${version}`, themeVersion, settings, inlineStyles);
 
 	return {settings, styles: inlineStyles}
 }
