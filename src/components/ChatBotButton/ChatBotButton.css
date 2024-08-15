@@ -13,7 +13,6 @@
 	border: none;
 	cursor: pointer;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	background-size: cover;
 }
 
 .rcb-toggle-button.rcb-button-hide {
@@ -26,6 +25,20 @@
 	opacity: 1;
 	visibility: visible;
 	animation: expand 0.3s ease-in-out forwards;
+}
+
+/* ChatBot Toggle Icon */
+
+.rcb-toggle-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	margin: auto;
 }
 
 @keyframes expand {

@@ -29,10 +29,8 @@ const ChatBotButton = ({
 
 	// styles for chat button
 	const chatButtonStyle: React.CSSProperties = {
-		backgroundImage: `url(${settings.chatButton?.icon}),
-			linear-gradient(to right, ${settings.general?.secondaryColor}, ${settings.general?.primaryColor})`,
-		width: 75,
-		height: 75,
+		backgroundImage: `linear-gradient(to right, ${settings.general?.secondaryColor},
+			${settings.general?.primaryColor})`,
 		...styles.chatButtonStyle
 	};
 
@@ -51,7 +49,10 @@ const ChatBotButton = ({
 					className={`rcb-toggle-button ${settings.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}
 				>
-					<span style={chatIconStyle} />
+					<span
+						className="rcb-toggle-icon"
+						style={chatIconStyle}
+					/>
 					{!settings.notification?.disabled && settings.notification?.showCount &&
 						<span style={styles.notificationBadgeStyle} className="rcb-badge">
 							{unreadCount}
