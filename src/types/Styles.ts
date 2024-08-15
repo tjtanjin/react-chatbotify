@@ -4,7 +4,6 @@
 export type Styles = {
 	// styles
 	tooltipStyle?: React.CSSProperties;
-	chatButtonStyle?: React.CSSProperties;
 	notificationBadgeStyle?: React.CSSProperties;
 	chatWindowStyle?: React.CSSProperties;
 	headerStyle?: React.CSSProperties;
@@ -21,16 +20,41 @@ export type Styles = {
 	botCheckboxNextStyle?: React.CSSProperties;
 	botCheckMarkStyle?: React.CSSProperties;
 	botCheckMarkSelectedStyle?: React.CSSProperties;
-	sendButtonStyle?: React.CSSProperties;
-	sendButtonHoveredStyle?: React.CSSProperties;
 	characterLimitStyle?: React.CSSProperties;
 	characterLimitReachedStyle?: React.CSSProperties;
-	chatHistoryButtonStyle?: React.CSSProperties;
-	chatHistoryButtonHoveredStyle?: React.CSSProperties;
 	chatHistoryLineBreakStyle?: React.CSSProperties;
 	chatMessagePromptStyle?: React.CSSProperties;
 	chatMessagePromptHoveredStyle?: React.CSSProperties;
 	footerStyle?: React.CSSProperties;
 	loadingSpinnerStyle?: React.CSSProperties;
 	mediaDisplayContainerStyle?: React.CSSProperties;
+	chatButtonStyle?: React.CSSProperties;
+	chatHistoryButtonStyle?: React.CSSProperties;
+	chatHistoryButtonHoveredStyle?: React.CSSProperties;
+	sendButtonStyle?: React.CSSProperties;
+	sendButtonHoveredStyle?: React.CSSProperties;
+	audioButtonStyle?: React.CSSProperties;
+	audioButtonDisabledStyle?: React.CSSProperties;
+	closeChatButtonStyle?: React.CSSProperties;
+	emojiButtonStyle?: React.CSSProperties;
+	emojiButtonDisabledStyle?: React.CSSProperties;
+	fileAttachmentButtonStyle?: React.CSSProperties;
+	fileAttachmentButtonDisabledStyle?: React.CSSProperties;
+	notificationButtonStyle?: React.CSSProperties;
+	notificationButtonDisabledStyle?: React.CSSProperties;
+	voiceButtonStyle?: React.CSSProperties;
+	voiceButtonDisabledStyle?: React.CSSProperties;
+	chatIconStyle?: React.CSSProperties;
+	audioIconStyle?: React.CSSProperties;
+	audioIconDisabledStyle?: React.CSSProperties;
+	closeChatIconStyle?: React.CSSProperties;
+	emojiIconStyle?: React.CSSProperties;
+	emojiIconDisabledStyle?: React.CSSProperties;
+	fileAttachmentIconStyle?: React.CSSProperties;
+	fileAttachmentIconDisabledStyle?: React.CSSProperties;
+	notificationIconStyle?: React.CSSProperties;
+	notificationIconDisabledStyle?: React.CSSProperties;
+	voiceIconStyle?: React.CSSProperties;
+	voiceIconDisabledStyle?: React.CSSProperties;
+	sendIconStyle?: React.CSSProperties;
 }

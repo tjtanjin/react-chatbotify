@@ -4,6 +4,7 @@ import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
 import { useSettings } from "../../../context/SettingsContext";
+import { useStyles } from "../../../context/StylesContext";
 import { Flow } from "../../../types/Flow";
 
 import "./VoiceButton.css";
@@ -43,6 +44,9 @@ const VoiceButton = ({
 	// handles options for bot
 	const { settings } = useSettings();
 
+	// handles styles for bot
+	const { styles } = useStyles();
+
 	// tracks audio chunk (if voice is sent as audio)
 	const audioChunksRef = useRef<BlobPart[]>([]);
 
@@ -73,6 +77,18 @@ const VoiceButton = ({
 		}
 	}, [voiceToggledOn]);
 
+	// styles for voice icon
+	const voiceIconStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.voice?.icon})`,
+		...styles.voiceIconStyle
+	};
+
+	// styles for voice disabled icon
+	const voiceIconDisabledStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.voice?.icon})`,
+		...styles.voiceIconDisabledStyle
+	};
+
 	/**
 	 * Handles submission of user voice input.
 	 */
@@ -102,10 +118,12 @@ const VoiceButton = ({
 				event.preventDefault();
 				handleToggleVoice();
 			}}
+			style={voiceToggledOn && !textAreaDisabled ? styles.voiceButtonStyle : styles.voiceButtonDisabledStyle}
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}
 		>
-			<span className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
-				style={{backgroundImage: `url(${settings.voice?.icon})`}}
+			<span
+				className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
+				style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}
 			/>
 		</div>
 	);

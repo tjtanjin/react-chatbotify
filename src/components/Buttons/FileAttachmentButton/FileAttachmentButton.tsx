@@ -3,6 +3,7 @@ import { ChangeEvent, RefObject } from "react";
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
 import { useSettings } from "../../../context/SettingsContext";
+import { useStyles } from "../../../context/StylesContext";
 import { Flow } from "../../../types/Flow";
 
 import "./FileAttachmentButton.css";
@@ -45,6 +46,27 @@ const FileAttachmentButton = ({
 
 	// handles options for bot
 	const { settings } = useSettings();
+
+	// handles styles for bot
+	const { styles } = useStyles();
+
+	// styles for file attachment disabled button
+	const fileAttachmentButtonDisabledStyle = {
+		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		...styles.fileAttachmentButtonDisabledStyle
+	}
+
+	// styles for file attachment icon
+	const fileAttachmentIconStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.fileAttachment?.icon})`,
+		...styles.fileAttachmentIconStyle
+	};
+
+	// styles for file attachment disabled icon
+	const fileAttachmentIconDisabledStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.fileAttachment?.icon})`,
+		...styles.fileAttachmentIconDisabledStyle
+	};
 
 	/**
 	 * Handles file uploads from user.
@@ -95,7 +117,10 @@ const FileAttachmentButton = ({
 	return (
 		<>
 			{blockAllowsAttachment ? (
-				<label className="rcb-attach-button-enabled">
+				<label
+					className="rcb-attach-button-enabled"
+					style={styles.fileAttachmentButtonStyle}
+				>
 					<input
 						className="rcb-attach-input"
 						type="file"
@@ -104,21 +129,19 @@ const FileAttachmentButton = ({
 						accept={settings.fileAttachment?.accept}
 					/>
 					<span
-						style={{backgroundImage: `url(${settings.fileAttachment?.icon})`}}
 						className="rcb-attach-icon-enabled"
+						style={fileAttachmentIconStyle}
 					/>
 				</label>
 			) : (
 				<label 
 					className="rcb-attach-button-disabled"
-					style={{cursor: `url(${settings.general?.actionDisabledIcon}), auto`}}
+					style={fileAttachmentButtonDisabledStyle}
 				>
 					<input disabled type="file" />
 					<span 
-						style={{
-							backgroundImage: `url(${settings.fileAttachment?.icon})`
-						}} 
 						className="rcb-attach-icon-disabled"
+						style={fileAttachmentIconDisabledStyle}
 					>
 					</span>
 				</label>
