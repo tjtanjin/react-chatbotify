@@ -35,6 +35,12 @@ const ChatBotButton = ({
 		height: 75,
 		...styles.chatButtonStyle
 	};
+
+	// styles for chat icon
+	const chatIconStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.chatButton?.icon})`,
+		...styles.chatIconStyle
+	};
 	
 	return (
 		<>
@@ -45,6 +51,7 @@ const ChatBotButton = ({
 					className={`rcb-toggle-button ${settings.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}
 				>
+					<span style={chatIconStyle} />
 					{!settings.notification?.disabled && settings.notification?.showCount &&
 						<span style={styles.notificationBadgeStyle} className="rcb-badge">
 							{unreadCount}
