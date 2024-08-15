@@ -1,5 +1,45 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.5 (15-08-2024)
+
+**Fixed:**
+- Fixed an issue where cursor disabled icon was not showing up on mac devices
+
+**Added:**
+- Added a bunch of new style props for **buttons** and **icons** to improve convenience in styling:
+```
+// new button styles
+audioButtonStyle?: React.CSSProperties;
+audioButtonDisabledStyle?: React.CSSProperties;
+closeChatButtonStyle?: React.CSSProperties;
+emojiButtonStyle?: React.CSSProperties;
+emojiButtonDisabledStyle?: React.CSSProperties;
+fileAttachmentButtonStyle?: React.CSSProperties;
+fileAttachmentButtonDisabledStyle?: React.CSSProperties;
+notificationButtonStyle?: React.CSSProperties;
+notificationButtonDisabledStyle?: React.CSSProperties;
+voiceButtonStyle?: React.CSSProperties;
+voiceButtonDisabledStyle?: React.CSSProperties;
+
+// new icon styles
+chatIconStyle?: React.CSSProperties;
+audioIconStyle?: React.CSSProperties;
+audioIconDisabledStyle?: React.CSSProperties;
+closeChatIconStyle?: React.CSSProperties;
+emojiIconStyle?: React.CSSProperties;
+emojiIconDisabledStyle?: React.CSSProperties;
+fileAttachmentIconStyle?: React.CSSProperties;
+fileAttachmentIconDisabledStyle?: React.CSSProperties;
+notificationIconStyle?: React.CSSProperties;
+notificationIconDisabledStyle?: React.CSSProperties;
+voiceIconStyle?: React.CSSProperties;
+voiceIconDisabledStyle?: React.CSSProperties;
+sendIconStyle?: React.CSSProperties;
+```
+
+**Note:**
+There were minor shifting of a few classes to better separate buttons and icons. This should not be an issue for the vast majority of users, but if you've done very specific changes to button/icon styles by targeting the CSS classes, it is advisable to visually check the appearance of said buttons/icons.
+
 ## v2.0.0-beta.4 (02-08-2024)
 
 **Fixed:**
