@@ -39,6 +39,7 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	margin: auto;
+	border-radius: inherit;
 }
 
 @keyframes expand {
