@@ -1,5 +1,15 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.6 (24-08-2024)
+
+**Fixed:**
+- Fixed an issue where chat icon will not fit in the button correctly
+- Fixed an issue where `baseUrl` was wrongly named `base_url`
+
+**Added:**
+- Added caching of themes locally to improve performance
+- Added optional `cacheDuration` field when specifying themes which specifies in seconds the duration to cache the theme for (defaults to 30 days)
+
 ## v2.0.0-beta.5 (15-08-2024)
 
 **Fixed:**
