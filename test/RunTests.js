@@ -423,6 +423,23 @@ const scrollToBottom = async () => {
     }
 };
 
+// this test for theme is not neccessary, only checks localstorage store and retrieve
+// todo: have a test case that checks cache expiry instead
+// const testCacheStorage = async () => {
+//     // Simulate selecting a new theme and verify it's cached properly
+//     const newTheme = { id: "new-theme", version: "1.0.0", baseUrl: "http://example.com" };
+
+//     await driver.executeScript(`window.localStorage.setItem("theme", ${JSON.stringify(newTheme)})`);
+
+//     // Retrieve and verify cached theme
+//     const cachedTheme = await driver.executeScript('return window.localStorage.getItem("theme")');
+//     const parsedTheme = JSON.parse(cachedTheme);
+
+//     if (parsedTheme.id !== newTheme.id || parsedTheme.version !== newTheme.version) {
+//         throw new Error("The theme was not cached correctly.");
+//     }
+// };
+
 const showTestSummary = () => {
     console.log(errors);
     console.log(`Total Test Cases: ${numCases}`);
