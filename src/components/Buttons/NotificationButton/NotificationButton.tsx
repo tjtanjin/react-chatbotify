@@ -1,6 +1,7 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 
 import { useSettings } from "../../../context/SettingsContext";
+import { useStyles } from "../../../context/StylesContext";
 
 import "./NotificationButton.css";
 
@@ -20,17 +21,36 @@ const NotificationButton = ({
 	// handles options for bot
 	const { settings } = useSettings();
 
+	// handles styles for bot
+	const { styles } = useStyles();
+
+	// styles for notification icon
+	const notificationIconStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.notification?.icon})`,
+		...styles.notificationIconStyle
+	};
+
+	// styles for notification disabled icon
+	const notificationIconDisabledStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.notification?.icon})`,
+		...styles.notificationIconDisabledStyle
+	};
+
 	return (
 		<div
-			style={{backgroundImage: `url(${settings.notification?.icon})`}}
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
 				setNotificationToggledOn(prev => !prev);
 			}}
-			className={`rcb-notification-icon-${
-				notificationToggledOn ? "on" : "off"
-			}`}
-		></div>
+			style={notificationToggledOn ? styles.notificationButtonStyle : styles.notificationButtonDisabledStyle}
+		>
+			<span
+				className={`rcb-notification-icon-${
+					notificationToggledOn ? "on" : "off"
+				}`}
+				style={notificationToggledOn? notificationIconStyle : notificationIconDisabledStyle}
+			/>
+		</div>
 	);
 };
 

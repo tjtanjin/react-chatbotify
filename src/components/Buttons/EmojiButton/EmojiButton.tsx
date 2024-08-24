@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, RefObject } from "react";
 
 import { useSettings } from "../../../context/SettingsContext";
+import { useStyles } from "../../../context/StylesContext";
 
 import "./EmojiButton.css";
 
@@ -21,6 +22,9 @@ const EmojiButton = ({
 	// handles options for bot
 	const { settings } = useSettings();
 
+	// handles styles for bot
+	const { styles } = useStyles();
+
 	// reference to popup
 	const popupRef = useRef<HTMLDivElement>(null);
 
@@ -30,9 +34,22 @@ const EmojiButton = ({
 	// handles showing of emoji popup
 	const [showPopup, setShowPopup] = useState<boolean>(false);
 
-	// styles emoji button when disabled
+	// styles for emoji disabled button
 	const emojiButtonDisabledStyle: React.CSSProperties = {
 		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		...styles.emojiButtonDisabledStyle
+	};
+
+	// styles for emoji icon
+	const emojiIconStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.emoji?.icon})`,
+		...styles.emojiIconStyle
+	};
+
+	// styles for emoji disabled icon
+	const emojiIconDisabledStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.emoji?.icon})`,
+		...styles.emojiIconDisabledStyle
 	};
 
 	// handles click events for showing/dismissing emoji popup
@@ -111,13 +128,13 @@ const EmojiButton = ({
 		<>
 			<div
 				ref={iconContainerRef}
-				style={textAreaDisabled ? emojiButtonDisabledStyle : {}} 
 				className={`${textAreaDisabled ? "rcb-emoji-button-disabled" : "rcb-emoji-button-enabled"}`}
+				style={textAreaDisabled ? emojiButtonDisabledStyle : styles.emojiButtonStyle}
 				onMouseDown={togglePopup}
 			>
 				<span
-					style={{backgroundImage: `url(${settings.emoji?.icon})`}}
 					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}
+					style={textAreaDisabled ? emojiIconDisabledStyle : emojiIconStyle}
 				/>
 			</div>
 			{showPopup && (

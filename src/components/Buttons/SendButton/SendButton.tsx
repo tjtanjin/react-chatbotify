@@ -40,6 +40,7 @@ const SendButton = ({
 	// styles for send icon
 	const sendIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
+		...styles.sendIconStyle
 	};
 
 	/**
@@ -60,11 +61,11 @@ const SendButton = ({
 		<div
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
-			style={isHovered ? sendButtonHoveredStyle : sendButtonStyle}
 			onMouseDown={(event: MouseEvent) => {
 				event?.preventDefault();
 				handleSubmit();
 			}}
+			style={isHovered ? sendButtonHoveredStyle : sendButtonStyle}
 			className="rcb-send-button"
 		>
 			<span className="rcb-send-icon" style={sendIconStyle} />

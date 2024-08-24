@@ -14,7 +14,7 @@ import emojiIcon from "../../assets/emoji_icon.svg";
 import audioIcon from "../../assets/audio_icon.svg";
 import notificationSound from "../../assets/notification_sound.wav";
 
-// default options provided to the bot
+// default settings provided to the bot
 export const DefaultSettings: Settings = {
 	// tracks state of chat window, also the default state to load it in
 	isOpen: false,
