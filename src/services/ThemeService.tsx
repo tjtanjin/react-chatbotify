@@ -1,43 +1,106 @@
+import { ThemeCacheData } from "../types/internal/ThemeCacheData";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
+const DEFAULT_EXPIRATION = import.meta.env.VITE_THEME_DEFAULT_CACHE_EXPIRATION;
+const CACHE_KEY_PREFIX = import.meta.env.VITE_THEME_CACHE_KEY_PREFIX;
 
-const CACHE_KEY_PREFIX = 'rcb-theme';
-const EXPIRY_DAYS = 30;
+/**
+ * Fetches the cached theme if it exist and checks for expiry.
+ *
+ * @param id id of the theme
+ * @param version version of the theme
+ * @param cacheDuration duration that the theme should be cached for
+ */
+const getCachedTheme = (id: string, version: string, cacheDuration: number): ThemeCacheData | null => {
+	const cachedTheme = localStorage.getItem(`${CACHE_KEY_PREFIX}_${id}_${version}`);
 
-const getCachedTheme = (id: string, version: string | undefined) => {
-	const cachedTheme = version ? localStorage.getItem(`${CACHE_KEY_PREFIX}_${version}_${id}`) 
-		: localStorage.getItem(`${CACHE_KEY_PREFIX}_${id}`);
-	if (!cachedTheme) return null;
-
-	const themeData = JSON.parse(cachedTheme);
-	const now = new Date();
-	const expiryDate = new Date(themeData.expiry);
-
-	if (now > expiryDate) {
-		localStorage.removeItem(CACHE_KEY_PREFIX);
+	// if unable to find theme, not cached so return null
+	if (!cachedTheme) {
 		return null;
 	}
 
-	return themeData;
+	try {
+		const parsedCacheTheme: ThemeCacheData = JSON.parse(cachedTheme);
+		const milliseconds = new Date().getTime();
+		const currentTimeInSeconds = Math.floor(milliseconds / 1000);
+		// if cache date + duration is greater than current time, then cache is still valid
+		if (parsedCacheTheme.cacheDate + cacheDuration >= currentTimeInSeconds) {
+			return parsedCacheTheme;
+		}
+		return null;
+	} catch (error) {
+		console.error(`Unable to fetch cache for ${id}`, error);
+		return null;
+	}
 }
 
-const setCachedTheme = (id: string, version: string | undefined, settings: Settings, styles: Styles) => {
-	const now = new Date();
-	const expiryDate = new Date(now.getTime() + EXPIRY_DAYS * 24 * 60 * 60 * 1000);
+/**
+ * Saves a theme to cache.
+ *
+ * @param id id of the theme
+ * @param version version of the theme
+ * @param settings settings to cache
+ * @param inlineStyles inline styles to cache
+ * @param cssStylesText css styles to cache
+ */
+const setCachedTheme = (id: string, version: string, settings: Settings, inlineStyles: Styles,
+	cssStylesText: string) => {
 
-	const themeCacheData = {
-		id,
-		version,
+	const milliseconds = new Date().getTime();
+	const currentTimeInSeconds = Math.floor(milliseconds / 1000);
+
+	const themeCacheData: ThemeCacheData = {
 		settings,
-		styles,
-		expiryDate
+		inlineStyles,
+		cssStylesText,
+		cacheDate: currentTimeInSeconds
 	};
 
-	version ? localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}_${version}`, JSON.stringify(themeCacheData))
-		: localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}`);
+	localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}_${version}`, JSON.stringify(themeCacheData));
+}
+
+/**
+ * Applies the css styles given the css styles text.
+ *
+ * @param id id of the theme
+ * @param cssStylesText css styles to apply
+ */
+const applyCssStyles = async (id: string, cssStylesText: string) => {
+	try {
+		// append css styles provided
+		const cssLinkElement = document.createElement("link");
+		cssLinkElement.id = `rcb-theme-style-${id}`;
+		cssLinkElement.rel = "stylesheet";
+		cssLinkElement.href = `data:text/css;charset=utf-8,${encodeURIComponent(cssStylesText)}`;
+		document.head.appendChild(cssLinkElement);
+	} catch (error) {
+		console.error(`Failed to apply styles.css for: ${id}`, error);
+	}
+}
+
+/**
+ * Fetches the theme version from meta.json file.
+ *
+ * @param id id of the theme
+ * @param baseUrl base url to fetch meta file from
+ */
+const fetchThemeVersionFromMeta = async (id: string, baseUrl: string) => {
+	const metadataUrl = `${baseUrl}/${id}/meta.json`;
+	try {
+		const response = await fetch(metadataUrl);
+		if (!response.ok) {
+			console.error(`Failed to fetch meta.json from ${metadataUrl}`);
+			return null;
+		}
+		const metadata = await response.json();
+		return metadata.version;
+	} catch (error) {
+		console.error(`Failed to fetch meta.json from ${metadataUrl}`, error);
+		return null;
+	}
 }
 
 /**
@@ -46,55 +109,37 @@ const setCachedTheme = (id: string, version: string | undefined, settings: Setti
  * @param theme theme to process and retrieve settings for
  */
 export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
-	const { id, version, base_url = DEFAULT_URL } = theme;
+	const { id, version, baseUrl = DEFAULT_URL, cacheDuration = DEFAULT_EXPIRATION } = theme;
+	const themeVersion = version ? version : await fetchThemeVersionFromMeta(id, baseUrl);
 
-	// try to get the theme from cache
-	const cache = getCachedTheme(id, version);
-
-	if (cache && cache.id === id && cache.version === version) {
-		return { settings: cache.settings, styles: cache }
+	// if still cannot get version even from meta.json, return
+	if (!themeVersion) {
+		console.error(`Unable to find version for theme: ${id}`);
+		return {settings: {}, styles: {}};
 	}
 
-	let themeVersion = version;
-
-	// if version is not specified, get from meta.json
-	if (!version) {
-		const metadataUrl = `${base_url}/${id}/meta.json`;
-		try {
-			const response = await fetch(metadataUrl);
-			if (!response.ok) {
-				throw new Error(`Failed to fetch meta.json from ${metadataUrl}`);
-			}
-			const metadata = await response.json();
-			themeVersion = metadata.version;
-		} catch (error) {
-			console.error(`Failed to fetch meta.json from ${metadataUrl}`, error);
-			return {settings: {}, styles: {}};
-		}
+	// try to get non-expired theme cache for specified theme and version
+	const cache = getCachedTheme(id, themeVersion, cacheDuration);
+	if (cache) {
+		console.log("Using cache");
+		await applyCssStyles(id, cache.cssStylesText);
+		return { settings: cache.settings, styles: cache.inlineStyles }
 	}
 
-	// construct urls for styles.css, settings.json and settings.json
-	const cssStylesUrl = `${base_url}/${id}/${themeVersion}/styles.css`;
-	const settingsUrl = `${base_url}/${id}/${themeVersion}/settings.json`;
-	const inlineStylesUrl = `${base_url}/${id}/${themeVersion}/styles.json`;
+	// for no cache found, construct urls for styles.css, settings.json and settings.json
+	const cssStylesUrl = `${baseUrl}/${id}/${themeVersion}/styles.css`;
+	const settingsUrl = `${baseUrl}/${id}/${themeVersion}/settings.json`;
+	const inlineStylesUrl = `${baseUrl}/${id}/${themeVersion}/styles.json`;
 
 	// fetch and apply css styles
-	try {
-		const cssStylesResponse = await fetch(cssStylesUrl);
-		if (!cssStylesResponse.ok) {
-			throw new Error(`Failed to fetch styles.css from ${cssStylesUrl}`);
-		}
-		const cssStylesText = await cssStylesResponse.text();
-		
-		// Create and append new style element
-		const cssLinkElement = document.createElement("link");
-		cssLinkElement.id = `rcb-theme-style-${id}`;
-		cssLinkElement.rel = "stylesheet";
-		cssLinkElement.href = `data:text/css;charset=utf-8,${encodeURIComponent(cssStylesText)}`;
-		document.head.appendChild(cssLinkElement);
-	} catch (error) {
-		console.error(`Failed to fetch styles.css from ${cssStylesUrl}`, error);
+	let cssStylesText = "";
+	const cssStylesResponse = await fetch(cssStylesUrl);
+	if (cssStylesResponse.ok) {
+		cssStylesText = await cssStylesResponse.text();
+	} else {
+		console.info(`Could not fetch styles.css from ${cssStylesUrl}`);
 	}
+	await applyCssStyles(id, cssStylesText);
 
 	// fetch and return settings
 	const settingsResponse = await fetch(settingsUrl);
@@ -102,7 +147,7 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	if (settingsResponse.ok) {
 		settings = await settingsResponse.json();
 	} else {
-		console.error(`Failed to fetch settings.json from ${settingsUrl}`);
+		console.info(`Could not fetch settings.json from ${settingsUrl}`);
 	}
 
 	// fetch and return styles
@@ -111,10 +156,9 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	if (inlineStylesResponse.ok) {
 		inlineStyles = await inlineStylesResponse.json();
 	} else {
-		console.error(`Failed to fetch styles.json from ${inlineStylesUrl}`);
+		console.info(`Could not fetch styles.json from ${inlineStylesUrl}`);
 	}
 
-	setCachedTheme(`${CACHE_KEY_PREFIX}_${id}_${version}`, themeVersion, settings, inlineStyles);
-
-	return {settings, styles: inlineStyles}
+	setCachedTheme(id, themeVersion, settings, inlineStyles, cssStylesText);
+	return {settings, styles: inlineStyles};
 }
