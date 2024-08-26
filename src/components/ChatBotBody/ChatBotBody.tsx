@@ -59,7 +59,17 @@ const ChatBotBody = ({
 	const bodyStyle: CSSProperties = {
 		...styles?.bodyStyle,
 		scrollbarWidth: settings.chatWindow?.showScrollbar ? "auto" : "none",
-	}
+	};
+
+	// styles for typing indicator
+	const rcbDot: CSSProperties = {
+		width: "8px",
+		height: "8px",
+		borderRadius: "50%",
+		backgroundColor: "#ccc",
+		marginRight: "4px",
+		animation: "rcb-typing 1s infinite"
+	};
 
 	// styles for user bubble
 	const userBubbleStyle: CSSProperties = {
@@ -273,9 +283,9 @@ const ChatBotBody = ({
 						className={`rcb-bot-message ${botBubbleEntryStyle}`}
 					>
 						<div className="rcb-typing-indicator">
-							<span className="rcb-dot"/>
-							<span className="rcb-dot"/>
-							<span className="rcb-dot"/>
+							<span style={rcbDot} className="rcb-dot"/>
+							<span style={rcbDot} className="rcb-dot"/>
+							<span style={rcbDot} className="rcb-dot"/>
 						</div>
 					</div>
 				</div>
