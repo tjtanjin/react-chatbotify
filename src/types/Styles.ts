@@ -57,4 +57,6 @@ export type Styles = {
 	voiceIconStyle?: React.CSSProperties;
 	voiceIconDisabledStyle?: React.CSSProperties;
 	sendIconStyle?: React.CSSProperties;
+	rcbTypingIndicatorStyle?: React.CSSProperties;
+	rcbDotStyle?: React.CSSProperties;
 }
