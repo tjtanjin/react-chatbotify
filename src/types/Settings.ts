@@ -128,6 +128,18 @@ export type Settings = {
 		icon?: string;
 		list?: string[] ;
 	},
+	event?: {
+		rcbPreMessageInject?: boolean;
+		rcbPostMessageInject?: boolean;
+		rcbStartMessageStream?: boolean;
+		rcbChunkMessageStream?: boolean;
+		rcbStopMessageStream?: boolean;
+		rcbChatHistoryLoad?: boolean;
+		rcbChatWindowToggle?: boolean;
+		rcbAudioToggle?: boolean;
+		rcbNotificationToggle?: boolean;
+		rcbVoiceToggle?: boolean;
+	},
 	advance?: {
 		useAdvancedMessages?: boolean;
 		useAdvancedSettings?: boolean;

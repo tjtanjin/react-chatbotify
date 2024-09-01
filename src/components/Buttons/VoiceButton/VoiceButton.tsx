@@ -37,7 +37,7 @@ const VoiceButton = ({
 	handleToggleVoice: () => void;
 	getCurrPath: () => keyof Flow | null;
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	injectMessage: (content: string | JSX.Element, sender?: string, bypassEvents?: boolean) => Promise<void>;
 	setInputLength: Dispatch<SetStateAction<number>>;
 }) => {
 

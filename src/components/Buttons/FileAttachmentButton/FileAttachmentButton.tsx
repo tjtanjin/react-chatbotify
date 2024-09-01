@@ -35,7 +35,7 @@ const FileAttachmentButton = ({
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	flow: Flow;
 	blockAllowsAttachment: boolean;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	injectMessage: (content: string | JSX.Element, sender?: string, bypassEvents?: boolean) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
 	getCurrPath: () => keyof Flow | null;

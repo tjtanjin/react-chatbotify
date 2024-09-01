@@ -10,6 +10,7 @@ import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
 import { processIsSensitive } from "../services/BlockService/IsSensitiveProcessor";
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
+import { emitRcbPostMessageInjectEvent, emitRcbPreMessageInjectEvent } from "../services/RcbEventService";
 import { processAudio } from "../services/AudioService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
 import { isChatBotVisible, isDesktop } from "../utils/displayChecker";
@@ -426,7 +427,18 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
+	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot",
+		bypassEvents = false) => {
+
+		if (settings.event?.rcbPreMessageInject && !bypassEvents) {
+			const actions = {goToPath, injectMessage, streamMessage};
+			const details = {message: {sender, content}, currPath: getCurrPath(), prevPath: getPrevPath()}
+			const prevented = emitRcbPreMessageInjectEvent(details, actions, settings, styles, messages, paths);
+			if (prevented) {
+				return;
+			}
+		}
+
 		const message = {content: content, sender: sender};
 		processAudio(settings, audioToggledOn, message);
 
@@ -445,6 +457,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			await simulateStream(message, streamSpeed, useMarkup);
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);
+		}
+
+		if (settings.event?.rcbPostMessageInject && !bypassEvents) {
+			const actions = {goToPath, injectMessage, streamMessage};
+			const details = {message: {sender, content}, currPath: getCurrPath(), prevPath: getPrevPath()}
+			emitRcbPostMessageInjectEvent(details, actions, settings, styles, messages, paths);
 		}
 	}, [settings, audioToggledOn]);
 
@@ -616,10 +634,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
 	 */
 	const handleActionInput = useCallback(async (path: keyof Flow, userInput: string, sendUserInput = true) => {
-		clearTimeout(timeoutId);
 		userInput = userInput.trim();
-		paramsInputRef.current = userInput;
-
 		if (userInput === "") {
 			return;
 		}
@@ -628,6 +643,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (sendUserInput) {
 			await handleSendUserInput(userInput);
 		}
+
+		clearTimeout(timeoutId);
+		paramsInputRef.current = userInput;
 
 		if (chatBodyRef.current) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
@@ -657,7 +675,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), goToPath: goToPath, userInput, 
-				injectMessage, streamMessage,openChat
+				injectMessage, streamMessage, openChat
 			};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {

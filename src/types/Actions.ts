@@ -1,14 +1,10 @@
 import { Flow } from "./Flow";
 
 /**
- * Defines the accessible data for use in dynamic attributes.
+ * Defines the accessible actions for use in events.
  */
-export type Params = {
-	userInput: string;
-	prevPath: keyof Flow | null;
+export type Actions = {
 	goToPath: (pathToGo: keyof Flow) => void;
 	injectMessage: (content: string | JSX.Element, sender?: string, bypassEvents?: boolean) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
-	openChat: (isOpen: boolean) => void;
-	files?: FileList;
 }

@@ -163,6 +163,18 @@ export const DefaultSettings: Settings = {
 		icon: emojiIcon,
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
+	event: {
+		rcbPreMessageInject: true,
+		rcbPostMessageInject: true,
+		rcbStartMessageStream: true,
+		rcbChunkMessageStream: true,
+		rcbStopMessageStream: true,
+		rcbChatHistoryLoad: true,
+		rcbChatWindowToggle: true,
+		rcbAudioToggle: true,
+		rcbNotificationToggle: true,
+		rcbVoiceToggle: true,
+	},
 	advance: {
 		useAdvancedMessages: false,
 		useAdvancedSettings: false,
