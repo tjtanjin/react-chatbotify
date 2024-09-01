@@ -272,10 +272,10 @@ const ChatBotBody = ({
 						}}
 						className={`rcb-bot-message ${botBubbleEntryStyle}`}
 					>
-						<div className="rcb-typing-indicator" style={{...styles?.rcbTypingIndicatorStyle}}>
-							<span className="rcb-dot" style={{...styles?.rcbDotStyle}}/>
-							<span className="rcb-dot" style={{...styles?.rcbDotStyle}}/>
-							<span className="rcb-dot" style={{...styles?.rcbDotStyle}}/>
+						<div className="rcb-typing-indicator" style={{...styles?.rcbTypingIndicatorContainerStyle}}>
+							<span className="rcb-dot" style={{...styles?.rcbTypingIndicatorDotStyle}}/>
+							<span className="rcb-dot" style={{...styles?.rcbTypingIndicatorDotStyle}}/>
+							<span className="rcb-dot" style={{...styles?.rcbTypingIndicatorDotStyle}}/>
 						</div>
 					</div>
 				</div>
