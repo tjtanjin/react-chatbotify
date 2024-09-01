@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.7 (01-09-2024)
+
+**Added:**
+- Added `rcbTypingIndicatorContainerStyle` and `rcbTypingIndicatorDotStyle` for ease of styling typing indicator
+
 ## v2.0.0-beta.6 (24-08-2024)
 
 **Fixed:**
