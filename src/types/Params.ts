@@ -7,6 +7,7 @@ export type Params = {
 	userInput: string;
 	prevPath: keyof Flow | null;
 	goToPath: (pathToGo: keyof Flow) => void;
+	setTextAreaValue: (value: string) => void;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	openChat: (isOpen: boolean) => void;
