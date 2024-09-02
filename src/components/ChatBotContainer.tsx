@@ -414,9 +414,17 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [paths])
 
 	/**
-	 * Handles going directly to a path.
+	 * Handles going directly to a path, while mimicking post-processing behaviors.
 	 */
 	const goToPath = useCallback((pathToGo: keyof Flow) => {
+		// mimics post-processing behavior
+		setIsBotTyping(true);
+		if (settings.chatInput?.blockSpam) {
+			setTextAreaDisabled(true);
+		}
+		setTextAreaSensitiveMode(false);
+
+		// go to specified path
 		setPaths(prev => [...prev, pathToGo]);
 	}, [])
 
@@ -632,7 +640,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		if (chatBodyRef.current) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
-
 
 		// Clear input field
 		if (inputRef.current) {
