@@ -22,7 +22,7 @@ const UserCheckboxes = ({
 	path,
 	handleActionInput,
 }: {
-	checkboxes: {items: Array<string>, max?: number, min?: number};
+	checkboxes: {items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean};
 	checkedItems: Set<string>;
 	path: keyof Flow;
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
@@ -76,11 +76,11 @@ const UserCheckboxes = ({
 		...styles.botCheckMarkSelectedStyle
 	};
 
-	// when moving on from current path, we also want to disable checkboxes
+	// when moving on from current path, we also want to disable checkboxes if it is not reusable
 	// cannot just rely on user input since path can change even without it (e.g. transition)
 	useEffect(() => {
 		if (paths.length > 0 && paths[paths.length - 1] !== path) {
-			setDisabled(true);
+			setDisabled(!checkboxes.reusable as boolean);
 		}
 	}, [paths]);
 	
@@ -137,8 +137,14 @@ const UserCheckboxes = ({
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					const userInput = Array.from(checkedItems).join(", ");
-					setDisabled(true);
-					handleActionInput(path, userInput, settings.chatInput?.sendCheckboxOutput as boolean);
+					setDisabled(!checkboxes.reusable as boolean);
+					let sendInChat: boolean;
+					if (checkboxes.sendOutput) {
+						sendInChat = checkboxes.sendOutput;
+					} else {
+						sendInChat = settings.chatInput?.sendCheckboxOutput || true;
+					}
+					handleActionInput(path, userInput, sendInChat);
 				}}
 			>
 			</button>
