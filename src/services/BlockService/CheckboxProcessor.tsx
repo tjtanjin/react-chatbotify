@@ -26,11 +26,16 @@ export const processCheckboxes = async (block: Block, path: keyof Flow,
 		if (parsedCheckboxes instanceof Promise) {
 			parsedCheckboxes = await parsedCheckboxes;
 		}
+	} else if (Array.isArray(checkboxes)) {
+		parsedCheckboxes = {items: checkboxes, min: 1, max: checkboxes.length};
 	} else {
 		parsedCheckboxes = checkboxes;
 	}
 
 	// nothing to render if no items present
+	if (!("items" in parsedCheckboxes)) {
+		return;
+	}
 	if (parsedCheckboxes.items.length == 0) {
 		return;
 	}

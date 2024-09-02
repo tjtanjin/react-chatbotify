@@ -9,7 +9,8 @@ export type Block = {
 	// input, but for ease of understanding to users, we will classify it with pre-processing attributes
 	message?: string | void | ((params: Params) => string | void) | ((params: Params) => Promise<string | void>);
 	options?: Array<string> | ((params: Params) => Array<string>) | ((params: Params) => Promise<Array<string>>);
-	checkboxes?: {items: Array<string>, max?: number, min?: number} |
+	checkboxes?: Array<string> | ((params: Params) => Array<string>) |
+		((params: Params) => Promise<Array<string>>) | {items: Array<string>, max?: number, min?: number} |
 		((params: Params) => {items: Array<string>, max?: number, min?: number}) |
 		((params: Params) => Promise<{items: Array<string>, max?: number, min?: number}>);
 	component?: JSX.Element | void | ((params: Params) => JSX.Element | void) |
