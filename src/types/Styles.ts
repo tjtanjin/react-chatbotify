@@ -59,4 +59,7 @@ export type Styles = {
 	sendIconStyle?: React.CSSProperties;
 	rcbTypingIndicatorContainerStyle?: React.CSSProperties;
 	rcbTypingIndicatorDotStyle?: React.CSSProperties;
+	toastPromptContainerStyle?: React.CSSProperties;
+	toastPromptStyle?: React.CSSProperties;
+	toastPromptHoveredStyle?: React.CSSProperties;
 }

@@ -59,4 +59,7 @@ export const DefaultStyles: Styles = {
 	sendIconStyle: {},
 	rcbTypingIndicatorContainerStyle: {},
 	rcbTypingIndicatorDotStyle: {},
+	toastPromptContainerStyle: {},
+	toastPromptStyle: {},
+	toastPromptHoveredStyle: {}
 }

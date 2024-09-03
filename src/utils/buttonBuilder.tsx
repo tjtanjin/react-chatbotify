@@ -139,6 +139,7 @@ export const createFileAttachmentButton = (
 	getPrevPath: () => keyof Flow | null,
 	goToPath: (pathToGo: keyof Flow) => void,
 	setTextAreaValue: (value: string) => void,
+	injectToast: (content: string | JSX.Element, timeout?: number) => void,
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>
 ) => {
 	return (
@@ -146,6 +147,7 @@ export const createFileAttachmentButton = (
 			blockAllowsAttachment={blockAllowsAttachment} getCurrPath={getCurrPath} openChat={openChat}
 			getPrevPath={getPrevPath} goToPath={goToPath} handleActionInput={handleActionInput}
 			injectMessage={injectMessage} streamMessage={streamMessage} setTextAreaValue={setTextAreaValue}
+			injectToast={injectToast}
 		/>
 	);
 };

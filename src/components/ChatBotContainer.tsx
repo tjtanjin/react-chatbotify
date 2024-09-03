@@ -32,6 +32,7 @@ import { Block } from "../types/Block";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Params } from "../types/Params";
+import { Toast } from "../types/internal/Toast";
 import { Button } from "../constants/Button";
 
 import "./ChatBotContainer.css";
@@ -110,6 +111,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks typing state of chat bot
 	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
+
+	// tracks toasts shown
+	const [toasts, setToasts] = useState<Array<Toast>>([]);
+	const maxToasts = 5; // Maximum number of toasts allowed at any one time
 
 	// tracks block timeout if transition is interruptable
 	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
@@ -282,7 +287,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		}
 
 		const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput: paramsInputRef.current,
-			injectMessage, streamMessage, openChat};
+			injectMessage, streamMessage, openChat, injectToast};
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
@@ -438,6 +443,31 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			inputRef.current.value = value;
 		}
 	}
+
+	/**
+	 * Injects a new toast.
+	 *
+	 * @param content message to show in toast
+	 * @param timeout optional timeout in milliseconds before toast is removed
+	 */
+	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): void => {
+		setToasts((prevToasts: Toast[]) => {
+			// if toast array is full, remove oldest
+			if (prevToasts.length >= maxToasts) {
+				return [...prevToasts.slice(1), { id: crypto.randomUUID(), content, timeout }];
+			}
+			return [...prevToasts, { id: crypto.randomUUID(), content, timeout }];
+		});
+	}, [setToasts]);
+	
+	/**
+	 * Removes a toast.
+	 *
+	 * @param id id of toast to remove
+	 */
+	const removeToast = useCallback((id: string): void => {
+		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+	}, [setToasts]);
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -675,7 +705,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput, 
-				injectMessage, streamMessage,openChat
+				injectMessage, streamMessage, openChat, injectToast
 			};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
@@ -698,7 +728,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, voiceToggledOn, settings, flow, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, handleSendUserInput
+		postProcessBlock, setPaths, handleSendUserInput, injectToast
 	]);
 
 	/**
@@ -777,11 +807,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	
 	const fileAttachmentButtonComponentMap = useMemo(() => ({
 		[Button.FILE_ATTACHMENT_BUTTON]: () => createFileAttachmentButton(inputRef, flow, blockAllowsAttachment,
-			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, goToPath, setTextAreaValue,
-			handleActionInput
+			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, goToPath, setTextAreaValue, injectToast,
+			handleActionInput,
 		)
 	}), [inputRef, flow, blockAllowsAttachment, injectMessage, streamMessage, openChat,
-		getCurrPath, getPrevPath, goToPath, handleActionInput
+		getCurrPath, getPrevPath, goToPath, handleActionInput, injectToast
 	]);
 	
 	const buttonComponentMap = useMemo(() => ({
@@ -857,8 +887,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
 					isLoadingChatHistory={isLoadingChatHistory} chatScrollHeight={chatScrollHeight}
 					setChatScrollHeight={setChatScrollHeight} setIsLoadingChatHistory={setIsLoadingChatHistory}
-					isScrolling={isScrolling} setIsScrolling={setIsScrolling}
-					unreadCount={unreadCount} setUnreadCount={setUnreadCount}
+					isScrolling={isScrolling} setIsScrolling={setIsScrolling} unreadCount={unreadCount}
+					setUnreadCount={setUnreadCount} toasts={toasts} removeToast={removeToast}
 				/>
 				{settings.general?.showInputRow &&
 					<ChatBotInput
