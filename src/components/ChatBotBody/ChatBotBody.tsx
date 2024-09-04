@@ -1,10 +1,12 @@
 import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
+import ToastPrompt from "./ToastPrompt/ToastPrompt";
 import { useSettings } from "../../context/SettingsContext";
 import { useStyles } from "../../context/StylesContext";
 import { useMessages } from "../../context/MessagesContext";
 import { Message } from "../../types/Message";
+import { Toast } from "../../types/internal/Toast";
 
 import "./ChatBotBody.css";
 
@@ -21,6 +23,8 @@ import "./ChatBotBody.css";
  * @param setIsScrolling setter for tracking if user is scrolling
  * @param unreadCount number representing unread messages count
  * @param setUnreadCount setter for unread messages count
+ * @param toasts toasts to be shown
+ * @param removeToast removes a toast by id
  */
 const ChatBotBody = ({
 	chatBodyRef,
@@ -33,6 +37,8 @@ const ChatBotBody = ({
 	setIsScrolling,
 	unreadCount,
 	setUnreadCount,
+	toasts,
+	removeToast
 }: {
 	chatBodyRef: RefObject<HTMLDivElement>;
 	isBotTyping: boolean;
@@ -44,6 +50,8 @@ const ChatBotBody = ({
 	setIsScrolling: Dispatch<SetStateAction<boolean>>;
 	unreadCount: number;
 	setUnreadCount: Dispatch<SetStateAction<number>>;
+	toasts: Array<Toast>,
+	removeToast: (id: string) => void;
 }) => {
 
 	// handles settings for bot
@@ -78,6 +86,16 @@ const ChatBotBody = ({
 		...styles.botBubbleStyle
 	};
 	const botBubbleEntryStyle = settings.botBubble?.animate ? "rcb-bot-message-entry" : "";
+
+	// styles for toast prompt container
+	const toastPromptContainerStyle: CSSProperties = {
+		bottom: (styles.chatInputContainerStyle?.height as number || 70) +
+			(styles.footerStyle?.height as number || 50) + 15,
+		width: 300,
+		minWidth: (styles.chatWindowStyle?.width as number || 375) / 2,
+		maxWidth: (styles.chatWindowStyle?.width as number || 375)  - 50,
+		...styles.toastPromptContainerStyle
+	};
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
@@ -284,6 +302,18 @@ const ChatBotBody = ({
 				chatBodyRef={chatBodyRef} isScrolling={isScrolling}
 				setIsScrolling={setIsScrolling} unreadCount={unreadCount}
 			/>
+
+			<div className="rcb-toast-prompt-container" style={toastPromptContainerStyle}>
+				{toasts.map((toast) => (
+					<ToastPrompt
+						key={toast.id}
+						id={toast.id}
+						content={toast.content}
+						removeToast={removeToast} // Function to remove toast
+						timeout={toast.timeout} // Timeout for auto-removal
+					/>
+				))}
+			</div>
 		</div>
 	);
 };

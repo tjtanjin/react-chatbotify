@@ -10,6 +10,7 @@ export type Params = {
 	setTextAreaValue: (value: string) => void;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	injectToast: (content: string | JSX.Element, timeout?: number) => void;
 	openChat: (isOpen: boolean) => void;
 	files?: FileList;
 }
