@@ -163,6 +163,11 @@ export const DefaultSettings: Settings = {
 		icon: emojiIcon,
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
+	toast: {
+		maxCount: 3,
+		forbidOnMax: false,
+		dismissOnClick: true,
+	},
 	advance: {
 		useAdvancedMessages: false,
 		useAdvancedSettings: false,

@@ -128,6 +128,11 @@ export type Settings = {
 		icon?: string;
 		list?: string[] ;
 	},
+	toast?: {
+		maxCount?: number;
+		forbidOnMax?: boolean;
+		dismissOnClick?: boolean;
+	},
 	advance?: {
 		useAdvancedMessages?: boolean;
 		useAdvancedSettings?: boolean;

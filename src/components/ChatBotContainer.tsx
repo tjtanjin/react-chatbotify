@@ -114,7 +114,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks toasts shown
 	const [toasts, setToasts] = useState<Array<Toast>>([]);
-	const maxToasts = 5; // Maximum number of toasts allowed at any one time
 
 	// tracks block timeout if transition is interruptable
 	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
@@ -452,8 +451,12 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 */
 	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): void => {
 		setToasts((prevToasts: Toast[]) => {
-			// if toast array is full, remove oldest
-			if (prevToasts.length >= maxToasts) {
+			if (prevToasts.length >= (settings.toast?.maxCount || 3)) {
+				// if toast array is full and forbidden to add new ones, return existing toasts
+				if (settings.toast?.forbidOnMax) {
+					return prevToasts;
+				}
+				// else remove the oldest toast
 				return [...prevToasts.slice(1), { id: crypto.randomUUID(), content, timeout }];
 			}
 			return [...prevToasts, { id: crypto.randomUUID(), content, timeout }];

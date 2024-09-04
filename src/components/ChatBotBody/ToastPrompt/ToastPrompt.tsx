@@ -72,8 +72,10 @@ const Toast = ({
 				onMouseLeave={handleMouseLeave} 
 				style={isHovered ? toastPromptHoveredStyle : styles.toastPromptStyle}
 				onMouseDown={(event: MouseEvent) => {
-					event.preventDefault();
-					removeToast(id);
+					if (settings.toast?.dismissOnClick) {
+						event.preventDefault();
+						removeToast(id);
+					}
 				}}
 				className="rcb-toast-prompt-text"
 			>
