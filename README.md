@@ -7,8 +7,8 @@
   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml/badge.svg" /> </a>
   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml/badge.svg" /> </a>
   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/test.yml/badge.svg" /> </a>
-  <img src="https://badge.fury.io/js/react-chatbotify.svg" />
-  <img src="https://img.shields.io/endpoint?url=https://my-api.tjtanjin.com/aggregator/api/v1/get/rcb_discord_member_count&logo=discord" />
+  <a href="https://www.npmjs.com/package/react-chatbotify"> <img src="https://badge.fury.io/js/react-chatbotify.svg" /> </a>
+  <a href="https://discord.gg/6R4DK4G5Zh"> <img src="https://img.shields.io/endpoint?url=https://my-api.tjtanjin.com/aggregator/api/v1/get/rcb_discord_member_count&logo=discord&logoColor=ffffff" /> </a>
 </p>
 
 ## Table of Contents
