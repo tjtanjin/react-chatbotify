@@ -1,5 +1,26 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.8 (06-09-2024)
+
+**Fixed:**
+- Fixed an issue where bot typing indicator is not shown when `params.goToPath` is used
+
+**Added:**
+- A new `params.setTextAreaValue` has been added for users to directly set the text area value
+- A new `params.injectToast` has been added for users to show toasts within the chatbot
+- A new `toast` section has been added to `settings` which contains 3 properties (`maxCount`, `forbidOnMax` and `dismissOnClick`) along with 3 new additions to `styles` (`toastPromptContainerStyle`, `toastPromptStyle`, `toastPromptHoveredStyle`)
+- The `checkboxes` block attribute now accepts an **array** of strings as well, and will populate `items` property with it (all other values defaulted)
+- The `checkboxes` block attribute has 2 new properties `sendOutput` and `reusable`, which determines whether the selected checkboxes should be sent in chat and whether the checkboxes can be reused
+- The `options` block attribute now accepts an **object** as well, accepting 3 properties which are `items`, `sendOutput` and `reusable` (current array input still works)
+
+**Note:**
+This update adds on to and expands the `checkboxes` and `options` block attributes. There are **no breaking changes** but if users are keen to leverage on the new features, do refer to the [**attributes documentation**](https://react-chatbotify.com/docs/api/attributes). In addition, **2 new parameters** (`params.setTextAreaValue` and `params.injectToast`) have also been added which greatly enhances the capabilities of the chatbot and sets the groundwork for the impending events/plugins update. Details of their usage can be found in [**params documentation**](https://react-chatbotify.com/docs/api/params).
+
+## v2.0.0-beta.7 (01-09-2024)
+
+**Added:**
+- Added `rcbTypingIndicatorContainerStyle` and `rcbTypingIndicatorDotStyle` for ease of styling typing indicator
+
 ## v2.0.0-beta.6 (24-08-2024)
 
 **Fixed:**

@@ -33,6 +33,7 @@ import { Block } from "../types/Block";
 import { Flow } from "../types/Flow";
 import { Message } from "../types/Message";
 import { Params } from "../types/Params";
+import { Toast } from "../types/internal/Toast";
 import { Button } from "../constants/Button";
 
 import "./ChatBotContainer.css";
@@ -111,6 +112,9 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 
 	// tracks typing state of chat bot
 	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
+
+	// tracks toasts shown
+	const [toasts, setToasts] = useState<Array<Toast>>([]);
 
 	// tracks block timeout if transition is interruptable
 	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
@@ -282,8 +286,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			return;
 		}
 
-		const params = {prevPath: getPrevPath(), goToPath: goToPath, userInput: paramsInputRef.current,
-			injectMessage, streamMessage, openChat};
+		const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput: paramsInputRef.current,
+			injectMessage, streamMessage, openChat, injectToast};
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
@@ -415,11 +419,59 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	}, [paths])
 
 	/**
-	 * Handles going directly to a path.
+	 * Handles going directly to a path, while mimicking post-processing behaviors.
 	 */
 	const goToPath = useCallback((pathToGo: keyof Flow) => {
+		// mimics post-processing behavior
+		setIsBotTyping(true);
+		if (settings.chatInput?.blockSpam) {
+			setTextAreaDisabled(true);
+		}
+		setTextAreaSensitiveMode(false);
+
+		// go to specified path
 		setPaths(prev => [...prev, pathToGo]);
 	}, [])
+
+	/**
+	 * Sets the text area value.
+	 *
+	 * @param value value to set
+	 */
+	const setTextAreaValue = (value: string) => {
+		if (inputRef.current) {
+			inputRef.current.value = value;
+		}
+	}
+
+	/**
+	 * Injects a new toast.
+	 *
+	 * @param content message to show in toast
+	 * @param timeout optional timeout in milliseconds before toast is removed
+	 */
+	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): void => {
+		setToasts((prevToasts: Toast[]) => {
+			if (prevToasts.length >= (settings.toast?.maxCount || 3)) {
+				// if toast array is full and forbidden to add new ones, return existing toasts
+				if (settings.toast?.forbidOnMax) {
+					return prevToasts;
+				}
+				// else remove the oldest toast
+				return [...prevToasts.slice(1), { id: crypto.randomUUID(), content, timeout }];
+			}
+			return [...prevToasts, { id: crypto.randomUUID(), content, timeout }];
+		});
+	}, [setToasts]);
+	
+	/**
+	 * Removes a toast.
+	 *
+	 * @param id id of toast to remove
+	 */
+	const removeToast = useCallback((id: string): void => {
+		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+	}, [setToasts]);
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -651,7 +703,6 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
 
-
 		// Clear input field
 		if (inputRef.current) {
 			inputRef.current.value = "";
@@ -674,8 +725,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		setTextAreaSensitiveMode(false);
 
 		setTimeout(async () => {
-			const params = {prevPath: getPrevPath(), goToPath: goToPath, userInput, 
-				injectMessage, streamMessage, openChat
+			const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput, 
+				injectMessage, streamMessage, openChat, injectToast
 			};
 			const hasNextPath = await postProcessBlock(flow, path, params, setPaths);
 			if (!hasNextPath) {
@@ -698,7 +749,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			}
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, voiceToggledOn, settings, flow, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, handleSendUserInput
+		postProcessBlock, setPaths, handleSendUserInput, injectToast
 	]);
 
 	/**
@@ -777,10 +828,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	
 	const fileAttachmentButtonComponentMap = useMemo(() => ({
 		[Button.FILE_ATTACHMENT_BUTTON]: () => createFileAttachmentButton(inputRef, flow, blockAllowsAttachment,
-			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, goToPath, handleActionInput
+			injectMessage, streamMessage, openChat, getCurrPath, getPrevPath, goToPath, setTextAreaValue, injectToast,
+			handleActionInput,
 		)
 	}), [inputRef, flow, blockAllowsAttachment, injectMessage, streamMessage, openChat,
-		getCurrPath, getPrevPath, goToPath, handleActionInput
+		getCurrPath, getPrevPath, goToPath, handleActionInput, injectToast
 	]);
 	
 	const buttonComponentMap = useMemo(() => ({
@@ -856,8 +908,8 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 				<ChatBotBody chatBodyRef={chatBodyRef} isBotTyping={isBotTyping}
 					isLoadingChatHistory={isLoadingChatHistory} chatScrollHeight={chatScrollHeight}
 					setChatScrollHeight={setChatScrollHeight} setIsLoadingChatHistory={setIsLoadingChatHistory}
-					isScrolling={isScrolling} setIsScrolling={setIsScrolling}
-					unreadCount={unreadCount} setUnreadCount={setUnreadCount}
+					isScrolling={isScrolling} setIsScrolling={setIsScrolling} unreadCount={unreadCount}
+					setUnreadCount={setUnreadCount} toasts={toasts} removeToast={removeToast}
 				/>
 				{settings.general?.showInputRow &&
 					<ChatBotInput

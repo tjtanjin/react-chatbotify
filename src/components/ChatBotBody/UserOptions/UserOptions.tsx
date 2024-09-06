@@ -20,7 +20,7 @@ const UserOptions= ({
 	path,
 	handleActionInput
 }: {
-	options: string[];
+	options: {items: Array<string>, sendOutput?: boolean, reusable?: boolean};
 	path: keyof Flow;
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
@@ -57,11 +57,11 @@ const UserOptions= ({
 		...styles.botOptionHoveredStyle
 	};
 
-	// when moving on from current path, we also want to disable options
+	// when moving on from current path, we also want to disable options if it is not reusable
 	// cannot just rely on user input since path can change even without it (e.g. transition)
 	useEffect(() => {
 		if (paths.length > 0 && paths[paths.length - 1] !== path) {
-			setDisabled(true);
+			setDisabled(!options.reusable as boolean);
 		}
 	}, [paths]);
 
@@ -89,7 +89,7 @@ const UserOptions= ({
 
 	return (
 		<div className={`rcb-options-container ${settings.botBubble?.showAvatar ? "rcb-options-offset" : ""}`}>
-			{options.map((key, index) => {
+			{options.items.map((key, index) => {
 				const isHovered = hoveredElements[index] && !disabled;
 		
 				return (
@@ -104,9 +104,14 @@ const UserOptions= ({
 							if (disabled) {
 								return;
 							}
-
-							setDisabled(true);
-							handleActionInput(path, key, settings.chatInput?.sendOptionOutput as boolean);
+							setDisabled(!options.reusable as boolean);
+							let sendInChat: boolean;
+							if (options.sendOutput) {
+								sendInChat = options.sendOutput;
+							} else {
+								sendInChat = settings.chatInput?.sendOptionOutput || true;
+							}
+							handleActionInput(path, key, sendInChat);
 						}}
 					>
 						{key}

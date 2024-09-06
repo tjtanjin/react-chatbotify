@@ -26,11 +26,16 @@ export const processCheckboxes = async (block: Block, path: keyof Flow,
 		if (parsedCheckboxes instanceof Promise) {
 			parsedCheckboxes = await parsedCheckboxes;
 		}
+	} else if (Array.isArray(checkboxes)) {
+		parsedCheckboxes = {items: checkboxes};
 	} else {
 		parsedCheckboxes = checkboxes;
 	}
 
 	// nothing to render if no items present
+	if (!("items" in parsedCheckboxes)) {
+		return;
+	}
 	if (parsedCheckboxes.items.length == 0) {
 		return;
 	}
@@ -49,6 +54,14 @@ export const processCheckboxes = async (block: Block, path: keyof Flow,
 	if (parsedCheckboxes.min > parsedCheckboxes.max) {
 		parsedCheckboxes.min = parsedCheckboxes.max;
 	}
+
+	// defaults to not reusable if not provided
+	if (parsedCheckboxes.reusable == null) {
+		parsedCheckboxes.reusable = false;
+	}
+
+	// note that sendOutput has no default here, as it fallback to the global
+	// settings.chatInput.sendCheckboxOutput inside user checkboxes component if not specified
 
 	const checkedItems = new Set<string>();
 

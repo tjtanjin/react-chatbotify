@@ -140,6 +140,11 @@ export type Settings = {
 		rcbNotificationToggle?: boolean;
 		rcbVoiceToggle?: boolean;
 	},
+	toast?: {
+		maxCount?: number;
+		forbidOnMax?: boolean;
+		dismissOnClick?: boolean;
+	},
 	advance?: {
 		useAdvancedMessages?: boolean;
 		useAdvancedSettings?: boolean;

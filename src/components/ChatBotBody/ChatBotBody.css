@@ -155,3 +155,19 @@
 		opacity: 0.4;
 	}
 }
+
+/* Toast Container */
+.rcb-toast-prompt-container {
+    position: fixed;
+	left: 50%;
+    transform: translateX(-50%); 
+    bottom: 200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	flex-direction: column;
+    opacity: 1;
+    animation: popIn 0.3s ease-in-out;
+    pointer-events: auto;
+}

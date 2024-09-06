@@ -18,6 +18,9 @@ import "./FileAttachmentButton.css";
  * @param openChat utility function to open/close chat window
  * @param getCurrPath retrieves current path for the user
  * @param getPrevPath retrieves previous path for the user
+ * @param goToPath goes to specified path
+ * @param setTextAreaValue sets the value within the text area
+ * @param injectToast injects a toast message prompt
  * @param handleActionInput handles action input from user 
  */
 const FileAttachmentButton = ({
@@ -30,6 +33,8 @@ const FileAttachmentButton = ({
 	getCurrPath,
 	getPrevPath,
 	goToPath,
+	setTextAreaValue,
+	injectToast,
 	handleActionInput
 }: {
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
@@ -41,6 +46,8 @@ const FileAttachmentButton = ({
 	getCurrPath: () => keyof Flow | null;
 	getPrevPath: () => keyof Flow | null;
 	goToPath: (pathToGo: keyof Flow) => void;
+	setTextAreaValue: (value: string) => void;
+	injectToast: (content: string | JSX.Element, timeout?: number) => void;
 	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
 }) => {
 
@@ -110,7 +117,7 @@ const FileAttachmentButton = ({
 			}
 			await handleActionInput(currPath, "📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				goToPath: goToPath, injectMessage, streamMessage, openChat, files});
+				goToPath, setTextAreaValue, injectMessage, streamMessage, openChat, injectToast, files});
 		}
 	};
 

@@ -175,6 +175,11 @@ export const DefaultSettings: Settings = {
 		rcbNotificationToggle: true,
 		rcbVoiceToggle: true,
 	},
+	toast: {
+		maxCount: 3,
+		forbidOnMax: false,
+		dismissOnClick: true,
+	},
 	advance: {
 		useAdvancedMessages: false,
 		useAdvancedSettings: false,
