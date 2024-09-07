@@ -174,6 +174,10 @@ export const DefaultSettings: Settings = {
 		rcbAudioToggle: true,
 		rcbNotificationToggle: true,
 		rcbVoiceToggle: true,
+		rcbPathChange: true,
+		rcbShowToast: true,
+		rcbDismissToast: true,
+		rcbUserSubmitInput: true,
 	},
 	toast: {
 		maxCount: 3,

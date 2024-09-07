@@ -139,6 +139,10 @@ export type Settings = {
 		rcbAudioToggle?: boolean;
 		rcbNotificationToggle?: boolean;
 		rcbVoiceToggle?: boolean;
+		rcbPathChange?: boolean;
+		rcbShowToast?: boolean;
+		rcbDismissToast?: boolean;
+		rcbUserSubmitInput?: boolean;
 	},
 	toast?: {
 		maxCount?: number;

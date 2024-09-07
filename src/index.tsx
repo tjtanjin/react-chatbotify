@@ -15,16 +15,20 @@ import { Theme } from "./types/Theme";
 import { Button } from "./constants/Button";
 
 // event imports
-import { RcbChatHistoryLoadEvent } from "./types/rcbEvents/RcbChatHistoryLoadEvent";
-import { RcbChatWindowToggleEvent } from "./types/rcbEvents/RcbChatWindowToggleEvent";
-import { RcbAudioToggleEvent } from "./types/rcbEvents/RcbAudioToggleEvent";
-import { RcbPreMessageInjectEvent } from "./types/rcbEvents/RcbPreMessageInjectEvent";
-import { RcbNotificationToggleEvent } from "./types/rcbEvents/RcbNotificationToggle";
-import { RcbVoiceToggleEvent } from "./types/rcbEvents/RcbVoiceToggleEvent";
-import { RcbStartMessageStreamEvent } from "./types/rcbEvents/RcbStartMessageStreamEvent";
-import { RcbPostMessageInjectEvent } from "./types/rcbEvents/RcbPostMessageInjectEvent";
-import { RcbChunkMessageStreamEvent } from "./types/rcbEvents/RcbChunkMessageStreamEvent";
-import { RcbStopMessageStreamEvent } from "./types/rcbEvents/RcbStopMessageStreamEvent";
+import { RcbChatHistoryLoadEvent } from "./types/events/RcbChatHistoryLoadEvent";
+import { RcbChatWindowToggleEvent } from "./types/events/RcbChatWindowToggleEvent";
+import { RcbAudioToggleEvent } from "./types/events/RcbAudioToggleEvent";
+import { RcbPreMessageInjectEvent } from "./types/events/RcbPreMessageInjectEvent";
+import { RcbNotificationToggleEvent } from "./types/events/RcbNotificationToggle";
+import { RcbVoiceToggleEvent } from "./types/events/RcbVoiceToggleEvent";
+import { RcbStartMessageStreamEvent } from "./types/events/RcbStartMessageStreamEvent";
+import { RcbPostMessageInjectEvent } from "./types/events/RcbPostMessageInjectEvent";
+import { RcbChunkMessageStreamEvent } from "./types/events/RcbChunkMessageStreamEvent";
+import { RcbStopMessageStreamEvent } from "./types/events/RcbStopMessageStreamEvent";
+import { RcbPathChangeEvent } from "./types/events/RcbPathChangeEvent";
+import { RcbShowToastEvent } from "./types/events/RcbShowToastEvent";
+import { RcbDismissToastEvent } from "./types/events/RcbDismissToastEvent";
+import { RcbUserSubmitInputEvent } from "./types/events/RcbUserSubmitInputEvent";
 
 // util exports
 export {
@@ -62,7 +66,11 @@ export type {
 	RcbChatWindowToggleEvent,
 	RcbAudioToggleEvent,
 	RcbNotificationToggleEvent,
-	RcbVoiceToggleEvent
+	RcbVoiceToggleEvent,
+	RcbPathChangeEvent,
+	RcbShowToastEvent,
+	RcbDismissToastEvent,
+	RcbUserSubmitInputEvent
 }
 
 // constant exports

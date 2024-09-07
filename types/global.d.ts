@@ -1,14 +1,18 @@
 import { EventHandler } from "react";
-import { RcbPreMessageInjectEvent } from "../src/types/rcbEvents/RcbPreMessageInjectEvent";
-import { RcbPostMessageInjectEvent } from "../src/types/rcbEvents/RcbPostMessageInjectEvent";
-import { RcbChatHistoryLoadEvent } from "../src/types/rcbEvents/RcbChatHistoryLoadEvent";
-import { RcbChatWindowToggleEvent } from "../src/types/rcbEvents/RcbChatWindowToggleEvent";
-import { RcbAudioToggleEvent } from "../src/types/rcbEvents/RcbAudioToggleEvent";
-import { RcbVoiceToggleEvent } from "../src/types/rcbEvents/RcbVoiceToggleEvent";
-import { RcbNotificationToggleEvent } from "../src/types/rcbEvents/RcbNotificationToggle";
-import { RcbStartMessageStreamEvent } from "../src/types/rcbEvents/RcbStartMessageStreamEvent";
-import { RcbChunkMessageStreamEvent } from "../src/types/rcbEvents/RcbChunkMessageStreamEvent";
-import { RcbStopMessageStreamEvent } from "../src/types/rcbEvents/RcbStopMessageStreamEvent";
+import { RcbPreMessageInjectEvent } from "../src/types/events/RcbPreMessageInjectEvent";
+import { RcbPostMessageInjectEvent } from "../src/types/events/RcbPostMessageInjectEvent";
+import { RcbChatHistoryLoadEvent } from "../src/types/events/RcbChatHistoryLoadEvent";
+import { RcbChatWindowToggleEvent } from "../src/types/events/RcbChatWindowToggleEvent";
+import { RcbAudioToggleEvent } from "../src/types/events/RcbAudioToggleEvent";
+import { RcbVoiceToggleEvent } from "../src/types/events/RcbVoiceToggleEvent";
+import { RcbNotificationToggleEvent } from "../src/types/events/RcbNotificationToggle";
+import { RcbStartMessageStreamEvent } from "../src/types/events/RcbStartMessageStreamEvent";
+import { RcbChunkMessageStreamEvent } from "../src/types/events/RcbChunkMessageStreamEvent";
+import { RcbStopMessageStreamEvent } from "../src/types/events/RcbStopMessageStreamEvent";
+import { RcbPathChangeEvent } from "../src/types/events/RcbPathChangeEvent";
+import { RcbShowToastEvent } from "../src/types/events/RcbShowToastEvent";
+import { RcbDismissToastEvent } from "../src/types/events/RcbDismissToastEvent";
+import { RcbUserSubmitInputEvent } from "../src/types/events/RcbUserSubmitInputEvent";
 
 declare global {
 	interface Navigator {
@@ -42,5 +46,9 @@ declare global {
         "rcb-audio-toggle": RcbAudioToggleEvent;
 		"rcb-notification-toggle": RcbNotificationToggleEvent;
         "rcb-voice-toggle": RcbVoiceToggleEvent;
+		"rcb-path-change": RcbPathChangeEvent;
+		"rcb-show-toast": RcbShowToastEvent;
+		"rcb-dismiss-toast": RcbDismissToastEvent;
+		"rcb-user-submit-input": RcbUserSubmitInputEvent;
     }
 }

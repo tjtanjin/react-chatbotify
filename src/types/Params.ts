@@ -8,7 +8,7 @@ export type Params = {
 	prevPath: keyof Flow | null;
 	goToPath: (pathToGo: keyof Flow) => void;
 	setTextAreaValue: (value: string) => void;
-	injectMessage: (content: string | JSX.Element, sender?: string, bypassEvents?: boolean) => Promise<void>;
+	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 	injectToast: (content: string | JSX.Element, timeout?: number) => void;
 	openChat: (isOpen: boolean) => void;

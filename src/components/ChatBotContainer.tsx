@@ -10,8 +10,8 @@ import ChatHistoryButton from "./ChatHistoryButton/ChatHistoryButton";
 import { preProcessBlock, postProcessBlock } from "../services/BlockService/BlockService";
 import { processIsSensitive } from "../services/BlockService/IsSensitiveProcessor";
 import { loadChatHistory, saveChatHistory, setHistoryStorageValues } from "../services/ChatHistoryService";
-import { emitRcbPostMessageInjectEvent, emitRcbPreMessageInjectEvent } from "../services/RcbEventService";
 import { processAudio } from "../services/AudioService";
+import { emitRcbEvent } from "../services/RcbEventService";
 import { syncVoiceWithChatInput } from "../services/VoiceService";
 import { isChatBotVisible, isDesktop } from "../utils/displayChecker";
 import { parseMarkupMessage } from "../utils/markupParser";
@@ -35,6 +35,7 @@ import { Message } from "../types/Message";
 import { Params } from "../types/Params";
 import { Toast } from "../types/internal/Toast";
 import { Button } from "../constants/Button";
+import { RcbEvent } from "../constants/internal/RcbEvent";
 
 import "./ChatBotContainer.css";
 
@@ -422,6 +423,14 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * Handles going directly to a path, while mimicking post-processing behaviors.
 	 */
 	const goToPath = useCallback((pathToGo: keyof Flow) => {
+		// handles path change event
+		if (settings.event?.rcbPathChange) {
+			const event = callRcbEvent(RcbEvent.PATH_CHANGE, {});
+			if (event.defaultPrevented) {
+				return;
+			}
+		}
+
 		// mimics post-processing behavior
 		setIsBotTyping(true);
 		if (settings.chatInput?.blockSpam) {
@@ -432,6 +441,18 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 		// go to specified path
 		setPaths(prev => [...prev, pathToGo]);
 	}, [])
+
+	/**
+	 * Consolidates the information required to call and emit a specific event.
+	 *
+	 * @param eventName name of the event to prepare and call
+	 * @param data additional data to include with the event
+	 */
+	const callRcbEvent = useCallback((eventName: string, data: object) => {
+		const details = {currPath: getCurrPath(), prevPath: getPrevPath()}
+		const actions = {goToPath, injectMessage, streamMessage};
+		return emitRcbEvent(eventName, details, data, actions, settings, styles, messages, paths);
+	}, [paths])
 
 	/**
 	 * Sets the text area value.
@@ -458,7 +479,29 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 					return prevToasts;
 				}
 				// else remove the oldest toast
+				let toast = {id: crypto.randomUUID(), content, timeout}
+
+				// handles show toast event
+				if (settings.event?.rcbShowToast) {
+					const event = callRcbEvent(RcbEvent.SHOW_TOAST, {toast});
+					if (event.defaultPrevented) {
+						return prevToasts;
+					}
+					toast = event.data.toast;
+				}
+
 				return [...prevToasts.slice(1), { id: crypto.randomUUID(), content, timeout }];
+			}
+
+			let toast = { id: crypto.randomUUID(), content, timeout }
+
+			// handles show toast event
+			if (settings.event?.rcbShowToast) {
+				const event = callRcbEvent(RcbEvent.SHOW_TOAST, {toast});
+				if (event.defaultPrevented) {
+					return prevToasts;
+				}
+				toast = event.data.toast;
 			}
 			return [...prevToasts, { id: crypto.randomUUID(), content, timeout }];
 		});
@@ -479,21 +522,20 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot",
-		bypassEvents = false) => {
+	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 
-		if (settings.event?.rcbPreMessageInject && !bypassEvents) {
-			const actions = {goToPath, injectMessage, streamMessage};
-			const details = {message: {sender, content}, currPath: getCurrPath(), prevPath: getPrevPath()}
-			const prevented = emitRcbPreMessageInjectEvent(details, actions, settings, styles, messages, paths);
-			if (prevented) {
+		let message = {content: content, sender: sender};
+
+		// handles pre-message inject event
+		if (settings.event?.rcbPreMessageInject) {
+			const event = callRcbEvent(RcbEvent.PRE_MESSAGE_INJECT, {message});
+			if (event.defaultPrevented) {
 				return;
 			}
+			message = event.data.message;
 		}
 
-		const message = {content: content, sender: sender};
 		processAudio(settings, audioToggledOn, message);
-
 		const isBotStream = typeof message.content === "string"
 			&& message.sender === "bot" && settings?.botBubble?.simStream;
 		const isUserStream = typeof message.content === "string"
@@ -511,12 +553,11 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			setMessages((prevMessages) => [...prevMessages, message]);
 		}
 
-		if (settings.event?.rcbPostMessageInject && !bypassEvents) {
-			const actions = {goToPath, injectMessage, streamMessage};
-			const details = {message: {sender, content}, currPath: getCurrPath(), prevPath: getPrevPath()}
-			emitRcbPostMessageInjectEvent(details, actions, settings, styles, messages, paths);
+		// handles post-message inject event
+		if (settings.event?.rcbPostMessageInject) {
+			callRcbEvent(RcbEvent.POST_MESSAGE_INJECT, {message});
 		}
-	}, [settings, audioToggledOn]);
+	}, [settings, paths, audioToggledOn]);
 
 	/**
 	 * Simulates the streaming of a message from the bot.
