@@ -1,5 +1,5 @@
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
 
 import "./LoadingSpinner.css";
 
@@ -7,12 +7,11 @@ import "./LoadingSpinner.css";
  * Shows a spinning indicator when loading chat history.
  */
 const LoadingSpinner = () => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles settings for bot
-	const { settings } = useSettings();
-
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	// styles for spinner
 	const loadingSpinnerStyle: React.CSSProperties = {

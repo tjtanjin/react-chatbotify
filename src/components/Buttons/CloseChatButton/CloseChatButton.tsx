@@ -1,7 +1,8 @@
 import { MouseEvent } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useChatWindowInternal } from "../../../hooks/internal/useChatWindowInternal";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 
 import "./CloseChatButton.css";
 
@@ -9,11 +10,14 @@ import "./CloseChatButton.css";
  * Handles closing of chat.
  */
 const CloseChatButton = () => {
-	// handles options for bot
-	const { settings, setSettings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
+
+	// handles chat window
+	const { openChat } = useChatWindowInternal();
 
 	// styles for close chat icon
 	const closeChatIconStyle: React.CSSProperties = {
@@ -25,7 +29,7 @@ const CloseChatButton = () => {
 		<div
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
-				setSettings({...settings, isOpen: false});
+				openChat(false);
 			}}
 			style={styles.closeChatButtonStyle}
 		>

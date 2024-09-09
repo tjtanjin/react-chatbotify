@@ -1,7 +1,7 @@
-import { ThemeCacheData } from "../types/internal/ThemeCacheData";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
+import { ThemeCacheData } from "../types/internal/ThemeCacheData";
 
 const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
 const DEFAULT_EXPIRATION = import.meta.env.VITE_THEME_DEFAULT_CACHE_EXPIRATION;
@@ -121,7 +121,6 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	// try to get non-expired theme cache for specified theme and version
 	const cache = getCachedTheme(id, themeVersion, cacheDuration);
 	if (cache) {
-		console.log("Using cache");
 		await applyCssStyles(id, cache.cssStylesText);
 		return { settings: cache.settings, styles: cache.inlineStyles }
 	}

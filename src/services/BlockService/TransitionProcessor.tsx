@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 import { postProcessBlock} from "./BlockService";
 import { Flow } from "../../types/Flow";
 import { Params } from "../../types/Params";
@@ -11,12 +9,11 @@ import { Params } from "../../types/Params";
  * @param flow conversation flow for the bot
  * @param path path associated with the current block
  * @param params contains parameters that can be used/passed into attributes
- * @param setPaths updates the paths taken by the user
+ * @param goToPath: function to go to specified path
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
 export const processTransition = async (flow: Flow, path: keyof Flow, params: Params,
-	setPaths: Dispatch<SetStateAction<string[]>>,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
+	goToPath: (pathToGo: string) => boolean, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
 
@@ -52,7 +49,7 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 	}
 	
 	const timeoutId = setTimeout(async () => {
-		await postProcessBlock(flow, path, params, setPaths);
+		await postProcessBlock(flow, path, params, goToPath);
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
 		setTimeoutId(timeoutId);

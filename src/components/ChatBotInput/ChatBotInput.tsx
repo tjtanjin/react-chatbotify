@@ -4,60 +4,47 @@ import React, {
 	KeyboardEvent,
 	RefObject,
 	MouseEvent,
-	SetStateAction,
-	Dispatch,
 	Fragment,
 } from "react";
 
 import { isDesktop } from "../../utils/displayChecker";
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useFirstInteractionInternal } from "../../hooks/internal/useFirstInteractionInternal";
+import { useSubmitInputInternal } from "../../hooks/internal/useSubmitInputInternal";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
+import { Flow } from "../../types/Flow";
 
 import "./ChatBotInput.css";
 
 /**
  * Contains chat input field for user to enter messages.
  * 
- * @param inputRef reference to the textarea
- * @param textAreaDisabled boolean indicating if textarea is disabled
- * @param textAreaSensitveMode boolean indicating is textarea is in sensitve mode
- * @param inputLength current length of input in text area
- * @param setInputLength sets the input length to reflect character count & limit
- * @param handleSubmit handles submission of user input
- * @param hasFlowStarted boolean indicating if flow has started
- * @param setHasFlowStarted sets whether the flow has started
+ * @param flow conversation flow for the bot
  * @param buttons list of buttons to render in the chat input
  */
-const ChatBotInput = ({
-	inputRef,
-	textAreaDisabled,
-	textAreaSensitiveMode,
-	inputLength,
-	setInputLength,
-	handleSubmit,
-	hasFlowStarted,
-	setHasFlowStarted,
-	buttons
-}: {
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
-	textAreaDisabled: boolean;
-	textAreaSensitiveMode: boolean;
-	inputLength: number;
-	setInputLength: Dispatch<SetStateAction<number>>;
-	handleSubmit: () => void
-	hasFlowStarted: boolean;
-	setHasFlowStarted: Dispatch<SetStateAction<boolean>>;
-	buttons: JSX.Element[];
-}) => {
+const ChatBotInput = ({ flow, buttons }: { flow: Flow, buttons: JSX.Element[] }) => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles styles
+	const { styles } = useStylesContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles bot states
+	const { textAreaDisabled, textAreaSensitiveMode, inputLength, setInputLength } = useBotStatesContext();
+
+	// handles bot refs
+	const { inputRef } = useBotRefsContext();
 
 	// tracks if chat input is focused
 	const [isFocused, setIsFocused] = useState<boolean>(false);
+
+	// handles flow start
+	const { hasFlowStarted, setHasFlowStarted } = useFirstInteractionInternal();
+
+	// handles user input submission
+	const { handleSubmitText } = useSubmitInputInternal(flow);
 
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {
@@ -122,7 +109,7 @@ const ChatBotInput = ({
 	 * 
 	 * @param event keyboard event
 	 */ 
-	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	const handleKeyDown = async (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (event.key === "Enter") {
 			if (event.shiftKey) {
 				if (!settings.chatInput?.allowNewline) {
@@ -131,7 +118,7 @@ const ChatBotInput = ({
 				return;
 			}
 			event.preventDefault();
-			handleSubmit();
+			await handleSubmitText();
 		}
 	};
 

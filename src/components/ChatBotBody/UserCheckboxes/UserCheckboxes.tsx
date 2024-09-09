@@ -1,12 +1,13 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
-import { usePaths } from "../../../context/PathsContext";
+import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
+import { usePathsContext } from "../../../context/PathsContext";
+import { Flow } from "../../../types/Flow";
 
 import "./UserCheckboxes.css";
-import { Flow } from "../../../types/Flow";
 
 /**
  * Supports showing of checkboxes for user to mark.
@@ -14,28 +15,30 @@ import { Flow } from "../../../types/Flow";
  * @param checkboxes object representing checkboxes to show and min/max number of selections
  * @param checkedItems set representing items marked
  * @param path path associated with the current block
- * @param handleActionInput handles input (marked checkboxes) from user
  */
 const UserCheckboxes = ({
+	flow,
 	checkboxes,
 	checkedItems,
 	path,
-	handleActionInput,
 }: {
+	flow: Flow;
 	checkboxes: {items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean};
 	checkedItems: Set<string>;
 	path: keyof Flow;
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	// handles paths of the user
-	const { paths } = usePaths();
+	const { paths } = usePathsContext();
+
+	// handles user input submission
+	const { handleSubmitText } = useSubmitInputInternal(flow);
 
 	// tracks which checkboxes have been marked
 	const [checkedBoxes, setCheckedBoxes] = useState<Set<string>>(new Set<string>());
@@ -144,7 +147,7 @@ const UserCheckboxes = ({
 					} else {
 						sendInChat = settings.chatInput?.sendCheckboxOutput || true;
 					}
-					handleActionInput(path, userInput, sendInChat);
+					handleSubmitText(userInput, sendInChat);
 				}}
 			>
 			</button>

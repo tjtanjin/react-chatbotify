@@ -1,9 +1,10 @@
 
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
-import { usePaths } from "../../../context/PathsContext";
+import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
+import { usePathsContext } from "../../../context/PathsContext";
 import { Flow } from "../../../types/Flow";
 
 import "./UserOptions.css";
@@ -13,26 +14,28 @@ import "./UserOptions.css";
  * 
  * @param options array representing options to show
  * @param path path associated with the current block
- * @param handleActionInput handles input (selected option) from user
  */
-const UserOptions= ({
+const UserOptions = ({
+	flow,
 	options,
 	path,
-	handleActionInput
 }: {
+	flow: Flow
 	options: {items: Array<string>, sendOutput?: boolean, reusable?: boolean};
 	path: keyof Flow;
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>;
 }) => {
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	// handles paths of the user
-	const { paths } = usePaths();
+	const { paths } = usePathsContext();
+
+	// handles user input submission
+	const { handleSubmitText } = useSubmitInputInternal(flow);
 
 	// handles hover action over options
 	const [hoveredElements, setHoveredElements] = useState<boolean[]>([]);
@@ -111,7 +114,7 @@ const UserOptions= ({
 							} else {
 								sendInChat = settings.chatInput?.sendOptionOutput || true;
 							}
-							handleActionInput(path, key, sendInChat);
+							handleSubmitText(key, sendInChat);
 						}}
 					>
 						{key}

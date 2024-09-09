@@ -13,7 +13,7 @@ let mediaRecorder: MediaRecorder | null = null;
  * Starts recording user voice input with microphone.
  * 
  * @param settings options provided to the bot
- * @param handleToggleVoice handles toggling of voice
+ * @param toggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
  * @param audioChunksRef: reference to audio chunks
@@ -21,7 +21,7 @@ let mediaRecorder: MediaRecorder | null = null;
  */
 export const startVoiceRecording = (
 	settings: Settings,
-	handleToggleVoice: () => void,
+	toggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
 	audioChunksRef: RefObject<BlobPart[]>,
@@ -32,7 +32,7 @@ export const startVoiceRecording = (
 		startAudioRecording(triggerSendVoiceInput, audioChunksRef);
 	} else {
 		// Only use SpeechRecognition when sendAsAudio is disabled
-		startSpeechRecognition(settings, handleToggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
+		startSpeechRecognition(settings, toggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
 	}
 }
 
@@ -40,14 +40,14 @@ export const startVoiceRecording = (
  * Starts voice recording for input into textarea.
  *
  * @param settings options provided to the bot
- * @param handleToggleVoice handles toggling of voice
+ * @param toggleVoice handles toggling of voice
  * @param triggerSendVoiceInput triggers sending of voice input into chat window
  * @param setInputLength sets the input length to reflect character count & limit
  * @param inputRef reference to textarea for input
  */
 const startSpeechRecognition = (
 	settings: Settings,
-	handleToggleVoice: () => void,
+	toggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
@@ -87,7 +87,7 @@ const startSpeechRecognition = (
 			setInputLength(inputRef.current.value.length);
 		}
 
-		inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);
+		inactivityTimer = setTimeout(() => handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 		if (!settings.voice?.autoSendDisabled) {
 			autoSendTimer = setTimeout(triggerSendVoiceInput, autoSendPeriod);
 		}
@@ -97,7 +97,7 @@ const startSpeechRecognition = (
 		if (toggleOn) {
 			recognition.start();
 			if (!inactivityTimer) {
-				inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);
+				inactivityTimer = setTimeout(() => handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 			}
 		} else {
 			clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
@@ -106,7 +106,7 @@ const startSpeechRecognition = (
 		}
 	};
 
-	inactivityTimer = setTimeout(() => handleTimeout(handleToggleVoice), inactivityPeriod);
+	inactivityTimer = setTimeout(() => handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 }
 
 /**
@@ -200,7 +200,9 @@ export const syncVoiceWithChatInput = (keepVoiceOn: boolean, settings: Settings)
  * 
  * @param handleToggleVoice handles toggling of voice
  */
-const handleTimeout = (handleToggleVoice: () => void) => {
-	handleToggleVoice();
+const handleTimeout = (toggleVoice: () => void, inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>) => {
+	if (!inputRef.current?.disabled) {
+		toggleVoice();
+	}
 	stopVoiceRecording();
 }

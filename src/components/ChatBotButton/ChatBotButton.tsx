@@ -1,31 +1,25 @@
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatBotButton.css";
 
 /**
  * Toggles opening and closing of the chat window when general.embedded is false.
- * 
- * @param unreadCount number of unread messages from the bot
  */
-const ChatBotButton = ({
-	unreadCount
-}: {
-	unreadCount: number;
-}) => {
+const ChatBotButton = () => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles settings for bot
-	const { settings, setSettings } = useSettings();
+	// handles styles
+	const { styles } = useStylesContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles bot states
+	const { unreadCount } = useBotStatesContext();
 
-	/**
-	 * Toggles the chat window.
-	 */
-	const toggleChatWindow = () => {
-		setSettings({...settings, isOpen: !settings.isOpen});
-	};
+	// handles chat window
+	const { isChatWindowOpen, setIsChatWindowOpen } = useChatWindowInternal();
 
 	// styles for chat button
 	const chatButtonStyle: React.CSSProperties = {
@@ -46,8 +40,8 @@ const ChatBotButton = ({
 				<button
 					aria-label="Open Chat"
 					style={chatButtonStyle}
-					className={`rcb-toggle-button ${settings.isOpen ? "rcb-button-hide" : "rcb-button-show"}`}
-					onClick={toggleChatWindow}
+					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
+					onClick={() => setIsChatWindowOpen(prev => !prev)}
 				>
 					<span
 						className="rcb-toggle-icon"

@@ -1,10 +1,15 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, MouseEvent, useState, useRef } from "react";
+import { useEffect, MouseEvent, useState, useRef } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useTextAreaInternal } from "../../../hooks/internal/useTextAreaInternal";
+import { useVoiceInternal } from "../../../hooks/internal/useVoiceInternal";
+import { useMessagesInternal } from "../../../hooks/internal/useMessagesInternal";
+import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
+import { useBotRefsContext } from "../../../context/BotRefsContext";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 import { Flow } from "../../../types/Flow";
 
 import "./VoiceButton.css";
@@ -12,40 +17,30 @@ import "./VoiceButton.css";
 /**
  * Toggles voice to text input to the chat bot.
  *
- * @param inputRef reference to the textarea
- * @param textAreaDisabled boolean indicating if textarea is disabled
- * @param voiceToggledOn boolean indicating if voice is toggled on
- * @param handleToggleVoice handles toggling of voice
- * @param getCurrPath retrieves current path for the user
- * @param handleActionInput handles action input from user 
- * @param injectMessage utility function for injecting a message into the messages array
- * @param setInputLength sets the input length to reflect character count & limit
+ * @param flow conversation flow for the bot
  */
-const VoiceButton = ({
-	inputRef,
-	textAreaDisabled,
-	voiceToggledOn,
-	handleToggleVoice,
-	getCurrPath,
-	handleActionInput,
-	injectMessage,
-	setInputLength,
-}: {
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
-	textAreaDisabled: boolean;
-	voiceToggledOn: boolean;
-	handleToggleVoice: () => void;
-	getCurrPath: () => keyof Flow | null;
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
-	setInputLength: Dispatch<SetStateAction<number>>;
-}) => {
+const VoiceButton = ({ flow }: { flow: Flow }) => {
 
-	// handles options for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
+
+	// handles messages
+	const { injectMessage } = useMessagesInternal();
+
+	// handles bot refs
+	const { inputRef } = useBotRefsContext();
+
+	// handles voice
+	const { voiceToggledOn, toggleVoice } = useVoiceInternal();
+
+	// handles input text area
+	const { setInputLength, textAreaDisabled } = useTextAreaInternal();
+
+	// handles user input submission
+	const { handleSubmitText } = useSubmitInputInternal(flow);
 
 	// tracks audio chunk (if voice is sent as audio)
 	const audioChunksRef = useRef<BlobPart[]>([]);
@@ -53,24 +48,18 @@ const VoiceButton = ({
 	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
 	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
 	useEffect(() => {
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-
 		if (settings.voice?.sendAsAudio) {
 			handleSendAsAudio();
 			audioChunksRef.current = [];
 		} else {
-			handleActionInput(currPath, inputRef.current?.value as string);
-			setInputLength(0);
+			handleSubmitText();
 		}
 	}, [voiceInputTrigger])
 	
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
-			startVoiceRecording(settings, handleToggleVoice, triggerSendVoiceInput,
+			startVoiceRecording(settings, toggleVoice, triggerSendVoiceInput,
 				setInputLength, audioChunksRef, inputRef);
 		} else {
 			stopVoiceRecording();
@@ -116,7 +105,10 @@ const VoiceButton = ({
 		<div
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
-				handleToggleVoice();
+				if (inputRef.current?.disabled) {
+					return;
+				}
+				toggleVoice();
 			}}
 			style={voiceToggledOn && !textAreaDisabled ? styles.voiceButtonStyle : styles.voiceButtonDisabledStyle}
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}

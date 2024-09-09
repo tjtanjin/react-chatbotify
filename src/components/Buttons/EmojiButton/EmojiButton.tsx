@@ -1,29 +1,28 @@
-import { useState, useRef, useEffect, RefObject } from "react";
+import { useState, useRef, useEffect } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useTextAreaInternal } from "../../../hooks/internal/useTextAreaInternal";
+import { useBotRefsContext } from "../../../context/BotRefsContext";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 
 import "./EmojiButton.css";
 
 /**
  * Supports selecting of emojis.
- * 
- * @param inputRef reference to the textarea
- * @param textAreaDisabled boolean indicating if textarea is disabled
  */
-const EmojiButton = ({
-	inputRef,
-	textAreaDisabled
-}: {
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
-	textAreaDisabled: boolean;
-}) => {
+const EmojiButton = () => {
 
-	// handles options for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
+
+	// handles bot refs
+	const { inputRef } = useBotRefsContext();
+
+	// handles input text area
+	const { textAreaDisabled } = useTextAreaInternal();
 
 	// reference to popup
 	const popupRef = useRef<HTMLDivElement>(null);

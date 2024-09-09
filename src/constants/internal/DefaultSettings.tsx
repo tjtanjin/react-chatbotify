@@ -16,10 +16,6 @@ import notificationSound from "../../assets/notification_sound.wav";
 
 // default settings provided to the bot
 export const DefaultSettings: Settings = {
-	// tracks state of chat window, also the default state to load it in
-	isOpen: false,
-
-	// configurations
 	general: {
 		primaryColor: "#42b0c5",
 		secondaryColor: "#491d8d",
@@ -100,6 +96,7 @@ export const DefaultSettings: Settings = {
 		showMessagePrompt: true,
 		messagePromptText: "New Messages ↓",
 		messagePromptOffset: 30,
+		defaultOpen: false,
 	},
 	sensitiveInput: {
 		maskInTextArea: true,
@@ -164,30 +161,25 @@ export const DefaultSettings: Settings = {
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	event: {
-		rcbPreMessageInject: true,
-		rcbPostMessageInject: true,
-		rcbStartMessageStream: true,
-		rcbChunkMessageStream: true,
-		rcbStopMessageStream: true,
-		rcbChatHistoryLoad: true,
-		rcbChatWindowToggle: true,
-		rcbAudioToggle: true,
-		rcbNotificationToggle: true,
-		rcbVoiceToggle: true,
-		rcbPathChange: true,
+		rcbPreInjectMessage: true,
+		rcbPostInjectMessage: true,
+		rcbStartStreamMessage: true,
+		rcbChunkStreamMessage: true,
+		rcbStopStreamMessage: true,
+		rcbLoadChatHistory: true,
+		rcbToggleChatWindow: true,
+		rcbToggleAudio: true,
+		rcbToggleNotifications: true,
+		rcbToggleVoice: true,
+		rcbChangePath: true,
 		rcbShowToast: true,
 		rcbDismissToast: true,
-		rcbUserSubmitInput: true,
+		rcbUserSubmitText: true,
+		rcbUserUploadFile: true,
 	},
 	toast: {
 		maxCount: 3,
 		forbidOnMax: false,
 		dismissOnClick: true,
-	},
-	advance: {
-		useAdvancedMessages: false,
-		useAdvancedSettings: false,
-		useAdvancedPaths: false,
-		useAdvancedStyles: false,
 	}
 }

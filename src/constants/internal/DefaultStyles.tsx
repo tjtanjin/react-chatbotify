@@ -2,7 +2,6 @@ import { Styles } from "../../types/Styles";
 
 // default styles provided to the bot
 export const DefaultStyles: Styles = {
-	// styles
 	tooltipStyle: {},
 	notificationBadgeStyle: {},
 	chatWindowStyle: {},

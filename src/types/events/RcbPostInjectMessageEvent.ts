@@ -2,8 +2,8 @@ import { RcbBaseEvent } from "../internal/events/RcbBaseEvent";
 import { Message } from "../Message";
 
 /**
- * Defines the data available for post-message inject event.
+ * Defines the data available for post-inject message event.
  */
-export type RcbPostMessageInjectEvent = RcbBaseEvent<{
+export type RcbPostInjectMessageEvent = RcbBaseEvent<{
 	message: Message;
 }>;
