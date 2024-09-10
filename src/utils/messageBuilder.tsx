@@ -7,10 +7,11 @@ import { isValidElement } from "react";
  * @param sender sender of the message
  */
 export const createMessage = (content: string | JSX.Element, sender: string, ) => {
-    return {
-        id: crypto.randomUUID(),
-        content,
-        sender,
-        type: isValidElement(content) ? "object" : "string"
-    };
+	return {
+		id: crypto.randomUUID(),
+		content,
+		sender,
+		type: isValidElement(content) ? "object" : "string",
+        timestamp: new Date().toUTCString()
+	};
 }

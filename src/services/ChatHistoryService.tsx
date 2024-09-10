@@ -93,6 +93,7 @@ const parseMessageToString = (message: Message) => {
 			content: ReactDOMServer.renderToString(message.content),
 			type: message.type,
 			sender: message.sender,
+			timestamp: new Date().toUTCString()
 		});
 		return clonedMessage;
 	}
@@ -115,7 +116,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 	if (chatHistory != null) {
 		try {
 			setMessages((prevMessages) => {
-				let loaderMessage = createMessage(<LoadingSpinner/>, "system");
+				const loaderMessage = createMessage(<LoadingSpinner/>, "system");
 				prevMessages.shift();
 				return [loaderMessage, ...prevMessages];
 			});
