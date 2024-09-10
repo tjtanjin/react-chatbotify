@@ -115,7 +115,8 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 			setMessages((prevMessages) => {
 				const loaderMessage = {
 					content: <LoadingSpinner/>,
-					sender: "system"
+					sender: "system",
+					type: "object"
 				}
 				prevMessages.shift();
 				return [loaderMessage, ...prevMessages];

@@ -4,5 +4,5 @@
 export type Message = {
 	content: string | JSX.Element;
 	sender: string;
-	type?: string;
+	type: string;
 }

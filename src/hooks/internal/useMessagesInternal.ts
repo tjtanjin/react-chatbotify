@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { isValidElement, useCallback } from "react";
 
 import { processAudio } from "../../services/AudioService";
 import { parseMarkupMessage } from "../../utils/markupParser";
@@ -41,7 +41,7 @@ export const useMessagesInternal = () => {
 	 */
 	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 
-		let message = {content: content, sender: sender};
+		let message = {content: content, sender: sender, type: isValidElement(content) ? "object" : "string"};
 
 		// handles pre-message inject event
 		if (settings.event?.rcbPreInjectMessage) {
@@ -141,7 +141,7 @@ export const useMessagesInternal = () => {
 	 * @param sender sender of the message, defaults to bot
 	 */
 	const streamMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
-		const message = { content, sender };
+		const message = { content, sender, type: isValidElement(content) ? "object" : "string" };
 
 		if (!isBotStreamingRef.current) {
 			// handles start stream message event
