@@ -39,36 +39,36 @@ declare global {
 	// for custom rcb events
 	interface WindowEventMap {
 		// audio
-		[RcbEvent.TOGGLE_AUDIO]: RcbToggleAudioEvent;
+		"rcb-toggle-audio": RcbToggleAudioEvent;
 
 		// notifications:
-		[RcbEvent.TOGGLE_NOTIFICATIONS]: RcbToggleNotificationsEvent;
+		"rcb-toggle-notifications": RcbToggleNotificationsEvent;
 
 		// voice
-		[RcbEvent.TOGGLE_VOICE]: RcbToggleVoiceEvent;
+		"rcb-toggle-voice": RcbToggleVoiceEvent;
 
 		// chat window
-        [RcbEvent.TOGGLE_CHAT_WINDOW]: RcbToggleChatWindowEvent;
+	   	"rcb-toggle-chat-window": RcbToggleChatWindowEvent;
 
 		// messages
-        [RcbEvent.PRE_INJECT_MESSAGE]: RcbPreInjectMessageEvent;
-        [RcbEvent.POST_INJECT_MESSAGE]: RcbPostInjectMessageEvent;
-		[RcbEvent.START_STREAM_MESSAGE]: RcbStartStreamMessageEvent;
-		[RcbEvent.CHUNK_STREAM_MESSAGE]: RcbChunkStreamMessageEvent;
-		[RcbEvent.STOP_STREAM_MESSAGE]: RcbStopStreamMessageEvent;
+		"rcb-pre-inject-message": RcbPreInjectMessageEvent;
+		"rcb-post-inject-message": RcbPostInjectMessageEvent;
+		"rcb-start-stream-message": RcbStartStreamMessageEvent;
+		"rcb-chunk-stream-message": RcbChunkStreamMessageEvent;
+		"rcb-stop-stream-message": RcbStopStreamMessageEvent;
 
 		// chat history
-        [RcbEvent.LOAD_CHAT_HISTORY]: RcbLoadChatHistoryEvent;
+		"rcb-load-chat-history": RcbLoadChatHistoryEvent;
 
 		// path
-		[RcbEvent.CHANGE_PATH]: RcbChangePathEvent;
+		"rcb-change-path": RcbChangePathEvent;
 
 		// toast
-		[RcbEvent.SHOW_TOAST]: RcbShowToastEvent;
-		[RcbEvent.DISMISS_TOAST]: RcbDismissToastEvent;
+		"rcb-show-toast": RcbShowToastEvent;
+		"rcb-dismiss-toast": RcbDismissToastEvent;
 
 		// user input submission
-		[RcbEvent.USER_SUBMIT_TEXT]: RcbUserSubmitTextEvent;
-		[RcbEvent.USER_UPLOAD_FILE]: RcbUserUploadFileEvent;
-    }
+		"rcb-user-submit-text": RcbUserSubmitTextEvent;
+		"rcb-user-upload-file": RcbUserUploadFileEvent;
+	}
 }
