@@ -3,6 +3,7 @@ import ReactDOMServer from "react-dom/server";
 
 import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistoryLineBreak";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
+import { createMessage } from "../utils/messageBuilder";
 import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
@@ -88,14 +89,15 @@ const setHistoryStorageValues = (settings: Settings) => {
 const parseMessageToString = (message: Message) => {
 	if (isValidElement(message.content)) {
 		const clonedMessage = structuredClone({
+			id: message.id,
 			content: ReactDOMServer.renderToString(message.content),
-			type: "object",
+			type: message.type,
 			sender: message.sender,
 		});
 		return clonedMessage;
 	}
 
-	return {...message, type: "string"}
+	return message;
 }
 
 /**
@@ -113,11 +115,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 	if (chatHistory != null) {
 		try {
 			setMessages((prevMessages) => {
-				const loaderMessage = {
-					content: <LoadingSpinner/>,
-					sender: "system",
-					type: "object"
-				}
+				let loaderMessage = createMessage(<LoadingSpinner/>, "system");
 				prevMessages.shift();
 				return [loaderMessage, ...prevMessages];
 			});
