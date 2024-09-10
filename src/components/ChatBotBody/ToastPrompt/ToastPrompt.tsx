@@ -1,35 +1,36 @@
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 
 import "./ToastPrompt.css";
+import { useToast } from "../../../hooks/useToast";
 
 /**
  * Provides toast message prompt with information.
  * 
  * @param id id of the toast
  * @param content content of the toast
- * @param removeToast removes a toast by id
  * @param timeout timeout in milliseconds (optional) for removing toast
  */
 const Toast = ({
 	id,
 	content,
-	removeToast,
 	timeout,
 }: {
 	id: string;
 	content: string | JSX.Element;
-	removeToast: (id: string) => void;
 	timeout?: number;
 }) => {
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
+
+	// handles toasts
+	const { removeToast } = useToast();
 
 	// tracks if toast prompt is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);

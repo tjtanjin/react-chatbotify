@@ -1,61 +1,56 @@
-import { ChangeEvent, RefObject } from "react";
+import { ChangeEvent } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useToast } from "../../../hooks/useToast";
+import { useChatWindowInternal } from "../../../hooks/internal/useChatWindowInternal";
+import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
+import { useMessagesInternal } from "../../../hooks/internal/useMessagesInternal";
+import { usePathsInternal } from "../../../hooks/internal/usePathsInternal";
+import { useRcbEventInternal } from "../../../hooks/internal/useRcbEventInternal";
+import { useTextAreaInternal } from "../../../hooks/internal/useTextAreaInternal";
+import { useBotRefsContext } from "../../../context/BotRefsContext";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 import { Flow } from "../../../types/Flow";
+import { RcbEvent } from "../../../constants/RcbEvent";
 
 import "./FileAttachmentButton.css";
 
 /**
  * Supports uploading of files from user.
- * 
- * @param inputRef reference to the textarea
- * @param flow conversation flow for the bot
- * @param injectMessage utility function for injecting a message into the messages array
- * @param streamMessage utility function for streaming a message into the messages array
- * @param openChat utility function to open/close chat window
- * @param getCurrPath retrieves current path for the user
- * @param getPrevPath retrieves previous path for the user
- * @param goToPath goes to specified path
- * @param setTextAreaValue sets the value within the text area
- * @param injectToast injects a toast message prompt
- * @param handleActionInput handles action input from user 
  */
-const FileAttachmentButton = ({
-	inputRef,
-	flow,
-	blockAllowsAttachment,
-	injectMessage,
-	streamMessage,
-	openChat,
-	getCurrPath,
-	getPrevPath,
-	goToPath,
-	setTextAreaValue,
-	injectToast,
-	handleActionInput
-}: {
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>;
-	flow: Flow;
-	blockAllowsAttachment: boolean;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
-	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
-	openChat: (isOpen: boolean) => void;
-	getCurrPath: () => keyof Flow | null;
-	getPrevPath: () => keyof Flow | null;
-	goToPath: (pathToGo: keyof Flow) => void;
-	setTextAreaValue: (value: string) => void;
-	injectToast: (content: string | JSX.Element, timeout?: number) => void;
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>;
-}) => {
+const FileAttachmentButton = () => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles options for bot
-	const { settings } = useSettings();
+	// handles styles
+	const { styles } = useStylesContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles messages
+	const { injectMessage, streamMessage } = useMessagesInternal();
+
+	// handles paths and blocks
+	const { getCurrPath, getPrevPath, goToPath, blockAllowsAttachment } = usePathsInternal();
+
+	// handles bot refs
+	const { flowRef, inputRef } = useBotRefsContext();
+	const flow = flowRef.current as Flow;
+
+	// handles toasts
+	const { injectToast } = useToast();
+	
+	// handles rcb events
+	const { callRcbEvent } = useRcbEventInternal();
+
+	// handles chat window
+	const { openChat } = useChatWindowInternal();
+
+	// handles input text area
+	const {  setTextAreaValue } = useTextAreaInternal();
+
+	// handles user input submission
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// styles for file attachment disabled button
 	const fileAttachmentButtonDisabledStyle = {
@@ -86,6 +81,14 @@ const FileAttachmentButton = ({
 			return;
 		}
 
+		// handles user file upload event
+		if (settings.event?.rcbUserUploadFile) {
+			const event = callRcbEvent(RcbEvent.USER_UPLOAD_FILE, {files});
+			if (event.defaultPrevented) {
+				return;
+			}
+		}
+
 		const currPath = getCurrPath();
 		if (!currPath) {
 			return;
@@ -94,7 +97,6 @@ const FileAttachmentButton = ({
 		if (!block) {
 			return;
 		}
-
 		const fileHandler = block.file
 		if (fileHandler != null) {
 			const fileNames = [];
@@ -115,7 +117,7 @@ const FileAttachmentButton = ({
 				await injectMessage(<MediaDisplay file={files[i]} fileType={fileDetails.fileType}
 					fileUrl={fileDetails.fileUrl}/>, "user");
 			}
-			await handleActionInput(currPath, "📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
+			await handleSubmitText("📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
 				goToPath, setTextAreaValue, injectMessage, streamMessage, openChat, injectToast, files});
 		}

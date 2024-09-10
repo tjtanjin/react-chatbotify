@@ -1,8 +1,8 @@
 
 import { Fragment } from "react";
 
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatBotFooter.css";
 
@@ -11,16 +11,12 @@ import "./ChatBotFooter.css";
  * 
  * @param buttons list of buttons to render in the footer
  */
-const ChatBotFooter = ({
-	buttons
-}: {
-	buttons: JSX.Element[];
-}) => {
-	// handles settings for bot
-	const { settings } = useSettings();
+const ChatBotFooter = ({ buttons }: { buttons: JSX.Element[] }) => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	return (
 		<div style={styles.footerStyle} className="rcb-chat-footer-container">

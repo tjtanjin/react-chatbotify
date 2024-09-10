@@ -45,9 +45,11 @@ const speak = (message: string, language: string, voiceNames: string[], rate: nu
  * @param voiceToggledOn boolean indicating if voice is toggled on
  * @param message message to read out
  */
-export const processAudio = (settings: Settings, voiceToggledOn: boolean, message: Message) => {
+export const processAudio = (settings: Settings, voiceToggledOn: boolean,
+	isChatWindowOpen: boolean, message: Message) => {
+
 	if (settings.audio?.disabled || message.sender === "user" || typeof message.content !== "string"
-		|| (!settings?.isOpen && !settings.general?.embedded) || !voiceToggledOn) {
+		|| (!isChatWindowOpen && !settings.general?.embedded) || !voiceToggledOn) {
 		return;
 	}
 

@@ -1,7 +1,8 @@
 import { useState, MouseEvent } from "react";
 
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useChatHistoryInternal } from "../../hooks/internal/useChatHistoryInternal";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatHistoryButton.css";
 
@@ -11,19 +12,15 @@ import "./ChatHistoryButton.css";
  * @param chatHistory string representation of old chat messages
  * @param showChatHistory entry point for showing of chat history
  */
-const ChatHistoryButton = ({
-	chatHistory,
-	showChatHistory
-}: {
-	chatHistory: string;
-	showChatHistory: (chatHistory: string) => void;
-}) => {
+const ChatHistoryButton = ({ chatHistory }: { chatHistory: string }) => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles styles
+	const { styles } = useStylesContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles chat history
+	const { showChatHistory } = useChatHistoryInternal();
 
 	// tracks if view history button is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);

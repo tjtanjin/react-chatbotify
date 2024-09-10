@@ -1,19 +1,17 @@
 import UserCheckboxes from "../../components/ChatBotBody/UserCheckboxes/UserCheckboxes";
 import { Block } from "../../types/Block";
-import { Params } from "../../types/Params";
 import { Flow } from "../../types/Flow";
+import { Params } from "../../types/Params";
 
 /**
  * Handles processing of checkboxes in current block.
- * 
+ *
+ * @param flow conversation flow for the bot
  * @param block current block being processed
  * @param path path associated with the current block
- * @param handleActionInput handles action input from user
  * @param params contains parameters that can be used/passed into attributes
  */
-export const processCheckboxes = async (block: Block, path: keyof Flow,
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>,
-	params: Params) => {
+export const processCheckboxes = async (flow: Flow, block: Block, path: keyof Flow, params: Params) => {
 
 	const checkboxes = block.checkboxes;
 	if (!checkboxes) {
@@ -66,9 +64,7 @@ export const processCheckboxes = async (block: Block, path: keyof Flow,
 	const checkedItems = new Set<string>();
 
 	const content = (
-		<UserCheckboxes checkboxes={parsedCheckboxes} checkedItems={checkedItems} path={path}
-			handleActionInput={handleActionInput}
-		/>
+		<UserCheckboxes checkboxes={parsedCheckboxes} checkedItems={checkedItems} path={path} />
 	);
-	params.injectMessage(content);
+	await params.injectMessage(content);
 }

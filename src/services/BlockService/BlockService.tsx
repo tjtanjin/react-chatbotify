@@ -1,6 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
-import { Flow } from "../../types/Flow";
 import { processCheckboxes } from "./CheckboxProcessor";
 import { processFunction } from "./FunctionProcessor";
 import { processMessage } from "./MessageProcessor";
@@ -12,6 +9,7 @@ import { Params } from "../../types/Params";
 import { Block } from "../../types/Block";
 import { processChatDisabled } from "./ChatDisabledProcessor";
 import { processIsSensitive } from "./IsSensitiveProcessor";
+import { Flow } from "../../types/Flow";
 
 /**
  * Handles the preprocessing within a block.
@@ -21,14 +19,12 @@ import { processIsSensitive } from "./IsSensitiveProcessor";
  * @param params contains parameters that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
  * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
- * @param setPaths updates the paths taken by the user
+ * @param goToPath: function to go to specified path
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
- * @param handleActionInput handles action input from user 
  */
 export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
-	setPaths: Dispatch<SetStateAction<string[]>>, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void, 
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>) => {
+	goToPath: (pathToGo: string) => boolean, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
 
@@ -44,11 +40,11 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
 			break;
 		
 		case "options":
-			await processOptions(block, path, handleActionInput, params);
+			await processOptions(flow, block, path, params);
 			break;
 		
 		case "checkboxes":
-			await processCheckboxes(block, path, handleActionInput, params);
+			await processCheckboxes(flow, block, path, params);
 			break;
 		
 		case "component":
@@ -64,7 +60,7 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
 			break;
 
 		case "transition":
-			await processTransition(flow, path, params, setPaths, setTimeoutId);
+			await processTransition(flow, path, params, goToPath, setTimeoutId);
 		}
 	}
 }
@@ -75,10 +71,10 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
  * @param flow conversation flow for the bot
  * @param path path associated with the current block
  * @param params contains utilities that can be used/passed into attributes
- * @param setPaths updates the paths taken by the user
+ * @param goToPath: function to go to specified path
  */
 export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
-	setPaths: Dispatch<SetStateAction<string[]>>) => {
+	goToPath: (pathToGo: string) => boolean) => {
 
 	const block = flow[path];
 
@@ -95,7 +91,7 @@ export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Par
 
 	// path is always executed last in post-processing
 	if (attributes.includes("path")) {
-		return await processPath(block, params, setPaths);
+		return await processPath(block, params, goToPath);
 	}
 	return false;
 }

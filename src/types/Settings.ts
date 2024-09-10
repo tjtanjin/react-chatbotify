@@ -1,10 +1,7 @@
 /**
- * Defines the configurable options/styles for the chat bot.
+ * Defines the settings for the chat bot.
  */
 export type Settings = {
-	// tracks state of chat window, also the default state to load it in
-	isOpen?: boolean;
-
 	// configurations
 	general?: {
 		primaryColor?: string;
@@ -78,6 +75,7 @@ export type Settings = {
 		showMessagePrompt?: boolean;
 		messagePromptText?: string;
 		messagePromptOffset?: number;
+		defaultOpen?: boolean;
 	},
 	sensitiveInput?: {
 		maskInTextArea?: boolean;
@@ -128,15 +126,26 @@ export type Settings = {
 		icon?: string;
 		list?: string[] ;
 	},
+	event?: {
+		rcbPreInjectMessage?: boolean;
+		rcbPostInjectMessage?: boolean;
+		rcbStartStreamMessage?: boolean;
+		rcbChunkStreamMessage?: boolean;
+		rcbStopStreamMessage?: boolean;
+		rcbLoadChatHistory?: boolean;
+		rcbToggleChatWindow?: boolean;
+		rcbToggleAudio?: boolean;
+		rcbToggleNotifications?: boolean;
+		rcbToggleVoice?: boolean;
+		rcbChangePath?: boolean;
+		rcbShowToast?: boolean;
+		rcbDismissToast?: boolean;
+		rcbUserSubmitText?: boolean;
+		rcbUserUploadFile?: boolean;
+	},
 	toast?: {
 		maxCount?: number;
 		forbidOnMax?: boolean;
 		dismissOnClick?: boolean;
-	},
-	advance?: {
-		useAdvancedMessages?: boolean;
-		useAdvancedSettings?: boolean;
-		useAdvancedPaths?: boolean;
-		useAdvancedStyles?: boolean;
 	}
 }

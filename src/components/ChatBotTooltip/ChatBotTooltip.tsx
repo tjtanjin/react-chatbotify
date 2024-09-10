@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 
 import { isDesktop } from "../../utils/displayChecker";
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatBotTooltip.css";
 
@@ -11,11 +12,14 @@ import "./ChatBotTooltip.css";
  */
 const ChatBotTooltip = () => {
 
-	// handles settings for bot
-	const { settings, setSettings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
+
+	// handles chat window
+	const { isChatWindowOpen, openChat } = useChatWindowInternal();
 
 	// tracks whether to show tooltip
 	const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -32,7 +36,7 @@ const ChatBotTooltip = () => {
 		if (mode === "ALWAYS") {
 			if (isDesktop) {
 				let offset;
-				if (settings.isOpen) {
+				if (isChatWindowOpen) {
 					offset = (styles.chatWindowStyle?.width as number || 375) -
 					(styles.chatButtonStyle?.width as number || 75)
 				} else {
@@ -41,7 +45,7 @@ const ChatBotTooltip = () => {
 				setTooltipOffset(offset);
 				setShowTooltip(true);
 			} else {
-				if (settings.isOpen) {
+				if (isChatWindowOpen) {
 					setShowTooltip(false);
 				} else {
 					setShowTooltip(true);
@@ -57,10 +61,10 @@ const ChatBotTooltip = () => {
 				setShowTooltip(false);
 			}
 		} else if (mode === "CLOSE") {
-			setShowTooltip(!settings.isOpen);
+			setShowTooltip(!isChatWindowOpen);
 		}
 
-	}, [settings.isOpen]);
+	}, [isChatWindowOpen]);
 
 	// styles for tooltip
 	const tooltipStyle: React.CSSProperties = {
@@ -83,7 +87,7 @@ const ChatBotTooltip = () => {
 				<div 
 					style={tooltipStyle}
 					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}
-					onClick={() => setSettings({...settings, isOpen: true})}
+					onClick={() => openChat(true)}
 				>
 					<span style={{ color: "#fff" }}>{settings.tooltip?.text}</span>
 					<span className="rcb-chat-tooltip-tail" style={tooltipTailStyle}></span>

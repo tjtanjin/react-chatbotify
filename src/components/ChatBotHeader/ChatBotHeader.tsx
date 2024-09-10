@@ -1,7 +1,7 @@
-import React, { Fragment  } from "react";
+import React, { Fragment } from "react";
 
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatBotHeader.css";
 
@@ -10,16 +10,12 @@ import "./ChatBotHeader.css";
  * 
  * @param buttons list of buttons to render in the header
  */
-const ChatBotHeader = ({
-	buttons
-}: {
-	buttons: JSX.Element[]
-}) => {
-	// handles settings for bot
-	const { settings } = useSettings();
+const ChatBotHeader = ({ buttons }: { buttons: JSX.Element[] }) => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	// styles for header
 	const headerStyle: React.CSSProperties = {

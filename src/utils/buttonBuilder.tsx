@@ -1,5 +1,3 @@
-import { Dispatch, RefObject, SetStateAction } from "react";
-
 import FileAttachmentButton from "../components/Buttons/FileAttachmentButton/FileAttachmentButton";
 import EmojiButton from "../components/Buttons/EmojiButton/EmojiButton";
 import AudioButton from "../components/Buttons/AudioButton/AudioButton";
@@ -9,7 +7,6 @@ import VoiceButton from "../components/Buttons/VoiceButton/VoiceButton";
 import SendButton from "../components/Buttons/SendButton/SendButton";
 import { ButtonConfig } from "../types/internal/ButtonConfig";
 import { Settings } from "../types/Settings";
-import { Flow } from "../types/Flow";
 import { Button } from "../constants/Button";
 
 // type guard to check if a value is a button key
@@ -78,85 +75,10 @@ export const getButtonConfig = (
 
 // functions below are self-explanatory (used to create the default button components)
 
-export const createAudioButton = (
-	audioToggledOn: boolean,
-	setAudioToggledOn: Dispatch<SetStateAction<boolean>>
-) => {
-	return (
-		<AudioButton audioToggledOn={audioToggledOn} setAudioToggledOn={setAudioToggledOn}/>
-	)
-}
-
-export const createNotificationButton = (
-	notificationToggledOn: boolean,
-	setNotificationToggledOn: Dispatch<SetStateAction<boolean>>
-) => {
-	return (
-		<NotificationButton notificationToggledOn={notificationToggledOn}
-			setNotificationToggledOn={setNotificationToggledOn}
-		/>
-	)
-}
-
-export const createCloseChatButton = () => {
-	return (
-		<CloseChatButton/>
-	)
-}
-
-export const createVoiceButton = (
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>,
-	textAreaDisabled: boolean,
-	voiceToggledOn: boolean,
-	handleToggleVoice: () => void,
-	getCurrPath: () => keyof Flow | null,
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>,
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>,
-	setInputLength: Dispatch<SetStateAction<number>>,
-) => {
-	return (
-		<VoiceButton inputRef={inputRef} textAreaDisabled={textAreaDisabled} voiceToggledOn={voiceToggledOn}
-			handleToggleVoice={handleToggleVoice} getCurrPath={getCurrPath} 
-			handleActionInput={handleActionInput}  injectMessage={injectMessage} setInputLength={setInputLength}
-		/>
-	)
-}
-
-export const createSendButton = (
-	handleSubmit: () => void
-) => {
-	return (<SendButton handleSubmit={handleSubmit}/>)
-}
-
-export const createFileAttachmentButton = (
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>,
-	flow: Flow,
-	blockAllowsAttachment: boolean,
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>,
-	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>,
-	openChat: (isOpen: boolean) => void,
-	getCurrPath: () => keyof Flow | null,
-	getPrevPath: () => keyof Flow | null,
-	goToPath: (pathToGo: keyof Flow) => void,
-	setTextAreaValue: (value: string) => void,
-	injectToast: (content: string | JSX.Element, timeout?: number) => void,
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput?: boolean) => Promise<void>
-) => {
-	return (
-		<FileAttachmentButton inputRef={inputRef} flow={flow} 
-			blockAllowsAttachment={blockAllowsAttachment} getCurrPath={getCurrPath} openChat={openChat}
-			getPrevPath={getPrevPath} goToPath={goToPath} handleActionInput={handleActionInput}
-			injectMessage={injectMessage} streamMessage={streamMessage} setTextAreaValue={setTextAreaValue}
-			injectToast={injectToast}
-		/>
-	);
-};
-  
-export const createEmojiButton = (
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>,
-	textAreaDisabled: boolean
-) => {
-	return (
-		<EmojiButton inputRef={inputRef} textAreaDisabled={textAreaDisabled}/>
-	);
-};
+export const createAudioButton = () => <AudioButton/>
+export const createNotificationButton = () => <NotificationButton/>
+export const createCloseChatButton = () => <CloseChatButton/>
+export const createVoiceButton = () => <VoiceButton/>
+export const createSendButton = () => <SendButton/>
+export const createFileAttachmentButton = () => <FileAttachmentButton/>
+export const createEmojiButton = () => <EmojiButton/>

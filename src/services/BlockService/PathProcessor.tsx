@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 import { Block } from "../../types/Block";
 import { Params } from "../../types/Params";
 
@@ -8,19 +6,16 @@ import { Params } from "../../types/Params";
  * 
  * @param block current block being processed
  * @param params contains parameters that can be used/passed into attributes
- * @param setPaths updates the paths taken by the user
+ * @param goToPath: function to go to specified path
  */
-export const processPath = async (block: Block, params: Params,
-	setPaths: Dispatch<SetStateAction<string[]>>) => {
-
+export const processPath = async (block: Block, params: Params, goToPath: (pathToGo: string) => boolean) => {
 	const nextPath = block.path;
 	if (!nextPath) {
 		return false;
 	}
 
 	if (typeof nextPath === "string") {
-		setPaths(prev => [...prev, nextPath]);
-		return true;
+		return goToPath(nextPath);
 	}
 
 	let parsedPath = nextPath(params);
@@ -32,6 +27,5 @@ export const processPath = async (block: Block, params: Params,
 		return false;
 	}
 	const path = parsedPath;
-	setPaths(prev => [...prev, path]);
-	return true;
+	return goToPath(path);
 }

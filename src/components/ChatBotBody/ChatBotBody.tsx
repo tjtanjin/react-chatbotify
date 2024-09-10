@@ -1,67 +1,59 @@
-import { RefObject, Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
+import { Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import ToastPrompt from "./ToastPrompt/ToastPrompt";
-import { useSettings } from "../../context/SettingsContext";
-import { useStyles } from "../../context/StylesContext";
-import { useMessages } from "../../context/MessagesContext";
+import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
+import { useMessagesContext } from "../../context/MessagesContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
+import { useToastsContext } from "../../context/ToastsContext";
 import { Message } from "../../types/Message";
-import { Toast } from "../../types/internal/Toast";
 
 import "./ChatBotBody.css";
 
 /**
  * Contains chat messages between the user and bot.
  * 
- * @param chatBodyRef reference to the chat body
- * @param isBotTyping boolean indicating if bot is typing
- * @param isLoadingChatHistory boolean indicating is chat history is being loaded
  * @param chatScrollHeight number representing chat window scroll height
  * @param setChatScrollHeight setter for tracking chat window scroll height
- * @param setIsLoadingChatHistory setter for tracking whether is loading history
- * @param isScrolling boolean representing whether user is scrolling chat
- * @param setIsScrolling setter for tracking if user is scrolling
- * @param unreadCount number representing unread messages count
- * @param setUnreadCount setter for unread messages count
- * @param toasts toasts to be shown
- * @param removeToast removes a toast by id
  */
 const ChatBotBody = ({
-	chatBodyRef,
-	isBotTyping,
-	isLoadingChatHistory,
 	chatScrollHeight,
 	setChatScrollHeight,
-	setIsLoadingChatHistory,
-	isScrolling: isScrolling,
-	setIsScrolling,
-	unreadCount,
-	setUnreadCount,
-	toasts,
-	removeToast
 }: {
-	chatBodyRef: RefObject<HTMLDivElement>;
-	isBotTyping: boolean;
-	isLoadingChatHistory: boolean;
 	chatScrollHeight: number;
 	setChatScrollHeight: Dispatch<SetStateAction<number>>;
-	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>;
-	isScrolling: boolean;
-	setIsScrolling: Dispatch<SetStateAction<boolean>>;
-	unreadCount: number;
-	setUnreadCount: Dispatch<SetStateAction<number>>;
-	toasts: Array<Toast>,
-	removeToast: (id: string) => void;
 }) => {
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
-	// handles messages between user and the chat bot
-	const { messages } = useMessages();
+	// handles messages
+	const { messages } = useMessagesContext();
+
+	// handles toasts
+	const { toasts } = useToastsContext();
+
+	// handles chat window
+	const { isChatWindowOpen } = useChatWindowInternal();
+
+	// handles bot states
+	const {
+		isBotTyping,
+		isLoadingChatHistory,
+		setIsLoadingChatHistory,
+		isScrolling,
+		setIsScrolling,
+		setUnreadCount
+	} = useBotStatesContext();
+
+	// handles bot refs
+	const { chatBodyRef } = useBotRefsContext();
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
@@ -113,7 +105,7 @@ const ChatBotBody = ({
 
 		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (settings.isOpen) {
+			if (isChatWindowOpen) {
 				setUnreadCount(0);
 			}
 		}
@@ -130,7 +122,7 @@ const ChatBotBody = ({
 
 		if (!isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (settings.isOpen) {
+			if (isChatWindowOpen) {
 				setUnreadCount(0);
 			}
 		}
@@ -298,19 +290,14 @@ const ChatBotBody = ({
 					</div>
 				</div>
 			)}
-			<ChatMessagePrompt
-				chatBodyRef={chatBodyRef} isScrolling={isScrolling}
-				setIsScrolling={setIsScrolling} unreadCount={unreadCount}
-			/>
-
+			<ChatMessagePrompt/>
 			<div className="rcb-toast-prompt-container" style={toastPromptContainerStyle}>
 				{toasts.map((toast) => (
 					<ToastPrompt
 						key={toast.id}
 						id={toast.id}
 						content={toast.content}
-						removeToast={removeToast} // Function to remove toast
-						timeout={toast.timeout} // Timeout for auto-removal
+						timeout={toast.timeout}
 					/>
 				))}
 			</div>

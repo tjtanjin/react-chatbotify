@@ -1,18 +1,27 @@
-import { useContext, createContext, Dispatch, SetStateAction } from "react";
+import { useContext, createContext, Dispatch, SetStateAction, useState } from "react";
 
 import { Message } from "../types/Message";
 
 /**
- * Creates the useMessages() hook to manage messages.
+ * Creates the useMessagesContext() hook to manage messages.
  */
 type MessagesContextType = {
-	messages: Message[]
+	messages: Message[];
 	setMessages: Dispatch<SetStateAction<Message[]>>;
-}
-const MessagesContext = createContext<MessagesContextType>({messages: [], setMessages: () => null});
-const useMessages = () => useContext(MessagesContext);
-
-export {
-	MessagesContext,
-	useMessages
 };
+const MessagesContext = createContext<MessagesContextType>({messages: [], setMessages: () => null});
+const useMessagesContext = () => useContext(MessagesContext);
+
+/**
+ * Creates provider to wrap the chatbot container.
+ */
+const MessagesProvider = ({ children }: { children: JSX.Element }) => {
+	const [messages, setMessages] = useState<Message[]>([]);
+	return (
+		<MessagesContext.Provider value={{ messages, setMessages }}>
+			{children}
+		</MessagesContext.Provider>
+	);
+};
+
+export { useMessagesContext, MessagesProvider };

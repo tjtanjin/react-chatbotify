@@ -1,28 +1,23 @@
-import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { MouseEvent } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useAudio } from "../../../hooks/useAudio";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 
 import "./AudioButton.css";
 
 /**
  * Handles toggling of the audio feature.
- * 
- * @param audioToggledOn boolean indicating whether audio is turned on
- * @param setAudioToggledOn sets the state of the audio feature
  */
-const AudioButton = ({
-	audioToggledOn,
-	setAudioToggledOn
-}: {
-	audioToggledOn: boolean;
-	setAudioToggledOn: Dispatch<SetStateAction<boolean>>;
-}) => {
-	// handles options for bot
-	const { settings } = useSettings();
+const AudioButton = () => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
+
+	// handles audio
+	const { audioToggledOn, toggleAudio } = useAudio();
 
 	// styles for audio icon
 	const audioIconStyle: React.CSSProperties = {
@@ -40,7 +35,7 @@ const AudioButton = ({
 		<div
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
-				setAudioToggledOn(prev => !prev);
+				toggleAudio();
 			}}
 			style={audioToggledOn ? styles.audioButtonStyle : styles.audioButtonDisabledStyle}
 		>

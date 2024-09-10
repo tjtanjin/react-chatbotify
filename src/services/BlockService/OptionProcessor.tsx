@@ -5,15 +5,13 @@ import { Flow } from "../../types/Flow";
 
 /**
  * Handles processing of options in current block.
- * 
+ *
+ * @param flow conversation flow for the bot
  * @param block current block being processed
  * @param path path associated with the current block
- * @param handleActionInput handles action input from user
  * @param params contains parameters that can be used/passed into attributes
  */
-export const processOptions = async (block: Block, path: keyof Flow,
-	handleActionInput: (path: keyof Flow, userInput: string, sendUserInput: boolean) => Promise<void>,
-	params: Params) => {
+export const processOptions = async (flow: Flow, block: Block, path: keyof Flow, params: Params) => {
 
 	const options = block.options;
 	if (!options) {
@@ -48,6 +46,6 @@ export const processOptions = async (block: Block, path: keyof Flow,
 	// note that sendOutput has no default here, as it fallback to the global
 	// settings.chatInput.sendOptionOutput inside user options component if not specified
 
-	const content = <UserOptions options={parsedOptions} path={path} handleActionInput={handleActionInput} />
-	params.injectMessage(content);
+	const content = <UserOptions options={parsedOptions} path={path} />
+	await params.injectMessage(content);
 }

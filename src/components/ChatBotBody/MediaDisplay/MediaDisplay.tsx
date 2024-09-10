@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 
 import "./MediaDisplay.css";
 
@@ -22,11 +22,11 @@ const MediaDisplay = ({
 	fileUrl: string | null;
 }) => {
 
-	// handles settings for bot
-	const { settings } = useSettings();
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	// styles for media display
 	const mediaDisplayContainerStyle: CSSProperties = {

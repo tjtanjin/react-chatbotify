@@ -1,29 +1,26 @@
 import { useState, MouseEvent } from "react";
 
-import { useSettings } from "../../../context/SettingsContext";
-import { useStyles } from "../../../context/StylesContext";
+import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
+import { useSettingsContext } from "../../../context/SettingsContext";
+import { useStylesContext } from "../../../context/StylesContext";
 
 import "./SendButton.css";
 
 /**
  * Sends current user input to the chat bot.
- * 
- * @param handleSubmit handles submission of user input
  */
-const SendButton = ({
-	handleSubmit
-}: {
-	handleSubmit: () => void;
-}) => {
+const SendButton = () => {
+	// handles settings
+	const { settings } = useSettingsContext();
 
-	// handles settings for bot
-	const { settings } = useSettings();
-
-	// handles styles for bot
-	const { styles } = useStyles();
+	// handles styles
+	const { styles } = useStylesContext();
 
 	// tracks if send button is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
+
+	// handles user input submission
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// styles for send button
 	const sendButtonStyle: React.CSSProperties = {
@@ -61,9 +58,9 @@ const SendButton = ({
 		<div
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
-			onMouseDown={(event: MouseEvent) => {
+			onMouseDown={async (event: MouseEvent) => {
 				event?.preventDefault();
-				handleSubmit();
+				await handleSubmitText();
 			}}
 			style={isHovered ? sendButtonHoveredStyle : sendButtonStyle}
 			className="rcb-send-button"

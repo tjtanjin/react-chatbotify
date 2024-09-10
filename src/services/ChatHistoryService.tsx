@@ -3,6 +3,7 @@ import ReactDOMServer from "react-dom/server";
 
 import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistoryLineBreak";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
+import { createMessage } from "../utils/messageBuilder";
 import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
@@ -88,14 +89,16 @@ const setHistoryStorageValues = (settings: Settings) => {
 const parseMessageToString = (message: Message) => {
 	if (isValidElement(message.content)) {
 		const clonedMessage = structuredClone({
+			id: message.id,
 			content: ReactDOMServer.renderToString(message.content),
-			type: "object",
+			type: message.type,
 			sender: message.sender,
+			timestamp: message.timestamp
 		});
 		return clonedMessage;
 	}
 
-	return {...message, type: "string"}
+	return message;
 }
 
 /**
@@ -113,10 +116,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 	if (chatHistory != null) {
 		try {
 			setMessages((prevMessages) => {
-				const loaderMessage = {
-					content: <LoadingSpinner/>,
-					sender: "system"
-				}
+				const loaderMessage = createMessage(<LoadingSpinner/>, "system");
 				prevMessages.shift();
 				return [loaderMessage, ...prevMessages];
 			});
@@ -135,15 +135,9 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 					// if autoload, line break is invisible
 					let lineBreakMessage;
 					if (settings.chatHistory?.autoLoad) {
-						lineBreakMessage = {
-							content: <></>,
-							sender: "system"
-						}
+						lineBreakMessage = createMessage(<></>, "system")
 					} else {
-						lineBreakMessage = {
-							content: <ChatHistoryLineBreak/>,
-							sender: "system"
-						}
+						lineBreakMessage = createMessage(<ChatHistoryLineBreak/>, "system")
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
@@ -201,8 +195,8 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
 			attributes = addStyleToCheckboxNextButton(classList, attributes, settings, styles);
 			attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, styles);
 
-			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
-				'meta', 'source', 'track', 'wbr'];
+			const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+				"meta", "source", "track", "wbr"];
 			if (voidElements.includes(tagName)) {
 				// void elements must not have children
 				return createElement(tagName, { key: index, ...attributes });

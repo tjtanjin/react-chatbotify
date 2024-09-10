@@ -1,4 +1,20 @@
 import { EventHandler } from "react";
+import { RcbPreInjectMessageEvent } from "../src/types/events/RcbPreInjectMessageEvent";
+import { RcbPostInjectMessageEvent } from "../src/types/events/RcbPostInjectMessageEvent";
+import { RcbLoadChatHistoryEvent } from "../src/types/events/RcbLoadChatHistoryEvent";
+import { RcbToggleChatWindowEvent } from "../src/types/events/RcbToggleChatWindowEvent";
+import { RcbToggleAudioEvent } from "../src/types/events/RcbToggleAudioEvent";
+import { RcbToggleVoiceEvent } from "../src/types/events/RcbToggleVoiceEvent";
+import { RcbToggleNotificationsEvent } from "../src/types/events/RcbToggleNotificationsEvent";
+import { RcbStartStreamMessageEvent } from "../src/types/events/RcbStartStreamMessageEvent";
+import { RcbChunkStreamMessageEvent } from "../src/types/events/RcbChunkStreamMessageEvent";
+import { RcbStopStreamMessageEvent } from "../src/types/events/RcbStopStreamMessageEvent";
+import { RcbChangePathEvent } from "../src/types/events/RcbChangePathEvent";
+import { RcbShowToastEvent } from "../src/types/events/RcbShowToastEvent";
+import { RcbDismissToastEvent } from "../src/types/events/RcbDismissToastEvent";
+import { RcbUserSubmitTextEvent } from "../src/types/events/RcbUserSubmitTextEvent";
+import { RcbUserUploadFileEvent } from "../src/types/events/RcbUserUploadFileEvent";
+import { RcbEvent } from "../src/constants/RcbEvent";
 
 declare global {
 	interface Navigator {
@@ -18,5 +34,41 @@ declare global {
 		boundingRect: DOMRect;
 		overlaysContent: boolean;
 		ongeometrychange: EventHandler;
+	}
+
+	// for custom rcb events
+	interface WindowEventMap {
+		// audio
+		"rcb-toggle-audio": RcbToggleAudioEvent;
+
+		// notifications:
+		"rcb-toggle-notifications": RcbToggleNotificationsEvent;
+
+		// voice
+		"rcb-toggle-voice": RcbToggleVoiceEvent;
+
+		// chat window
+	   	"rcb-toggle-chat-window": RcbToggleChatWindowEvent;
+
+		// messages
+		"rcb-pre-inject-message": RcbPreInjectMessageEvent;
+		"rcb-post-inject-message": RcbPostInjectMessageEvent;
+		"rcb-start-stream-message": RcbStartStreamMessageEvent;
+		"rcb-chunk-stream-message": RcbChunkStreamMessageEvent;
+		"rcb-stop-stream-message": RcbStopStreamMessageEvent;
+
+		// chat history
+		"rcb-load-chat-history": RcbLoadChatHistoryEvent;
+
+		// path
+		"rcb-change-path": RcbChangePathEvent;
+
+		// toast
+		"rcb-show-toast": RcbShowToastEvent;
+		"rcb-dismiss-toast": RcbDismissToastEvent;
+
+		// user input submission
+		"rcb-user-submit-text": RcbUserSubmitTextEvent;
+		"rcb-user-upload-file": RcbUserUploadFileEvent;
 	}
 }
