@@ -56,13 +56,17 @@ export const usePathsInternal = () => {
 	const goToPath = useCallback((pathToGo: keyof Flow): boolean => {
 		// handles path change event
 		// note that this doesn't use callRcbEvent to avoid circular imports
-		if (settings.event?.rcbChangePath) {
-			const details = {currPath: getCurrPath(), prevPath: getPrevPath()}
-			event = emitRcbEvent(RcbEvent.CHANGE_PATH, details, {}, settings, styles, messages, paths);
-			if (event.defaultPrevented) {
-				return false;
-			}
-		}
+        if (settings.event?.rcbChangePath) {
+            const currPath = getCurrPath();
+            const prevPath = getPrevPath();
+            const details = {currPath, prevPath}
+            event = emitRcbEvent(RcbEvent.CHANGE_PATH, details, {currPath, prevPath, nextPath: pathToGo},
+				settings, styles, messages, paths
+			);
+            if (event.defaultPrevented) {
+                return false;
+            }
+        }
 
 		// mimics post-processing behavior
 		setIsBotTyping(true);
