@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-import { useNotification } from "../../../hooks/useNotifications";
+import { useNotifications } from "../../../hooks/useNotifications";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
 
@@ -17,7 +17,7 @@ const NotificationButton = () => {
 	const { styles } = useStylesContext();
 
 	// handles notifications
-	const { notificationsToggledOn, toggleNotifications } = useNotification();
+	const { notificationsToggledOn, toggleNotifications } = useNotifications();
 
 	// styles for notification icon
 	const notificationIconStyle: React.CSSProperties = {

@@ -31,6 +31,19 @@ import { RcbDismissToastEvent } from "./types/events/RcbDismissToastEvent";
 import { RcbUserSubmitTextEvent } from "./types/events/RcbUserSubmitTextEvent";
 import { RcbUserUploadFileEvent } from "./types/events/RcbUserUploadFileEvent";
 
+// hook imports
+import { useAudio } from "./hooks/useAudio";
+import { useChatWindow } from "./hooks/useChatWindow";
+import { useFirstInteraction } from "./hooks/useFirstInteraction";
+import { useMessages } from "./hooks/useMessages";
+import { useNotifications } from "./hooks/useNotifications";
+import { usePaths } from "./hooks/usePaths";
+import { useSettings } from "./hooks/useSettings";
+import { useStyles } from "./hooks/useStyles";
+import { useTextArea } from "./hooks/useTextArea";
+import { useToast } from "./hooks/useToast";
+import { useVoice } from "./hooks/useVoice";
+
 // util exports
 export {
 	getDefaultSettings,
@@ -69,7 +82,30 @@ export type {
 }
 
 // constant exports
-export { Button, RcbEvent };
+export {
+	Button,
+	RcbEvent
+};
+
+// hook exports
+export {
+	useAudio,
+	useChatWindow,
+	useFirstInteraction,
+	useMessages,
+	useNotifications,
+	usePaths,
+	useSettings,
+	useStyles,
+	useTextArea,
+	useToast,
+	useVoice
+}
+
+// provider export
+export {
+	ChatBotProvider
+}
 
 // chatbot export
-export default { ChatBot, ChatBotProvider };
+export default ChatBot
