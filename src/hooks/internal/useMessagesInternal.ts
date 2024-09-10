@@ -1,15 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { processAudio } from '../../services/AudioService';
-import { parseMarkupMessage } from '../../utils/markupParser';
-import { useRcbEventInternal } from './useRcbEventInternal';
-import { useSettingsContext } from '../../context/SettingsContext';
-import { useMessagesContext } from '../../context/MessagesContext';
-import { useBotStatesContext } from '../../context/BotStatesContext';
-import { useBotRefsContext } from '../../context/BotRefsContext';
-import { usePathsContext } from '../../context/PathsContext';
-import { Message } from '../../types/Message';
-import { RcbEvent } from '../../constants/RcbEvent';
+import { processAudio } from "../../services/AudioService";
+import { parseMarkupMessage } from "../../utils/markupParser";
+import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useMessagesContext } from "../../context/MessagesContext";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
+import { usePathsContext } from "../../context/PathsContext";
+import { Message } from "../../types/Message";
+import { RcbEvent } from "../../constants/RcbEvent";
 
 /**
  * Internal custom hook for managing sending of messages.
@@ -140,7 +140,7 @@ export const useMessagesInternal = () => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const streamMessage = useCallback(async (content: string | JSX.Element, sender = 'bot') => {
+	const streamMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 		const message = { content, sender };
 
 		if (!isBotStreamingRef.current) {

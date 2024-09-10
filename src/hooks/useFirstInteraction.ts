@@ -1,4 +1,4 @@
-import { useFirstInteractionInternal } from './internal/useFirstInteractionInternal';
+import { useFirstInteractionInternal } from "./internal/useFirstInteractionInternal";
 
 /**
  * External custom hook for managing user first interaction.

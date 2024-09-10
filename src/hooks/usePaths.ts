@@ -1,4 +1,4 @@
-import { usePathsInternal } from './internal/usePathsInternal';
+import { usePathsInternal } from "./internal/usePathsInternal";
 
 /**
  * External custom hook for managing paths in the chatbot conversation flow.

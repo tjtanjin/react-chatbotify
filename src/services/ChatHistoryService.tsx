@@ -201,8 +201,8 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
 			attributes = addStyleToCheckboxNextButton(classList, attributes, settings, styles);
 			attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, styles);
 
-			const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
-				'meta', 'source', 'track', 'wbr'];
+			const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+				"meta", "source", "track", "wbr"];
 			if (voidElements.includes(tagName)) {
 				// void elements must not have children
 				return createElement(tagName, { key: index, ...attributes });

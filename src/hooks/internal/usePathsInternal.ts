@@ -1,13 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { emitRcbEvent } from '../../services/RcbEventService';
-import { usePathsContext } from '../../context/PathsContext';
-import { useSettingsContext } from '../../context/SettingsContext';
-import { useStylesContext } from '../../context/StylesContext';
-import { useMessagesContext } from '../../context/MessagesContext';
-import { useBotStatesContext } from '../../context/BotStatesContext';
-import { Flow } from '../../types/Flow';
-import { RcbEvent } from '../../constants/RcbEvent';
+import { emitRcbEvent } from "../../services/RcbEventService";
+import { usePathsContext } from "../../context/PathsContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useStylesContext } from "../../context/StylesContext";
+import { useMessagesContext } from "../../context/MessagesContext";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { Flow } from "../../types/Flow";
+import { RcbEvent } from "../../constants/RcbEvent";
 
 /**
  * Internal custom hook to handle paths in the chatbot conversation flow.

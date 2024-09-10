@@ -1,4 +1,4 @@
-import { useMessagesInternal } from './internal/useMessagesInternal';
+import { useMessagesInternal } from "./internal/useMessagesInternal";
 
 /**
  * External custom hook for managing messages.

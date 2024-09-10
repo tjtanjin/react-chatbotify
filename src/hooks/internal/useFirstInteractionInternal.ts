@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { useSettingsContext } from '../../context/SettingsContext';
-import { useBotStatesContext } from '../../context/BotStatesContext';
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useBotStatesContext } from "../../context/BotStatesContext";
 
 /**
  * Internal custom hook for managing user first interaction.
@@ -18,7 +18,7 @@ export const useFirstInteractionInternal = () => {
 	 */
 	const handleFirstInteraction = useCallback(() => {
 		setHasInteractedPage(true);
-		if (!hasFlowStarted && settings.general?.flowStartTrigger === 'ON_PAGE_INTERACT') {
+		if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_PAGE_INTERACT") {
 			setHasFlowStarted(true);
 		}
 

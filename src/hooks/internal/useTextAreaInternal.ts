@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { isChatBotVisible } from '../../utils/displayChecker';
-import { useBotStatesContext } from '../../context/BotStatesContext';
-import { useSettingsContext } from '../../context/SettingsContext';
-import { useBotRefsContext } from '../../context/BotRefsContext';
+import { isChatBotVisible } from "../../utils/displayChecker";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useSettingsContext } from "../../context/SettingsContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 
 /**
  * Internal custom hook for managing input text area.

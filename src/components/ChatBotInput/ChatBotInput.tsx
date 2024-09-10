@@ -138,7 +138,7 @@ const ChatBotInput = ({ flow, buttons }: { flow: Flow, buttons: JSX.Element[] })
 			const characterLimit = settings.chatInput?.characterLimit
 			/*
 			* @params allowNewline Boolean
-			* allowNewline [true] Allow input values to contain line breaks '\n'
+			* allowNewline [true] Allow input values to contain line breaks "\n"
 			* allowNewline [false] Replace \n with a space
 			* */
 			const allowNewline = settings.chatInput?.allowNewline

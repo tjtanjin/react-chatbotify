@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { useTextAreaInternal } from './internal/useTextAreaInternal';
-import { useBotRefsContext } from '../context/BotRefsContext';
+import { useTextAreaInternal } from "./internal/useTextAreaInternal";
+import { useBotRefsContext } from "../context/BotRefsContext";
 
 /**
  * External custom hook for managing input text area.
