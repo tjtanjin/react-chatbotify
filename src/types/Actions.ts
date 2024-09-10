@@ -5,6 +5,6 @@ import { Flow } from "./Flow";
  */
 export type Actions = {
 	goToPath: (pathToGo: keyof Flow) => void;
-	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<string | null>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
 }

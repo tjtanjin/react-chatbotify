@@ -25,7 +25,7 @@ export const useToast = () => {
 	 * @param content message to show in toast
 	 * @param timeout optional timeout in milliseconds before toast is removed
 	 */
-	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): number | null => {
+	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): string | null => {
 		let id = null;
 		setToasts((prevToasts: Toast[]) => {
 			if (prevToasts.length >= (settings.toast?.maxCount || 3)) {

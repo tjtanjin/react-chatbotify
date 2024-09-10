@@ -40,14 +40,16 @@ export const useMessagesInternal = () => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const injectMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
+	const injectMessage = useCallback(async (content: string | JSX.Element,
+		sender = "bot"): Promise<string | null> => {
+
 		let message = createMessage(content, sender);
 
 		// handles pre-message inject event
 		if (settings.event?.rcbPreInjectMessage) {
 			const event = callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
 			if (event.defaultPrevented) {
-				return;
+				return null;
 			}
 			message = event.data.message;
 		}
@@ -75,6 +77,8 @@ export const useMessagesInternal = () => {
 		if (settings.event?.rcbPostInjectMessage) {
 			callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
 		}
+
+		return message.id;
 	}, [settings, paths, audioToggledOn, callRcbEvent]);
 
 	/**
