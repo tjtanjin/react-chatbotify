@@ -12,6 +12,6 @@ export const createMessage = (content: string | JSX.Element, sender: string, ) =
 		content,
 		sender,
 		type: isValidElement(content) ? "object" : "string",
-        timestamp: new Date().toUTCString()
+		timestamp: new Date().toUTCString()
 	};
 }
