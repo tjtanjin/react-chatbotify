@@ -4,7 +4,6 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Theme } from "../types/Theme";
-import { welcomeFlow } from "../constants/internal/WelcomeFlow";
 
 /**
  * Determines if user gave a provider or if one needs to be created, before rendering the chatbot.
@@ -25,8 +24,6 @@ const ChatBot = ({
 	styles?: Styles,
 	themes?: undefined | Theme | Array<Theme>,
 }) => {
-	// provides a default welcome flow if no user flow provided
-	const parsedFlow: Flow = flow ?? welcomeFlow;
 
 	// checks if the ChatBot is inside a provider
 	const isInsideProvider = useChatBotContext();
@@ -36,11 +33,11 @@ const ChatBot = ({
 	 */
 	const renderChatBot = () => {
 		if (isInsideProvider) {
-			return (<ChatBotContainer flow={parsedFlow} />);
+			return (<ChatBotContainer />);
 		}
 		return (
-			<ChatBotProvider settings={settings} styles={styles} themes={themes}>
-				<ChatBotContainer flow={parsedFlow} />
+			<ChatBotProvider flow={flow} settings={settings} styles={styles} themes={themes}>
+				<ChatBotContainer />
 			</ChatBotProvider>
 		)
 	}

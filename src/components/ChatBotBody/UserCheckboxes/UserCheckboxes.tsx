@@ -17,12 +17,10 @@ import "./UserCheckboxes.css";
  * @param path path associated with the current block
  */
 const UserCheckboxes = ({
-	flow,
 	checkboxes,
 	checkedItems,
 	path,
 }: {
-	flow: Flow;
 	checkboxes: {items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean};
 	checkedItems: Set<string>;
 	path: keyof Flow;
@@ -38,7 +36,7 @@ const UserCheckboxes = ({
 	const { paths } = usePathsContext();
 
 	// handles user input submission
-	const { handleSubmitText } = useSubmitInputInternal(flow);
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// tracks which checkboxes have been marked
 	const [checkedBoxes, setCheckedBoxes] = useState<Set<string>>(new Set<string>());

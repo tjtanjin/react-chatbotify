@@ -11,13 +11,13 @@ import {
 	getButtonConfig
 } from "../../utils/buttonBuilder";
 import { useSettingsContext } from "../../context/SettingsContext";
-import { Flow } from "../../types/Flow";
 import { Button } from "../../constants/Button";
 
 /**
  * Internal custom hook for creating buttons.
  */
-export const useButtonInternal = (flow: Flow) => {
+export const useButtonInternal = () => {
+	// handles settings
 	const { settings } = useSettingsContext();
 
 	// buttons to show in header, chat input and footer
@@ -31,9 +31,9 @@ export const useButtonInternal = (flow: Flow) => {
 		[Button.AUDIO_BUTTON]: () => createAudioButton(),
 		[Button.NOTIFICATION_BUTTON]: () => createNotificationButton(),
 		[Button.EMOJI_PICKER_BUTTON]: () => createEmojiButton(),
-		[Button.FILE_ATTACHMENT_BUTTON]: () => createFileAttachmentButton(flow),
-		[Button.SEND_MESSAGE_BUTTON]: () => createSendButton(flow),
-		[Button.VOICE_MESSAGE_BUTTON]: () => createVoiceButton(flow)
+		[Button.FILE_ATTACHMENT_BUTTON]: () => createFileAttachmentButton(),
+		[Button.SEND_MESSAGE_BUTTON]: () => createSendButton(),
+		[Button.VOICE_MESSAGE_BUTTON]: () => createVoiceButton()
 	}), []);
 
 	// sets buttons to be shown

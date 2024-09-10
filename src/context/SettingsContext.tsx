@@ -20,8 +20,8 @@ const SettingsProvider = ({
 	children,
 	initialSettings = DefaultSettings
 }: {
-	initialSettings?: Settings;
 	children: JSX.Element;
+	initialSettings?: Settings;
 }) => {
 	const [settings, setSettings] = useState<Settings>(initialSettings);
 	return (

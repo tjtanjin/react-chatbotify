@@ -93,7 +93,7 @@ const parseMessageToString = (message: Message) => {
 			content: ReactDOMServer.renderToString(message.content),
 			type: message.type,
 			sender: message.sender,
-			timestamp: new Date().toUTCString()
+			timestamp: message.timestamp
 		});
 		return clonedMessage;
 	}
@@ -135,15 +135,9 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 					// if autoload, line break is invisible
 					let lineBreakMessage;
 					if (settings.chatHistory?.autoLoad) {
-						lineBreakMessage = {
-							content: <></>,
-							sender: "system"
-						}
+						lineBreakMessage = createMessage(<></>, "system")
 					} else {
-						lineBreakMessage = {
-							content: <ChatHistoryLineBreak/>,
-							sender: "system"
-						}
+						lineBreakMessage = createMessage(<ChatHistoryLineBreak/>, "system")
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});

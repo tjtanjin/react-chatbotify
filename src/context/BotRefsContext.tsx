@@ -1,9 +1,12 @@
 import { createContext, useContext, useRef } from "react";
 
+import { Flow } from "../types/Flow";
+
 /**
  * Creates the useBotRefsContext() hook to manage common refs.
  */
 type BotRefsContextType = {
+	flowRef: React.RefObject<Flow>;
 	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	isBotStreamingRef: React.MutableRefObject<boolean>;
 	chatBodyRef: React.RefObject<HTMLDivElement>;
@@ -16,8 +19,14 @@ const useBotRefsContext = () => useContext(BotRefsContext);
 /**
  * Creates provider to wrap the chatbot container.
  */
-const BotRefsProvider = ({ children }: { children: JSX.Element }) => {
-	// Define your refs here
+const BotRefsProvider = ({
+	children,
+	initialFlow,
+}: {
+	children: JSX.Element
+	initialFlow: Flow
+}) => {
+	const flowRef = useRef<Flow>(initialFlow);
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
 	const isBotStreamingRef = useRef<boolean>(false);
 	const chatBodyRef = useRef<HTMLDivElement>(null);
@@ -25,7 +34,14 @@ const BotRefsProvider = ({ children }: { children: JSX.Element }) => {
 	const keepVoiceOnRef = useRef<boolean>(false);
 
 	return (
-		<BotRefsContext.Provider value={{ inputRef, isBotStreamingRef, chatBodyRef, paramsInputRef, keepVoiceOnRef }}>
+		<BotRefsContext.Provider value={{
+			flowRef,
+			inputRef,
+			isBotStreamingRef,
+			chatBodyRef,
+			paramsInputRef,
+			keepVoiceOnRef
+		}}>
 			{children}
 		</BotRefsContext.Provider>
 	);

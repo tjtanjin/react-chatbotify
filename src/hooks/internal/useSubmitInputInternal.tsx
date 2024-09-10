@@ -18,7 +18,7 @@ import { RcbEvent } from "../../constants/RcbEvent";
 /**
  * Internal custom hook for managing user input submissions.
  */
-export const useSubmitInputInternal = (flow: Flow) => {
+export const useSubmitInputInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -41,10 +41,10 @@ export const useSubmitInputInternal = (flow: Flow) => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
+	const { flowRef, chatBodyRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
 
 	// handles toasts
-	const { injectToast } = useToast();
+	const { injectToast, removeToast } = useToast();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -69,7 +69,7 @@ export const useSubmitInputInternal = (flow: Flow) => {
 			return;
 		}
 
-		const block = flow[currPath];
+		const block = (flowRef.current as Flow)[currPath];
 		if (!block) {
 			return;
 		}
@@ -84,7 +84,7 @@ export const useSubmitInputInternal = (flow: Flow) => {
 		}
 
 		await injectMessage(userInput, "user");
-	}, [flow, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
+	}, [flowRef, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
 
 	/**
 	 * Handles action input from the user which includes text, files and emoji.
@@ -143,16 +143,16 @@ export const useSubmitInputInternal = (flow: Flow) => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput, 
-				endStreamMessage, injectMessage, streamMessage, openChat, injectToast
+				endStreamMessage, injectMessage, streamMessage, openChat, injectToast, removeToast
 			};
-			const hasNextPath = await postProcessBlock(flow, path, params, goToPath);
+			const hasNextPath = await postProcessBlock(flowRef.current as Flow, path, params, goToPath);
 			if (!hasNextPath) {
 				const currPath = getCurrPath();
 				if (!currPath) {
 					return;
 				}
 
-				const block = flow[currPath];
+				const block = (flowRef.current as Flow)[currPath];
 				if (!block) {
 					return;
 				}
@@ -165,7 +165,7 @@ export const useSubmitInputInternal = (flow: Flow) => {
 				setIsBotTyping(false);
 			}
 		}, settings.chatInput?.botDelay);
-	}, [timeoutId, voiceToggledOn, settings, flow, getPrevPath, injectMessage, streamMessage, openChat,
+	}, [timeoutId, voiceToggledOn, settings, flowRef, getPrevPath, injectMessage, streamMessage, openChat,
 		postProcessBlock, setPaths, handleSendUserInput, injectToast
 	]);
 

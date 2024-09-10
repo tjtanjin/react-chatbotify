@@ -64,7 +64,7 @@ export const processCheckboxes = async (flow: Flow, block: Block, path: keyof Fl
 	const checkedItems = new Set<string>();
 
 	const content = (
-		<UserCheckboxes flow={flow} checkboxes={parsedCheckboxes} checkedItems={checkedItems} path={path} />
+		<UserCheckboxes checkboxes={parsedCheckboxes} checkedItems={checkedItems} path={path} />
 	);
 	await params.injectMessage(content);
 }

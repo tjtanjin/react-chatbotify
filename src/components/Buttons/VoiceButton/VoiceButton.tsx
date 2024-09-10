@@ -10,16 +10,13 @@ import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputIn
 import { useBotRefsContext } from "../../../context/BotRefsContext";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
-import { Flow } from "../../../types/Flow";
 
 import "./VoiceButton.css";
 
 /**
  * Toggles voice to text input to the chat bot.
- *
- * @param flow conversation flow for the bot
  */
-const VoiceButton = ({ flow }: { flow: Flow }) => {
+const VoiceButton = () => {
 
 	// handles settings
 	const { settings } = useSettingsContext();
@@ -40,7 +37,7 @@ const VoiceButton = ({ flow }: { flow: Flow }) => {
 	const { setInputLength, textAreaDisabled } = useTextAreaInternal();
 
 	// handles user input submission
-	const { handleSubmitText } = useSubmitInputInternal(flow);
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// tracks audio chunk (if voice is sent as audio)
 	const audioChunksRef = useRef<BlobPart[]>([]);

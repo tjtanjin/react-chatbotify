@@ -46,6 +46,6 @@ export const processOptions = async (flow: Flow, block: Block, path: keyof Flow,
 	// note that sendOutput has no default here, as it fallback to the global
 	// settings.chatInput.sendOptionOutput inside user options component if not specified
 
-	const content = <UserOptions flow={flow} options={parsedOptions} path={path} />
+	const content = <UserOptions options={parsedOptions} path={path} />
 	await params.injectMessage(content);
 }

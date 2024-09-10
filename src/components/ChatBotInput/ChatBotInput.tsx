@@ -14,17 +14,15 @@ import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
-import { Flow } from "../../types/Flow";
 
 import "./ChatBotInput.css";
 
 /**
  * Contains chat input field for user to enter messages.
  * 
- * @param flow conversation flow for the bot
  * @param buttons list of buttons to render in the chat input
  */
-const ChatBotInput = ({ flow, buttons }: { flow: Flow, buttons: JSX.Element[] }) => {
+const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -37,6 +35,7 @@ const ChatBotInput = ({ flow, buttons }: { flow: Flow, buttons: JSX.Element[] })
 	// handles bot refs
 	const { inputRef } = useBotRefsContext();
 
+
 	// tracks if chat input is focused
 	const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -44,7 +43,7 @@ const ChatBotInput = ({ flow, buttons }: { flow: Flow, buttons: JSX.Element[] })
 	const { hasFlowStarted, setHasFlowStarted } = useFirstInteractionInternal();
 
 	// handles user input submission
-	const { handleSubmitText } = useSubmitInputInternal(flow);
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {

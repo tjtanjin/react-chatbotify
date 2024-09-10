@@ -14,16 +14,13 @@ import { useBotEffectInternal } from "../hooks/internal/useBotEffectInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { useStylesContext } from "../context/StylesContext";
-import { Flow } from "../types/Flow";
 
 import "./ChatBotContainer.css";
 
 /**
  * Integrates and contains the various components that makeup the chatbot.
- * 
- * @param flow conversation flow for the bot
  */
-const ChatBotContainer = ({ flow }: { flow: Flow }) => {
+const ChatBotContainer = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -45,10 +42,10 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 	const { hasFlowStarted, setHasFlowStarted } = useFirstInteractionInternal();
 
 	// buttons to show in header, chat input and footer
-	const { headerButtons, chatInputButtons, footerButtons } = useButtonInternal(flow);
+	const { headerButtons, chatInputButtons, footerButtons } = useButtonInternal();
 
 	// loads all use effects
-	useBotEffectInternal(flow);
+	useBotEffectInternal();
 
 	/**
 	 * Retrieves class name for window state.
@@ -126,7 +123,7 @@ const ChatBotContainer = ({ flow }: { flow: Flow }) => {
 			<div style={getChatWindowStyle()} className="rcb-chat-window">
 				{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
 				<ChatBotBody chatScrollHeight={chatScrollHeight} setChatScrollHeight={setChatScrollHeight}/>
-				{settings.general?.showInputRow && <ChatBotInput flow={flow} buttons={chatInputButtons}/>}
+				{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
 				{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
 			</div>
 		</div>

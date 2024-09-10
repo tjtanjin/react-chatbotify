@@ -5,7 +5,7 @@ import { Params } from "../../types/Params";
 const helpOptions = ["Quickstart", "API Docs", "Examples", "Github", "Discord"];
 
 // default provided welcome flow if user does not pass in a flow to the chat bot
-export const welcomeFlow: Flow = {
+export const WelcomeFlow: Flow = {
 	start: {
 		message: "Hello, I am Tan Jin 👋! Welcome to React ChatBotify, I'm excited that you are using our " +
 			"chatbot 😊!",

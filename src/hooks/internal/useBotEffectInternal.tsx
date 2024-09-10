@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import ChatHistoryButton from "../../components/ChatHistoryButton/ChatHistoryButton";
 import { preProcessBlock } from "../../services/BlockService/BlockService";
 import { saveChatHistory, setHistoryStorageValues } from "../../services/ChatHistoryService";
+import { createMessage } from "../../utils/messageBuilder";
 import { isChatBotVisible, isDesktop } from "../../utils/displayChecker";
 import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useNotificationInternal } from "./useNotificationsInternal";
@@ -23,7 +24,7 @@ import { Params } from "../../types/Params";
 /**
  * Internal custom hook for common use effects.
  */
-export const useBotEffectInternal = (flow: Flow) => {
+export const useBotEffectInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -34,7 +35,7 @@ export const useBotEffectInternal = (flow: Flow) => {
 	const { getCurrPath, getPrevPath, goToPath, paths } = usePathsInternal();
 
 	// handles toast
-	const { injectToast } = useToast();
+	const { injectToast, removeToast } = useToast();
 
 	// handles bot states
 	const {
@@ -52,7 +53,8 @@ export const useBotEffectInternal = (flow: Flow) => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef, isBotStreamingRef, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { flowRef, chatBodyRef, isBotStreamingRef, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const flow = flowRef.current as Flow;
 
 	// handles chat window
 	const { viewportHeight, setViewportHeight, setViewportWidth, openChat } = useChatWindowInternal();
@@ -104,10 +106,7 @@ export const useBotEffectInternal = (flow: Flow) => {
 			const chatHistory = localStorage.getItem(settings.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
-				const messageContent = {
-					content: <ChatHistoryButton chatHistory={chatHistory} />,
-					sender: "system"
-				};
+				const messageContent = createMessage(<ChatHistoryButton chatHistory={chatHistory} />, "system");
 				setMessages([messageContent]);
 				if (settings.chatHistory?.autoLoad) {
 					showChatHistory(chatHistory);
@@ -247,7 +246,7 @@ export const useBotEffectInternal = (flow: Flow) => {
 		}
 
 		const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput: paramsInputRef.current,
-			endStreamMessage, injectMessage, streamMessage, openChat, injectToast};
+			endStreamMessage, injectMessage, streamMessage, openChat, injectToast, removeToast};
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {

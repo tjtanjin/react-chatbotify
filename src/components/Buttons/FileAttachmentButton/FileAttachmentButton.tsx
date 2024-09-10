@@ -19,10 +19,8 @@ import "./FileAttachmentButton.css";
 
 /**
  * Supports uploading of files from user.
- * 
- * @param flow conversation flow for the bot
  */
-const FileAttachmentButton = ({ flow }: { flow: Flow }) => {
+const FileAttachmentButton = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -36,7 +34,8 @@ const FileAttachmentButton = ({ flow }: { flow: Flow }) => {
 	const { getCurrPath, getPrevPath, goToPath, blockAllowsAttachment } = usePathsInternal();
 
 	// handles bot refs
-	const { inputRef } = useBotRefsContext();
+	const { flowRef, inputRef } = useBotRefsContext();
+	const flow = flowRef.current as Flow;
 
 	// handles toasts
 	const { injectToast } = useToast();
@@ -51,7 +50,7 @@ const FileAttachmentButton = ({ flow }: { flow: Flow }) => {
 	const {  setTextAreaValue } = useTextAreaInternal();
 
 	// handles user input submission
-	const { handleSubmitText } = useSubmitInputInternal(flow);
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// styles for file attachment disabled button
 	const fileAttachmentButtonDisabledStyle = {

@@ -3,16 +3,13 @@ import { useState, MouseEvent } from "react";
 import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
-import { Flow } from "../../../types/Flow";
 
 import "./SendButton.css";
 
 /**
  * Sends current user input to the chat bot.
- * 
- * @param flow conversation flow for the bot
  */
-const SendButton = ({ flow }: { flow: Flow }) => {
+const SendButton = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -23,7 +20,7 @@ const SendButton = ({ flow }: { flow: Flow }) => {
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
 	// handles user input submission
-	const { handleSubmitText } = useSubmitInputInternal(flow);
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// styles for send button
 	const sendButtonStyle: React.CSSProperties = {

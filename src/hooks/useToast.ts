@@ -25,13 +25,15 @@ export const useToast = () => {
 	 * @param content message to show in toast
 	 * @param timeout optional timeout in milliseconds before toast is removed
 	 */
-	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): void => {
+	const injectToast = useCallback((content: string | JSX.Element, timeout?: number): number | null => {
+		let id = null;
 		setToasts((prevToasts: Toast[]) => {
 			if (prevToasts.length >= (settings.toast?.maxCount || 3)) {
 				if (settings.toast?.forbidOnMax) {
 					return prevToasts;
 				}
-				const toast = { id: crypto.randomUUID(), content, timeout };
+				id = crypto.randomUUID();
+				let toast = { id, content, timeout };
 
 				// handles show toast event
 				if (settings.event?.rcbShowToast) {
@@ -39,13 +41,14 @@ export const useToast = () => {
 					if (event.defaultPrevented) {
 						return prevToasts;
 					}
-					toast.id = event.data.toast.id;
+					toast = event.data.toast;
 				}
 
 				return [...prevToasts.slice(1), toast];
 			}
 
-			const toast = { id: crypto.randomUUID(), content, timeout };
+			id = crypto.randomUUID();
+			let toast = { id, content, timeout };
 
 			// handles show toast event
 			if (settings.event?.rcbShowToast) {
@@ -53,11 +56,12 @@ export const useToast = () => {
 				if (event.defaultPrevented) {
 					return prevToasts;
 				}
-				toast.id = event.data.toast.id;
+				toast = event.data.toast;
 			}
 
 			return [...prevToasts, toast];
 		});
+		return id;
 	}, [settings, callRcbEvent]);
 
 	/**

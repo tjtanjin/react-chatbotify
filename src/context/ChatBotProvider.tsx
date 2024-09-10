@@ -1,4 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
+import { isDesktop } from "../utils/displayChecker";
+import { parseConfig } from "../utils/configParser";
 import { BotRefsProvider } from "./BotRefsContext";
 import { BotStatesProvider } from "./BotStatesContext";
 import { MessagesProvider } from "./MessagesContext";
@@ -6,13 +9,13 @@ import { PathsProvider } from "./PathsContext";
 import { SettingsProvider } from "./SettingsContext";
 import { StylesProvider } from "./StylesContext";
 import { ToastsProvider } from "./ToastsContext";
+import { Flow } from "../types/Flow";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
+import { Theme } from "../types/Theme";
 import { DefaultSettings } from "../constants/internal/DefaultSettings";
 import { DefaultStyles } from "../constants/internal/DefaultStyles";
-import { Theme } from "../types/Theme";
-import { isDesktop } from "../utils/displayChecker";
-import { parseConfig } from "../utils/configParser";
+import { WelcomeFlow } from "../constants/internal/WelcomeFlow";
 
 // Create a context to detect whether ChatBotProvider is present
 const ChatBotContext = createContext<boolean | undefined>(undefined);
@@ -23,11 +26,13 @@ export const useChatBotContext = () => {
 
 const ChatBotProvider = ({
 	children,
+	flow = WelcomeFlow,
 	settings,
 	styles,
 	themes,
 }: {
 	children: JSX.Element;
+	flow?: Flow,
 	settings?: Settings;
 	styles?: Styles;
 	themes?: undefined | Theme | Array<Theme>;
@@ -83,7 +88,7 @@ const ChatBotProvider = ({
 						<SettingsProvider initialSettings={botSettings}>
 							<StylesProvider initialStyles={botStyles}>
 								<ToastsProvider>
-									<BotRefsProvider>
+									<BotRefsProvider initialFlow={flow}>
 										<PathsProvider>
 											<BotStatesProvider settings={botSettings}>
 												<MessagesProvider>

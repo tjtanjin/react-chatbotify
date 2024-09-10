@@ -16,11 +16,9 @@ import "./UserOptions.css";
  * @param path path associated with the current block
  */
 const UserOptions = ({
-	flow,
 	options,
 	path,
 }: {
-	flow: Flow
 	options: {items: Array<string>, sendOutput?: boolean, reusable?: boolean};
 	path: keyof Flow;
 }) => {
@@ -35,7 +33,7 @@ const UserOptions = ({
 	const { paths } = usePathsContext();
 
 	// handles user input submission
-	const { handleSubmitText } = useSubmitInputInternal(flow);
+	const { handleSubmitText } = useSubmitInputInternal();
 
 	// handles hover action over options
 	const [hoveredElements, setHoveredElements] = useState<boolean[]>([]);

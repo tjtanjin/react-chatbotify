@@ -20,8 +20,8 @@ const StylesProvider = ({
 	children,
 	initialStyles = DefaultStyles
 }: {
-	initialStyles?: Styles;
 	children: JSX.Element;
+	initialStyles?: Styles;
 }) => {
 	const [styles, setStyles] = useState<Styles>(initialStyles);
 	return (

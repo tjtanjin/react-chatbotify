@@ -7,7 +7,6 @@ import VoiceButton from "../components/Buttons/VoiceButton/VoiceButton";
 import SendButton from "../components/Buttons/SendButton/SendButton";
 import { ButtonConfig } from "../types/internal/ButtonConfig";
 import { Settings } from "../types/Settings";
-import { Flow } from "../types/Flow";
 import { Button } from "../constants/Button";
 
 // type guard to check if a value is a button key
@@ -79,7 +78,7 @@ export const getButtonConfig = (
 export const createAudioButton = () => <AudioButton/>
 export const createNotificationButton = () => <NotificationButton/>
 export const createCloseChatButton = () => <CloseChatButton/>
-export const createVoiceButton = (flow: Flow) => <VoiceButton flow={flow}/>
-export const createSendButton = (flow: Flow) => <SendButton flow={flow}/>
-export const createFileAttachmentButton = (flow: Flow) => <FileAttachmentButton flow={flow}/>
+export const createVoiceButton = () => <VoiceButton/>
+export const createSendButton = () => <SendButton/>
+export const createFileAttachmentButton = () => <FileAttachmentButton/>
 export const createEmojiButton = () => <EmojiButton/>
