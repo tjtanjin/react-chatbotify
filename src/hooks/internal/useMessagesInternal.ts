@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 
 import { processAudio } from "../../services/AudioService";
+import { saveChatHistory } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
 import { parseMarkupMessage } from "../../utils/markupParser";
 import { useRcbEventInternal } from "./useRcbEventInternal";
@@ -11,7 +12,6 @@ import { useBotRefsContext } from "../../context/BotRefsContext";
 import { usePathsContext } from "../../context/PathsContext";
 import { Message } from "../../types/Message";
 import { RcbEvent } from "../../constants/RcbEvent";
-import { saveChatHistory } from "../../services/ChatHistoryService";
 
 /**
  * Internal custom hook for managing sending of messages.
@@ -30,7 +30,7 @@ export const useMessagesInternal = () => {
 	const { audioToggledOn, isChatWindowOpen, setIsBotTyping, setUnreadCount } = useBotStatesContext();
 
 	// handles bot refs
-	const { streamingSenderList } = useBotRefsContext();
+	const { streamMessageMap } = useBotRefsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -95,7 +95,7 @@ export const useMessagesInternal = () => {
 
 		// set an initial empty message to be used for streaming
 		setMessages(prevMessages => [...prevMessages, message]);
-		streamingSenderList.current.push("bot");
+		streamMessageMap.current.set("bot", message.id);
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
@@ -136,7 +136,7 @@ export const useMessagesInternal = () => {
 		});
 
 		await simStreamDoneTask;
-		streamingSenderList.current.filter(item => item !== "bot");
+		streamMessageMap.current.delete("bot");
 		saveChatHistory(messages);
 	}, []);
 
@@ -148,7 +148,7 @@ export const useMessagesInternal = () => {
 	 */
 	const streamMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 		const message = createMessage(content, sender);
-		if (!streamingSenderList.current.includes(sender)) {
+		if (!streamMessageMap.current.has(sender)) {
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
 				const event = callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
@@ -160,13 +160,16 @@ export const useMessagesInternal = () => {
 			setIsBotTyping(false);
 			setMessages((prevMessages) => [...prevMessages, message]);
 			setUnreadCount(prev => prev + 1);
-			streamingSenderList.current.push(sender);
+			streamMessageMap.current.set(sender, message.id);
 			return;
 		}
 
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
-			const event = callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, {message});
+			const event = callRcbEvent(
+				RcbEvent.CHUNK_STREAM_MESSAGE,
+				{...message, id: streamMessageMap.current.get(sender)}
+			);
 			if (event.defaultPrevented) {
 				return;
 			}
@@ -202,7 +205,7 @@ export const useMessagesInternal = () => {
 	 */
 	const endStreamMessage = (sender: string = "bot") => {
 		// nothing to end if not streaming
-		if (!streamingSenderList.current.includes(sender)) {
+		if (!streamMessageMap.current.has(sender)) {
 			return;
 		}
 
@@ -215,7 +218,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// remove sender from streaming list and save messages
-		streamingSenderList.current.filter(item => item !== sender);
+		streamMessageMap.current.delete(sender);
 		saveChatHistory(messages);
 	}
 

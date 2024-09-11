@@ -8,7 +8,7 @@ import { Flow } from "../types/Flow";
 type BotRefsContextType = {
 	flowRef: React.RefObject<Flow>;
 	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement>;
-	streamingSenderList: React.MutableRefObject<Array<string>>;
+	streamMessageMap: React.MutableRefObject<Map<string, string>>;
 	chatBodyRef: React.RefObject<HTMLDivElement>;
 	paramsInputRef: React.MutableRefObject<string>;
 	keepVoiceOnRef: React.MutableRefObject<boolean>;
@@ -28,7 +28,7 @@ const BotRefsProvider = ({
 }) => {
 	const flowRef = useRef<Flow>(initialFlow);
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
-	const streamingSenderList = useRef<Array<string>>([]);
+	const streamMessageMap = useRef<Map<string, string>>(new Map());
 	const chatBodyRef = useRef<HTMLDivElement>(null);
 	const paramsInputRef = useRef<string>("");
 	const keepVoiceOnRef = useRef<boolean>(false);
@@ -37,7 +37,7 @@ const BotRefsProvider = ({
 		<BotRefsContext.Provider value={{
 			flowRef,
 			inputRef,
-			streamingSenderList,
+			streamMessageMap,
 			chatBodyRef,
 			paramsInputRef,
 			keepVoiceOnRef

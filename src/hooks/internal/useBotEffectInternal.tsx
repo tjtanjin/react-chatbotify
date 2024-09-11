@@ -53,7 +53,7 @@ export const useBotEffectInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, chatBodyRef, streamingSenderList, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { flowRef, chatBodyRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
 	const flow = flowRef.current as Flow;
 
 	// handles chat window
@@ -258,7 +258,7 @@ export const useBotEffectInternal = () => {
 
 			// auto cleanup streaming and save messages on path change (not ideal)
 			// todo: remove this in v3, users should call `params.endStreamMessage()`
-			streamingSenderList.current = []
+			streamMessageMap.current.clear();
 			saveChatHistory(messages);
 		}
 		callNewBlock(currPath, block, params);
