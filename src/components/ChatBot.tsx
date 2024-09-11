@@ -14,11 +14,13 @@ import { Theme } from "../types/Theme";
  * @param themes themes to apply to the bot
  */
 const ChatBot = ({
+	id,
 	flow,
 	settings,
 	styles,
 	themes,
 }: {
+	id?: string,
 	flow?: Flow,
 	settings?: Settings
 	styles?: Styles,
@@ -36,7 +38,7 @@ const ChatBot = ({
 			return (<ChatBotContainer />);
 		}
 		return (
-			<ChatBotProvider flow={flow} settings={settings} styles={styles} themes={themes}>
+			<ChatBotProvider id={id} flow={flow} settings={settings} styles={styles} themes={themes}>
 				<ChatBotContainer />
 			</ChatBotProvider>
 		)

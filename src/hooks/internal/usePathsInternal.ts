@@ -2,6 +2,7 @@ import { useCallback } from "react";
 
 import { emitRcbEvent } from "../../services/RcbEventService";
 import { usePathsContext } from "../../context/PathsContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
 import { useMessagesContext } from "../../context/MessagesContext";
@@ -34,6 +35,9 @@ export const usePathsInternal = () => {
 		setBlockAllowsAttachment
 	} = useBotStatesContext();
 
+	// handles bot refs
+	const { botIdRef } = useBotRefsContext();
+
 	/**
 	 * Retrieves current path for user.
 	 */
@@ -59,7 +63,7 @@ export const usePathsInternal = () => {
 		if (settings.event?.rcbChangePath) {
 			const currPath = getCurrPath();
 			const prevPath = getPrevPath();
-			const details = {currPath, prevPath}
+			const details = {id: botIdRef.current, currPath, prevPath}
 			event = emitRcbEvent(RcbEvent.CHANGE_PATH, details, {currPath, prevPath, nextPath: pathToGo},
 				settings, styles, messages, paths
 			);

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 
 import { emitRcbEvent } from "../../services/RcbEventService";
 import { usePaths } from "../usePaths";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
 import { useMessagesContext } from "../../context/MessagesContext";
@@ -23,6 +24,9 @@ export const useRcbEventInternal = () => {
 	// handles paths
 	const { getCurrPath, getPrevPath, paths } = usePaths();
 
+	// handles bot refs
+	const { botIdRef } = useBotRefsContext();
+
 	/**
 	 * Consolidates the information required to call and emit a specific event.
 	 *
@@ -30,7 +34,7 @@ export const useRcbEventInternal = () => {
 	 * @param data additional data to include with the event
 	 */
 	const callRcbEvent = useCallback((eventName: typeof RcbEvent[keyof typeof RcbEvent], data: object) => {
-		const details = {currPath: getCurrPath(), prevPath: getPrevPath()}
+		const details = {id: botIdRef.current, currPath: getCurrPath(), prevPath: getPrevPath()}
 		return emitRcbEvent(eventName, details, data, settings, styles, messages, paths);
 	}, [paths])
 

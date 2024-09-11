@@ -6,6 +6,7 @@ import { Flow } from "../types/Flow";
  * Creates the useBotRefsContext() hook to manage common refs.
  */
 type BotRefsContextType = {
+	botIdRef: React.RefObject<string>;
 	flowRef: React.RefObject<Flow>;
 	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement>;
 	streamMessageMap: React.MutableRefObject<Map<string, string>>;
@@ -21,11 +22,14 @@ const useBotRefsContext = () => useContext(BotRefsContext);
  */
 const BotRefsProvider = ({
 	children,
+	id,
 	initialFlow,
 }: {
 	children: JSX.Element
+	id: string;
 	initialFlow: Flow
 }) => {
+	const botIdRef = useRef<string>(id);
 	const flowRef = useRef<Flow>(initialFlow);
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
 	const streamMessageMap = useRef<Map<string, string>>(new Map());
@@ -35,6 +39,7 @@ const BotRefsProvider = ({
 
 	return (
 		<BotRefsContext.Provider value={{
+			botIdRef,
 			flowRef,
 			inputRef,
 			streamMessageMap,

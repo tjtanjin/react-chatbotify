@@ -26,12 +26,14 @@ export const useChatBotContext = () => {
 
 const ChatBotProvider = ({
 	children,
+	id = crypto.randomUUID(),
 	flow = WelcomeFlow,
 	settings,
 	styles,
 	themes,
 }: {
 	children: JSX.Element;
+	id?: string;
 	flow?: Flow,
 	settings?: Settings;
 	styles?: Styles;
@@ -88,7 +90,7 @@ const ChatBotProvider = ({
 						<SettingsProvider initialSettings={botSettings}>
 							<StylesProvider initialStyles={botStyles}>
 								<ToastsProvider>
-									<BotRefsProvider initialFlow={flow}>
+									<BotRefsProvider id={id} initialFlow={flow}>
 										<PathsProvider>
 											<BotStatesProvider settings={botSettings}>
 												<MessagesProvider>
