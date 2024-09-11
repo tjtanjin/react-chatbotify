@@ -9,7 +9,7 @@ export type Params = {
 	goToPath: (pathToGo: keyof Flow) => void;
 	setTextAreaValue: (value: string) => void;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<string | null>;
-	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<void>;
+	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<string | null>;
 	showToast: (content: string | JSX.Element, timeout?: number) => void;
 	openChat: (isOpen: boolean) => void;
 	files?: FileList;

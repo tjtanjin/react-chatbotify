@@ -146,14 +146,16 @@ export const useMessagesInternal = () => {
 	 * @param content message content to inject
 	 * @param sender sender of the message, defaults to bot
 	 */
-	const streamMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
+	const streamMessage = useCallback(async (content: string | JSX.Element,
+		sender = "bot"): Promise<string | null> => {
+
 		const message = createMessage(content, sender);
 		if (!streamMessageMap.current.has(sender)) {
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
 				const event = callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
 				if (event.defaultPrevented) {
-					return;
+					return null;
 				}
 			}
 
@@ -161,7 +163,7 @@ export const useMessagesInternal = () => {
 			setMessages((prevMessages) => [...prevMessages, message]);
 			setUnreadCount(prev => prev + 1);
 			streamMessageMap.current.set(sender, message.id);
-			return;
+			return message.id;
 		}
 
 		// handles chunk stream message event
@@ -171,7 +173,7 @@ export const useMessagesInternal = () => {
 				{...message, id: streamMessageMap.current.get(sender)}
 			);
 			if (event.defaultPrevented) {
-				return;
+				return null;
 			}
 		}
 
@@ -187,6 +189,7 @@ export const useMessagesInternal = () => {
 		
 			return updatedMessages;
 		});
+		return streamMessageMap.current.get(sender) || null;
 	},[]);
 
 	/**
