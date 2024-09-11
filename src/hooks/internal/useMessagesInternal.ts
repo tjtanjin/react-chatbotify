@@ -149,8 +149,8 @@ export const useMessagesInternal = () => {
 	const streamMessage = useCallback(async (content: string | JSX.Element,
 		sender = "bot"): Promise<string | null> => {
 
-		const message = createMessage(content, sender);
 		if (!streamMessageMap.current.has(sender)) {
+			const message = createMessage(content, sender);
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
 				const event = callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
@@ -166,6 +166,7 @@ export const useMessagesInternal = () => {
 			return message.id;
 		}
 
+		const message = {...createMessage(content, sender), id: streamMessageMap.current.get(sender) as string};
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
 			const event = callRcbEvent(
