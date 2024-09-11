@@ -5,11 +5,19 @@ import { useMessagesInternal } from "./internal/useMessagesInternal";
  */
 export const useMessages = () => {
 	// handles messages
-	const { endStreamMessage, injectMessage, streamMessage, messages, setMessages } = useMessagesInternal();
+	const {
+		endStreamMessage,
+		injectMessage,
+		removeMessage,
+		streamMessage,
+		messages,
+		setMessages
+	} = useMessagesInternal();
 
 	return {
 		endStreamMessage,
 		injectMessage,
+		removeMessage,
 		streamMessage,
 		messages,
 		setMessages,

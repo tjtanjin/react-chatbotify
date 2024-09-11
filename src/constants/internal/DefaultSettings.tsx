@@ -160,12 +160,18 @@ export const DefaultSettings: Settings = {
 		icon: emojiIcon,
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
+	toast: {
+		maxCount: 3,
+		forbidOnMax: false,
+		dismissOnClick: true,
+	},
 	event: {
 		rcbPreInjectMessage: true,
 		rcbPostInjectMessage: true,
 		rcbStartStreamMessage: true,
 		rcbChunkStreamMessage: true,
 		rcbStopStreamMessage: true,
+		rcbRemoveMessage: true,
 		rcbLoadChatHistory: true,
 		rcbToggleChatWindow: true,
 		rcbToggleAudio: true,
@@ -176,10 +182,5 @@ export const DefaultSettings: Settings = {
 		rcbDismissToast: true,
 		rcbUserSubmitText: true,
 		rcbUserUploadFile: true,
-	},
-	toast: {
-		maxCount: 3,
-		forbidOnMax: false,
-		dismissOnClick: true,
 	}
 }

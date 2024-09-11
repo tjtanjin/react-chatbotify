@@ -23,7 +23,7 @@ export const useSubmitInputInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles messages
-	const { endStreamMessage, injectMessage, streamMessage } = useMessagesInternal();
+	const { endStreamMessage, injectMessage, removeMessage, streamMessage } = useMessagesInternal();
 
 	// handles paths
 	const { getCurrPath, getPrevPath, goToPath, setPaths } = usePathsInternal();
@@ -143,7 +143,7 @@ export const useSubmitInputInternal = () => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput, 
-				endStreamMessage, injectMessage, streamMessage, openChat, showToast, removeToast
+				endStreamMessage, injectMessage, removeMessage, streamMessage, openChat, showToast, removeToast
 			};
 			const hasNextPath = await postProcessBlock(flowRef.current as Flow, path, params, goToPath);
 			if (!hasNextPath) {

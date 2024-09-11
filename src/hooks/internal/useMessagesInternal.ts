@@ -83,6 +83,30 @@ export const useMessagesInternal = () => {
 	}, [settings, paths, audioToggledOn, callRcbEvent]);
 
 	/**
+	 * Removes a message with the given id.
+	 */
+	const removeMessage = useCallback((messageId: string): string | null => {
+		const message = messages.find(msg => msg.id === messageId);
+
+		// nothing to remove if no such message
+		if (!message) {
+			return null;
+		}
+	  
+		// handles remove message event
+		if (settings.event?.rcbRemoveMessage) {
+			const event = callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
+			if (event.defaultPrevented) {
+				return null;
+			}
+		}
+
+		setMessages((prevMessages) => prevMessages.filter(message => message.id !== messageId));
+		setUnreadCount((prevCount) => Math.max(prevCount - 1, 0));
+		return messageId;
+	}, []);
+
+	/**
 	 * Simulates the streaming of a message from the bot.
 	 * 
 	 * @param message message to stream
@@ -229,6 +253,7 @@ export const useMessagesInternal = () => {
 	return {
 		endStreamMessage,
 		injectMessage,
+		removeMessage,
 		streamMessage,
 		messages,
 		setMessages

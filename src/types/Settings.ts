@@ -126,12 +126,18 @@ export type Settings = {
 		icon?: string;
 		list?: string[] ;
 	},
+	toast?: {
+		maxCount?: number;
+		forbidOnMax?: boolean;
+		dismissOnClick?: boolean;
+	},
 	event?: {
 		rcbPreInjectMessage?: boolean;
 		rcbPostInjectMessage?: boolean;
 		rcbStartStreamMessage?: boolean;
 		rcbChunkStreamMessage?: boolean;
 		rcbStopStreamMessage?: boolean;
+		rcbRemoveMessage?: boolean;
 		rcbLoadChatHistory?: boolean;
 		rcbToggleChatWindow?: boolean;
 		rcbToggleAudio?: boolean;
@@ -142,10 +148,5 @@ export type Settings = {
 		rcbDismissToast?: boolean;
 		rcbUserSubmitText?: boolean;
 		rcbUserUploadFile?: boolean;
-	},
-	toast?: {
-		maxCount?: number;
-		forbidOnMax?: boolean;
-		dismissOnClick?: boolean;
 	}
 }

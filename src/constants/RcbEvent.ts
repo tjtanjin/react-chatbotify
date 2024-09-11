@@ -18,6 +18,7 @@ const RcbEvent = {
 	START_STREAM_MESSAGE: "rcb-start-stream-message",
 	CHUNK_STREAM_MESSAGE: "rcb-chunk-stream-message",
 	STOP_STREAM_MESSAGE: "rcb-stop-stream-message",
+	REMOVE_MESSAGE: "rcb-remove-message",
 
 	// chat history
 	LOAD_CHAT_HISTORY: "rcb-load-chat-history",

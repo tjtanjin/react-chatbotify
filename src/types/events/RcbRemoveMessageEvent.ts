@@ -4,6 +4,6 @@ import { Message } from "../Message";
 /**
  * Defines the data available for stop stream message event.
  */
-export type RcbStopStreamMessageEvent = RcbBaseEvent<{
+export type RcbRemoveMessageEvent = RcbBaseEvent<{
     message: Message;
 }>;
