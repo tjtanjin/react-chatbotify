@@ -92,7 +92,7 @@ export const useMessagesInternal = () => {
 		if (!message) {
 			return null;
 		}
-	  
+	
 		// handles remove message event
 		if (settings.event?.rcbRemoveMessage) {
 			const event = callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
@@ -231,7 +231,7 @@ export const useMessagesInternal = () => {
 	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
 	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
 	 */
-	const endStreamMessage = (sender: string = "bot") => {
+	const endStreamMessage = (sender = "bot") => {
 		// nothing to end if not streaming
 		if (!streamMessageMap.current.has(sender)) {
 			return;
