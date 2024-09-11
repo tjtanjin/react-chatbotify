@@ -35,7 +35,7 @@ export const useBotEffectInternal = () => {
 	const { getCurrPath, getPrevPath, goToPath, paths } = usePathsInternal();
 
 	// handles toast
-	const { injectToast, removeToast } = useToast();
+	const { showToast, removeToast } = useToast();
 
 	// handles bot states
 	const {
@@ -246,7 +246,7 @@ export const useBotEffectInternal = () => {
 		}
 
 		const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput: paramsInputRef.current,
-			endStreamMessage, injectMessage, streamMessage, openChat, injectToast, removeToast};
+			endStreamMessage, injectMessage, streamMessage, openChat, showToast, removeToast};
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {

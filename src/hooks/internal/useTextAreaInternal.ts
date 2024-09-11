@@ -31,6 +31,14 @@ export const useTextAreaInternal = () => {
 	 * @param value value to set
 	 */
 	const setTextAreaValue = (value: string) => {
+		// todo: Checks are currently not performed and input length is also not set.
+		// It should be similar to what the handleTextAreaValueChange function is doing
+		// inside ChatBotInput component - a recommended approach is to centralize the
+		// setting of input values into this function and then include logic checks here.
+		// All other parts of the project setting input value should then call this function.
+
+		// todo: emit rcb event once the checks above passed
+
 		if (inputRef.current) {
 			inputRef.current.value = value;
 		}

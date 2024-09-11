@@ -44,7 +44,7 @@ export const useSubmitInputInternal = () => {
 	const { flowRef, chatBodyRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
 
 	// handles toasts
-	const { injectToast, removeToast } = useToast();
+	const { showToast, removeToast } = useToast();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -143,7 +143,7 @@ export const useSubmitInputInternal = () => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput, 
-				endStreamMessage, injectMessage, streamMessage, openChat, injectToast, removeToast
+				endStreamMessage, injectMessage, streamMessage, openChat, showToast, removeToast
 			};
 			const hasNextPath = await postProcessBlock(flowRef.current as Flow, path, params, goToPath);
 			if (!hasNextPath) {
@@ -166,7 +166,7 @@ export const useSubmitInputInternal = () => {
 			}
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, voiceToggledOn, settings, flowRef, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, handleSendUserInput, injectToast
+		postProcessBlock, setPaths, handleSendUserInput, showToast
 	]);
 
 	/**

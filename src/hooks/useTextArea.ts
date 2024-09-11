@@ -15,6 +15,7 @@ export const useTextArea = () => {
 		setTextAreaDisabled,
 		textAreaSensitiveMode,
 		setTextAreaSensitiveMode,
+		setTextAreaValue
 	} = useTextAreaInternal();
 
 	/**
@@ -45,6 +46,7 @@ export const useTextArea = () => {
 		toggleTextAreaDisabled,
 		textAreaSensitiveMode,
 		toggleTextAreaSensitiveMode,
+		setTextAreaValue,
 		focusTextArea
 	};
 };

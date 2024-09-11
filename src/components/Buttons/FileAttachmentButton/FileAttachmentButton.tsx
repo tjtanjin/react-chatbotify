@@ -38,7 +38,7 @@ const FileAttachmentButton = () => {
 	const flow = flowRef.current as Flow;
 
 	// handles toasts
-	const { injectToast } = useToast();
+	const { showToast } = useToast();
 	
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -119,7 +119,7 @@ const FileAttachmentButton = () => {
 			}
 			await handleSubmitText("📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				goToPath, setTextAreaValue, injectMessage, streamMessage, openChat, injectToast, files});
+				goToPath, setTextAreaValue, injectMessage, streamMessage, openChat, showToast, files});
 		}
 	};
 
