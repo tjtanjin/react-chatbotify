@@ -9,6 +9,7 @@ import { RcbToggleNotificationsEvent } from "../src/types/events/RcbToggleNotifi
 import { RcbStartStreamMessageEvent } from "../src/types/events/RcbStartStreamMessageEvent";
 import { RcbChunkStreamMessageEvent } from "../src/types/events/RcbChunkStreamMessageEvent";
 import { RcbStopStreamMessageEvent } from "../src/types/events/RcbStopStreamMessageEvent";
+import { RcbRemoveMessageEvent } from "../src/types/events/RcbRemoveMessageEvent";
 import { RcbChangePathEvent } from "../src/types/events/RcbChangePathEvent";
 import { RcbShowToastEvent } from "../src/types/events/RcbShowToastEvent";
 import { RcbDismissToastEvent } from "../src/types/events/RcbDismissToastEvent";
@@ -56,6 +57,7 @@ declare global {
 		"rcb-start-stream-message": RcbStartStreamMessageEvent;
 		"rcb-chunk-stream-message": RcbChunkStreamMessageEvent;
 		"rcb-stop-stream-message": RcbStopStreamMessageEvent;
+		"rcb-remove-message": RcbRemoveMessageEvent;
 
 		// chat history
 		"rcb-load-chat-history": RcbLoadChatHistoryEvent;

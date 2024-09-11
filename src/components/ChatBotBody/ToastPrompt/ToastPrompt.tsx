@@ -30,7 +30,7 @@ const Toast = ({
 	const { styles } = useStylesContext();
 
 	// handles toasts
-	const { removeToast } = useToast();
+	const { dismissToast } = useToast();
 
 	// tracks if toast prompt is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -46,11 +46,11 @@ const Toast = ({
 		// if timeout is set, dismiss toast after specified period
 		if (timeout) {
 			const timer = setTimeout(() => {
-				removeToast(id);
+				dismissToast(id);
 			}, timeout);
 			return () => clearTimeout(timer);
 		}
-	}, [id, removeToast, timeout]);
+	}, [id, dismissToast, timeout]);
 
 	/**
 	 * Handles mouse enter event on toast prompt.
@@ -75,7 +75,7 @@ const Toast = ({
 				onMouseDown={(event: MouseEvent) => {
 					if (settings.toast?.dismissOnClick) {
 						event.preventDefault();
-						removeToast(id);
+						dismissToast(id);
 					}
 				}}
 				className="rcb-toast-prompt-text"

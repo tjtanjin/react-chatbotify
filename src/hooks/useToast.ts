@@ -69,7 +69,7 @@ export const useToast = () => {
 	 *
 	 * @param id id of toast to remove
 	 */
-	const removeToast = useCallback((id: string): void => {
+	const dismissToast = useCallback((id: string): void => {
 		setToasts((prevToasts) => {
 			const toastToRemove = prevToasts.find((toast) => toast.id === id);
 			if (!toastToRemove) {
@@ -92,7 +92,7 @@ export const useToast = () => {
 
 	return {
 		showToast,
-		removeToast,
+		dismissToast,
 		toasts,
 		setToasts
 	};
