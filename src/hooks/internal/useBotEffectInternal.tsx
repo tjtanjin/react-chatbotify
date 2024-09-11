@@ -53,7 +53,7 @@ export const useBotEffectInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, chatBodyRef, isBotStreamingRef, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { flowRef, chatBodyRef, streamingSenderList, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
 	const flow = flowRef.current as Flow;
 
 	// handles chat window
@@ -181,13 +181,6 @@ export const useBotEffectInternal = () => {
 		playNotificationSound();
 	}, [messages.length]);
 
-	// saves messages once a stream ends
-	useEffect(() => {
-		if (!isBotStreamingRef.current) {
-			saveChatHistory(messages);
-		}
-	}, [isBotStreamingRef.current])
-
 	// resets unread count on opening chat and handles scrolling/resizing window on mobile devices
 	useEffect(() => {
 		if (isChatWindowOpen) {
@@ -263,8 +256,10 @@ export const useBotEffectInternal = () => {
 			updateTextAreaFocus(currPath);
 			syncVoice(keepVoiceOnRef.current && !block.chatDisabled);
 
-			// cleanup logic after preprocessing of a block (affects only streaming messages)
-			isBotStreamingRef.current = false
+			// auto cleanup streaming and save messages on path change (not ideal)
+			// todo: remove this in v3, users should call `params.endStreamMessage()`
+			streamingSenderList.current = []
+			saveChatHistory(messages);
 		}
 		callNewBlock(currPath, block, params);
 	}, [paths]);

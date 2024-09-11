@@ -11,6 +11,7 @@ import { useBotRefsContext } from "../../context/BotRefsContext";
 import { usePathsContext } from "../../context/PathsContext";
 import { Message } from "../../types/Message";
 import { RcbEvent } from "../../constants/RcbEvent";
+import { saveChatHistory } from "../../services/ChatHistoryService";
 
 /**
  * Internal custom hook for managing sending of messages.
@@ -29,7 +30,7 @@ export const useMessagesInternal = () => {
 	const { audioToggledOn, isChatWindowOpen, setIsBotTyping, setUnreadCount } = useBotStatesContext();
 
 	// handles bot refs
-	const { isBotStreamingRef } = useBotRefsContext();
+	const { streamingSenderList } = useBotRefsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -94,7 +95,7 @@ export const useMessagesInternal = () => {
 
 		// set an initial empty message to be used for streaming
 		setMessages(prevMessages => [...prevMessages, message]);
-		isBotStreamingRef.current = true
+		streamingSenderList.current.push("bot");
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
@@ -135,7 +136,8 @@ export const useMessagesInternal = () => {
 		});
 
 		await simStreamDoneTask;
-		isBotStreamingRef.current = false;
+		streamingSenderList.current.filter(item => item !== "bot");
+		saveChatHistory(messages);
 	}, []);
 
 	/**
@@ -146,7 +148,7 @@ export const useMessagesInternal = () => {
 	 */
 	const streamMessage = useCallback(async (content: string | JSX.Element, sender = "bot") => {
 		const message = createMessage(content, sender);
-		if (!isBotStreamingRef.current) {
+		if (!streamingSenderList.current.includes(sender)) {
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
 				const event = callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
@@ -158,7 +160,7 @@ export const useMessagesInternal = () => {
 			setIsBotTyping(false);
 			setMessages((prevMessages) => [...prevMessages, message]);
 			setUnreadCount(prev => prev + 1);
-			isBotStreamingRef.current = true;
+			streamingSenderList.current.push(sender);
 			return;
 		}
 
@@ -187,6 +189,8 @@ export const useMessagesInternal = () => {
 	/**
 	 * Sets the streaming mode of the chatbot.
 	 * 
+	 * @param sender sender whose stream is being ended
+	 * 
 	 * Note: This is currently not critical to the functioning of `params.streamMessage` as the chatbot
 	 * automatically sets stream mode to true, and defaults to setting stream mode to false whenever a path
 	 * change is detected. This is however not ideal, because it results in lossy saving of chat history
@@ -196,9 +200,9 @@ export const useMessagesInternal = () => {
 	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
 	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
 	 */
-	const endStreamMessage = () => {
-		// nothing to end if not even streaming
-		if (!isBotStreamingRef.current) {
+	const endStreamMessage = (sender: string = "bot") => {
+		// nothing to end if not streaming
+		if (!streamingSenderList.current.includes(sender)) {
 			return;
 		}
 
@@ -210,7 +214,9 @@ export const useMessagesInternal = () => {
 			}
 		}
 
-		isBotStreamingRef.current = false;
+		// remove sender from streaming list and save messages
+		streamingSenderList.current.filter(item => item !== sender);
+		saveChatHistory(messages);
 	}
 
 	return {
