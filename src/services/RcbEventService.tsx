@@ -36,7 +36,7 @@ export const emitRcbEvent = (eventName: typeof RcbEvent[keyof typeof RcbEvent], 
 	// Create a custom event with the provided name and detail
 	const event: RcbBaseEvent = new CustomEvent(eventName, {
 		detail: eventDetail,
-		cancelable: cancellableMap.eventName,
+		cancelable: cancellableMap[eventName],
 	}) as RcbBaseEvent<typeof data, EventDetail>;
 
 	event.data = data;
