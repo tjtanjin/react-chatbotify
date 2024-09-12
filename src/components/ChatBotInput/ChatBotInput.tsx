@@ -126,7 +126,9 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	 * @param event keyboard event
 	 */ 
 	const handleKeyDown = async (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		if (isComposing) return;
+		if (isComposing) {
+			return;
+		}
 		if (event.key === "Enter") {
 			if (event.shiftKey) {
 				if (!settings.chatInput?.allowNewline) {
