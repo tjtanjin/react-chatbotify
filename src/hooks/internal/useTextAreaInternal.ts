@@ -4,6 +4,8 @@ import { isChatBotVisible } from "../../utils/displayChecker";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
+import { useRcbEventInternal } from "./useRcbEventInternal";
+import { RcbEvent } from "../../constants/RcbEvent";
 
 /**
  * Internal custom hook for managing input text area.
@@ -23,7 +25,10 @@ export const useTextAreaInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { inputRef, chatBodyRef } = useBotRefsContext();
+	const { inputRef, chatBodyRef, prevInputRef } = useBotRefsContext();
+
+	// handles rcb events
+	const { callRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Sets the text area value.
@@ -31,16 +36,37 @@ export const useTextAreaInternal = () => {
 	 * @param value value to set
 	 */
 	const setTextAreaValue = (value: string) => {
-		// todo: Checks are currently not performed and input length is also not set.
-		// It should be similar to what the handleTextAreaValueChange function is doing
-		// inside ChatBotInput component - a recommended approach is to centralize the
-		// setting of input values into this function and then include logic checks here.
-		// All other parts of the project setting input value should then call this function.
+		
+		if (textAreaDisabled && inputRef.current) {
+			// prevent input and keep current value
+			inputRef.current.value = "";
+			return;
+		}
 
-		// todo: emit rcb event once the checks above passed
+		if (inputRef.current && prevInputRef.current !== null) {
+			const characterLimit = settings.chatInput?.characterLimit
+			/*
+			* @params allowNewline Boolean
+			* allowNewline [true] Allow input values to contain line breaks "\n"
+			* allowNewline [false] Replace \n with a space
+			* */
+			const allowNewline = settings.chatInput?.allowNewline
+			const newInput = allowNewline ? value : value.replace(/\n/g, " ");
+			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
+				inputRef.current.value = newInput.slice(0, characterLimit);
+			} else {
+				inputRef.current.value = newInput
+			}
+			if(settings.event?.rcbTextareaChangeValue) {
 
-		if (inputRef.current) {
-			inputRef.current.value = value;
+				const event = callRcbEvent(RcbEvent.TEXTAREA_CHANGE_VALUE,
+					{currValue: inputRef.current.value, prevValue: prevInputRef.current});
+				if (event.defaultPrevented) {
+					inputRef.current.value = prevInputRef.current;
+					return 
+				}
+			}
+			prevInputRef.current = inputRef.current.value;
 		}
 	}
 
