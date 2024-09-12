@@ -39,6 +39,9 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	// tracks if chat input is focused
 	const [isFocused, setIsFocused] = useState<boolean>(false);
 
+	// tracks if text composition (like IME input) is in progress
+	const [isComposing, setIsComposing] = useState<boolean>(false);
+
 	// handles flow start
 	const { hasFlowStarted, setHasFlowStarted } = useFirstInteractionInternal();
 
@@ -104,11 +107,26 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	};
 
 	/**
+	 * Handles composition start event on chat input.
+	 */
+	const handleCompositionStart = () => {
+		setIsComposing(true);
+	};
+
+	/**
+	 * Handles composition end event on chat input.
+	 */
+	const handleCompositionEnd = () => {
+		setIsComposing(false);
+	};
+
+	/**
 	 * Handles keyboard events and proceeds to submit user input if enter button is pressed.
 	 * 
 	 * @param event keyboard event
 	 */ 
 	const handleKeyDown = async (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+		if (isComposing) return;
 		if (event.key === "Enter") {
 			if (event.shiftKey) {
 				if (!settings.chatInput?.allowNewline) {
@@ -177,6 +195,8 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 					onKeyDown={handleKeyDown}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
+					onCompositionStart={handleCompositionStart}
+					onCompositionEnd={handleCompositionEnd}
 				/>
 				:
 				<textarea
@@ -191,6 +211,8 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 					onKeyDown={handleKeyDown}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
+					onCompositionStart={handleCompositionStart}
+					onCompositionEnd={handleCompositionEnd}
 				/>
 			}
 			<div className="rcb-chat-input-button-container">
