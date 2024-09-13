@@ -21,17 +21,14 @@ export const useAudio = () => {
 	 * Toggles audio feature.
 	 */
 	const toggleAudio = useCallback(() => {
-		setAudioToggledOn(prev => {
-			// handles toggle audio event
-			if (settings.event?.rcbToggleAudio) {
-				const event = callRcbEvent(RcbEvent.TOGGLE_AUDIO, {currState: prev, newState: !prev});
-				if (event.defaultPrevented) {
-					return prev;
-				}
+		// handles toggle audio event
+		if (settings.event?.rcbToggleAudio) {
+			const event = callRcbEvent(RcbEvent.TOGGLE_AUDIO, {currState: audioToggledOn, newState: !audioToggledOn});
+			if (event.defaultPrevented) {
+				return;
 			}
-			
-			return !prev
-		});
+		}
+		setAudioToggledOn(prev => !prev);
 	}, []);
 
 	return {

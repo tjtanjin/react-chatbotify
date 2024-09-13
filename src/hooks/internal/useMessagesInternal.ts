@@ -9,7 +9,6 @@ import { useSettingsContext } from "../../context/SettingsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
-import { usePathsContext } from "../../context/PathsContext";
 import { Message } from "../../types/Message";
 import { RcbEvent } from "../../constants/RcbEvent";
 
@@ -22,9 +21,6 @@ export const useMessagesInternal = () => {
 
 	// handles messages
 	const { messages, setMessages } = useMessagesContext();
-
-	// handles paths
-	const { paths } = usePathsContext();
 
 	// handles bot states
 	const { audioToggledOn, isChatWindowOpen, setIsBotTyping, setUnreadCount } = useBotStatesContext();
@@ -80,7 +76,7 @@ export const useMessagesInternal = () => {
 		}
 
 		return message.id;
-	}, [settings, paths, audioToggledOn, callRcbEvent]);
+	}, [settings, audioToggledOn, callRcbEvent]);
 
 	/**
 	 * Removes a message with the given id.

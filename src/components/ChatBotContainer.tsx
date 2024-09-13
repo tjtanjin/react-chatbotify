@@ -18,9 +18,17 @@ import { useStylesContext } from "../context/StylesContext";
 import "./ChatBotContainer.css";
 
 /**
- * Integrates and contains the various components that makeup the chatbot.
+ * Integrates, loads plugins and contains the various components that makeup the chatbot.
  */
-const ChatBotContainer = () => {
+const ChatBotContainer = ({
+	plugins
+}: {
+	plugins?: Array<(...args: unknown[]) => unknown>;
+}) => {
+	
+	// loads plugins
+	plugins?.map((plugin) => plugin());
+
 	// handles settings
 	const { settings } = useSettingsContext();
 

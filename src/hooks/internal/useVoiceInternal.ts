@@ -23,17 +23,14 @@ export const useVoiceInternal = () => {
 	 * Toggles voice feature.
 	 */
 	const toggleVoice = useCallback(() => {
-		setVoiceToggledOn((prev) => {
-			// handles toggle voice event
-			if (settings.event?.rcbToggleVoice) {
-				const event = callRcbEvent(RcbEvent.TOGGLE_VOICE, {currState: prev, newState: !prev});
-				if (event.defaultPrevented) {
-					return prev;
-				}
+		// handles toggle voice event
+		if (settings.event?.rcbToggleVoice) {
+			const event = callRcbEvent(RcbEvent.TOGGLE_VOICE, {currState: voiceToggledOn, newState: !voiceToggledOn});
+			if (event.defaultPrevented) {
+				return;
 			}
-			
-			return !prev
-		});
+		}
+		setVoiceToggledOn(prev => !prev);
 	}, []);
 
 	/**

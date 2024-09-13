@@ -31,17 +31,17 @@ export const useChatWindowInternal = () => {
 	 * Toggles chat window.
 	 */
 	const toggleChatWindow = useCallback(() => {
-		setIsChatWindowOpen(prev => {
-			// handles toggle chat window event
-			if (settings.event?.rcbToggleChatWindow) {
-				const event = callRcbEvent(RcbEvent.TOGGLE_CHAT_WINDOW, {currState: prev, newState: !prev});
-				if (event.defaultPrevented) {
-					return prev;
-				}
+		// handles toggle chat window event
+		if (settings.event?.rcbToggleChatWindow) {
+			const event = callRcbEvent(
+				RcbEvent.TOGGLE_CHAT_WINDOW,
+				{currState: isChatWindowOpen, newState: !isChatWindowOpen}
+			);
+			if (event.defaultPrevented) {
+				return;
 			}
-			
-			return !prev
-		});
+		}
+		setIsChatWindowOpen(prev => !prev);
 	}, []);
 
 	/**

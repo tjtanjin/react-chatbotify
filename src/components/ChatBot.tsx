@@ -19,12 +19,14 @@ const ChatBot = ({
 	settings,
 	styles,
 	themes,
+	plugins
 }: {
-	id?: string,
-	flow?: Flow,
-	settings?: Settings
-	styles?: Styles,
-	themes?: undefined | Theme | Array<Theme>,
+	id?: string;
+	flow?: Flow;
+	settings?: Settings;
+	styles?: Styles;
+	themes?: undefined | Theme | Array<Theme>;
+	plugins?: Array<(...args: unknown[]) => unknown>;
 }) => {
 
 	// checks if the ChatBot is inside a provider
@@ -35,11 +37,11 @@ const ChatBot = ({
 	 */
 	const renderChatBot = () => {
 		if (isInsideProvider) {
-			return (<ChatBotContainer />);
+			return (<ChatBotContainer plugins={plugins} />);
 		}
 		return (
 			<ChatBotProvider id={id} flow={flow} settings={settings} styles={styles} themes={themes}>
-				<ChatBotContainer />
+				<ChatBotContainer plugins={plugins} />
 			</ChatBotProvider>
 		)
 	}

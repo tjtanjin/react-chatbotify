@@ -27,26 +27,10 @@ export const useToast = () => {
 	 */
 	const showToast = useCallback((content: string | JSX.Element, timeout?: number): string | null => {
 		let id = null;
-		setToasts((prevToasts: Toast[]) => {
-			if (prevToasts.length >= (settings.toast?.maxCount || 3)) {
-				if (settings.toast?.forbidOnMax) {
-					return prevToasts;
-				}
-				id = crypto.randomUUID();
-				let toast = { id, content, timeout };
-
-				// handles show toast event
-				if (settings.event?.rcbShowToast) {
-					const event = callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
-					if (event.defaultPrevented) {
-						return prevToasts;
-					}
-					toast = event.data.toast;
-				}
-
-				return [...prevToasts.slice(1), toast];
+		if (toasts.length >= (settings.toast?.maxCount || 3)) {
+			if (settings.toast?.forbidOnMax) {
+				return null;
 			}
-
 			id = crypto.randomUUID();
 			let toast = { id, content, timeout };
 
@@ -54,13 +38,25 @@ export const useToast = () => {
 			if (settings.event?.rcbShowToast) {
 				const event = callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
 				if (event.defaultPrevented) {
-					return prevToasts;
+					return null;
 				}
 				toast = event.data.toast;
 			}
+			setToasts(prevToasts => [...prevToasts.slice(1), toast]);
+		}
+		id = crypto.randomUUID();
+		let toast = { id, content, timeout };
 
-			return [...prevToasts, toast];
-		});
+		// handles show toast event
+		if (settings.event?.rcbShowToast) {
+			const event = callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
+			if (event.defaultPrevented) {
+				return null;
+			}
+			toast = event.data.toast;
+		}
+
+		setToasts(prevToasts => [...prevToasts, toast]);
 		return id;
 	}, [settings, callRcbEvent]);
 
@@ -70,24 +66,24 @@ export const useToast = () => {
 	 * @param id id of toast to remove
 	 */
 	const dismissToast = useCallback((id: string): void => {
-		setToasts((prevToasts) => {
-			const toastToRemove = prevToasts.find((toast) => toast.id === id);
-			if (!toastToRemove) {
-				return prevToasts;
+		const toastToRemove = toasts.find((toast) => toast.id === id);
+
+		// if cannot find toast, nothing to remove
+		if (!toastToRemove) {
+			return;
+		}
+
+		// handles dismiss toast event
+		if (settings.event?.rcbDismissToast) {
+			const event = callRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
+			// if prevented, don't dismiss
+			if (event.defaultPrevented) {
+				return;
 			}
-		
-			// handles dismiss toast event
-			if (settings.event?.rcbDismissToast) {
-				const event = callRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
-				// if prevented, don't dismiss
-				if (event.defaultPrevented) {
-					return prevToasts;
-				}
-			}
-		
-			// dismiss toast
-			return prevToasts.filter((toast) => toast.id !== id);
-		});
+		}
+
+		// dismiss toast
+		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
 	}, []);
 
 	return {

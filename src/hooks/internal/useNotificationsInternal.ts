@@ -78,17 +78,17 @@ export const useNotificationInternal = () => {
 	 * Handles toggling of notification feature.
 	 */
 	const toggleNotifications = useCallback(() => {
-		setNotificationsToggledOn((prev) => {
-			// handles toggle notifications event
-			if (settings.event?.rcbToggleNotifications) {
-				const event = callRcbEvent(RcbEvent.TOGGLE_NOTIFICATIONS, {currState: prev, newState: !prev});
-				if (event.defaultPrevented) {
-					return prev;
-				}
+		// handles toggle notifications event
+		if (settings.event?.rcbToggleNotifications) {
+			const event = callRcbEvent(
+				RcbEvent.TOGGLE_NOTIFICATIONS,
+				{currState: notificationsToggledOn, newState: !notificationsToggledOn}
+			);
+			if (event.defaultPrevented) {
+				return;
 			}
-			
-			return !prev
-		});
+		}
+		setNotificationsToggledOn(prev => !prev);
 	}, []);
 
 	return {
