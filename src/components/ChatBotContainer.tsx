@@ -19,6 +19,8 @@ import "./ChatBotContainer.css";
 
 /**
  * Integrates, loads plugins and contains the various components that makeup the chatbot.
+ * 
+ * @param plugins plugins to initialize
  */
 const ChatBotContainer = ({
 	plugins

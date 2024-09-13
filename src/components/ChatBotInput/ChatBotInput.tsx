@@ -10,13 +10,13 @@ import React, {
 import { isDesktop } from "../../utils/displayChecker";
 import { useFirstInteractionInternal } from "../../hooks/internal/useFirstInteractionInternal";
 import { useSubmitInputInternal } from "../../hooks/internal/useSubmitInputInternal";
+import { useTextArea } from "../../hooks/useTextArea";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatBotInput.css";
-import { useTextArea } from "../../hooks/useTextArea";
 
 /**
  * Contains chat input field for user to enter messages.

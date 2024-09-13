@@ -1,10 +1,10 @@
 import { useEffect, useState, MouseEvent } from "react";
 
+import { useToast } from "../../../hooks/useToast";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
 
 import "./ToastPrompt.css";
-import { useToast } from "../../../hooks/useToast";
 
 /**
  * Provides toast message prompt with information.
