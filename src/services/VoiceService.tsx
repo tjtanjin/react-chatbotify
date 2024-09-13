@@ -23,6 +23,7 @@ export const startVoiceRecording = (
 	settings: Settings,
 	toggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
+	setTextAreaValue: (value: string) => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
 	audioChunksRef: RefObject<BlobPart[]>,
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
@@ -32,7 +33,9 @@ export const startVoiceRecording = (
 		startAudioRecording(triggerSendVoiceInput, audioChunksRef);
 	} else {
 		// Only use SpeechRecognition when sendAsAudio is disabled
-		startSpeechRecognition(settings, toggleVoice, triggerSendVoiceInput, setInputLength, inputRef);
+		startSpeechRecognition(settings, toggleVoice, triggerSendVoiceInput,
+			setTextAreaValue, setInputLength, inputRef
+		);
 	}
 }
 
@@ -49,6 +52,7 @@ const startSpeechRecognition = (
 	settings: Settings,
 	toggleVoice: () => void,
 	triggerSendVoiceInput: () => void,
+	setTextAreaValue: (value: string) => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
 ) => {
@@ -80,9 +84,9 @@ const startSpeechRecognition = (
 			const characterLimit = settings.chatInput?.characterLimit
 			const newInput = inputRef.current.value + voiceInput;
 			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
-				inputRef.current.value = newInput.slice(0, characterLimit);
+				setTextAreaValue(newInput.slice(0, characterLimit));
 			} else {
-				inputRef.current.value = newInput
+				setTextAreaValue(newInput);
 			}
 			setInputLength(inputRef.current.value.length);
 		}

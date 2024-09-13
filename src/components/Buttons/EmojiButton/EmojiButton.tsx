@@ -22,7 +22,7 @@ const EmojiButton = () => {
 	const { inputRef } = useBotRefsContext();
 
 	// handles input text area
-	const { textAreaDisabled } = useTextAreaInternal();
+	const { textAreaDisabled, setTextAreaValue } = useTextAreaInternal();
 
 	// reference to popup
 	const popupRef = useRef<HTMLDivElement>(null);
@@ -96,7 +96,7 @@ const EmojiButton = () => {
 	const handleEmojiClick = (event: React.MouseEvent, emoji: string) => {
 		event.preventDefault();
 		if (inputRef.current) {
-			inputRef.current.value = inputRef.current.value + emoji;
+			setTextAreaValue(inputRef.current.value + emoji);
 			setTimeout(() => {
 				const inputElement = inputRef.current;
 				if (inputElement) {

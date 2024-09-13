@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import { useRcbEventInternal } from "./internal/useRcbEventInternal";
 import { useToastsContext } from "../context/ToastsContext";
 import { useSettingsContext } from "../context/SettingsContext";
-import { Toast } from "../types/Toast";
 import { RcbEvent } from "../constants/RcbEvent";
 
 /**

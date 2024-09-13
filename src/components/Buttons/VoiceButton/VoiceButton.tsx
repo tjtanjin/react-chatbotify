@@ -34,7 +34,7 @@ const VoiceButton = () => {
 	const { voiceToggledOn, toggleVoice } = useVoiceInternal();
 
 	// handles input text area
-	const { setInputLength, textAreaDisabled } = useTextAreaInternal();
+	const { setInputLength, setTextAreaValue, textAreaDisabled } = useTextAreaInternal();
 
 	// handles user input submission
 	const { handleSubmitText } = useSubmitInputInternal();
@@ -57,7 +57,7 @@ const VoiceButton = () => {
 	useEffect(() => {
 		if (voiceToggledOn) {
 			startVoiceRecording(settings, toggleVoice, triggerSendVoiceInput,
-				setInputLength, audioChunksRef, inputRef);
+				setTextAreaValue, setInputLength, audioChunksRef, inputRef);
 		} else {
 			stopVoiceRecording();
 		}

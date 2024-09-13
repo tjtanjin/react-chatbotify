@@ -119,7 +119,7 @@ export const useSubmitInputInternal = () => {
 
 		// clears input field
 		if (inputRef.current) {
-			inputRef.current.value = "";
+			setTextAreaValue("");
 			setInputLength(0);
 		}
 
