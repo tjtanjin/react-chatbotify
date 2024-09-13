@@ -16,7 +16,7 @@ import { RcbDismissToastEvent } from "../src/types/events/RcbDismissToastEvent";
 import { RcbUserSubmitTextEvent } from "../src/types/events/RcbUserSubmitTextEvent";
 import { RcbUserUploadFileEvent } from "../src/types/events/RcbUserUploadFileEvent";
 import { RcbEvent } from "../src/constants/RcbEvent";
-import { RcbTextareaChangeValueEvent } from "../src/types/events/RcbTextareaChangeValue";
+import { RcbTextAreaChangeValueEvent } from "../src/types/events/RcbTextAreaChangeValue";
 
 declare global {
 	interface Navigator {
@@ -75,6 +75,6 @@ declare global {
 		"rcb-user-upload-file": RcbUserUploadFileEvent;
 
 		// textarea change value
-		"rcb-textarea-change-value": RcbTextareaChangeValueEvent;
+		"rcb-text-area-change-value": RcbTextAreaChangeValueEvent;
 	}
 }

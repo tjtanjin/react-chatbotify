@@ -57,9 +57,9 @@ export const useTextAreaInternal = () => {
 			} else {
 				inputRef.current.value = newInput
 			}
-			if(settings.event?.rcbTextareaChangeValue) {
+			if(settings.event?.rcbTextAreaChangeValue) {
 
-				const event = callRcbEvent(RcbEvent.TEXTAREA_CHANGE_VALUE,
+				const event = callRcbEvent(RcbEvent.TEXT_AREA_CHANGE_VALUE,
 					{currValue: inputRef.current.value, prevValue: prevInputRef.current});
 				if (event.defaultPrevented) {
 					inputRef.current.value = prevInputRef.current;
