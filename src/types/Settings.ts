@@ -148,5 +148,6 @@ export type Settings = {
 		rcbDismissToast?: boolean;
 		rcbUserSubmitText?: boolean;
 		rcbUserUploadFile?: boolean;
+		rcbTextareaChangeValue?: boolean;
 	}
 }

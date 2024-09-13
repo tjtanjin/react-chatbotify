@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef } from "react";
+import React, { createContext, useContext, useRef } from "react";
 
 import { Flow } from "../types/Flow";
 
@@ -9,6 +9,7 @@ type BotRefsContextType = {
 	botIdRef: React.RefObject<string>;
 	flowRef: React.RefObject<Flow>;
 	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement>;
+	prevInputRef: React.MutableRefObject<string>;
 	streamMessageMap: React.MutableRefObject<Map<string, string>>;
 	chatBodyRef: React.RefObject<HTMLDivElement>;
 	paramsInputRef: React.MutableRefObject<string>;
@@ -32,6 +33,7 @@ const BotRefsProvider = ({
 	const botIdRef = useRef<string>(id);
 	const flowRef = useRef<Flow>(initialFlow);
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+	const prevInputRef = useRef<string>("");
 	const streamMessageMap = useRef<Map<string, string>>(new Map());
 	const chatBodyRef = useRef<HTMLDivElement>(null);
 	const paramsInputRef = useRef<string>("");
@@ -45,7 +47,8 @@ const BotRefsProvider = ({
 			streamMessageMap,
 			chatBodyRef,
 			paramsInputRef,
-			keepVoiceOnRef
+			keepVoiceOnRef,
+			prevInputRef
 		}}>
 			{children}
 		</BotRefsContext.Provider>

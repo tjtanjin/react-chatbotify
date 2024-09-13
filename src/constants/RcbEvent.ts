@@ -33,6 +33,9 @@ const RcbEvent = {
 	// user input submission
 	USER_SUBMIT_TEXT: "rcb-user-submit-text",
 	USER_UPLOAD_FILE: "rcb-user-upload-file",
+
+	// text area value change
+	TEXTAREA_CHANGE_VALUE: "rcb-textarea-change-value"
 }
 
 export { RcbEvent };

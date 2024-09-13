@@ -16,6 +16,7 @@ import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
 
 import "./ChatBotInput.css";
+import { useTextArea } from "../../hooks/useTextArea";
 
 /**
  * Contains chat input field for user to enter messages.
@@ -47,6 +48,9 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 
 	// handles user input submission
 	const { handleSubmitText } = useSubmitInputInternal();
+
+	//handle textarea functionality
+	const { setTextAreaValue } = useTextArea();
 
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {
@@ -147,26 +151,9 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	 * @param event textarea change event
 	 */
 	const handleTextAreaValueChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		if (textAreaDisabled && inputRef.current) {
-			// prevent input and keep current value
-			inputRef.current.value = "";
-			return;
-		}
 
 		if (inputRef.current) {
-			const characterLimit = settings.chatInput?.characterLimit
-			/*
-			* @params allowNewline Boolean
-			* allowNewline [true] Allow input values to contain line breaks "\n"
-			* allowNewline [false] Replace \n with a space
-			* */
-			const allowNewline = settings.chatInput?.allowNewline
-			const newInput = allowNewline ? event.target.value : event.target.value.replace(/\n/g, " ");
-			if (characterLimit != null && characterLimit >= 0 && newInput.length > characterLimit) {
-				inputRef.current.value = newInput.slice(0, characterLimit);
-			} else {
-				inputRef.current.value = newInput
-			}
+			setTextAreaValue(event.target.value)
 			setInputLength(inputRef.current.value.length);
 		}
 	};
