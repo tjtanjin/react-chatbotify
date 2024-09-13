@@ -30,6 +30,7 @@ import { RcbShowToastEvent } from "./types/events/RcbShowToastEvent";
 import { RcbDismissToastEvent } from "./types/events/RcbDismissToastEvent";
 import { RcbUserSubmitTextEvent } from "./types/events/RcbUserSubmitTextEvent";
 import { RcbUserUploadFileEvent } from "./types/events/RcbUserUploadFileEvent";
+import { RcbTextAreaChangeValueEvent } from "./types/events/RcbTextAreaChangeValue";
 
 // hook imports
 import { useAudio } from "./hooks/useAudio";
@@ -78,7 +79,8 @@ export type {
 	RcbShowToastEvent,
 	RcbDismissToastEvent,
 	RcbUserSubmitTextEvent,
-	RcbUserUploadFileEvent
+	RcbUserUploadFileEvent,
+	RcbTextAreaChangeValueEvent,
 }
 
 // constant exports
