@@ -36,7 +36,6 @@ export const useTextAreaInternal = () => {
 	 * @param value value to set
 	 */
 	const setTextAreaValue = (value: string) => {
-		
 		if (textAreaDisabled && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
@@ -57,10 +56,13 @@ export const useTextAreaInternal = () => {
 			} else {
 				inputRef.current.value = newInput
 			}
-			if(settings.event?.rcbTextAreaChangeValue) {
 
-				const event = callRcbEvent(RcbEvent.TEXT_AREA_CHANGE_VALUE,
-					{currValue: inputRef.current.value, prevValue: prevInputRef.current});
+			// handles text area change value event
+			if (settings.event?.rcbTextAreaChangeValue) {
+				const event = callRcbEvent(
+					RcbEvent.TEXT_AREA_CHANGE_VALUE,
+					{currValue: inputRef.current.value, prevValue: prevInputRef.current}
+				);
 				if (event.defaultPrevented) {
 					inputRef.current.value = prevInputRef.current;
 					return 

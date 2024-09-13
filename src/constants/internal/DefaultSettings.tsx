@@ -182,5 +182,6 @@ export const DefaultSettings: Settings = {
 		rcbDismissToast: true,
 		rcbUserSubmitText: true,
 		rcbUserUploadFile: true,
+		rcbTextAreaChangeValue: true,
 	}
 }
