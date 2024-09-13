@@ -28,6 +28,13 @@ export const useTextArea = () => {
 	}, [textAreaDisabled]);
 
 	/**
+	 * Retrieves text area value.
+	 */
+	const getTextAreaValue = useCallback(() => {
+		return inputRef.current?.value;
+	}, [inputRef.current]);
+
+	/**
 	 * Toggles text area disabled.
 	 */
 	const toggleTextAreaDisabled = () => {
@@ -46,6 +53,7 @@ export const useTextArea = () => {
 		toggleTextAreaDisabled,
 		textAreaSensitiveMode,
 		toggleTextAreaSensitiveMode,
+		getTextAreaValue,
 		setTextAreaValue,
 		focusTextArea
 	};
