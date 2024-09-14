@@ -81,7 +81,7 @@ export const useMessagesInternal = () => {
 	/**
 	 * Removes a message with the given id.
 	 */
-	const removeMessage = useCallback((messageId: string): string | null => {
+	const removeMessage = useCallback(async (messageId: string): Promise<string | null> => {
 		const message = messages.find(msg => msg.id === messageId);
 
 		// nothing to remove if no such message
@@ -211,7 +211,7 @@ export const useMessagesInternal = () => {
 			return updatedMessages;
 		});
 		return streamMessageMap.current.get(sender) || null;
-	},[]);
+	}, []);
 
 	/**
 	 * Sets the streaming mode of the chatbot.
@@ -227,7 +227,7 @@ export const useMessagesInternal = () => {
 	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
 	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
 	 */
-	const endStreamMessage = (sender = "bot"): boolean => {
+	const endStreamMessage = useCallback(async (sender = "bot"): Promise<boolean> => {
 		// nothing to end if not streaming
 		if (!streamMessageMap.current.has(sender)) {
 			return true;
@@ -245,7 +245,7 @@ export const useMessagesInternal = () => {
 		streamMessageMap.current.delete(sender);
 		saveChatHistory(messages);
 		return true;
-	}
+	}, [messages]);
 
 	return {
 		endStreamMessage,
