@@ -33,6 +33,11 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 		transitionDetails = transitionAttr;
 	}
 
+	// if number provided, transform to object with default values
+	if (typeof transitionDetails === "number") {
+		transitionDetails = {duration: transitionDetails};
+	}
+
 	// cannot transition if details are not present
 	if (!transitionDetails || transitionDetails instanceof Promise) {
 		return;
@@ -44,7 +49,7 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 	}
 
 	// defaults interruptable to false if not found
-	if (!transitionDetails.interruptable) {
+	if (transitionDetails.interruptable == null) {
 		transitionDetails.interruptable = false;
 	}
 	

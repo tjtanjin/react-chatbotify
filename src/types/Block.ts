@@ -21,9 +21,9 @@ export type Block = {
 	((params: Params) => Promise<JSX.Element | void>);
 	chatDisabled?: boolean | ((params: Params) => boolean) | ((params: Params) => Promise<boolean>);
 	isSensitive?: boolean | ((params: Params) => boolean) | ((params: Params) => Promise<boolean>);
-	transition?: {duration: number, interruptable?: boolean} | void | 
-		((params: Params) => {duration: number, interruptable?: boolean} | void) |
-		((params: Params) => Promise<{duration: number, interruptable?: boolean} | void>);
+	transition?: number | {duration: number, interruptable?: boolean} | void | 
+		((params: Params) =>  number | {duration: number, interruptable?: boolean} | void) |
+		((params: Params) => Promise<number | {duration: number, interruptable?: boolean} | void>);
 
 	// post-processing attributes (runs after user input)
 	function?: ((params: Params) => void) | ((params: Params) => Promise<void>);
