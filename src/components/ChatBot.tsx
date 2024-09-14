@@ -4,6 +4,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Theme } from "../types/Theme";
+import { Plugin } from "../types/Plugin";
 
 /**
  * Determines if user gave a provider or if one needs to be created, before rendering the chatbot.
@@ -28,7 +29,7 @@ const ChatBot = ({
 	settings?: Settings;
 	styles?: Styles;
 	themes?: undefined | Theme | Array<Theme>;
-	plugins?: Array<(...args: unknown[]) => unknown>;
+	plugins?: Array<Plugin>;
 }) => {
 
 	// checks if the ChatBot is inside a provider

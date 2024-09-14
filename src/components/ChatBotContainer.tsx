@@ -14,6 +14,7 @@ import { useBotEffectInternal } from "../hooks/internal/useBotEffectInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { useStylesContext } from "../context/StylesContext";
+import { Plugin } from "../types/Plugin";
 
 import "./ChatBotContainer.css";
 
@@ -25,7 +26,7 @@ import "./ChatBotContainer.css";
 const ChatBotContainer = ({
 	plugins
 }: {
-	plugins?: Array<(...args: unknown[]) => unknown>;
+	plugins?: Array<Plugin>;
 }) => {
 	
 	// loads plugins
