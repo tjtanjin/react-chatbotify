@@ -119,8 +119,8 @@ const FileAttachmentButton = () => {
 			}
 			await handleSubmitText("📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				goToPath, setTextAreaValue, injectMessage, streamMessage, removeMessage, endStreamMessage,
-				openChat, showToast, dismissToast, files
+				currPath: getCurrPath(), goToPath, setTextAreaValue, injectMessage, streamMessage,
+				removeMessage, endStreamMessage, openChat, showToast, dismissToast, files
 			});
 		}
 	};

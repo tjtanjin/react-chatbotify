@@ -245,8 +245,10 @@ export const useBotEffectInternal = () => {
 			return;
 		}
 
-		const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput: paramsInputRef.current,
-			endStreamMessage, injectMessage, removeMessage, streamMessage, openChat, showToast, dismissToast};
+		const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue,
+			userInput: paramsInputRef.current, endStreamMessage, injectMessage, removeMessage, streamMessage,
+			openChat, showToast, dismissToast
+		};
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {

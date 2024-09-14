@@ -5,6 +5,7 @@ import { Flow } from "./Flow";
  */
 export type Params = {
 	userInput: string;
+	currPath: keyof Flow | null;
 	prevPath: keyof Flow | null;
 	goToPath: (pathToGo: keyof Flow) => void;
 	setTextAreaValue: (value: string) => void;

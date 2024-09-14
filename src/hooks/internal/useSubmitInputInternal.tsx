@@ -142,7 +142,7 @@ export const useSubmitInputInternal = () => {
 		setTextAreaSensitiveMode(false);
 
 		setTimeout(async () => {
-			const params = {prevPath: getPrevPath(), goToPath, setTextAreaValue, userInput, 
+			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue, userInput, 
 				injectMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast, dismissToast
 			};
 			const hasNextPath = await postProcessBlock(flowRef.current as Flow, path, params, goToPath);
