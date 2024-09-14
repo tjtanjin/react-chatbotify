@@ -12,7 +12,6 @@ import { Styles } from "./types/Styles";
 import { Toast } from "./types/Toast";
 import { Theme } from "./types/Theme";
 import { Button } from "./constants/Button";
-import { RcbEvent } from "./constants/RcbEvent";
 
 // event imports
 import { RcbLoadChatHistoryEvent } from "./types/events/RcbLoadChatHistoryEvent";
@@ -87,8 +86,7 @@ export type {
 
 // constant exports
 export {
-	Button,
-	RcbEvent
+	Button
 };
 
 // hook exports
