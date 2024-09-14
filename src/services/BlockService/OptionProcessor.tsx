@@ -24,10 +24,13 @@ export const processOptions = async (flow: Flow, block: Block, path: keyof Flow,
 		if (parsedOptions instanceof Promise) {
 			parsedOptions = await parsedOptions;
 		}
-	} else if (Array.isArray(options)) {
-		parsedOptions = {items: options};
 	} else {
 		parsedOptions = options;
+	}
+
+	// if array provided, transform to object with default values
+	if (Array.isArray(parsedOptions)) {
+		parsedOptions = {items: parsedOptions};
 	}
 
 	// nothing to render if no items present
