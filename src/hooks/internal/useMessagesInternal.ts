@@ -227,23 +227,24 @@ export const useMessagesInternal = () => {
 	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
 	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
 	 */
-	const endStreamMessage = (sender = "bot") => {
+	const endStreamMessage = (sender = "bot"): boolean => {
 		// nothing to end if not streaming
 		if (!streamMessageMap.current.has(sender)) {
-			return;
+			return true;
 		}
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
 			const event = callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {});
 			if (event.defaultPrevented) {
-				return;
+				return false;
 			}
 		}
 
 		// remove sender from streaming list and save messages
 		streamMessageMap.current.delete(sender);
 		saveChatHistory(messages);
+		return true;
 	}
 
 	return {

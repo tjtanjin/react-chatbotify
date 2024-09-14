@@ -64,12 +64,12 @@ export const useToast = () => {
 	 *
 	 * @param id id of toast to remove
 	 */
-	const dismissToast = useCallback((id: string): void => {
+	const dismissToast = useCallback((id: string): string | null => {
 		const toastToRemove = toasts.find((toast) => toast.id === id);
 
 		// if cannot find toast, nothing to remove
 		if (!toastToRemove) {
-			return;
+			return null;
 		}
 
 		// handles dismiss toast event
@@ -77,12 +77,13 @@ export const useToast = () => {
 			const event = callRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
 			// if prevented, don't dismiss
 			if (event.defaultPrevented) {
-				return;
+				return null;
 			}
 		}
 
 		// dismiss toast
 		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+		return id;
 	}, []);
 
 	return {
