@@ -25,6 +25,7 @@ import { RcbStartStreamMessageEvent } from "./types/events/RcbStartStreamMessage
 import { RcbPostInjectMessageEvent } from "./types/events/RcbPostInjectMessageEvent";
 import { RcbChunkStreamMessageEvent } from "./types/events/RcbChunkStreamMessageEvent";
 import { RcbStopStreamMessageEvent } from "./types/events/RcbStopStreamMessageEvent";
+import { RcbRemoveMessageEvent } from "./types/events/RcbRemoveMessageEvent";
 import { RcbChangePathEvent } from "./types/events/RcbChangePathEvent";
 import { RcbShowToastEvent } from "./types/events/RcbShowToastEvent";
 import { RcbDismissToastEvent } from "./types/events/RcbDismissToastEvent";
@@ -70,6 +71,7 @@ export type {
 	RcbStartStreamMessageEvent,
 	RcbChunkStreamMessageEvent,
 	RcbStopStreamMessageEvent,
+	RcbRemoveMessageEvent,
 	RcbLoadChatHistoryEvent,
 	RcbToggleChatWindowEvent,
 	RcbToggleAudioEvent,
