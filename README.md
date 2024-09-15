@@ -54,6 +54,9 @@ React ChatBotify offers a wide array of features designed to enhance your chatbo
 - **Sensitive Input:** Handle sensitive information from your users by masking them, maintaining user confidentiality.
 - **Mobile-Friendly Interface:** Provide smooth user experience across various devices with our mobile-friendly chatbot interface.
 - **Themes:** Choose from a wide variety of community themes, stack multiple themes together, and explore endless possibilities to customize the appearance of your chatbot!
+- **Plugins:** Choose from numerous custom plugins to enhance and extend the features/functionalities of your chatbot, and if you can't find what you're looking for, build your own!
+- **Custom Events:** Leverage on custom events emitted by the chatbot to perform your own application logic.
+- **Custom Hooks:** The custom hooks provided by the chatbot exposes functionalities that you can tap on to interact with the chatbot from your own components.
 
 These features, **along with many others**, empower developers to create highly interactive and personalized chatbot experiences tailored to their specific application requirements.
 
