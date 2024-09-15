@@ -1,5 +1,40 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.9 (16-09-2024)
+
+**Breaking Changes (Advanced Users):**
+- If you are manually manipulating the `messages` array via advanced messages, note that the message elements now enforce that the following fields must be present (more details [**here**](https://react-chatbotify.com/docs/introduction/migration_v2#message-attributes-expanded-and-required)):
+  - id
+  - sender
+  - content
+  - type
+  - timestamp
+- If you are currently using any of the advanced features (e.g. `SettingsContext`, `StylesContext`, `MessagesContext` or `PathsContext`), note that these have been removed in favor of a single provider (`ChatBotProvider`). The `advance` configuration section has also been removed from `settings` as the entire concept of advanced features is being dropped (more details [**here**](https://react-chatbotify.com/docs/introduction/migration_v2#advance-section-removed)).
+
+**Breaking Changes (All Users):**
+- The `isOpen` variable in `settings` which tracked the open/close state of the chatbot window has been removed, in favor of `useChatWindow` hook. More details [**here**](https://react-chatbotify.com/docs/introduction/migration_v2#removed-isopen-from-botoptions).
+- Last beta release, a new `params.injectToast` was added. This has been renamed to `params.showToast` to avoid conceptual similarities with messages.
+
+**Fixed:**
+- Fixed an issue where `params.setTextAreaValue` may not respect the character limit of the text area (if set).
+
+**Added:**
+- A new **id** prop has been added to uniquely identify a bot (relevant for firing events when there are multiple chatbots).
+- A new **plugins** prop is now available. However, there are no plugins released yet - they will come in October.
+- A new **hooks** feature is now available, granting extreme flexibility in interacting with the chatbot from **your own components**. This is achieved by nesting your components within a single `<ChatBotProvider/>`. More details [**here**](https://react-chatbotify.com/docs/api/hooks).
+- A new **events** feature is now available, allowing you to listen for chatbot events and run your own application logic. Events are an opt-in feature so you'll need to enable them in `settings`. More details [**here**](https://react-chatbotify.com/docs/api/events).
+- A message id (string) is now returned for `injectMessage` and `streamMessage` which identifies the message the content is sent in (returns null if sending of message was prevented in event listeners).
+- A toast id (string) is now returned for `showToast` which identifies the toast the content is sent in (returns null if sending of toast was prevented in event listeners).
+- The `transition` attribute now accepts a `number` as well (defaults interruptable to `false`).
+- 
+
+**Note:**
+This beta release includes large scale changes in order to deliver on the events/plugins feature. Pending major bugs or implementation issues, this will be the last round of introducing massive changes as we strive towards a stable version for v2. Note that given the scale of these changes, there are minor breaking changes (in addition to the initial beta release), which largely affects advanced users. For users updating from the older beta versions, I've put together the sections to catch up on for addressing breaking changes:
+- [**Removed isOpen from BotOptions (Settings)**](https://react-chatbotify.com/docs/introduction/migration_v2#removed-isopen-from-botoptions)
+- [**Advance Section Removed**](https://react-chatbotify.com/docs/introduction/migration_v2#advance-section-removed)
+- [**Message Attributes Expanded and Required**](https://react-chatbotify.com/docs/introduction/migration_v2#message-attributes-expanded-and-required)
+If you're updating to this version from v1, then you should still refer to the migration guide which has also already been updated with all the latest information.
+
 ## v2.0.0-beta.8 (06-09-2024)
 
 **Fixed:**
