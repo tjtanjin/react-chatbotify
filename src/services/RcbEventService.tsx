@@ -1,6 +1,3 @@
-import { Message } from "../types/Message";
-import { Settings } from "../types/Settings";
-import { Styles } from "../types/Styles";
 import { EventDetail } from "../types/internal/events/EventDetail";
 import { RcbBaseEvent } from "../types/internal/events/RcbBaseEvent";
 import { RcbEvent } from "../constants/RcbEvent";
@@ -31,8 +28,8 @@ const cancellableMap = {
  * @param eventName name of the event to emit
  * @param eventDetail additional data to include with the event.
  */
-export const emitRcbEvent = (eventName: typeof RcbEvent[keyof typeof RcbEvent], eventDetail: EventDetail, data: object,
-	settings: Settings, styles: Styles, messages: Message[], paths: string[]): RcbBaseEvent => {
+export const emitRcbEvent = (eventName: typeof RcbEvent[keyof typeof RcbEvent],
+	eventDetail: EventDetail, data: object): RcbBaseEvent => {
 
 	// Create a custom event with the provided name and detail
 	const event: RcbBaseEvent = new CustomEvent(eventName, {
@@ -41,10 +38,6 @@ export const emitRcbEvent = (eventName: typeof RcbEvent[keyof typeof RcbEvent], 
 	}) as RcbBaseEvent<typeof data, EventDetail>;
 
 	event.data = data;
-	event.settings = settings;
-	event.styles = styles;
-	event.messages = messages;
-	event.paths = paths;
 
 	window.dispatchEvent(event);
 	return event;

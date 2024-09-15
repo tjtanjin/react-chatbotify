@@ -35,7 +35,7 @@ export const useRcbEventInternal = () => {
 	 */
 	const callRcbEvent = useCallback((eventName: typeof RcbEvent[keyof typeof RcbEvent], data: object) => {
 		const details = {id: botIdRef.current, currPath: getCurrPath(), prevPath: getPrevPath()}
-		return emitRcbEvent(eventName, details, data, settings, styles, messages, paths);
+		return emitRcbEvent(eventName, details, data);
 	}, [paths])
 
 	return { callRcbEvent };
