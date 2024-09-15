@@ -6,5 +6,4 @@ import { Message } from "../Message";
  */
 export type RcbChunkStreamMessageEvent = RcbBaseEvent<{
 	message: Message;
-	chunk: string;
 }>;

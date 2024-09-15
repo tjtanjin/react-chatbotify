@@ -12,15 +12,6 @@ import { RcbEvent } from "../../constants/RcbEvent";
  * Internal custom hook for managing firing of rcb events.
  */
 export const useRcbEventInternal = () => {
-	// handles settings
-	const { settings } = useSettingsContext();
-
-	// handles styles
-	const { styles } = useStylesContext();
-
-	// handles messages
-	const { messages } = useMessagesContext();
-
 	// handles paths
 	const { getCurrPath, getPrevPath, paths } = usePaths();
 
