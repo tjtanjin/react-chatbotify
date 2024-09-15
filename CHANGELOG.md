@@ -20,13 +20,12 @@
 
 **Added:**
 - A new **id** prop has been added to uniquely identify a bot (relevant for firing events when there are multiple chatbots).
-- A new **plugins** prop is now available. However, there are no plugins released yet - they will come in October.
+- A new **plugins** prop is now available. However, there are no plugins released yet - they will come in October. More details [**here**](https://react-chatbotify.com/docs/concepts/plugins).
 - A new **hooks** feature is now available, granting extreme flexibility in interacting with the chatbot from **your own components**. This is achieved by nesting your components within a single `<ChatBotProvider/>`. More details [**here**](https://react-chatbotify.com/docs/api/hooks).
 - A new **events** feature is now available, allowing you to listen for chatbot events and run your own application logic. Events are an opt-in feature so you'll need to enable them in `settings`. More details [**here**](https://react-chatbotify.com/docs/api/events).
 - A message id (string) is now returned for `injectMessage` and `streamMessage` which identifies the message the content is sent in (returns null if sending of message was prevented in event listeners).
 - A toast id (string) is now returned for `showToast` which identifies the toast the content is sent in (returns null if sending of toast was prevented in event listeners).
 - The `transition` attribute now accepts a `number` as well (defaults interruptable to `false`).
-- 
 
 **Note:**
 This beta release includes large scale changes in order to deliver on the events/plugins feature. Pending major bugs or implementation issues, this will be the last round of introducing massive changes as we strive towards a stable version for v2. Note that given the scale of these changes, there are minor breaking changes (in addition to the initial beta release), which largely affects advanced users. For users updating from the older beta versions, I've put together the sections to catch up on for addressing breaking changes:
