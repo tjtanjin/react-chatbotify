@@ -4,8 +4,6 @@ import { emitRcbEvent } from "../../services/RcbEventService";
 import { usePathsContext } from "../../context/PathsContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
-import { useStylesContext } from "../../context/StylesContext";
-import { useMessagesContext } from "../../context/MessagesContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { Flow } from "../../types/Flow";
 import { RcbEvent } from "../../constants/RcbEvent";
@@ -16,12 +14,6 @@ import { RcbEvent } from "../../constants/RcbEvent";
 export const usePathsInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
-
-	// handles styles
-	const { styles } = useStylesContext();
-
-	// handles messages
-	const { messages } = useMessagesContext();
 
 	// handles paths
 	const { paths, setPaths } = usePathsContext();

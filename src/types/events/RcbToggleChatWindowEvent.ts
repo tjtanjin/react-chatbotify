@@ -4,5 +4,6 @@ import { RcbBaseEvent } from "../internal/events/RcbBaseEvent";
  * Defines the data available for toggle chat window event.
  */
 export type RcbToggleChatWindowEvent = RcbBaseEvent<{
-	toggleState: string;
+	currState: boolean;
+	newState: boolean;
 }>;
