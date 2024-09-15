@@ -211,7 +211,7 @@ export const useMessagesInternal = () => {
 			return updatedMessages;
 		});
 		return streamMessageMap.current.get(sender) || null;
-	}, []);
+	},[]);
 
 	/**
 	 * Sets the streaming mode of the chatbot.
@@ -233,9 +233,12 @@ export const useMessagesInternal = () => {
 			return true;
 		}
 
+		const messageId = streamMessageMap.current.get(sender);
+		const messageToEndStreamFor = messages.find((message) => message.id === messageId);
+
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
-			const event = callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {});
+			const event = callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {messageToEndStreamFor});
 			if (event.defaultPrevented) {
 				return false;
 			}
@@ -245,7 +248,7 @@ export const useMessagesInternal = () => {
 		streamMessageMap.current.delete(sender);
 		saveChatHistory(messages);
 		return true;
-	}, [messages]);
+	}, [messages])
 
 	return {
 		endStreamMessage,

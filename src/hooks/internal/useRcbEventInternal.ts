@@ -3,9 +3,6 @@ import { useCallback } from "react";
 import { emitRcbEvent } from "../../services/RcbEventService";
 import { usePaths } from "../usePaths";
 import { useBotRefsContext } from "../../context/BotRefsContext";
-import { useSettingsContext } from "../../context/SettingsContext";
-import { useStylesContext } from "../../context/StylesContext";
-import { useMessagesContext } from "../../context/MessagesContext";
 import { RcbEvent } from "../../constants/RcbEvent";
 
 /**
