@@ -31,7 +31,9 @@
     "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "start": "vite serve",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "author": "tjtanjin",
   "license": "MIT",
@@ -45,7 +47,8 @@
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@vitejs/plugin-react": "^4.0.4",
-    "chromedriver": "^127.0.2",
+    "cypress": "^13.14.2",
+    "cypress-file-upload": "^5.0.8",
     "eslint": "^8.43.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
@@ -53,7 +56,6 @@
     "husky": "^8.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "selenium-webdriver": "^4.23.0",
     "typescript": "^5.1.6",
     "vite": "^4.5.2",
     "vite-plugin-dts": "^3.4.0",
