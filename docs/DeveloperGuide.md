@@ -124,13 +124,11 @@ That way, we can identify what are the tasks to finish up here and optionally, s
 
 ## Testing
 
-Testing in this project is done via the **selenium webdriver**. The default flow used in development within *App.tsx* is used to run the test cases against in an automated test.
-
-In order to run the test, you will need to **download** the [chromedriver](https://chromedriver.chromium.org/downloads) matching your google chrome version and drop it within the *test* folder. Following which, execute `npm run cy:run` to run the tests. Optionally, you may adjust configurations within *config.js* to aid in your debugging/testing.
+Testing in this project is done via [**cypress**](https://www.cypress.io/). The default flow used in development within *App.tsx* is used to run the test cases against in an automated test. To run the test locally, execute `npm run cy:run`. For debugging purposes, you may also find it useful to run the test with `npm run cy:open`.
 
 Finally, if you would like to, you can then also build the library with `npm run build`.
 
-Note: As of version **1.3.0**, the chatbot also comes with streaming messages as a feature. Should you decide to run tests against stream messages, you may wish to increase the `WAIT_DURATION` and set `HEADLESS` to `false` in _test/config.js_.
+Note: As of version **1.3.0**, the chatbot also comes with streaming messages as a feature. Running tests against streaming messages with cypress is not yet setup. If you're keen to work on this issue, feel free to reach out!
 
 ## Pull Requests
 
