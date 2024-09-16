@@ -126,7 +126,7 @@ That way, we can identify what are the tasks to finish up here and optionally, s
 
 Testing in this project is done via the **selenium webdriver**. The default flow used in development within *App.tsx* is used to run the test cases against in an automated test.
 
-In order to run the test, you will need to **download** the [chromedriver](https://chromedriver.chromium.org/downloads) matching your google chrome version and drop it within the *test* folder. Following which, execute `npm run test` to run the tests. Optionally, you may adjust configurations within *config.js* to aid in your debugging/testing.
+In order to run the test, you will need to **download** the [chromedriver](https://chromedriver.chromium.org/downloads) matching your google chrome version and drop it within the *test* folder. Following which, execute `npm run cy:run` to run the tests. Optionally, you may adjust configurations within *config.js* to aid in your debugging/testing.
 
 Finally, if you would like to, you can then also build the library with `npm run build`.
 

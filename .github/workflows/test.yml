@@ -41,4 +41,4 @@ jobs:
         run: npm run start &
 
       - name: Run Tests
-        run: npm run test
+        run: npm run cy:run
