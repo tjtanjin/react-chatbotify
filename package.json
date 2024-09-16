@@ -26,7 +26,6 @@
   },
   "scripts": {
     "lint": "eslint --fix . --ext .tsx",
-    "test": "node ./test/RunTests.js",
     "build": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
