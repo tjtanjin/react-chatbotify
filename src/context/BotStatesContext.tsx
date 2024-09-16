@@ -50,6 +50,13 @@ type BotStatesContextType = {
 
 	timeoutId: ReturnType<typeof setTimeout> | null;
 	setTimeoutId: Dispatch<SetStateAction<ReturnType<typeof setTimeout> | null>>;
+
+	viewportHeight: number;
+	setViewportHeight: Dispatch<SetStateAction<number>>;
+
+	viewportWidth: number;
+	setViewportWidth: Dispatch<SetStateAction<number>>;
+
 };
 const BotStatesContext = createContext<BotStatesContextType>({} as BotStatesContextType);
 const useBotStatesContext = () => useContext(BotStatesContext);
@@ -82,6 +89,11 @@ const BotStatesProvider = ({
 	const [blockAllowsAttachment, setBlockAllowsAttachment] = useState<boolean>(false);
 	// tracks block timeout if transition is interruptable
 	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
+	// tracks view port height and width (for auto-resizing on mobile view)
+	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number
+		|| window.innerHeight);
+	const [viewportWidth, setViewportWidth] = useState<number>(window.visualViewport?.width as number
+		|| window.innerWidth);
 
 	return (
 		<BotStatesContext.Provider value={{
@@ -114,7 +126,11 @@ const BotStatesProvider = ({
 			blockAllowsAttachment,
 			setBlockAllowsAttachment,
 			timeoutId,
-			setTimeoutId
+			setTimeoutId,
+			viewportHeight,
+			setViewportHeight,
+			viewportWidth,
+			setViewportWidth
 		}}>
 			{children}
 		</BotStatesContext.Provider>

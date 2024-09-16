@@ -13,19 +13,20 @@ export const useChatWindowInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles bot states
-	const { isChatWindowOpen, setIsChatWindowOpen } = useBotStatesContext();
+	const {
+		isChatWindowOpen,
+		setIsChatWindowOpen,
+		viewportHeight,
+		setViewportHeight,
+		viewportWidth,
+		setViewportWidth
+	} = useBotStatesContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
 
 	// tracks scroll height
 	const [chatScrollHeight, setChatScrollHeight] = useState<number>(0);
-
-	// tracks view port height and width (for auto-resizing on mobile view)
-	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number
-		|| window.innerHeight);
-	const [viewportWidth, setViewportWidth] = useState<number>(window.visualViewport?.width as number
-		|| window.innerWidth);
 
 	/**
 	 * Toggles chat window.

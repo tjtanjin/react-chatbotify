@@ -127,43 +127,40 @@ export const useBotEffectInternal = () => {
 		setHistoryStorageValues(settings);
 	}, [settings.chatHistory?.storageKey, settings.chatHistory?.maxEntries, settings.chatHistory?.disabled]);
 
-	// handles virtualkeyboard api (if supported on browser)
-	useEffect(() => {
-		// if is desktop or is embedded bot, nothing to resize
-		if (isDesktop || settings.general?.embedded) {
-			return;
-		}
-		
-		if (navigator.virtualKeyboard) {
-			navigator.virtualKeyboard.overlaysContent = true;
-			navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
-				if (!event.target) {
-					return;
-				}
+	// handles virtualkeyboard api (if supported on browser) on mobile devices
+	if (!isDesktop && !settings.general?.embedded) {
+		useEffect(() => {
+			if (navigator.virtualKeyboard) {
+				navigator.virtualKeyboard.overlaysContent = true;
+				navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
+					if (!event.target) {
+						return;
+					}
 
-				const { x, y, width, height } = (event.target as VirtualKeyboard).boundingRect;
-				// width does not need adjustments so only height is adjusted
-				if (x == 0 && y == 0 && width == 0 && height == 0) {
-					// delay added as it takes time for keyboard to appear and resize the viewport height
-					setTimeout(() => {
-						setViewportHeight(window.visualViewport?.height as number);
-					}, 101);
-
-					// a second check added in case device lags and needs a later resizing
-					setTimeout(() => {
-						if (viewportHeight != window.visualViewport?.height as number) {
+					const { x, y, width, height } = (event.target as VirtualKeyboard).boundingRect;
+					// width does not need adjustments so only height is adjusted
+					if (x == 0 && y == 0 && width == 0 && height == 0) {
+						// delay added as it takes time for keyboard to appear and resize the viewport height
+						setTimeout(() => {
 							setViewportHeight(window.visualViewport?.height as number);
-						}
-					}, 1001);
-				} else {
-					// delay added as it takes time for keyboard to disappear and resize the viewport height
-					setTimeout(() => {
-						setViewportHeight(window.visualViewport?.height as number - height);
-					}, 101);
-				}
-			});
-		}
-	}, [])
+						}, 101);
+
+						// a second check added in case device lags and needs a later resizing
+						setTimeout(() => {
+							if (viewportHeight != window.visualViewport?.height as number) {
+								setViewportHeight(window.visualViewport?.height as number);
+							}
+						}, 1001);
+					} else {
+						// delay added as it takes time for keyboard to disappear and resize the viewport height
+						setTimeout(() => {
+							setViewportHeight(window.visualViewport?.height as number - height);
+						}, 101);
+					}
+				});
+			}
+		}, [])
+	}
 
 	// triggers saving of chat history and checks for notifications
 	useEffect(() => {
@@ -188,48 +185,52 @@ export const useBotEffectInternal = () => {
 		playNotificationSound();
 	}, [messages.length]);
 
-	// resets unread count on opening chat and handles scrolling/resizing window on mobile devices
+	// resets unread count on opening chat
 	useEffect(() => {
 		if (isChatWindowOpen) {
 			setUnreadCount(0);
-			setViewportHeight(window.visualViewport?.height as number);
-			setViewportWidth(window.visualViewport?.width as number);
 		}
-
-		if (isDesktop) {
-			return;
-		}
-
-		// handles scrolling of window when chat is open (only for mobile view).
-		const handleMobileScrollOpened = () => window.scrollTo({top: 0, left: 0, behavior: "auto"});
-		// handles scrolling of window when chat is closed (only for mobile view).
-		const handleMobileScrollClosed = () => scrollPositionRef.current = window.scrollY;
-		const handleResize = () => {
-			setViewportHeight(window.visualViewport?.height as number);
-			setViewportWidth(window.visualViewport?.width as number);
-		}
-
-		const cleanupScrollEventListeners = () => {
-			window.removeEventListener("scroll", handleMobileScrollOpened);
-			window.removeEventListener("scroll", handleMobileScrollClosed);
-			window.visualViewport?.removeEventListener("resize", handleResize);
-		};
-
-		if (isChatWindowOpen) {
-			cleanupScrollEventListeners();
-			document.body.style.position = "fixed";
-			window.addEventListener("scroll", handleMobileScrollOpened);
-			window.visualViewport?.addEventListener("resize", handleResize);
-		} else {
-			document.body.style.position = "static";
-			cleanupScrollEventListeners();
-			window.scrollTo({top: scrollPositionRef.current, left: 0, behavior: "auto"});
-			window.addEventListener("scroll", handleMobileScrollClosed);
-			window.visualViewport?.removeEventListener("resize", handleResize);
-		}
-
-		return cleanupScrollEventListeners;
 	}, [isChatWindowOpen]);
+
+	// handles scrolling/resizing window on mobile devices
+	if (!isDesktop) {
+		useEffect(() => {
+			if (isChatWindowOpen) {
+				setViewportHeight(window.visualViewport?.height as number);
+				setViewportWidth(window.visualViewport?.width as number);
+			}
+	
+			// handles scrolling of window when chat is open (only for mobile view).
+			const handleMobileScrollOpened = () => window.scrollTo({top: 0, left: 0, behavior: "auto"});
+			// handles scrolling of window when chat is closed (only for mobile view).
+			const handleMobileScrollClosed = () => scrollPositionRef.current = window.scrollY;
+			const handleResize = () => {
+				setViewportHeight(window.visualViewport?.height as number);
+				setViewportWidth(window.visualViewport?.width as number);
+			}
+	
+			const cleanupScrollEventListeners = () => {
+				window.removeEventListener("scroll", handleMobileScrollOpened);
+				window.removeEventListener("scroll", handleMobileScrollClosed);
+				window.visualViewport?.removeEventListener("resize", handleResize);
+			};
+	
+			if (isChatWindowOpen) {
+				cleanupScrollEventListeners();
+				document.body.style.position = "fixed";
+				window.addEventListener("scroll", handleMobileScrollOpened);
+				window.visualViewport?.addEventListener("resize", handleResize);
+			} else {
+				document.body.style.position = "static";
+				cleanupScrollEventListeners();
+				window.scrollTo({top: scrollPositionRef.current, left: 0, behavior: "auto"});
+				window.addEventListener("scroll", handleMobileScrollClosed);
+				window.visualViewport?.removeEventListener("resize", handleResize);
+			}
+	
+			return cleanupScrollEventListeners;
+		}, [isChatWindowOpen]);
+	}
 
 	// performs pre-processing when paths change
 	useEffect(() => {
