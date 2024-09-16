@@ -10,6 +10,7 @@ on:
 
 jobs:
   lint:
+    name: Run Lint Check
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.5.1'
+          node-version: '21.7.3'
 
       - name: Install Dependencies
         run: npm ci

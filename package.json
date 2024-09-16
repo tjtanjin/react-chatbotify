@@ -40,10 +40,14 @@
     "type": "git",
     "url": "https://github.com/tjtanjin/react-chatbotify"
   },
+  "peerDependencies": {
+    "react": ">=16.14.0 <20.0.0",
+    "react-dom": ">=16.14.0 <20.0.0"
+  },
   "devDependencies": {
     "@types/dom-speech-recognition": "^0.0.4",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
+    "@types/react": "^18.3.6",
+    "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@vitejs/plugin-react": "^4.0.4",
     "cypress": "^13.14.2",
@@ -53,8 +57,8 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.1.6",
     "vite": "^4.5.2",
     "vite-plugin-dts": "^3.4.0",

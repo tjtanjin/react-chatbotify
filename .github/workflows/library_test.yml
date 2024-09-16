@@ -1,0 +1,74 @@
+name: Library Test
+run-name: Library Test
+
+on:
+  workflow_run:
+    workflows: [Integration Test]
+    types: [completed]
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  library-test:
+    name: Run Library Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        react-version: [16.14.0, 17.0.2, 18.3.1]
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21.7.3'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Pack Library
+        run: npm pack
+
+      - name: Create Test Project
+        run: |
+          npx create-vite@latest test-project --template react-ts
+
+      - name: Copy Template File
+        run: |
+          cp ./cypress/fixtures/templates/ChatBotApp.tsx ./test-project/src/App.tsx
+          if [[ "${{ matrix.react-version }}" =~ ^18 ]]; then
+            cp ./src/devIndex.tsx ./test-project/src/main.tsx
+          else
+            cp ./cypress/fixtures/templates/pre_react_18/index.tsx ./test-project/src/main.tsx
+          fi
+
+      - name: Install Dependencies in Test Project
+        run: |
+          cd ./test-project
+          npm install
+          npm install -g vite
+
+      - name: Install Specific React Version in Test Project
+        run: |
+          cd ./test-project
+          npm uninstall react react-dom
+          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }}
+
+      - name: Install React ChatBotify (.tgz) into Test Project
+        run: |
+          cd ./test-project
+          npm install ../*.tgz
+
+      - name: Start App
+        run: |
+          cd ./test-project
+          vite --port 3000 &
+
+      - name: Run Library Tests
+        run: |
+          npm run cy:run

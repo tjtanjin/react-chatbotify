@@ -11,6 +11,7 @@ on:
 
 jobs:
   build:
+    name: Run Build Process
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,9 +33,3 @@ jobs:
 
       - name: Build
         run: npm run build --if-present
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact-${{ matrix.node-version }}
-          path: dist
