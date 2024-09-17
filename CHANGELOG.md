@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.10 (18-09-2024)
+
+**Fixed:**
+- Fixed an issue where chatbot view on mobile devices may not resize correctly
+- Fixed an issue where uuids are not generated properly for non-https environments
+
 ## v2.0.0-beta.9 (16-09-2024)
 
 **Breaking Changes (Advanced Users):**
