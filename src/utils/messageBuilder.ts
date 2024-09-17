@@ -1,5 +1,7 @@
 import { isValidElement } from "react";
 
+import { generateSecureUUID } from "./idGenerator";
+
 /**
  * Creates a new message with given content and sender.
  *
@@ -8,7 +10,7 @@ import { isValidElement } from "react";
  */
 export const createMessage = (content: string | JSX.Element, sender: string, ) => {
 	return {
-		id: crypto.randomUUID(),
+		id: generateSecureUUID(),
 		content,
 		sender,
 		type: isValidElement(content) ? "object" : "string",

@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import { generateSecureUUID } from "../utils/idGenerator";
 import { useRcbEventInternal } from "./internal/useRcbEventInternal";
 import { useToastsContext } from "../context/ToastsContext";
 import { useSettingsContext } from "../context/SettingsContext";
@@ -30,7 +31,7 @@ export const useToast = () => {
 			if (settings.toast?.forbidOnMax) {
 				return null;
 			}
-			id = crypto.randomUUID();
+			id = generateSecureUUID();
 			let toast = { id, content, timeout };
 
 			// handles show toast event
@@ -43,7 +44,7 @@ export const useToast = () => {
 			}
 			setToasts(prevToasts => [...prevToasts.slice(1), toast]);
 		}
-		id = crypto.randomUUID();
+		id = generateSecureUUID();
 		let toast = { id, content, timeout };
 
 		// handles show toast event

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { isDesktop } from "../utils/displayChecker";
 import { parseConfig } from "../utils/configParser";
+import { generateSecureUUID } from "../utils/idGenerator";
 import { BotRefsProvider } from "./BotRefsContext";
 import { BotStatesProvider } from "./BotStatesContext";
 import { MessagesProvider } from "./MessagesContext";
@@ -26,7 +27,7 @@ export const useChatBotContext = () => {
 
 const ChatBotProvider = ({
 	children,
-	id = crypto.randomUUID(),
+	id = generateSecureUUID(),
 	flow = WelcomeFlow,
 	settings,
 	styles,
