@@ -1,4 +1,4 @@
-import { useContext, createContext, Dispatch, SetStateAction, useState } from "react";
+import { useContext, createContext, Dispatch, SetStateAction } from "react";
 
 import { Settings } from "../types/Settings";
 import { DefaultSettings } from "../constants/internal/DefaultSettings";
@@ -18,12 +18,13 @@ const useSettingsContext = () => useContext(SettingsContext);
  */
 const SettingsProvider = ({
 	children,
-	initialSettings = DefaultSettings
+	settings = DefaultSettings,
+	setSettings
 }: {
 	children: JSX.Element;
-	initialSettings?: Settings;
+	settings: Settings;
+	setSettings: Dispatch<SetStateAction<Settings>>;
 }) => {
-	const [settings, setSettings] = useState<Settings>(initialSettings);
 	return (
 		<SettingsContext.Provider value={{ settings, setSettings }}>
 			{children}

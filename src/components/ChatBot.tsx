@@ -1,10 +1,17 @@
+import { useState } from "react";
+
 import ChatBotContainer from "./ChatBotContainer";
+import ChatBotLoader from "./ChatBotLoader";
+import { generateSecureUUID } from "../utils/idGenerator";
 import ChatBotProvider, { useChatBotContext } from "../context/ChatBotProvider";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Theme } from "../types/Theme";
 import { Plugin } from "../types/Plugin";
+import { DefaultSettings } from "../constants/internal/DefaultSettings";
+import { DefaultStyles } from "../constants/internal/DefaultStyles";
+import { WelcomeFlow } from "../constants/internal/WelcomeFlow";
 
 /**
  * Determines if user gave a provider or if one needs to be created, before rendering the chatbot.
@@ -17,34 +24,63 @@ import { Plugin } from "../types/Plugin";
  * @param plugins plugins to initialize
  */
 const ChatBot = ({
-	id,
-	flow,
-	settings,
-	styles,
-	themes,
-	plugins
+	id = generateSecureUUID(),
+	flow = WelcomeFlow,
+	settings = DefaultSettings,
+	styles = DefaultStyles,
+	themes = [],
+	plugins = []
 }: {
 	id?: string;
 	flow?: Flow;
 	settings?: Settings;
 	styles?: Styles;
-	themes?: undefined | Theme | Array<Theme>;
+	themes?: Theme | Array<Theme>;
 	plugins?: Array<Plugin>;
 }) => {
+	// handles case where flow is empty
+	if (Object.keys(flow).length === 0) {
+		flow = WelcomeFlow;
+	}
 
-	// checks if the ChatBot is inside a provider
-	const isInsideProvider = useChatBotContext();
+	// handles case where settings is empty
+	if (Object.keys(settings).length === 0) {
+		settings = DefaultSettings;
+	}
+
+	// handles case where styles is empty
+	if (Object.keys(styles).length === 0) {
+		styles = DefaultStyles;
+	}
+
+	// handles loading of chatbot only when config is loaded
+	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
+	
+	// used to determine if users provided their own chatbotprovider
+	const chatBotContext = useChatBotContext();
 
 	/**
 	 * Renders chatbot with provider depending on whether one was provided by the user.
 	 */
 	const renderChatBot = () => {
-		if (isInsideProvider) {
-			return (<ChatBotContainer plugins={plugins} />);
+		if (chatBotContext) {
+			return (
+				<>
+					<ChatBotLoader id={id} flow={flow} settings={settings} styles={styles} themes={themes}
+						setConfigLoaded={setConfigLoaded}
+					/>
+					{configLoaded && <ChatBotContainer plugins={plugins} />}
+				</>
+			);
 		}
 		return (
-			<ChatBotProvider id={id} flow={flow} settings={settings} styles={styles} themes={themes}>
-				<ChatBotContainer plugins={plugins} />
+			<ChatBotProvider>
+				<>
+					<ChatBotLoader id={id} flow={flow} settings={settings} styles={styles} themes={themes}
+						setConfigLoaded={setConfigLoaded}
+					/>
+					{configLoaded && <ChatBotContainer plugins={plugins} />}
+				</>
 			</ChatBotProvider>
 		)
 	}

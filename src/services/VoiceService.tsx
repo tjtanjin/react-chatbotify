@@ -26,7 +26,7 @@ export const startVoiceRecording = (
 	setTextAreaValue: (value: string) => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
 	audioChunksRef: RefObject<BlobPart[]>,
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement | null>
 ) => {
 	if (settings.voice?.sendAsAudio) {
 		// Only use MediaRecorder when sendAsAudio is enabled
@@ -54,7 +54,7 @@ const startSpeechRecognition = (
 	triggerSendVoiceInput: () => void,
 	setTextAreaValue: (value: string) => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
-	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement | null>
 ) => {
 	if (!recognition) {
 		return;
@@ -204,7 +204,7 @@ export const syncVoiceWithChatInput = (keepVoiceOn: boolean, settings: Settings)
  * 
  * @param handleToggleVoice handles toggling of voice
  */
-const handleTimeout = (toggleVoice: () => void, inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement>) => {
+const handleTimeout = (toggleVoice: () => void, inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement | null>) => {
 	if (!inputRef.current?.disabled) {
 		toggleVoice();
 	}

@@ -90,54 +90,66 @@ const ChatBotContainer = ({
 		return styles.chatWindowStyle;
 	}
 
-	return (
-		<div 
-			onMouseDown={(event: MouseEvent) => {
-				// checks if user is interacting with chatbot for the first time
-				if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
-					setHasFlowStarted(true);
-				}
+	/**
+	 * Checks if chatbot should be shown depending on platform.
+	 */
+	const shouldShowChatBot = () => {
+		return (isDesktop && settings.general?.desktopEnabled)
+			|| (!isDesktop && settings.general?.mobileEnabled);
+	}
 
-				// if not on mobile, should remove focus
-				isDesktop ? inputRef.current?.blur() : event?.preventDefault();
-			}}
-			className={getWindowStateClass()}
-		>
-			<ChatBotTooltip/>
-			<ChatBotButton/>
-			{/* styles and prevents background from scrolling on mobile when chat window is open */}
-			{isChatWindowOpen && !isDesktop && !settings.general?.embedded &&
-				<>
-					<style>
-						{`
-							html {
-								overflow: hidden !important;
-								touch-action: none !important;
-								scroll-behavior: auto !important;
-							}
-						`}
-					</style>
-					<div 
-						style={{
-							position: "fixed",
-							top: 0,
-							left: 0,
-							width: "100%",
-							height: "100%",
-							backgroundColor: "#fff",
-							zIndex: 9999
-						}}
-					>	
+	return (
+		<>
+			{shouldShowChatBot() &&
+				<div 
+					onMouseDown={(event: MouseEvent) => {
+						// checks if user is interacting with chatbot for the first time
+						if (!hasFlowStarted && settings.general?.flowStartTrigger === "ON_CHATBOT_INTERACT") {
+							setHasFlowStarted(true);
+						}
+
+						// if not on mobile, should remove focus
+						isDesktop ? inputRef.current?.blur() : event?.preventDefault();
+					}}
+					className={getWindowStateClass()}
+				>
+					<ChatBotTooltip/>
+					<ChatBotButton/>
+					{/* styles and prevents background from scrolling on mobile when chat window is open */}
+					{isChatWindowOpen && !isDesktop && !settings.general?.embedded &&
+						<>
+							<style>
+								{`
+									html {
+										overflow: hidden !important;
+										touch-action: none !important;
+										scroll-behavior: auto !important;
+									}
+								`}
+							</style>
+							<div 
+								style={{
+									position: "fixed",
+									top: 0,
+									left: 0,
+									width: "100%",
+									height: "100%",
+									backgroundColor: "#fff",
+									zIndex: 9999
+								}}
+							>	
+							</div>
+						</>
+					}
+					<div style={getChatWindowStyle()} className="rcb-chat-window">
+						{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
+						<ChatBotBody chatScrollHeight={chatScrollHeight} setChatScrollHeight={setChatScrollHeight}/>
+						{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
+						{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
 					</div>
-				</>
+				</div>
 			}
-			<div style={getChatWindowStyle()} className="rcb-chat-window">
-				{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
-				<ChatBotBody chatScrollHeight={chatScrollHeight} setChatScrollHeight={setChatScrollHeight}/>
-				{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
-				{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
-			</div>
-		</div>
+		</>
 	);
 };
 

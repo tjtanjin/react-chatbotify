@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from "react";
+import React, { createContext, MutableRefObject, RefObject, useContext, useRef } from "react";
 
 import { Flow } from "../types/Flow";
 
@@ -7,11 +7,11 @@ import { Flow } from "../types/Flow";
  */
 type BotRefsContextType = {
 	botIdRef: React.RefObject<string>;
-	flowRef: React.RefObject<Flow>;
-	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement>;
+	flowRef: React.MutableRefObject<Flow>;
+	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement | null>;
 	prevInputRef: React.MutableRefObject<string>;
 	streamMessageMap: React.MutableRefObject<Map<string, string>>;
-	chatBodyRef: React.RefObject<HTMLDivElement>;
+	chatBodyRef: React.RefObject<HTMLDivElement | null>;
 	paramsInputRef: React.MutableRefObject<string>;
 	keepVoiceOnRef: React.MutableRefObject<boolean>;
 };
@@ -23,27 +23,19 @@ const useBotRefsContext = () => useContext(BotRefsContext);
  */
 const BotRefsProvider = ({
 	children,
-	id,
-	initialFlow,
+	botIdRef,
+	flowRef,
 }: {
-	children: JSX.Element
-	id: string;
-	initialFlow: Flow
+	children: JSX.Element;
+	botIdRef: RefObject<string>;
+	flowRef: MutableRefObject<Flow>;
 }) => {
-	const botIdRef = useRef<string>(id);
-	const flowRef = useRef<Flow>(initialFlow);
-	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
 	const prevInputRef = useRef<string>("");
 	const streamMessageMap = useRef<Map<string, string>>(new Map());
-	const chatBodyRef = useRef<HTMLDivElement>(null);
+	const chatBodyRef = useRef<HTMLDivElement | null>(null);
 	const paramsInputRef = useRef<string>("");
 	const keepVoiceOnRef = useRef<boolean>(false);
-
-	// always ensures that the ref is in sync with the latest flow
-	// necessary for state updates in user-provided flows to be reflected timely
-	if (flowRef.current !== initialFlow) {
-		flowRef.current = initialFlow;
-	}
 
 	return (
 		<BotRefsContext.Provider value={{

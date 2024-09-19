@@ -1,4 +1,4 @@
-import { useContext, createContext, Dispatch, SetStateAction, useState } from "react";
+import { useContext, createContext, Dispatch, SetStateAction } from "react";
 
 import { Styles } from "../types/Styles";
 import { DefaultStyles } from "../constants/internal/DefaultStyles";
@@ -18,12 +18,13 @@ const useStylesContext = () => useContext(StylesContext);
  */
 const StylesProvider = ({
 	children,
-	initialStyles = DefaultStyles
+	styles = DefaultStyles,
+	setStyles
 }: {
 	children: JSX.Element;
-	initialStyles?: Styles;
+	styles: Styles;
+	setStyles: Dispatch<SetStateAction<Styles>>;
 }) => {
-	const [styles, setStyles] = useState<Styles>(initialStyles);
 	return (
 		<StylesContext.Provider value={{ styles, setStyles }}>
 			{children}

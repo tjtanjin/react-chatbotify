@@ -26,7 +26,7 @@ export const useNotificationInternal = () => {
 
 	// handles playing of notification sound
 	const audioContextRef = useRef<AudioContext | null>(null);
-	const audioBufferRef = useRef<AudioBuffer>();
+	const audioBufferRef = useRef<AudioBuffer | null>(null);
 	const gainNodeRef = useRef<AudioNode | null>(null);
 
 	/**
@@ -53,7 +53,9 @@ export const useNotificationInternal = () => {
 			audioSource = await response.arrayBuffer();
 		}
 
-		audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
+		if (audioBufferRef?.current) {
+			audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
+		}
 	}, [settings.notification]);
 
 	/**

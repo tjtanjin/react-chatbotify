@@ -279,7 +279,7 @@ export const useBotEffectInternal = () => {
 		if (hasFlowStarted || settings.general?.flowStartTrigger === "ON_LOAD") {
 			goToPath("start");
 		}
-	}, [hasFlowStarted]);
+	}, [hasFlowStarted, settings.general?.flowStartTrigger]);
 
 	return { timeoutId }
 };

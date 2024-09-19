@@ -25,10 +25,10 @@ const EmojiButton = () => {
 	const { textAreaDisabled, setTextAreaValue } = useTextAreaInternal();
 
 	// reference to popup
-	const popupRef = useRef<HTMLDivElement>(null);
+	const popupRef = useRef<HTMLDivElement | null>(null);
 
 	// reference to icon container
-	const iconContainerRef = useRef<HTMLDivElement>(null);
+	const iconContainerRef = useRef<HTMLDivElement | null>(null);
 
 	// handles showing of emoji popup
 	const [showPopup, setShowPopup] = useState<boolean>(false);

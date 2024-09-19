@@ -129,7 +129,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	 * 
 	 * @param event keyboard event
 	 */ 
-	const handleKeyDown = async (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	const handleKeyDown = async (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement | null>) => {
 		if (isComposing) {
 			return;
 		}
@@ -150,7 +150,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	 * 
 	 * @param event textarea change event
 	 */
-	const handleTextAreaValueChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	const handleTextAreaValueChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement | null>) => {
 
 		if (inputRef.current) {
 			setTextAreaValue(event.target.value)
