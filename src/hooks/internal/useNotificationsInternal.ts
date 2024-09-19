@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 
 import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -71,7 +71,8 @@ export const useNotificationInternal = () => {
 		source.buffer = audioBufferRef.current;
 		source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
 		source.start();
-	}, [settings.notification, notificationsToggledOn, hasInteractedPage, audioContextRef, audioBufferRef, gainNodeRef]);
+	}, [settings.notification, notificationsToggledOn, hasInteractedPage, audioContextRef,
+		audioBufferRef, gainNodeRef]);
 
 	/**
 	 * Handles toggling of notification feature.
