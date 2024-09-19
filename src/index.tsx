@@ -36,6 +36,7 @@ import { RcbTextAreaChangeValueEvent } from "./types/events/RcbTextAreaChangeVal
 import { useAudio } from "./hooks/useAudio";
 import { useChatWindow } from "./hooks/useChatWindow";
 import { useFirstInteraction } from "./hooks/useFirstInteraction";
+import { useFlow } from "./hooks/useFlow";
 import { useMessages } from "./hooks/useMessages";
 import { useNotifications } from "./hooks/useNotifications";
 import { usePaths } from "./hooks/usePaths";
@@ -94,6 +95,7 @@ export {
 	useAudio,
 	useChatWindow,
 	useFirstInteraction,
+	useFlow,
 	useMessages,
 	useNotifications,
 	usePaths,

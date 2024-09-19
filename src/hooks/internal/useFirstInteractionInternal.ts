@@ -34,8 +34,6 @@ export const useFirstInteractionInternal = () => {
 	}, [hasFlowStarted, settings.general?.flowStartTrigger]);
 
 	return {
-		hasFlowStarted,
-		setHasFlowStarted,
 		hasInteractedPage,
 		handleFirstInteraction
 	};

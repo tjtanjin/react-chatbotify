@@ -50,6 +50,7 @@ export const useBotEffectInternal = () => {
 		isBotTyping,
 		isScrolling,
 		timeoutId,
+		hasFlowStarted,
 		setTextAreaDisabled,
 		setAudioToggledOn,
 		setVoiceToggledOn,
@@ -70,7 +71,7 @@ export const useBotEffectInternal = () => {
 	const { playNotificationSound, setUnreadCount, setUpNotifications } = useNotificationInternal();
 
 	// handles user first interaction
-	const { handleFirstInteraction, hasFlowStarted } = useFirstInteractionInternal();
+	const { handleFirstInteraction } = useFirstInteractionInternal();
 
 	// handles chat history
 	const { showChatHistory } = useChatHistoryInternal();

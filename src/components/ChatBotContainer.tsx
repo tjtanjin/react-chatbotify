@@ -8,10 +8,10 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { isDesktop } from "../utils/displayChecker";
 import { useButtonInternal } from "../hooks/internal/useButtonInternal";
-import { useFirstInteractionInternal } from "../hooks/internal/useFirstInteractionInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
 import { useBotEffectInternal } from "../hooks/internal/useBotEffectInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
+import { useBotStatesContext } from "../context/BotStatesContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { useStylesContext } from "../context/StylesContext";
 import { Plugin } from "../types/Plugin";
@@ -38,6 +38,9 @@ const ChatBotContainer = ({
 	// handles styles
 	const { styles } = useStylesContext();
 
+	// handles bot states
+	const { hasFlowStarted, setHasFlowStarted } = useBotStatesContext();
+
 	// handles bot refs
 	const { inputRef } = useBotRefsContext();
 
@@ -48,9 +51,6 @@ const ChatBotContainer = ({
 		viewportWidth,
 		isChatWindowOpen,
 	} = useChatWindowInternal();
-
-	// handles user first interaction
-	const { hasFlowStarted, setHasFlowStarted } = useFirstInteractionInternal();
 
 	// buttons to show in header, chat input and footer
 	const { headerButtons, chatInputButtons, footerButtons } = useButtonInternal();
