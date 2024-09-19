@@ -81,8 +81,7 @@ const ChatBotBody = ({
 
 	// styles for toast prompt container
 	const toastPromptContainerStyle: CSSProperties = {
-		bottom: (styles.chatInputContainerStyle?.height as number || 70) +
-			(styles.footerStyle?.height as number || 50) + 15,
+		bottom: 20,
 		width: 300,
 		minWidth: (styles.chatWindowStyle?.width as number || 375) / 2,
 		maxWidth: (styles.chatWindowStyle?.width as number || 375)  - 50,

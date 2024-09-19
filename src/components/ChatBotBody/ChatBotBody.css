@@ -1,6 +1,7 @@
 /* Chat Body */
 
 .rcb-chat-body-container {
+	position: relative;
 	height: 100%;
 	width: 100%;
 	padding-bottom: 16px;
@@ -161,13 +162,14 @@
     position: absolute;
 	left: 50%;
     transform: translateX(-50%); 
-    bottom: 200px;
+    bottom: 0px;
     margin: auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 	flex-direction: column;
     opacity: 1;
     animation: popIn 0.3s ease-in-out;
     pointer-events: auto;
+	margin-top: 200;
 }
