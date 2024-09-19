@@ -8,7 +8,6 @@ import React, {
 } from "react";
 
 import { isDesktop } from "../../utils/displayChecker";
-import { useFirstInteractionInternal } from "../../hooks/internal/useFirstInteractionInternal";
 import { useSubmitInputInternal } from "../../hooks/internal/useSubmitInputInternal";
 import { useTextArea } from "../../hooks/useTextArea";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -31,7 +30,14 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	const { styles } = useStylesContext();
 
 	// handles bot states
-	const { textAreaDisabled, textAreaSensitiveMode, inputLength, setInputLength } = useBotStatesContext();
+	const {
+		textAreaDisabled,
+		textAreaSensitiveMode,
+		inputLength,
+		hasFlowStarted,
+		setHasFlowStarted,
+		setInputLength
+	} = useBotStatesContext();
 
 	// handles bot refs
 	const { inputRef } = useBotRefsContext();
@@ -42,9 +48,6 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 
 	// tracks if text composition (like IME input) is in progress
 	const [isComposing, setIsComposing] = useState<boolean>(false);
-
-	// handles flow start
-	const { hasFlowStarted, setHasFlowStarted } = useFirstInteractionInternal();
 
 	// handles user input submission
 	const { handleSubmitText } = useSubmitInputInternal();
