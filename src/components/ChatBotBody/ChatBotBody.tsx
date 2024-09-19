@@ -252,7 +252,7 @@ const ChatBotBody = ({
 		<div 
 			style={bodyStyle}
 			className="rcb-chat-body-container"
-			ref={chatBodyRef} 
+			ref={chatBodyRef as React.LegacyRef<HTMLDivElement>} 
 			onScroll={updateIsScrolling}
 		>
 			{messages.map((message, index) => {
