@@ -26,7 +26,7 @@ export const useFlow = () => {
 	/**
 	 * Restarts the conversation flow for the chatbot.
 	 */
-	const restartConversationFlow = () => {
+	const restartFlow = () => {
 		setMessages([]);
 		setToasts([]);
 		setPaths(["start"]);
@@ -35,13 +35,13 @@ export const useFlow = () => {
 	/**
 	 * Retrieves the conversation flow for the chatbot.
 	 */
-	const getConversationFlow = () => {
+	const getFlow = () => {
 		return flowRef.current || {};
 	}
 	
 	return {
 		hasFlowStarted,
-		restartConversationFlow,
-		getConversationFlow
+		restartFlow,
+		getFlow
 	};
 }
