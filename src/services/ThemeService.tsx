@@ -3,9 +3,9 @@ import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
 import { ThemeCacheData } from "../types/internal/ThemeCacheData";
 
-const DEFAULT_URL = import.meta.env.VITE_THEME_BASE_CDN_URL;
-const DEFAULT_EXPIRATION = import.meta.env.VITE_THEME_DEFAULT_CACHE_EXPIRATION;
-const CACHE_KEY_PREFIX = import.meta.env.VITE_THEME_CACHE_KEY_PREFIX;
+const DEFAULT_URL = import.meta.env?.VITE_THEME_BASE_CDN_URL;
+const DEFAULT_EXPIRATION = import.meta.env?.VITE_THEME_DEFAULT_CACHE_EXPIRATION;
+const CACHE_KEY_PREFIX = import.meta.env?.VITE_THEME_CACHE_KEY_PREFIX;
 
 /**
  * Fetches the cached theme if it exist and checks for expiry.
@@ -14,7 +14,7 @@ const CACHE_KEY_PREFIX = import.meta.env.VITE_THEME_CACHE_KEY_PREFIX;
  * @param version version of the theme
  * @param cacheDuration duration that the theme should be cached for
  */
-const getCachedTheme = (id: string, version: string, cacheDuration: number): ThemeCacheData | null => {
+export const getCachedTheme = (id: string, version: string, cacheDuration: number): ThemeCacheData | null => {
 	const cachedTheme = localStorage.getItem(`${CACHE_KEY_PREFIX}_${id}_${version}`);
 
 	// if unable to find theme, not cached so return null
@@ -46,7 +46,7 @@ const getCachedTheme = (id: string, version: string, cacheDuration: number): The
  * @param inlineStyles inline styles to cache
  * @param cssStylesText css styles to cache
  */
-const setCachedTheme = (id: string, version: string, settings: Settings, inlineStyles: Styles,
+export const setCachedTheme = (id: string, version: string, settings: Settings, inlineStyles: Styles,
 	cssStylesText: string) => {
 
 	const milliseconds = new Date().getTime();

@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+
 import path from "path";
 import "cypress-file-upload";
 
@@ -184,23 +185,53 @@ describe("Chat Bot Test Suite", () => {
 			expect(scrollPosition).to.be.closeTo(totalHeight, 5);
 		});
 	});
-	// this test for theme is not neccessary, only checks localstorage store and retrieve
-	// todo: have a test case that checks cache expiry instead
-	/* it("Should store and retrieve the theme from localStorage", () => {
-		const newTheme = {
-			id: "new-theme",
-			version: "1.0.0",
-			baseUrl: "http://example.com",
-		};
-		cy.window().then((win) => {
-			win.localStorage.setItem("theme", JSON.stringify(newTheme));
-		});
-		cy.window().then((win) => {
-			const cachedTheme = JSON.parse(
-        win.localStorage.getItem("theme") as string
+
+	const themeId = "new-theme";
+	const themeVersion = "1.0.0";
+	const defaultExpiration = 3;
+	const themeSettings = { key: "value" };
+	const inlineStyles = { styleKey: "styleValue" };
+	const cssStylesText = "body { background-color: red; }";
+
+	it("Should retrieve the theme if not expired", () => {
+		cy.chatbotify.setCachedTheme(
+			themeId,
+			themeVersion,
+			themeSettings,
+			inlineStyles,
+			cssStylesText
+		);
+
+		const theme = cy.chatbotify.getCachedTheme(
+			themeId,
+			themeVersion,
+			defaultExpiration
+		);
+
+		expect(theme).to.exist;
+		expect(theme.settings).to.deep.equal(themeSettings);
+		expect(theme.inlineStyles).to.deep.equal(inlineStyles);
+		expect(theme.cssStylesText).to.equal(cssStylesText);
+	});
+
+	it("Should not retrieve the theme if expired", () => {
+		cy.chatbotify.setCachedTheme(
+			themeId,
+			themeVersion,
+			themeSettings,
+			inlineStyles,
+			cssStylesText
+		);
+
+		cy.wait(4000).then(() => {
+
+			const theme = cy.chatbotify.getCachedTheme(
+				themeId,
+				themeVersion,
+				defaultExpiration
 			);
-			expect(cachedTheme).to.have.property("id", newTheme.id);
-			expect(cachedTheme).to.have.property("version", newTheme.version);
-		});
-	}); */
+
+			expect(theme).to.be.null;
+		})
+	});
 });
