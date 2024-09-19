@@ -1,4 +1,5 @@
 import { useBotRefsContext } from "../context/BotRefsContext";
+import { useBotStatesContext } from "../context/BotStatesContext";
 import { useMessagesContext } from "../context/MessagesContext";
 import { usePathsContext } from "../context/PathsContext";
 import { useToastsContext } from "../context/ToastsContext";
@@ -15,6 +16,9 @@ export const useFlow = () => {
 
 	// handles toasts
 	const { setToasts } = useToastsContext();
+
+	// handles bot states
+	const { hasFlowStarted } = useBotStatesContext();
 	
 	// handles bot refs
 	const { flowRef } = useBotRefsContext();
@@ -36,6 +40,7 @@ export const useFlow = () => {
 	}
 	
 	return {
+		hasFlowStarted,
 		restartConversationFlow,
 		getConversationFlow
 	};

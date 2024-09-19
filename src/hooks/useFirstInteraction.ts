@@ -5,10 +5,9 @@ import { useFirstInteractionInternal } from "./internal/useFirstInteractionInter
  */
 export const useFirstInteraction = () => {
 	// handles user first interaction
-	const { hasFlowStarted, hasInteractedPage } = useFirstInteractionInternal();
+	const { hasInteractedPage } = useFirstInteractionInternal();
 
 	return {
-		hasFlowStarted,
 		hasInteractedPage
 	};
 };
