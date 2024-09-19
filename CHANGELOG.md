@@ -1,5 +1,18 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.11 (20-09-2024)
+
+**Added:**
+- Added a new `useFlow` hook that grants access to retrieving and restarting the conversation flows
+- The `hasFlowStarted` boolean which was previously found in `useFirstInteraction` has been moved to `useFlow` for better consistency
+
+**Fixed:**
+- Fixed an issue where states were not updated in conversation flow
+
+**Note:**
+
+There have been confusions surrounding the use of `ChatBotProvider` such as what props it should be given if used. To reduce the mental load on developers, all props are now centralized to **only** `ChatBot`, regardless of whether you are using `ChatBotProvider` or not. There is **no functionality change**, but developers can now just remember that `ChatBot` is what accepts all props so if you're currently passing props to `ChatBotProvider`, move them all to `ChatBot` instead.
+
 ## v2.0.0-beta.10 (18-09-2024)
 
 **Fixed:**
