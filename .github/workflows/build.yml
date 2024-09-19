@@ -33,6 +33,3 @@ jobs:
 
       - name: Build
         run: npm run build --if-present
-
-      - name: List dist directory after build
-        run: ls -al ./dist

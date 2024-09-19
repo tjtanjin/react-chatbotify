@@ -12,7 +12,7 @@
   "files": [
     "./dist"
   ],
-  "version": "2.0.0-beta.10",
+  "version": "2.0.0-beta.11",
   "description": "A modern React library for creating a flexible and extensible chatbot.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -26,7 +26,7 @@
   },
   "scripts": {
     "lint": "eslint --fix . --ext .tsx",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
     "start": "vite serve",
