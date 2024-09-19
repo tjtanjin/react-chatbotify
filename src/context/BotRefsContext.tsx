@@ -39,6 +39,12 @@ const BotRefsProvider = ({
 	const paramsInputRef = useRef<string>("");
 	const keepVoiceOnRef = useRef<boolean>(false);
 
+	// always ensures that the ref is in sync with the latest flow
+	// necessary for state updates in user-provided flows to be reflected timely
+	if (flowRef.current !== initialFlow) {
+		flowRef.current = initialFlow;
+	}
+
 	return (
 		<BotRefsContext.Provider value={{
 			botIdRef,
