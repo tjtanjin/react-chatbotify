@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 
 import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { RcbEvent } from "../../constants/RcbEvent";
 
@@ -21,13 +22,11 @@ export const useNotificationInternal = () => {
 		setUnreadCount
 	} = useBotStatesContext();
 
+	// handles bot refs
+	const { audioBufferRef, audioContextRef, gainNodeRef } = useBotRefsContext();
+
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
-
-	// handles playing of notification sound
-	const audioContextRef = useRef<AudioContext | null>(null);
-	const audioBufferRef = useRef<AudioBuffer | null>(null);
-	const gainNodeRef = useRef<AudioNode | null>(null);
 
 	/**
 	 * Sets up the notifications feature (initial toggle status and sound).
@@ -53,9 +52,7 @@ export const useNotificationInternal = () => {
 			audioSource = await response.arrayBuffer();
 		}
 
-		if (audioBufferRef?.current) {
-			audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
-		}
+		audioBufferRef.current = await audioContextRef.current.decodeAudioData(audioSource);
 	}, [settings.notification]);
 
 	/**
@@ -74,7 +71,7 @@ export const useNotificationInternal = () => {
 		source.buffer = audioBufferRef.current;
 		source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
 		source.start();
-	}, [settings.notification, notificationsToggledOn, hasInteractedPage]);
+	}, [settings.notification, notificationsToggledOn, hasInteractedPage, audioContextRef, audioBufferRef, gainNodeRef]);
 
 	/**
 	 * Handles toggling of notification feature.

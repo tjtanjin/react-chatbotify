@@ -1,9 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { generateSecureUUID } from "../utils/idGenerator";
 import { useRcbEventInternal } from "./internal/useRcbEventInternal";
 import { useToastsContext } from "../context/ToastsContext";
 import { useSettingsContext } from "../context/SettingsContext";
+import { Toast } from "../types/Toast";
 import { RcbEvent } from "../constants/RcbEvent";
 
 /**
@@ -19,15 +20,24 @@ export const useToast = () => {
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
 
+	// tracks the toast state
+	const toastsRef = useRef<Array<Toast>>(toasts);
+	useEffect(() => {
+		toastsRef.current = toasts;
+	}, [toasts]);
+
 	/**
-	 * Injects a new toast.
+	 * Injecs a new toast.
 	 *
 	 * @param content message to show in toast
 	 * @param timeout optional timeout in milliseconds before toast is removed
 	 */
 	const showToast = useCallback((content: string | JSX.Element, timeout?: number): string | null => {
 		let id = null;
-		if (toasts.length >= (settings.toast?.maxCount || 3)) {
+		const currentToasts = toastsRef.current;
+		const numToast = currentToasts.length;
+
+		if (numToast >= (settings.toast?.maxCount || 3)) {
 			if (settings.toast?.forbidOnMax) {
 				return null;
 			}
@@ -43,6 +53,7 @@ export const useToast = () => {
 				toast = event.data.toast;
 			}
 			setToasts(prevToasts => [...prevToasts.slice(1), toast]);
+			return id;
 		}
 		id = generateSecureUUID();
 		let toast = { id, content, timeout };
@@ -58,7 +69,7 @@ export const useToast = () => {
 
 		setToasts(prevToasts => [...prevToasts, toast]);
 		return id;
-	}, [settings, callRcbEvent]);
+	}, [settings, callRcbEvent, setToasts]);
 
 	/**
 	 * Removes a toast.
@@ -85,7 +96,7 @@ export const useToast = () => {
 		// dismiss toast
 		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
 		return id;
-	}, []);
+	}, [callRcbEvent, setToasts]);
 
 	return {
 		showToast,

@@ -14,6 +14,9 @@ type BotRefsContextType = {
 	chatBodyRef: React.RefObject<HTMLDivElement | null>;
 	paramsInputRef: React.MutableRefObject<string>;
 	keepVoiceOnRef: React.MutableRefObject<boolean>;
+	audioContextRef: React.MutableRefObject<AudioContext | null>;
+	audioBufferRef: React.MutableRefObject<AudioBuffer | null>;
+	gainNodeRef: React.MutableRefObject<AudioNode | null>;
 };
 const BotRefsContext = createContext<BotRefsContextType>({} as BotRefsContextType);
 const useBotRefsContext = () => useContext(BotRefsContext);
@@ -36,6 +39,9 @@ const BotRefsProvider = ({
 	const chatBodyRef = useRef<HTMLDivElement | null>(null);
 	const paramsInputRef = useRef<string>("");
 	const keepVoiceOnRef = useRef<boolean>(false);
+	const audioContextRef = useRef<AudioContext | null>(null);
+	const audioBufferRef = useRef<AudioBuffer | null>(null);
+	const gainNodeRef = useRef<AudioNode | null>(null);
 
 	return (
 		<BotRefsContext.Provider value={{
@@ -46,6 +52,9 @@ const BotRefsProvider = ({
 			chatBodyRef,
 			paramsInputRef,
 			keepVoiceOnRef,
+			audioContextRef,
+			audioBufferRef,
+			gainNodeRef,
 			prevInputRef
 		}}>
 			{children}

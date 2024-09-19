@@ -98,9 +98,13 @@ export const useBotEffectInternal = () => {
 		};
 	}, []);
 
-	// default setup for notifications, text area, audio and voice
+	// default setup for notifications
 	useEffect(() => {
 		setUpNotifications();
+	}, [])
+
+	// default setup for text area, audio and voice
+	useEffect(() => {
 		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 		setAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
 		setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
