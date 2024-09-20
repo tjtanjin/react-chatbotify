@@ -1,5 +1,12 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.12 (20-09-2024)
+
+**Fixed:**
+- Fixed an issue where toasts do not obey max limit
+- Fixed an issue where toasts are not positioned properly
+- Fixed an issue where notification sound does not play correctly in `useNotifications`
+
 ## v2.0.0-beta.11 (20-09-2024)
 
 **Added:**
