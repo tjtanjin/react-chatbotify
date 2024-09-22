@@ -53,14 +53,14 @@ const ChatBot = ({
 		styles = DefaultStyles;
 	}
 
-	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
-	const [isDOMLoaded, setIsDOMLoaded] = useState<boolean>(false);
-
 	// handles loading of chatbot only when config is loaded
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
 	
 	// used to determine if users provided their own chatbotprovider
 	const chatBotContext = useChatBotContext();
+
+	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
+	const [isDOMLoaded, setIsDOMLoaded] = useState<boolean>(false);
 
 	useEffect(() => {
 		setIsDOMLoaded(true);

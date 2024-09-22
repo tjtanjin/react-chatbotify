@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import { parseConfig } from "../utils/configParser";
 import { BotRefsProvider } from "./BotRefsContext";
@@ -41,6 +41,13 @@ const ChatBotProvider = ({
 	// handles styles for the chat bot
 	const [botStyles, setBotStyles] = useState<Styles>({});
 
+	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
+	const [isDOMLoaded, setIsDOMLoaded] = useState<boolean>(false);
+
+	useEffect(() => {
+		setIsDOMLoaded(true);
+	}, []);
+
 	/**
 	 * Loads configurations for the chatbot.
 	 */
@@ -53,6 +60,10 @@ const ChatBotProvider = ({
 		setBotSettings(combinedConfig.settings);
 		setBotStyles(combinedConfig.styles);
 	}
+
+	if (!isDOMLoaded) {
+		return null;
+	}	
 
 	return (
 		<div style={{fontFamily: botSettings.general?.fontFamily}}>
