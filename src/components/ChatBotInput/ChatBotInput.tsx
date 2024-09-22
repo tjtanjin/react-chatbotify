@@ -7,8 +7,8 @@ import React, {
 	Fragment,
 } from "react";
 
-import { isDesktop } from "../../utils/displayChecker";
 import { useSubmitInputInternal } from "../../hooks/internal/useSubmitInputInternal";
+import { useIsDesktop } from "../../hooks/internal/useIsDesktop";
 import { useTextArea } from "../../hooks/useTextArea";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
@@ -23,6 +23,9 @@ import "./ChatBotInput.css";
  * @param buttons list of buttons to render in the chat input
  */
 const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
+	// handles platform
+	const isDesktop = useIsDesktop();
+
 	// handles settings
 	const { settings } = useSettingsContext();
 

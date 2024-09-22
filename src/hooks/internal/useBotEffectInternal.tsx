@@ -4,7 +4,8 @@ import ChatHistoryButton from "../../components/ChatHistoryButton/ChatHistoryBut
 import { preProcessBlock } from "../../services/BlockService/BlockService";
 import { saveChatHistory, setHistoryStorageValues } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
-import { isChatBotVisible, isDesktop } from "../../utils/displayChecker";
+import { isChatBotVisible } from "../../utils/displayChecker";
+import { useIsDesktop } from "./useIsDesktop";
 import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useNotificationInternal } from "./useNotificationsInternal";
 import { useFirstInteractionInternal } from "./useFirstInteractionInternal";
@@ -25,6 +26,9 @@ import { Params } from "../../types/Params";
  * Internal custom hook for common use effects.
  */
 export const useBotEffectInternal = () => {
+	// handles platform
+	const isDesktop = useIsDesktop();
+
 	// handles settings
 	const { settings } = useSettingsContext();
 

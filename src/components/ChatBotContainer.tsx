@@ -6,10 +6,10 @@ import ChatBotInput from "./ChatBotInput/ChatBotInput";
 import ChatBotFooter from "./ChatBotFooter/ChatBotFooter";
 import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
-import { isDesktop } from "../utils/displayChecker";
 import { useButtonInternal } from "../hooks/internal/useButtonInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
 import { useBotEffectInternal } from "../hooks/internal/useBotEffectInternal";
+import { useIsDesktop } from "../hooks/internal/useIsDesktop";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useBotStatesContext } from "../context/BotStatesContext";
 import { useSettingsContext } from "../context/SettingsContext";
@@ -31,6 +31,9 @@ const ChatBotContainer = ({
 	
 	// loads plugins
 	plugins?.map((plugin) => plugin());
+
+	// handles platform
+	const isDesktop = useIsDesktop();
 
 	// handles settings
 	const { settings } = useSettingsContext();
