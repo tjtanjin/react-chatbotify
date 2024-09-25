@@ -11,40 +11,40 @@ let fileContent = fs.readFileSync(filePath, 'utf-8');
 fileContent = fileContent.replace(/import\s+['"]\.\/style\.css['"]\s*;/, '');
 
 const ssrFolder = "./ssr";
-const noCssImportFileName = "./ssrTestIndexNoCssImport.js";
+const noCssImportFileName = "./ssrValidationIndexNoCssImport.js";
 const noCssImportFilePath = `${ssrFolder}/${noCssImportFileName}`;
 fs.writeFileSync(noCssImportFilePath, fileContent, 'utf-8');
 
 /**
- * The following SSR Test cases are executed to ensure that the components
+ * The following SSR validations are executed to ensure that the components
  * are rendered server-side without any errors. Since we're in a Node.js environment,
  * the browser-specific APIs and global objects (for eg. window) are not available and
- * hence the tests are limited to rendering the components and checking for any render errors.
+ * hence the validations are limited to rendering the components and checking for any render errors.
  * ---
  * If the ChatBot and ChatBotProvider components are accessing the `window` object before the 
  * DOM is ready, then the SSR will fail with the following error: `ReferenceError: window is not defined [...]`
 */
 
-// SSR Test: ChatBot
+// SSR Validation: ChatBot
 try {
 	const ChatBot = await import(noCssImportFileName).then((mod) => mod.default);
 	ReactDOMServer.renderToString(React.createElement(ChatBot));
-	console.log('ChatBot: server-side rendering test passed.');
+	console.log('ChatBot: server-side rendering validation passed.');
 } catch (error) {
 	//fs.rmSync(noCssImportFilePath);
 	console.error('ChatBot rendered server-side with error.', error);
-	throw new Error('ChatBot: server-side rendering test failed.');
+	throw new Error('ChatBot: server-side rendering validation failed.');
 }
 
-// SSR Test: ChatBotProvider
+// SSR Validation: ChatBotProvider
 try {
 	const ChatBotProvider = await import(noCssImportFileName).then((mod) => mod.ChatBotProvider);
 	ReactDOMServer.renderToString(React.createElement(ChatBotProvider));
-	console.log('ChatBotProvider: server-side rendering test passed.');
+	console.log('ChatBotProvider: server-side rendering validation passed.');
 } catch (error) {
 	//fs.rmSync(noCssImportFilePath);
 	console.error('ChatBotProvider rendered server-side with error.', error);
-	throw new Error('ChatBotProvider: server-side rendering test failed.');
+	throw new Error('ChatBotProvider: server-side rendering validation failed.');
 }
 
 fs.rmSync(noCssImportFilePath);
