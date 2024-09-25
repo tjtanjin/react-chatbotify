@@ -7,7 +7,7 @@ const RcbEvent = {
 	TOGGLE_NOTIFICATIONS: "rcb-toggle-notifications",
 
 	// voice
-	TOGGLE_VOICE: "rcb-voice-toggle",
+	TOGGLE_VOICE: "rcb-toggle-voice",
 
 	// chat window
 	TOGGLE_CHAT_WINDOW: "rcb-toggle-chat-window",
