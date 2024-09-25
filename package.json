@@ -32,7 +32,8 @@
     "start": "vite serve",
     "prepare": "husky install",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "test:ssr": "node ./ssr-test.js"
   },
   "author": "tjtanjin",
   "license": "MIT",

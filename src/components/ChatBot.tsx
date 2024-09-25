@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import ChatBotLoader from "./ChatBotLoader";
@@ -59,10 +59,21 @@ const ChatBot = ({
 	// used to determine if users provided their own chatbotprovider
 	const chatBotContext = useChatBotContext();
 
+	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
+	const [isDOMLoaded, setIsDOMLoaded] = useState<boolean>(false);
+
+	useEffect(() => {
+		setIsDOMLoaded(true);
+	}, []);
+
 	/**
 	 * Renders chatbot with provider depending on whether one was provided by the user.
 	 */
 	const renderChatBot = () => {
+		if (!isDOMLoaded) {
+			return null;
+		}
+
 		if (chatBotContext) {
 			return (
 				<>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { isDesktop } from "../../utils/displayChecker";
+import { useIsDesktop } from "../../hooks/internal/useIsDesktop";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
@@ -11,6 +11,8 @@ import "./ChatBotTooltip.css";
  * Shows tooltip beside the chat bot button to user.
  */
 const ChatBotTooltip = () => {
+	// handles platform
+	const isDesktop = useIsDesktop();
 
 	// handles settings
 	const { settings } = useSettingsContext();

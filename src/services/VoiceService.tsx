@@ -2,12 +2,25 @@ import { RefObject, Dispatch, SetStateAction } from "react";
 
 import { Settings } from "../types/Settings";
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
+let recognition: SpeechRecognition | null;
 let inactivityTimer: ReturnType<typeof setTimeout> | null;
 let autoSendTimer: ReturnType<typeof setTimeout>;
 let toggleOn = false;
 let mediaRecorder: MediaRecorder | null = null;
+
+/**
+ * Get speech recognition instance if available via function call
+ * to add support for SSR since window is not available on server.
+ * @returns SpeechRecognition object if available, null otherwise
+ */
+const getSpeechRecognition = () => {
+	if (!recognition) {
+		const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+		recognition = SpeechRecognition != null ? new SpeechRecognition() : null;
+	}
+
+	return recognition;
+};
 
 /**
  * Starts recording user voice input with microphone.
@@ -56,6 +69,8 @@ const startSpeechRecognition = (
 	setInputLength: Dispatch<SetStateAction<number>>,
 	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement | null>
 ) => {
+	const recognition = getSpeechRecognition();
+
 	if (!recognition) {
 		return;
 	}
@@ -156,6 +171,8 @@ const startAudioRecording = (
  * Stops all voice recordings.
  */
 export const stopVoiceRecording = () => {
+	const recognition = getSpeechRecognition();
+
 	if (!recognition) {
 		return;
 	}
@@ -182,6 +199,7 @@ export const stopVoiceRecording = () => {
  * @param settings options provided to the bot
  */
 export const syncVoiceWithChatInput = (keepVoiceOn: boolean, settings: Settings) => {
+	const recognition = getSpeechRecognition();
 
 	if (settings.voice?.disabled || !settings.chatInput?.blockSpam || !recognition) {
 		return;

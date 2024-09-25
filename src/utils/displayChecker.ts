@@ -1,6 +1,3 @@
-// boolean indicating if user is on desktop (otherwise treated as on mobile)
-export const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-
 /**
  * Checks if chatbot is visible (uses chatbot body as reference).
  * 
