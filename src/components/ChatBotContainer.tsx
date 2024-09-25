@@ -9,7 +9,7 @@ import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { useButtonInternal } from "../hooks/internal/useButtonInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
 import { useBotEffectInternal } from "../hooks/internal/useBotEffectInternal";
-import { useIsDesktop } from "../hooks/internal/useIsDesktop";
+import { useIsDesktopInternal } from "../hooks/internal/useIsDesktopInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useBotStatesContext } from "../context/BotStatesContext";
 import { useSettingsContext } from "../context/SettingsContext";
@@ -33,7 +33,7 @@ const ChatBotContainer = ({
 	plugins?.map((plugin) => plugin());
 
 	// handles platform
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsDesktopInternal();
 
 	// handles settings
 	const { settings } = useSettingsContext();

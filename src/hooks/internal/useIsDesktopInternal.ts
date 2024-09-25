@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export const useIsDesktop = () => {
+export const useIsDesktopInternal = () => {
 	const isDesktop = useMemo(() => {
 		if (typeof window === 'undefined' || !window.navigator) {
 			return false; // Default to false if running on server-side

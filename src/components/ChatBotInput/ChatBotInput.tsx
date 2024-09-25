@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 import { useSubmitInputInternal } from "../../hooks/internal/useSubmitInputInternal";
-import { useIsDesktop } from "../../hooks/internal/useIsDesktop";
+import { useIsDesktopInternal } from "../../hooks/internal/useIsDesktopInternal";
 import { useTextArea } from "../../hooks/useTextArea";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
@@ -24,7 +24,7 @@ import "./ChatBotInput.css";
  */
 const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	// handles platform
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsDesktopInternal();
 
 	// handles settings
 	const { settings } = useSettingsContext();

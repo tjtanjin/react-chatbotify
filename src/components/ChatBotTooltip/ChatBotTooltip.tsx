@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { useIsDesktop } from "../../hooks/internal/useIsDesktop";
+import { useIsDesktopInternal } from "../../hooks/internal/useIsDesktopInternal";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
@@ -12,7 +12,7 @@ import "./ChatBotTooltip.css";
  */
 const ChatBotTooltip = () => {
 	// handles platform
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsDesktopInternal();
 
 	// handles settings
 	const { settings } = useSettingsContext();

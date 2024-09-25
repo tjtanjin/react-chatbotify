@@ -42,10 +42,10 @@ const ChatBotProvider = ({
 	const [botStyles, setBotStyles] = useState<Styles>({});
 
 	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
-	const [isDOMLoaded, setIsDOMLoaded] = useState<boolean>(false);
+	const [isDomLoaded, setIsDomLoaded] = useState<boolean>(false);
 
 	useEffect(() => {
-		setIsDOMLoaded(true);
+		setIsDomLoaded(true);
 	}, []);
 
 	/**
@@ -61,7 +61,7 @@ const ChatBotProvider = ({
 		setBotStyles(combinedConfig.styles);
 	}
 
-	if (!isDOMLoaded) {
+	if (!isDomLoaded) {
 		return null;
 	}	
 

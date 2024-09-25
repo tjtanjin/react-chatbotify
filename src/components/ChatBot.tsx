@@ -60,17 +60,17 @@ const ChatBot = ({
 	const chatBotContext = useChatBotContext();
 
 	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
-	const [isDOMLoaded, setIsDOMLoaded] = useState<boolean>(false);
+	const [isDomLoaded, setIsDomLoaded] = useState<boolean>(false);
 
 	useEffect(() => {
-		setIsDOMLoaded(true);
+		setIsDomLoaded(true);
 	}, []);
 
 	/**
 	 * Renders chatbot with provider depending on whether one was provided by the user.
 	 */
 	const renderChatBot = () => {
-		if (!isDOMLoaded) {
+		if (!isDomLoaded) {
 			return null;
 		}
 

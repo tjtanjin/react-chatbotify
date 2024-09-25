@@ -5,7 +5,7 @@ import { preProcessBlock } from "../../services/BlockService/BlockService";
 import { saveChatHistory, setHistoryStorageValues } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
 import { isChatBotVisible } from "../../utils/displayChecker";
-import { useIsDesktop } from "./useIsDesktop";
+import { useIsDesktopInternal } from "./useIsDesktopInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useNotificationInternal } from "./useNotificationsInternal";
 import { useFirstInteractionInternal } from "./useFirstInteractionInternal";
@@ -27,7 +27,7 @@ import { Params } from "../../types/Params";
  */
 export const useBotEffectInternal = () => {
 	// handles platform
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsDesktopInternal();
 
 	// handles settings
 	const { settings } = useSettingsContext();
