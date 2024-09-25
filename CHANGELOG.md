@@ -1,5 +1,13 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.13 (26-09-2024)
+
+**Fixed:**
+- Fixed an issue where the toggle voice event was not properly triggered
+
+**Added:**
+- Improved support for ssr (users now no longer need to rely on dynamic imports as a workaround)
+
 ## v2.0.0-beta.12 (20-09-2024)
 
 **Fixed:**
