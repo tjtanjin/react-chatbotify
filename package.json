@@ -33,7 +33,7 @@
     "prepare": "husky install",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test:ssr": "node ./ssr-test.js"
+    "test:ssr": "node ./ssr/ssr-test.js"
   },
   "author": "tjtanjin",
   "license": "MIT",

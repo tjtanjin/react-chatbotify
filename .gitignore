@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # temp file generated for ssr test
-./test/ssrTestIndexNoCssImport.js
+./ssr/ssrTestIndexNoCssImport.js

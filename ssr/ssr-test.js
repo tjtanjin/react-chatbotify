@@ -10,7 +10,9 @@ let fileContent = fs.readFileSync(filePath, 'utf-8');
 // Remove the `import 'style.css';` line (assumes it's the first line)
 fileContent = fileContent.replace(/import\s+['"]\.\/style\.css['"]\s*;/, '');
 
-const noCssImportFilePath = './ssrTestIndexNoCssImport.js';
+const ssrFolder = "./ssr";
+const noCssImportFileName = "./ssrTestIndexNoCssImport.js";
+const noCssImportFilePath = `${ssrFolder}/${noCssImportFileName}`;
 fs.writeFileSync(noCssImportFilePath, fileContent, 'utf-8');
 
 /**
@@ -25,22 +27,22 @@ fs.writeFileSync(noCssImportFilePath, fileContent, 'utf-8');
 
 // SSR Test: ChatBot
 try {
-	const ChatBot = await import(noCssImportFilePath).then((mod) => mod.default);
+	const ChatBot = await import(noCssImportFileName).then((mod) => mod.default);
 	ReactDOMServer.renderToString(React.createElement(ChatBot));
 	console.log('ChatBot: server-side rendering test passed.');
 } catch (error) {
-	fs.rmSync(noCssImportFilePath);
+	//fs.rmSync(noCssImportFilePath);
 	console.error('ChatBot rendered server-side with error.', error);
 	throw new Error('ChatBot: server-side rendering test failed.');
 }
 
 // SSR Test: ChatBotProvider
 try {
-	const ChatBotProvider = await import(noCssImportFilePath).then((mod) => mod.ChatBotProvider);
+	const ChatBotProvider = await import(noCssImportFileName).then((mod) => mod.ChatBotProvider);
 	ReactDOMServer.renderToString(React.createElement(ChatBotProvider));
 	console.log('ChatBotProvider: server-side rendering test passed.');
 } catch (error) {
-	fs.rmSync(noCssImportFilePath);
+	//fs.rmSync(noCssImportFilePath);
 	console.error('ChatBotProvider rendered server-side with error.', error);
 	throw new Error('ChatBotProvider: server-side rendering test failed.');
 }
