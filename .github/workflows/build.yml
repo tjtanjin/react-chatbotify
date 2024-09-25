@@ -33,3 +33,6 @@ jobs:
 
       - name: Build
         run: npm run build --if-present
+
+      - name: Verify SSR Compatibility
+        run: npm run test:ssr
