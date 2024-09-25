@@ -36,6 +36,7 @@ jobs:
 
       - name: Verify SSR Compatibility
         run: |
-          if [[ $(node --version | cut -d 'v' -f 2) -ge 19 ]]; then
+          major_version=$(node --version | cut -d 'v' -f 2 | cut -d '.' -f 1)
+          if [[ $major_version -ge 19 ]]; then
             npm run validate:ssr
           fi
