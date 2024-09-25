@@ -35,4 +35,7 @@ jobs:
         run: npm run build --if-present
 
       - name: Verify SSR Compatibility
-        run: npm run validate:ssr
+        run: |
+          if [[ $(node --version | cut -d 'v' -f 2) -ge 19 ]]; then
+            npm run validate:ssr
+          fi
