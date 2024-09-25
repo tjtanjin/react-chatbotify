@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import dts from "vite-plugin-dts";
 import path from "path";
-import eslint from "vite-plugin-eslint";
+import eslint from "vite-plugin-eslint2";
 
 import { defineConfig, loadEnv } from "vite";
 

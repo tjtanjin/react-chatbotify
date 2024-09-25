@@ -63,7 +63,7 @@
     "typescript": "^5.1.6",
     "vite": "^4.5.2",
     "vite-plugin-dts": "^3.4.0",
-    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-eslint2": "^4.4.2",
     "vite-plugin-svgr": "^3.2.0"
   },
   "browserslist": {
