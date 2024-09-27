@@ -22,7 +22,7 @@
 		"react/jsx-indent": ["error", "tab"],
 		"react/jsx-indent-props": ["error", "tab"],
 		"react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+		"react-hooks/exhaustive-deps": "warn",
 		"max-len": ["error", { "code": 120 }]
 	}
 }
