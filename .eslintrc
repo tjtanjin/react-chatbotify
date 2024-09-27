@@ -7,7 +7,8 @@
 	},
 	"plugins": [
 		"@typescript-eslint",
-		"react"
+		"react",
+		"react-hooks"
 	],
 	"extends": [
 		"eslint:recommended",
@@ -20,6 +21,8 @@
 		"indent": ["error", "tab"],
 		"react/jsx-indent": ["error", "tab"],
 		"react/jsx-indent-props": ["error", "tab"],
+		"react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
 		"max-len": ["error", { "code": 120 }]
 	}
 }
