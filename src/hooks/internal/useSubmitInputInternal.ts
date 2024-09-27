@@ -26,7 +26,7 @@ export const useSubmitInputInternal = () => {
 	const { endStreamMessage, injectMessage, removeMessage, streamMessage } = useMessagesInternal();
 
 	// handles paths
-	const { getCurrPath, getPrevPath, goToPath, setPaths } = usePathsInternal();
+	const { getCurrPath, getPrevPath, goToPath } = usePathsInternal();
 
 	// handles bot states
 	const {
@@ -165,9 +165,11 @@ export const useSubmitInputInternal = () => {
 				setIsBotTyping(false);
 			}
 		}, settings.chatInput?.botDelay);
-	}, [timeoutId, voiceToggledOn, settings, flowRef, getPrevPath, injectMessage, streamMessage, openChat,
-		postProcessBlock, setPaths, handleSendUserInput, showToast
-	]);
+	}, [timeoutId, paramsInputRef, chatBodyRef, inputRef, settings.chatInput?.blockSpam, settings.chatInput?.botDelay,
+		settings.chatInput?.disabled, keepVoiceOnRef, voiceToggledOn, syncVoice, setTextAreaSensitiveMode,
+		handleSendUserInput, setTextAreaValue, setInputLength, setTextAreaDisabled, setIsBotTyping, getPrevPath,
+		getCurrPath, goToPath, injectMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast,
+		dismissToast, flowRef, setBlockAllowsAttachment]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.
@@ -191,7 +193,7 @@ export const useSubmitInputInternal = () => {
 			return;
 		}
 		handleActionInput(currPath, inputText, sendInChat);
-	}, [getCurrPath, handleActionInput, setInputLength])
+	}, [callRcbEvent, getCurrPath, handleActionInput, inputRef, settings.event?.rcbUserSubmitText])
 
 	return { handleSubmitText }
 };
