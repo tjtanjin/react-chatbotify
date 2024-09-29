@@ -83,8 +83,8 @@ const ChatBotBody = ({
 	const toastPromptContainerStyle: CSSProperties = {
 		bottom: 20,
 		width: 300,
-		minWidth: (styles.chatWindowStyle?.width as number || 375) / 2,
-		maxWidth: (styles.chatWindowStyle?.width as number || 375)  - 50,
+		minWidth: (styles.chatWindowStyle?.width as number ?? 375) / 2,
+		maxWidth: (styles.chatWindowStyle?.width as number ?? 375)  - 50,
 		...styles.toastPromptContainerStyle
 	};
 
@@ -151,7 +151,7 @@ const ChatBotBody = ({
 		}
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
 		setIsScrolling(
-			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset || 30)
+			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30)
 		);
 
 		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset

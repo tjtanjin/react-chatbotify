@@ -78,7 +78,7 @@ export const useSubmitInputInternal = () => {
 			if (settings?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (settings?.sensitiveInput?.maskInUserBubble) {
-				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number || 10), "user");
+				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "user");
 				return;
 			}
 		}
@@ -176,7 +176,7 @@ export const useSubmitInputInternal = () => {
 	 */
 	const handleSubmitText = useCallback(async (inputText?: string, sendInChat = true) => {
 		// if no user input provided, grab from text area
-		inputText = inputText || inputRef.current?.value as string;
+		inputText = inputText ?? inputRef.current?.value as string;
 
 		// handles user send text event
 		if (settings.event?.rcbUserSubmitText) {

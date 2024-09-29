@@ -35,7 +35,7 @@ export const useNotificationInternal = () => {
 		const notificationSound = settings.notification?.sound;
 		audioContextRef.current = new AudioContext();
 		const gainNode = audioContextRef.current.createGain();
-		gainNode.gain.value = settings.notification?.volume || 0.2;
+		gainNode.gain.value = settings.notification?.volume ?? 0.2;
 		gainNodeRef.current = gainNode;
 
 		let audioSource;

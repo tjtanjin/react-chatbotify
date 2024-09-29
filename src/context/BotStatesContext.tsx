@@ -72,11 +72,11 @@ const BotStatesProvider = ({
 	settings?: Settings;
 }) => {
 	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
-	const [isChatWindowOpen, setIsChatWindowOpen] = useState<boolean>(settings?.chatWindow?.defaultOpen || false);
-	const [audioToggledOn, setAudioToggledOn] = useState<boolean>(settings?.audio?.defaultToggledOn || false);
-	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(settings?.voice?.defaultToggledOn || false);
+	const [isChatWindowOpen, setIsChatWindowOpen] = useState<boolean>(settings?.chatWindow?.defaultOpen ?? false);
+	const [audioToggledOn, setAudioToggledOn] = useState<boolean>(settings?.audio?.defaultToggledOn ?? false);
+	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(settings?.voice?.defaultToggledOn ?? false);
 	const [notificationsToggledOn, setNotificationsToggledOn] = useState<boolean>(
-		settings?.notification?.defaultToggledOn || true
+		settings?.notification?.defaultToggledOn ?? true
 	);
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
 	const [isScrolling, setIsScrolling] = useState<boolean>(false);
@@ -91,9 +91,9 @@ const BotStatesProvider = ({
 	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
 	// tracks view port height and width (for auto-resizing on mobile view)
 	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number
-		|| window.innerHeight);
+		?? window.innerHeight);
 	const [viewportWidth, setViewportWidth] = useState<number>(window.visualViewport?.width as number
-		|| window.innerWidth);
+		?? window.innerWidth);
 
 	return (
 		<BotStatesContext.Provider value={{

@@ -210,7 +210,7 @@ export const useMessagesInternal = () => {
 		
 			return updatedMessages;
 		});
-		return streamMessageMap.current.get(sender) || null;
+		return streamMessageMap.current.get(sender) ?? null;
 	},[]);
 
 	/**

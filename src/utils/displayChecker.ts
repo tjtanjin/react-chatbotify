@@ -9,8 +9,8 @@ export const isChatBotVisible = (element: HTMLDivElement) => {
 	}
 
 	const rect = element.getBoundingClientRect();
-	const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
-	const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+	const windowHeight = (window.innerHeight ?? document.documentElement.clientHeight);
+	const windowWidth = (window.innerWidth ?? document.documentElement.clientWidth);
 
 	return (
 		rect.top >= 0 &&

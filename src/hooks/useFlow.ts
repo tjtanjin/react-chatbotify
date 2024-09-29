@@ -36,7 +36,7 @@ export const useFlow = () => {
 	 * Retrieves the conversation flow for the chatbot.
 	 */
 	const getFlow = () => {
-		return flowRef.current || {};
+		return flowRef.current ?? {};
 	}
 	
 	return {

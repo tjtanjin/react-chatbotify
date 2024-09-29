@@ -37,7 +37,7 @@ export const useToast = () => {
 		const currentToasts = toastsRef.current;
 		const numToast = currentToasts.length;
 
-		if (numToast >= (settings.toast?.maxCount || 3)) {
+		if (numToast >= (settings.toast?.maxCount ?? 3)) {
 			if (settings.toast?.forbidOnMax) {
 				return null;
 			}
