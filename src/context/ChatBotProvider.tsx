@@ -88,21 +88,21 @@ const ChatBotProvider = ({
 
 	const renderChildren = () => (
 		<div style={{ fontFamily: botSettings.general?.fontFamily }}>
-		<ChatBotContext.Provider value={{ loadConfig }}>
-			<SettingsProvider settings={botSettings} setSettings={setBotSettings}>
-			<StylesProvider styles={botStyles} setStyles={setBotStyles}>
-				<ToastsProvider>
-				<BotRefsProvider botIdRef={botIdRef} flowRef={botFlowRef}>
-					<PathsProvider>
-					<BotStatesProvider settings={botSettings}>
-						<MessagesProvider>{children}</MessagesProvider>
-					</BotStatesProvider>
-					</PathsProvider>
-				</BotRefsProvider>
-				</ToastsProvider>
-			</StylesProvider>
-			</SettingsProvider>
-		</ChatBotContext.Provider>
+			<ChatBotContext.Provider value={{ loadConfig }}>
+				<SettingsProvider settings={botSettings} setSettings={setBotSettings}>
+					<StylesProvider styles={botStyles} setStyles={setBotStyles}>
+						<ToastsProvider>
+							<BotRefsProvider botIdRef={botIdRef} flowRef={botFlowRef}>
+								<PathsProvider>
+									<BotStatesProvider settings={botSettings}>
+										<MessagesProvider>{children}</MessagesProvider>
+									</BotStatesProvider>
+								</PathsProvider>
+							</BotRefsProvider>
+						</ToastsProvider>
+					</StylesProvider>
+				</SettingsProvider>
+			</ChatBotContext.Provider>
 		</div>
 	);
 
@@ -135,8 +135,7 @@ const ChatBotProvider = ({
 				import("react-dom").then(({ render }) => {
 					render(renderChildren(), shadowRoot);
 				});
-			}
-		);
+			});
 	}, [isDomLoaded, botSettings, botStyles, children]);
 
 	if (!isDomLoaded) {
