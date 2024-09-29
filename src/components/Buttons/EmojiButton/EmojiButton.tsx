@@ -54,11 +54,13 @@ const EmojiButton = () => {
 	// handles click events for showing/dismissing emoji popup
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
+			const path = event.composedPath();
+
 			if (
 				popupRef.current &&
-				!popupRef.current.contains(event.target as Node) &&
+				!path.includes(popupRef.current) &&
 				iconContainerRef.current &&
-				!iconContainerRef.current.contains(event.target as Node)
+				!path.includes(iconContainerRef.current)
 			) {
 				setShowPopup(false);
 			}
