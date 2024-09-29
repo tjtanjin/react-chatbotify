@@ -141,7 +141,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setTextAreaDisabled(settings.chatInput?.disabled || false);
+				setTextAreaDisabled(settings.chatInput?.disabled ?? false);
 			}, 500)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
@@ -240,8 +240,8 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 	if (classList.contains("rcb-options")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: styles.botOptionStyle?.color || settings.general?.primaryColor,
-			borderColor: styles.botOptionStyle?.color || settings.general?.primaryColor,
+			color: styles.botOptionStyle?.color ?? settings.general?.primaryColor,
+			borderColor: styles.botOptionStyle?.color ?? settings.general?.primaryColor,
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botOptionStyle
 		}
@@ -261,8 +261,8 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 	if (classList.contains("rcb-checkbox-row-container")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: styles.botCheckboxRowStyle?.color || settings.general?.primaryColor,
-			borderColor: styles.botCheckboxRowStyle?.color || settings.general?.primaryColor,
+			color: styles.botCheckboxRowStyle?.color ?? settings.general?.primaryColor,
+			borderColor: styles.botCheckboxRowStyle?.color ?? settings.general?.primaryColor,
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botCheckboxRowStyle
 		}
@@ -282,8 +282,8 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 	if (classList.contains("rcb-checkbox-next-button")) {
 		attributes["style"] = {
 			...(attributes["style"] as CSSProperties),
-			color: styles.botCheckboxNextStyle?.color || settings.general?.primaryColor,
-			borderColor: styles.botCheckboxNextStyle?.color || settings.general?.primaryColor,
+			color: styles.botCheckboxNextStyle?.color ?? settings.general?.primaryColor,
+			borderColor: styles.botCheckboxNextStyle?.color ?? settings.general?.primaryColor,
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botCheckboxNextStyle
 		}

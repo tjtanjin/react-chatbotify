@@ -63,23 +63,20 @@ export const setCachedTheme = (id: string, version: string, settings: Settings, 
 }
 
 /**
- * Applies the css styles given the css styles text.
+ * Applies the CSS styles directly to the shadow DOM.
  *
- * @param id id of the theme
- * @param cssStylesText css styles to apply
+ * @param shadowRoot shadow DOM root where styles should be applied
+ * @param cssStylesText css styles to apply (as a string)
  */
-const applyCssStyles = async (id: string, cssStylesText: string) => {
+export const applyCssStyles = async (shadowRoot: ShadowRoot, cssStylesText: string) => {	
 	try {
-		// append css styles provided
-		const cssLinkElement = document.createElement("link");
-		cssLinkElement.id = `rcb-theme-style-${id}`;
-		cssLinkElement.rel = "stylesheet";
-		cssLinkElement.href = `data:text/css;charset=utf-8,${encodeURIComponent(cssStylesText)}`;
-		document.head.appendChild(cssLinkElement);
+		const styleElement = document.createElement("style");
+		styleElement.textContent = cssStylesText;
+		shadowRoot.appendChild(styleElement);
 	} catch (error) {
-		console.error(`Failed to apply styles.css for: ${id}`, error);
+		console.warn("Failed to scope styles to chatbot", error);
 	}
-}
+};
 
 /**
  * Fetches the theme version from meta.json file.
@@ -106,23 +103,24 @@ const fetchThemeVersionFromMeta = async (id: string, baseUrl: string) => {
 /**
  * Processes information for a given theme and retrieves its settings via CDN.
  * 
- * @param theme theme to process and retrieve settings for
+ * @param theme theme to process and retrieve config for
  */
-export const processAndFetchThemeConfig = async (theme: Theme): Promise<{settings: Settings, styles: Styles}> => {
+export const processAndFetchThemeConfig = async (theme: Theme):
+	Promise<{settings: Settings, inlineStyles: Styles, cssStylesText: string}> => {
+
 	const { id, version, baseUrl = DEFAULT_URL, cacheDuration = DEFAULT_EXPIRATION } = theme;
 	const themeVersion = version ? version : await fetchThemeVersionFromMeta(id, baseUrl);
 
 	// if still cannot get version even from meta.json, return
 	if (!themeVersion) {
 		console.error(`Unable to find version for theme: ${id}`);
-		return {settings: {}, styles: {}};
+		return {settings: {}, inlineStyles: {}, cssStylesText: ""};
 	}
 
 	// try to get non-expired theme cache for specified theme and version
 	const cache = getCachedTheme(id, themeVersion, cacheDuration);
 	if (cache) {
-		await applyCssStyles(id, cache.cssStylesText);
-		return { settings: cache.settings, styles: cache.inlineStyles }
+		return { settings: cache.settings, inlineStyles: cache.inlineStyles, cssStylesText: cache.cssStylesText}
 	}
 
 	// for no cache found, construct urls for styles.css, settings.json and settings.json
@@ -138,7 +136,6 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	} else {
 		console.info(`Could not fetch styles.css from ${cssStylesUrl}`);
 	}
-	await applyCssStyles(id, cssStylesText);
 
 	// fetch and return settings
 	const settingsResponse = await fetch(settingsUrl);
@@ -159,5 +156,5 @@ export const processAndFetchThemeConfig = async (theme: Theme): Promise<{setting
 	}
 
 	setCachedTheme(id, themeVersion, settings, inlineStyles, cssStylesText);
-	return {settings, styles: inlineStyles};
+	return {settings, inlineStyles, cssStylesText};
 }

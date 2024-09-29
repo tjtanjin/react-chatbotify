@@ -1,1 +1,2 @@
-import './functions'
+import "./commands";
+import "./functions";

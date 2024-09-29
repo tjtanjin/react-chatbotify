@@ -143,7 +143,7 @@ const UserCheckboxes = ({
 					if (checkboxes.sendOutput) {
 						sendInChat = checkboxes.sendOutput;
 					} else {
-						sendInChat = settings.chatInput?.sendCheckboxOutput || true;
+						sendInChat = settings.chatInput?.sendCheckboxOutput ?? true;
 					}
 					handleSubmitText(userInput, sendInChat);
 				}}

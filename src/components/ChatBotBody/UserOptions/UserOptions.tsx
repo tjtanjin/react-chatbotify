@@ -110,7 +110,7 @@ const UserOptions = ({
 							if (options.sendOutput) {
 								sendInChat = options.sendOutput;
 							} else {
-								sendInChat = settings.chatInput?.sendOptionOutput || true;
+								sendInChat = settings.chatInput?.sendOptionOutput ?? true;
 							}
 							handleSubmitText(key, sendInChat);
 						}}

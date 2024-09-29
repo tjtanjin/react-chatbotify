@@ -83,18 +83,18 @@ const ChatBotBody = ({
 	const toastPromptContainerStyle: CSSProperties = {
 		bottom: 20,
 		width: 300,
-		minWidth: (styles.chatWindowStyle?.width as number || 375) / 2,
-		maxWidth: (styles.chatWindowStyle?.width as number || 375)  - 50,
+		minWidth: (styles.chatWindowStyle?.width as number ?? 375) / 2,
+		maxWidth: (styles.chatWindowStyle?.width as number ?? 375)  - 50,
 		...styles.toastPromptContainerStyle
 	};
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
-		if (!chatBodyRef.current) {
-			return;
-		}
-
 		if (isLoadingChatHistory) {
+			if (!chatBodyRef.current) {
+				return;
+			}
+
 			const { scrollHeight } = chatBodyRef.current;
 			const scrollDifference = scrollHeight - chatScrollHeight;
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
@@ -103,10 +103,18 @@ const ChatBotBody = ({
 		}
 
 		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (isChatWindowOpen) {
-				setUnreadCount(0);
-			}
+			// defer update to next event loop, handles edge case where messages are sent too fast
+			// and the scrolling does not properly reach the bottom
+			setTimeout(() => {
+				if (!chatBodyRef.current) {
+					return;
+				}
+
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+				if (isChatWindowOpen) {
+					setUnreadCount(0);
+				}
+			})
 		}
 	}, [messages.length, isBotTyping]);
 
@@ -143,7 +151,7 @@ const ChatBotBody = ({
 		}
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
 		setIsScrolling(
-			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset || 30)
+			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30)
 		);
 
 		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset

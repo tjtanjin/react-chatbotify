@@ -26,14 +26,15 @@ export const getDefaultStyles = (): Styles => {
  * 
  * @param providedSettings settings provided by the user to the bot
  * @param providedStyles styles provided by the user to the bot
- * @param theme theme provided by the user to the bot
+ * @param themes themes provided by the user to the bot
  */
 export const parseConfig = async (providedSettings: Settings | undefined,
-	providedStyles: Styles | undefined,
-	themes: undefined | Theme | Array<Theme>): Promise<{settings: Settings, styles: Styles}> => {
+	providedStyles: Styles | undefined, themes: undefined | Theme | Array<Theme>):
+	Promise<{settings: Settings, inlineStyles: Styles, cssStylesText: string}> => {
 
 	let combinedSettings = getDefaultSettings();
 	let combinedStyles = getDefaultStyles();
+	let cssStylesText = getDefaultCssStylesText();
 
 	// process themes first
 	if (themes != null) {
@@ -47,12 +48,14 @@ export const parseConfig = async (providedSettings: Settings | undefined,
 			for (const theme of themes) {
 				const themeConfig = await processAndFetchThemeConfig(theme);
 				combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as Settings;
-				combinedStyles = getCombinedConfig(themeConfig.styles, combinedStyles) as Styles;
+				combinedStyles = getCombinedConfig(themeConfig.inlineStyles, combinedStyles) as Styles;
+				cssStylesText += themeConfig.cssStylesText;
 			}
 		} else {
 			const themeConfig = await processAndFetchThemeConfig(themes);
 			combinedSettings = getCombinedConfig(themeConfig.settings, combinedSettings) as Settings;
-			combinedStyles = getCombinedConfig(themeConfig.styles, combinedStyles) as Styles;
+			combinedStyles = getCombinedConfig(themeConfig.inlineStyles, combinedStyles) as Styles;
+			cssStylesText += themeConfig.cssStylesText;
 		}
 	}
 
@@ -70,7 +73,7 @@ export const parseConfig = async (providedSettings: Settings | undefined,
 		combinedSettings.chatInput.botDelay = 500;
 	}
 
-	return {settings: combinedSettings, styles: combinedStyles};
+	return {settings: combinedSettings, inlineStyles: combinedStyles, cssStylesText};
 }
 
 /**
@@ -114,6 +117,45 @@ const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Setti
 	return baseConfig;
 }
 
+// caches default rcb styles
+let cachedDefaultRcbStyles: string | null = null;
+
+/**
+ * Fetches all global styles with class names prefixed with `rcb-` and caches the result.
+ */
+const getDefaultCssStylesText = (): string => {
+	// if has cached default styles, return it
+	if (cachedDefaultRcbStyles !== null) {
+		return cachedDefaultRcbStyles;
+	}
+
+	let rcbStyles = "";
+
+	// iterate over stylesheets to look for rcb styles
+	Array.from(document.styleSheets).forEach((styleSheet) => {
+		try {
+			Array.from(styleSheet.cssRules).forEach((rule) => {
+				// rcb styles are identified with a prefix
+				if (rule instanceof CSSStyleRule && rule.selectorText.startsWith(".rcb-")) {
+					rcbStyles += rule.cssText + "\n";
+				}
+
+				// include @keyframes for animations
+				if (rule instanceof CSSKeyframesRule) {
+					rcbStyles += rule.cssText + "\n";
+				}
+			});
+		} catch (error) {
+			console.warn(`Unable to access stylesheet: ${styleSheet.href}`, error);
+		}
+	});
+
+	// cache the result
+	cachedDefaultRcbStyles = rcbStyles;
+	return rcbStyles;
+};
+
+
 /**
  * Deep clones a javascript object.
  * 
@@ -141,7 +183,7 @@ const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
 		for (const key in source) {
 			if (Object.prototype.hasOwnProperty.call(source, key)) {
 				const value = source[key];
-                
+				
 				if (value && typeof value === "object") {
 					if (seen.has(value)) {
 						target[key] = seen.get(value);
@@ -160,4 +202,3 @@ const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
 
 	return root;
 };
-/* eslint-enable @typescript-eslint/no-explicit-any */

@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useMemo } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -64,15 +64,15 @@ const ChatBotContainer = ({
 	/**
 	 * Retrieves class name for window state.
 	 */
-	const getWindowStateClass = () => {
+	const windowStateClass = useMemo(() => {
 		const windowClass = "rcb-chat-bot ";
 		if (settings.general?.embedded) {
 			return windowClass + "rcb-window-embedded";
 		} else if (isChatWindowOpen) {
 			return windowClass + "rcb-window-open";
 		}
-		return windowClass + "rcb-window-close"
-	}
+		return windowClass + "rcb-window-close";
+	}, [settings, isChatWindowOpen]);
 
 	/**
 	 * Retrieves styles for chat window.
@@ -114,7 +114,7 @@ const ChatBotContainer = ({
 						// if not on mobile, should remove focus
 						isDesktop ? inputRef.current?.blur() : event?.preventDefault();
 					}}
-					className={getWindowStateClass()}
+					className={windowStateClass}
 				>
 					<ChatBotTooltip/>
 					<ChatBotButton/>

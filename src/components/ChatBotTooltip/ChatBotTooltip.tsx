@@ -39,8 +39,8 @@ const ChatBotTooltip = () => {
 			if (isDesktop) {
 				let offset;
 				if (isChatWindowOpen) {
-					offset = (styles.chatWindowStyle?.width as number || 375) -
-					(styles.chatButtonStyle?.width as number || 75)
+					offset = (styles.chatWindowStyle?.width as number ?? 375) -
+					(styles.chatButtonStyle?.width as number ?? 75)
 				} else {
 					offset = 0;
 				}
@@ -71,7 +71,7 @@ const ChatBotTooltip = () => {
 	// styles for tooltip
 	const tooltipStyle: React.CSSProperties = {
 		transform: `translateX(-${tooltipOffset}px)`,
-		right: (styles.chatButtonStyle?.width as number || 75) + 40,
+		right: (styles.chatButtonStyle?.width as number ?? 75) + 40,
 		bottom: 30,
 		backgroundColor: settings.general?.secondaryColor,
 		color: settings.general?.secondaryColor,

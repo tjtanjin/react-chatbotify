@@ -70,8 +70,12 @@
 	position: absolute;
 	top: -6px;
 	right: -6px;
-	padding: 5px 10px;
 	border-radius: 50%;
 	background-color: #ff0000;
 	color: #fff;
+	height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
