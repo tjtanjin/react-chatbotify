@@ -112,6 +112,7 @@ function App() {
 			<header className="App-header">
 				<div style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: `calc(20vh)`}}>
 					<ChatBot
+						id="chatbot-id"
 						flow={flow}
 						settings={{
 							audio: {disabled: false},
