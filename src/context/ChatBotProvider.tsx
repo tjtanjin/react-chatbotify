@@ -135,7 +135,7 @@ const ChatBotProvider = ({
 		return null;
 	}
 
-	return <div ref={shadowContainerRef}></div>;
+	return <div ref={shadowContainerRef} id={`shadow-container-${botIdRef.current}`}></div>;
 };
 
 export default ChatBotProvider;
