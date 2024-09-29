@@ -32,6 +32,64 @@ export const useMessagesInternal = () => {
 	const { callRcbEvent } = useRcbEventInternal();
 
 	/**
+	 * Simulates the streaming of a message from the bot.
+	 * 
+	 * @param message message to stream
+	 * @param streamSpeed speed to stream the message
+	 * @param useMarkup boolean indicating whether markup is used
+	 */
+	const simulateStream = useCallback(async (message: Message, streamSpeed: number, useMarkup: boolean) => {
+		// stop bot typing when simulating stream
+		setIsBotTyping(false);
+
+		// set an initial empty message to be used for streaming
+		setMessages(prevMessages => [...prevMessages, message]);
+		streamMessageMap.current.set("bot", message.id);
+
+		// initialize default message to empty with stream index position 0
+		let streamMessage = message.content as string | string[];
+		if (useMarkup) {
+			streamMessage = parseMarkupMessage(streamMessage as string);
+		}
+		let streamIndex = 0;
+		const endStreamIndex = streamMessage.length;
+		message.content = "";
+
+		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
+			const intervalId = setInterval(() => {
+			// consider streaming done once end index is reached or exceeded
+			// when streaming is done, remove task and resolve the promise
+				if (streamIndex >= endStreamIndex) {
+					clearInterval(intervalId);
+					resolve();
+					return;
+				}
+
+				setMessages((prevMessages) => {
+					const updatedMessages = [...prevMessages];
+					for (let i = updatedMessages.length - 1; i >= 0; i--) {
+						if (updatedMessages[i].sender === message.sender
+						&& typeof updatedMessages[i].content === "string") {
+							const character = streamMessage[streamIndex];
+							if (character) {
+								message.content += character;
+								updatedMessages[i] = message;
+							}
+							streamIndex++;
+							break;
+						}
+					}
+					return updatedMessages;
+				});
+			}, streamSpeed);
+		});
+
+		await simStreamDoneTask;
+		streamMessageMap.current.delete("bot");
+		saveChatHistory(messages);
+	}, [messages, streamMessageMap]);
+
+	/**
 	 * Injects a message at the end of the messages array.
 	 * 
 	 * @param content message content to inject
@@ -76,7 +134,7 @@ export const useMessagesInternal = () => {
 		}
 
 		return message.id;
-	}, [settings, audioToggledOn, callRcbEvent]);
+	}, [settings, audioToggledOn, isChatWindowOpen, callRcbEvent, simulateStream]);
 
 	/**
 	 * Removes a message with the given id.
@@ -100,65 +158,7 @@ export const useMessagesInternal = () => {
 		setMessages((prevMessages) => prevMessages.filter(message => message.id !== messageId));
 		setUnreadCount((prevCount) => Math.max(prevCount - 1, 0));
 		return messageId;
-	}, []);
-
-	/**
-	 * Simulates the streaming of a message from the bot.
-	 * 
-	 * @param message message to stream
-	 * @param streamSpeed speed to stream the message
-	 * @param useMarkup boolean indicating whether markup is used
-	 */
-	const simulateStream = useCallback(async (message: Message, streamSpeed: number, useMarkup: boolean) => {
-		// stop bot typing when simulating stream
-		setIsBotTyping(false);
-
-		// set an initial empty message to be used for streaming
-		setMessages(prevMessages => [...prevMessages, message]);
-		streamMessageMap.current.set("bot", message.id);
-
-		// initialize default message to empty with stream index position 0
-		let streamMessage = message.content as string | string[];
-		if (useMarkup) {
-			streamMessage = parseMarkupMessage(streamMessage as string);
-		}
-		let streamIndex = 0;
-		const endStreamIndex = streamMessage.length;
-		message.content = "";
-
-		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
-			const intervalId = setInterval(() => {
-				// consider streaming done once end index is reached or exceeded
-				// when streaming is done, remove task and resolve the promise
-				if (streamIndex >= endStreamIndex) {
-					clearInterval(intervalId);
-					resolve();
-					return;
-				}
-
-				setMessages((prevMessages) => {
-					const updatedMessages = [...prevMessages];
-					for (let i = updatedMessages.length - 1; i >= 0; i--) {
-						if (updatedMessages[i].sender === message.sender
-							&& typeof updatedMessages[i].content === "string") {
-							const character = streamMessage[streamIndex];
-							if (character) {
-								message.content += character;
-								updatedMessages[i] = message;
-							}
-							streamIndex++;
-							break;
-						}
-					}
-					return updatedMessages;
-				});
-			}, streamSpeed);
-		});
-
-		await simStreamDoneTask;
-		streamMessageMap.current.delete("bot");
-		saveChatHistory(messages);
-	}, []);
+	}, [callRcbEvent, messages, settings.event?.rcbRemoveMessage]);
 
 	/**
 	 * Streams data into the last message at the end of the messages array with given type.
@@ -211,7 +211,7 @@ export const useMessagesInternal = () => {
 			return updatedMessages;
 		});
 		return streamMessageMap.current.get(sender) ?? null;
-	},[]);
+	},[callRcbEvent, settings.event?.rcbChunkStreamMessage, settings.event?.rcbStartStreamMessage, streamMessageMap]);
 
 	/**
 	 * Sets the streaming mode of the chatbot.
@@ -248,7 +248,7 @@ export const useMessagesInternal = () => {
 		streamMessageMap.current.delete(sender);
 		saveChatHistory(messages);
 		return true;
-	}, [messages])
+	}, [callRcbEvent, messages, settings.event?.rcbStopStreamMessage, streamMessageMap])
 
 	return {
 		endStreamMessage,
