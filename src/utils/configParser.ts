@@ -139,6 +139,11 @@ const getDefaultCssStylesText = (): string => {
 				if (rule instanceof CSSStyleRule && rule.selectorText.startsWith(".rcb-")) {
 					rcbStyles += rule.cssText + "\n";
 				}
+
+				// include @keyframes for animations
+				if (rule instanceof CSSKeyframesRule) {
+					rcbStyles += rule.cssText + "\n";
+				}
 			});
 		} catch (error) {
 			console.warn(`Unable to access stylesheet: ${styleSheet.href}`, error);
