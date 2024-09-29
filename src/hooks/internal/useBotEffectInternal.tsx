@@ -111,7 +111,11 @@ export const useBotEffectInternal = () => {
 	useEffect(() => {
 		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 		setAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
-		setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
+
+		// delay required for default voice toggled on to work if it is set to true
+		setTimeout(() => {
+			setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
+		}, 1)
 	}, [])
 
 	// renders chat history button if enabled
