@@ -165,11 +165,9 @@ export const useSubmitInputInternal = () => {
 				setIsBotTyping(false);
 			}
 		}, settings.chatInput?.botDelay);
-	}, [timeoutId, paramsInputRef, chatBodyRef, inputRef, settings.chatInput?.blockSpam, settings.chatInput?.botDelay,
-		settings.chatInput?.disabled, keepVoiceOnRef, voiceToggledOn, syncVoice, setTextAreaSensitiveMode,
-		handleSendUserInput, setTextAreaValue, setInputLength, setTextAreaDisabled, setIsBotTyping, getPrevPath,
-		getCurrPath, goToPath, injectMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast,
-		dismissToast, flowRef, setBlockAllowsAttachment]);
+	}, [timeoutId, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
+		keepVoiceOnRef, voiceToggledOn, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
+		injectMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast, dismissToast, flowRef]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.

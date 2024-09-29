@@ -39,7 +39,7 @@ export const useMessagesInternal = () => {
 	 * @param useMarkup boolean indicating whether markup is used
 	 */
 	const simulateStream = useCallback(async (message: Message, streamSpeed: number, useMarkup: boolean) => {
-	// stop bot typing when simulating stream
+		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
 		// set an initial empty message to be used for streaming
@@ -87,7 +87,7 @@ export const useMessagesInternal = () => {
 		await simStreamDoneTask;
 		streamMessageMap.current.delete("bot");
 		saveChatHistory(messages);
-	}, [messages, setIsBotTyping, setMessages, streamMessageMap]);
+	}, [messages, streamMessageMap]);
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -134,7 +134,7 @@ export const useMessagesInternal = () => {
 		}
 
 		return message.id;
-	}, [settings, audioToggledOn, isChatWindowOpen, setUnreadCount, callRcbEvent, simulateStream, setMessages]);
+	}, [settings, audioToggledOn, isChatWindowOpen, callRcbEvent, simulateStream]);
 
 	/**
 	 * Removes a message with the given id.
@@ -158,7 +158,7 @@ export const useMessagesInternal = () => {
 		setMessages((prevMessages) => prevMessages.filter(message => message.id !== messageId));
 		setUnreadCount((prevCount) => Math.max(prevCount - 1, 0));
 		return messageId;
-	}, [callRcbEvent, messages, setMessages, setUnreadCount, settings.event?.rcbRemoveMessage]);
+	}, [callRcbEvent, messages, settings.event?.rcbRemoveMessage]);
 
 	/**
 	 * Streams data into the last message at the end of the messages array with given type.
@@ -211,8 +211,7 @@ export const useMessagesInternal = () => {
 			return updatedMessages;
 		});
 		return streamMessageMap.current.get(sender) || null;
-	},[callRcbEvent, setIsBotTyping, setMessages, setUnreadCount, settings.event?.rcbChunkStreamMessage,
-		settings.event?.rcbStartStreamMessage, streamMessageMap]);
+	},[callRcbEvent, settings.event?.rcbChunkStreamMessage, settings.event?.rcbStartStreamMessage, streamMessageMap]);
 
 	/**
 	 * Sets the streaming mode of the chatbot.
