@@ -90,11 +90,11 @@ const ChatBotBody = ({
 
 	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
-		if (!chatBodyRef.current) {
-			return;
-		}
-
 		if (isLoadingChatHistory) {
+			if (!chatBodyRef.current) {
+				return;
+			}
+
 			const { scrollHeight } = chatBodyRef.current;
 			const scrollDifference = scrollHeight - chatScrollHeight;
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
@@ -103,10 +103,18 @@ const ChatBotBody = ({
 		}
 
 		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (isChatWindowOpen) {
-				setUnreadCount(0);
-			}
+			// defer update to next event loop, handles edge case where messages are sent too fast
+			// and the scrolling does not properly reach the bottom
+			setTimeout(() => {
+				if (!chatBodyRef.current) {
+					return;
+				}
+
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+				if (isChatWindowOpen) {
+					setUnreadCount(0);
+				}
+			})
 		}
 	}, [messages.length, isBotTyping]);
 
