@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { createRoot, Root } from "react-dom/client";
+import { Root } from "react-dom/client";
 
 import { applyCssStyles } from "../services/ThemeService";
 import { parseConfig } from "../utils/configParser";
@@ -86,6 +86,26 @@ const ChatBotProvider = ({
 		setBotStyles(combinedConfig.inlineStyles);
 	};
 
+	const renderChildren = () => (
+		<div style={{ fontFamily: botSettings.general?.fontFamily }}>
+		<ChatBotContext.Provider value={{ loadConfig }}>
+			<SettingsProvider settings={botSettings} setSettings={setBotSettings}>
+			<StylesProvider styles={botStyles} setStyles={setBotStyles}>
+				<ToastsProvider>
+				<BotRefsProvider botIdRef={botIdRef} flowRef={botFlowRef}>
+					<PathsProvider>
+					<BotStatesProvider settings={botSettings}>
+						<MessagesProvider>{children}</MessagesProvider>
+					</BotStatesProvider>
+					</PathsProvider>
+				</BotRefsProvider>
+				</ToastsProvider>
+			</StylesProvider>
+			</SettingsProvider>
+		</ChatBotContext.Provider>
+		</div>
+	);
+
 	useEffect(() => {
 		if (!shadowContainerRef.current) {
 			return;
@@ -102,32 +122,20 @@ const ChatBotProvider = ({
 			return;
 		}
 
-		// creates only once
-		if (!reactRootRef.current) {
-			reactRootRef.current = createRoot(shadowRoot);
-		}
-
-		// renders the children (wrapped in providers) into the shadow DOM
-		reactRootRef.current.render(
-			<div style={{ fontFamily: botSettings.general?.fontFamily }}>
-				<ChatBotContext.Provider value={{ loadConfig }}>
-					<SettingsProvider settings={botSettings} setSettings={setBotSettings}>
-						<StylesProvider styles={botStyles} setStyles={setBotStyles}>
-							<ToastsProvider>
-								<BotRefsProvider botIdRef={botIdRef} flowRef={botFlowRef}>
-									<PathsProvider>
-										<BotStatesProvider settings={botSettings}>
-											<MessagesProvider>
-												{children}
-											</MessagesProvider>
-										</BotStatesProvider>
-									</PathsProvider>
-								</BotRefsProvider>
-							</ToastsProvider>
-						</StylesProvider>
-					</SettingsProvider>
-				</ChatBotContext.Provider>
-			</div>
+		import("react-dom/client")
+			.then(({ createRoot }) => {
+				// handles react >=18
+				if (!reactRootRef.current) {
+					reactRootRef.current = createRoot(shadowRoot);
+				}
+				reactRootRef.current.render(renderChildren());
+			})
+			.catch(() => {
+				// handles react <18
+				import("react-dom").then(({ render }) => {
+					render(renderChildren(), shadowRoot);
+				});
+			}
 		);
 	}, [isDomLoaded, botSettings, botStyles, children]);
 
