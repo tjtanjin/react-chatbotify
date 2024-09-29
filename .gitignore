@@ -16,11 +16,15 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.eslintcache
 
 # logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# cypress
+/cypress/screenshots
 
 # temp file generated for ssr test
 ./ssr/ssrTestIndexNoCssImport.js
