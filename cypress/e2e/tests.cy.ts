@@ -84,7 +84,7 @@ describe("Chat Bot Test Suite", () => {
 
 	it("Sends incorrect emoji guess and verifies bot reply", () => {
 		cy.getShadow(".rcb-emoji-button-enabled").click();
-		cy.getShadow(".rcb-emoji").first().click();
+		cy.getShadow(".rcb-emoji").should('exist').should('be.visible').first().click();
 		cy.getShadow(".rcb-send-button").click();
 		cy.getShadow(".rcb-bot-message")
 			.eq(9)
