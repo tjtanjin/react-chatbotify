@@ -8,11 +8,8 @@ import "./ChatHistoryButton.css";
 
 /**
  * Supports viewing of old messages.
- * 
- * @param chatHistory string representation of old chat messages
- * @param showChatHistory entry point for showing of chat history
  */
-const ChatHistoryButton = ({ chatHistory }: { chatHistory: string }) => {
+const ChatHistoryButton = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -54,7 +51,7 @@ const ChatHistoryButton = ({ chatHistory }: { chatHistory: string }) => {
 				style={isHovered ? chatHistoryButtonHoveredStyle : styles.chatHistoryButtonStyle}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
-					showChatHistory(chatHistory);
+					showChatHistory();
 				}}
 				className="rcb-view-history-button"
 			>

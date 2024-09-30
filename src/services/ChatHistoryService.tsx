@@ -50,23 +50,39 @@ const saveChatHistory = async (messages: Message[]) => {
 		parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
 	}
 
-	localStorage.setItem(historyStorageKey, JSON.stringify(parsedMessages));
+	setHistoryMessages(parsedMessages);
 }
 
 /**
- * Retrieves chat history.
+ * Parses chat history.
  * 
  * @param historyStorageKey key used to identify chat history stored in local storage
  */
-const getHistoryMessages = (chatHistory: string) => {
-	if (chatHistory != null) {
+const parseHistoryMessages = (historyStorageKey: string) => {
+	if (historyStorageKey != null) {
 		try {
-			return JSON.parse(chatHistory);
+			return JSON.parse(historyStorageKey);
 		} catch {
 			return [];
 		}
 	}
 	return [];
+}
+
+/**
+ * Retrieves history messages.
+ */
+const getHistoryMessages = () => {
+	return historyMessages;
+}
+
+/**
+ * Sets history messages.
+ * 
+ * @param messages chat history messages to set
+ */
+const setHistoryMessages = (messages: Message[]) => {
+	localStorage.setItem(historyStorageKey, JSON.stringify(messages));
 }
 
 /**
@@ -78,7 +94,7 @@ const setHistoryStorageValues = (settings: Settings) => {
 	historyStorageKey = settings.chatHistory?.storageKey as string;
 	historyMaxEntries = settings.chatHistory?.maxEntries as number;
 	historyDisabled = settings.chatHistory?.disabled as boolean;
-	historyMessages = getHistoryMessages(localStorage.getItem(historyStorageKey) as string);
+	historyMessages = parseHistoryMessages(localStorage.getItem(historyStorageKey) as string);
 }
 
 /**
@@ -109,7 +125,7 @@ const parseMessageToString = (message: Message) => {
  * @param setMessages setter for updating messages
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
-const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string,
+const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
 	setMessages: Dispatch<SetStateAction<Message[]>>, setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
@@ -121,13 +137,13 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: string
 				return [loaderMessage, ...prevMessages];
 			});
 
-			const parsedMessages = JSON.parse(chatHistory).map((message: Message) => {
+			const parsedMessages = chatHistory.map((message: Message) => {
 				if (message.type === "object") {
 					const element = renderHTML(message.content as string, settings, styles);
 					return { ...message, content: element };
 				}
 				return message;
-			});
+			}) as Message[];
 
 			setTimeout(() => {
 				setMessages((prevMessages) => {
@@ -315,5 +331,7 @@ const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[
 export {
 	saveChatHistory,
 	loadChatHistory,
+	getHistoryMessages,
+	setHistoryMessages,
 	setHistoryStorageValues
 }

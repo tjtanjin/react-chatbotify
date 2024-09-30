@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useRcbEventInternal } from "./useRcbEventInternal";
-import { loadChatHistory } from "../../services/ChatHistoryService";
+import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
@@ -32,7 +32,12 @@ export const useChatHistoryInternal = () => {
 	 * 
 	 * @param chatHistory chat history content to show
 	 */
-	const showChatHistory = useCallback((chatHistory: string) => {
+	const showChatHistory = useCallback(() => {
+		const chatHistory = getHistoryMessages();
+		if (!chatHistory) {
+			return;
+		}
+
 		// handles load chat history event
 		if (settings.event?.rcbLoadChatHistory) {
 			const event = callRcbEvent(RcbEvent.LOAD_CHAT_HISTORY, {});
@@ -40,7 +45,6 @@ export const useChatHistoryInternal = () => {
 				return;
 			}
 		}
-
 		setIsLoadingChatHistory(true);
 		setTextAreaDisabled(true);
 		loadChatHistory(settings, styles, chatHistory, setMessages, setTextAreaDisabled);

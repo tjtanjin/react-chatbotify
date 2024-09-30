@@ -45,6 +45,7 @@ import { useStyles } from "./hooks/useStyles";
 import { useTextArea } from "./hooks/useTextArea";
 import { useToast } from "./hooks/useToast";
 import { useVoice } from "./hooks/useVoice";
+import { useChatHistory } from "./hooks/useChatHistory";
 
 // util exports
 export {
@@ -103,7 +104,8 @@ export {
 	useStyles,
 	useTextArea,
 	useToast,
-	useVoice
+	useVoice,
+	useChatHistory
 }
 
 // provider export

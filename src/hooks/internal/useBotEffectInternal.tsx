@@ -128,10 +128,10 @@ export const useBotEffectInternal = () => {
 			const chatHistory = localStorage.getItem(settings.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
-				const messageContent = createMessage(<ChatHistoryButton chatHistory={chatHistory} />, "system");
+				const messageContent = createMessage(<ChatHistoryButton/>, "system");
 				setMessages([messageContent]);
 				if (settings.chatHistory?.autoLoad) {
-					showChatHistory(chatHistory);
+					showChatHistory();
 				}
 			}
 		}
