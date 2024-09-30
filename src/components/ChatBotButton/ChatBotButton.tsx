@@ -19,7 +19,7 @@ const ChatBotButton = () => {
 	const { unreadCount } = useBotStatesContext();
 
 	// handles chat window
-	const { isChatWindowOpen, setIsChatWindowOpen } = useChatWindowInternal();
+	const { isChatWindowOpen, toggleChatWindow } = useChatWindowInternal();
 
 	// styles for chat button
 	const chatButtonStyle: React.CSSProperties = {
@@ -41,7 +41,7 @@ const ChatBotButton = () => {
 					aria-label="Open Chat"
 					style={chatButtonStyle}
 					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
-					onClick={() => setIsChatWindowOpen(prev => !prev)}
+					onClick={toggleChatWindow}
 				>
 					<span
 						className="rcb-toggle-icon"
