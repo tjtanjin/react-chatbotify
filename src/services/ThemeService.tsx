@@ -71,7 +71,12 @@ export const setCachedTheme = (id: string, version: string, settings: Settings, 
 export const applyCssStyles = async (shadowRoot: ShadowRoot, cssStylesText: string) => {	
 	try {
 		const styleElement = document.createElement("style");
-		styleElement.textContent = cssStylesText;
+		styleElement.textContent = `
+		:host {
+		  all: initial;
+		}
+		${cssStylesText}
+	  `;
 		shadowRoot.appendChild(styleElement);
 	} catch (error) {
 		console.warn("Failed to scope styles to chatbot", error);
