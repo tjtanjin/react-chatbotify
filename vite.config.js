@@ -20,7 +20,7 @@ export default ({mode}) => {
         formats: ["es", "cjs"],
       },
       rollupOptions: {
-        external: ["react", "react-dom"],
+        external: [/node_modules/],
         output: {
           globals: {
             react: "React",
