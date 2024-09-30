@@ -29,22 +29,26 @@ fs.writeFileSync(noCssImportFilePath, fileContent, 'utf-8');
 try {
 	const ChatBot = await import(noCssImportFileName).then((mod) => mod.default);
 	ReactDOMServer.renderToString(React.createElement(ChatBot));
-	console.log('ChatBot: server-side rendering validation passed.');
+	console.info('ChatBot: server-side rendering validation passed.');
 } catch (error) {
 	//fs.rmSync(noCssImportFilePath);
 	console.error('ChatBot rendered server-side with error.', error);
 	throw new Error('ChatBot: server-side rendering validation failed.');
+} finally {
+	fs.rmSync(noCssImportFilePath);
 }
 
 // SSR Validation: ChatBotProvider
 try {
 	const ChatBotProvider = await import(noCssImportFileName).then((mod) => mod.ChatBotProvider);
 	ReactDOMServer.renderToString(React.createElement(ChatBotProvider));
-	console.log('ChatBotProvider: server-side rendering validation passed.');
+	console.info('ChatBotProvider: server-side rendering validation passed.');
 } catch (error) {
 	//fs.rmSync(noCssImportFilePath);
 	console.error('ChatBotProvider rendered server-side with error.', error);
 	throw new Error('ChatBotProvider: server-side rendering validation failed.');
+} finally {
+	fs.rmSync(noCssImportFilePath);
 }
 
 fs.rmSync(noCssImportFilePath);
