@@ -21,14 +21,15 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
     "lint": "eslint --fix . --ext .tsx",
-    "build": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
-    "prepublishOnly": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
-    "prepack": "tsc && vite build && cp ./dist/index.d.ts ./dist/index.d.cts",
+    "build": "tsc && vite build && node ./scripts/post-build.js",
+    "prepublishOnly": "tsc && vite build && node ./scripts/post-build.js",
+    "prepack": "tsc && vite build && node ./scripts/post-build.js",
     "start": "vite serve",
     "prepare": "husky install",
     "cy:open": "cypress open",
