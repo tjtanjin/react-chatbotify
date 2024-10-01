@@ -12,41 +12,13 @@ export const useTextArea = () => {
 	// handles input text area
 	const {
 		textAreaDisabled,
-		setTextAreaDisabled,
+		toggleTextAreaDisabled,
 		textAreaSensitiveMode,
-		setTextAreaSensitiveMode,
-		setTextAreaValue
+		toggleTextAreaSensitiveMode,
+		getTextAreaValue,
+		setTextAreaValue,
+		focusTextArea
 	} = useTextAreaInternal();
-
-	/**
-	 * Focuses on text area.
-	 */
-	const focusTextArea = useCallback(() => {
-		if (!textAreaDisabled && inputRef.current) {
-			inputRef.current.focus();
-		}
-	}, [textAreaDisabled]);
-
-	/**
-	 * Retrieves text area value.
-	 */
-	const getTextAreaValue = useCallback(() => {
-		return inputRef.current?.value;
-	}, [inputRef.current]);
-
-	/**
-	 * Toggles text area disabled.
-	 */
-	const toggleTextAreaDisabled = () => {
-		setTextAreaDisabled(prev => !prev);
-	}
-
-	/**
-	 * Toggles text area sensitive mode.
-	 */
-	const toggleTextAreaSensitiveMode = () => {
-		setTextAreaSensitiveMode(prev => !prev);
-	}
 
 	return {
 		textAreaDisabled,

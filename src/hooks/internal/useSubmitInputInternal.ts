@@ -8,7 +8,7 @@ import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useVoiceInternal } from "./useVoiceInternal";
 import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
-import { useToast } from "../useToast";
+import { useToastInternal } from "./useToastInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
@@ -44,7 +44,7 @@ export const useSubmitInputInternal = () => {
 	const { flowRef, chatBodyRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
 
 	// handles toasts
-	const { showToast, dismissToast } = useToast();
+	const { showToast, dismissToast } = useToastInternal();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();

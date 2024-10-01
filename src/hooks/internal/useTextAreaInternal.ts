@@ -95,6 +95,37 @@ export const useTextAreaInternal = () => {
 		}
 	}, []);
 
+	/**
+	 * Focuses on text area.
+	 */
+	const focusTextArea = useCallback(() => {
+		if (!textAreaDisabled && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [textAreaDisabled]);
+
+	/**
+	 * Retrieves text area value.
+	 */
+	const getTextAreaValue = useCallback(() => {
+		return inputRef.current?.value;
+	}, [inputRef.current]);
+
+	/**
+	 * Toggles text area disabled.
+	 */
+	const toggleTextAreaDisabled = () => {
+		setTextAreaDisabled(prev => !prev);
+	}
+
+	/**
+	 * Toggles text area sensitive mode.
+	 */
+	const toggleTextAreaSensitiveMode = () => {
+		setTextAreaSensitiveMode(prev => !prev);
+	}
+
+	// todo: we can just standardize to export and use toggles, clean up in future
 	return {
 		textAreaDisabled,
 		setTextAreaDisabled,
@@ -102,7 +133,11 @@ export const useTextAreaInternal = () => {
 		setTextAreaSensitiveMode,
 		inputLength,
 		setInputLength,
+		getTextAreaValue,
 		setTextAreaValue,
-		updateTextAreaFocus
+		updateTextAreaFocus,
+		focusTextArea,
+		toggleTextAreaDisabled,
+		toggleTextAreaSensitiveMode
 	};
 };

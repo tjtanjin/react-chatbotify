@@ -9,7 +9,7 @@ import React, {
 
 import { useSubmitInputInternal } from "../../hooks/internal/useSubmitInputInternal";
 import { useIsDesktopInternal } from "../../hooks/internal/useIsDesktopInternal";
-import { useTextArea } from "../../hooks/useTextArea";
+import { useTextAreaInternal } from "../../hooks/internal/useTextAreaInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
@@ -56,7 +56,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 	const { handleSubmitText } = useSubmitInputInternal();
 
 	//handle textarea functionality
-	const { setTextAreaValue } = useTextArea();
+	const { setTextAreaValue } = useTextAreaInternal();
 
 	// styles for text area
 	const textAreaStyle: React.CSSProperties = {

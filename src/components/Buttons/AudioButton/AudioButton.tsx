@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-import { useAudio } from "../../../hooks/useAudio";
+import { useAudioInternal } from "../../../hooks/internal/useAudioInternal";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
 
@@ -17,7 +17,7 @@ const AudioButton = () => {
 	const { styles } = useStylesContext();
 
 	// handles audio
-	const { audioToggledOn, toggleAudio } = useAudio();
+	const { audioToggledOn, toggleAudio } = useAudioInternal();
 
 	// styles for audio icon
 	const audioIconStyle: React.CSSProperties = {

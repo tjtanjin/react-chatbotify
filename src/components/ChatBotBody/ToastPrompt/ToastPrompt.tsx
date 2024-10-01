@@ -1,6 +1,6 @@
 import { useEffect, useState, MouseEvent } from "react";
 
-import { useToast } from "../../../hooks/useToast";
+import { useToastInternal } from "../../../hooks/internal/useToastInternal";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
 
@@ -30,7 +30,7 @@ const Toast = ({
 	const { styles } = useStylesContext();
 
 	// handles toasts
-	const { dismissToast } = useToast();
+	const { dismissToast } = useToastInternal();
 
 	// tracks if toast prompt is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
