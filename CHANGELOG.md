@@ -13,6 +13,7 @@
 
 **Added:**
 - Added a new `useChatHistory` hook that provides 3 new actions (`showChatHistory`, `getHistoryMessages` and `setHistoryMessages`)
+- Added a new `sendButtonDisabledStyle` (send button is now properly disabled when textarea is disabled as well)
 
 **Note:**
 The library size has been signfiicantly reduced, and the chatbot is now isolated within a shadow dom (this was also necessary to fix theme styling conflicts arising from the use of multiple chatbots). This should provide a better experience for users, as well as eliminate concerns about the host website styles conflicting with the chatbot and vice versa (ensures chatbot style is consistent regardless of the host website it is being added to). Overall, these are very neat improvements!
