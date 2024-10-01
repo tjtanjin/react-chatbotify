@@ -31,11 +31,9 @@ try {
 	ReactDOMServer.renderToString(React.createElement(ChatBot));
 	console.info('ChatBot: server-side rendering validation passed.');
 } catch (error) {
-	//fs.rmSync(noCssImportFilePath);
+	fs.rmSync(noCssImportFilePath);
 	console.error('ChatBot rendered server-side with error.', error);
 	throw new Error('ChatBot: server-side rendering validation failed.');
-} finally {
-	fs.rmSync(noCssImportFilePath);
 }
 
 // SSR Validation: ChatBotProvider
@@ -44,11 +42,9 @@ try {
 	ReactDOMServer.renderToString(React.createElement(ChatBotProvider));
 	console.info('ChatBotProvider: server-side rendering validation passed.');
 } catch (error) {
-	//fs.rmSync(noCssImportFilePath);
+	fs.rmSync(noCssImportFilePath);
 	console.error('ChatBotProvider rendered server-side with error.', error);
 	throw new Error('ChatBotProvider: server-side rendering validation failed.');
-} finally {
-	fs.rmSync(noCssImportFilePath);
 }
 
 fs.rmSync(noCssImportFilePath);
