@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Root } from "react-dom/client";
+import { createContext, MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 
 import { applyCssStyles } from "../services/ThemeService";
 import { parseConfig } from "../utils/configParser";
@@ -17,7 +16,8 @@ import { Theme } from "../types/Theme";
 
 type ChatBotProviderContextType = {
 	loadConfig: (id: string, flow: Flow, settings: Settings, styles: Styles,
-		themes: Theme | Theme[] | undefined) => Promise<void>;
+		themes: Theme | Theme[] | undefined,
+		shadowContainerRef: MutableRefObject<HTMLDivElement | null>) => Promise<void>;
 };
 // Create a context to detect whether ChatBotProvider is present
 const ChatBotContext = createContext<ChatBotProviderContextType | undefined>(undefined);
@@ -45,12 +45,6 @@ const ChatBotProvider = ({
 	// handles DOM loaded event to ensure chatbot is loaded after DOM is ready (necessary for SSR support)
 	const [isDomLoaded, setIsDomLoaded] = useState<boolean>(false);
 
-	// handles shadow container ref
-	const shadowContainerRef = useRef<HTMLDivElement | null>(null);
-
-	// handles react root ref (to avoid recreating it)
-	const reactRootRef = useRef<Root | null>(null);
-
 	useEffect(() => {
 		setIsDomLoaded(true);
 	}, []);
@@ -63,13 +57,15 @@ const ChatBotProvider = ({
 	 * @param settings settings to setup the bot
 	 * @param styles styles to apply to the bot
 	 * @param themes themes to apply to the bot
+	 * @param shadowContainerRef ref to the shadow container
 	 */
 	const loadConfig = async (
 		botId: string,
 		flow: Flow,
 		settings: Settings,
 		styles: Styles,
-		themes: Theme | Theme[] | undefined
+		themes: Theme | Theme[] | undefined,
+		shadowContainerRef: MutableRefObject<HTMLDivElement | null>,
 	) => {
 		botIdRef.current = botId;
 		botFlowRef.current = flow;
@@ -86,7 +82,11 @@ const ChatBotProvider = ({
 		setBotStyles(combinedConfig.inlineStyles);
 	};
 
-	const renderChildren = () => (
+	if (!isDomLoaded) {
+		return null;
+	}
+
+	return (
 		<div style={{ fontFamily: botSettings.general?.fontFamily }}>
 			<ChatBotContext.Provider value={{ loadConfig }}>
 				<SettingsProvider settings={botSettings} setSettings={setBotSettings}>
@@ -105,44 +105,6 @@ const ChatBotProvider = ({
 			</ChatBotContext.Provider>
 		</div>
 	);
-
-	useEffect(() => {
-		if (!shadowContainerRef.current) {
-			return;
-		}
-
-		// checks if shadow root exists, otherwise attach to it
-		if (!shadowContainerRef.current.shadowRoot) {
-			shadowContainerRef.current.attachShadow({ mode: "open" });
-		}
-
-		// if no shadow root, return
-		const shadowRoot = shadowContainerRef.current.shadowRoot;
-		if (!shadowRoot) {
-			return;
-		}
-
-		import("react-dom/client")
-			.then(({ createRoot }) => {
-				// handles react >=18
-				if (!reactRootRef.current) {
-					reactRootRef.current = createRoot(shadowRoot);
-				}
-				reactRootRef.current.render(renderChildren());
-			})
-			.catch(() => {
-				// handles react <18
-				import("react-dom").then(({ render }) => {
-					render(renderChildren(), shadowRoot);
-				});
-			});
-	}, [isDomLoaded, botSettings, botStyles, children]);
-
-	if (!isDomLoaded) {
-		return null;
-	}
-
-	return <div ref={shadowContainerRef} id={`shadow-container-${botIdRef.current}`}></div>;
 };
 
 export default ChatBotProvider;

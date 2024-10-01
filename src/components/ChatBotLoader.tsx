@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect } from "react";
 
 import { useChatBotContext } from "../context/ChatBotProvider";
 import { useBotRefsContext } from "../context/BotRefsContext";
@@ -16,6 +16,7 @@ import { Theme } from "../types/Theme";
  * @param styles styles to setup the bot
  * @param themes themes to apply to the bot
  * @param setConfigLoaded setter to indicate when config is fully loaded
+ * @param shadowContainerRef ref to the shadow container
  */
 const ChatBotLoader = ({
 	id,
@@ -23,7 +24,8 @@ const ChatBotLoader = ({
 	settings,
 	styles,
 	themes,
-	setConfigLoaded
+	setConfigLoaded,
+	shadowContainerRef,
 }: {
 	id: string;
 	flow: Flow;
@@ -31,6 +33,7 @@ const ChatBotLoader = ({
 	styles: Styles;
 	themes: Theme | Array<Theme>;
 	setConfigLoaded: Dispatch<SetStateAction<boolean>>;
+	shadowContainerRef: MutableRefObject<HTMLDivElement | null>;
 }) => {
 	// used to load config to the provider
 	const chatBotContext = useChatBotContext();
@@ -49,7 +52,7 @@ const ChatBotLoader = ({
 	 */
 	const runLoadConfig = async () => {
 		if (chatBotContext?.loadConfig) {
-			await chatBotContext.loadConfig(id, flow, settings, styles, themes);
+			await chatBotContext.loadConfig(id, flow, settings, styles, themes, shadowContainerRef);
 			setConfigLoaded(true);
 		}
 	}

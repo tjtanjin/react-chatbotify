@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Root } from "react-dom/client";
 
 import ChatBotContainer from "./ChatBotContainer";
 import ChatBotLoader from "./ChatBotLoader";
@@ -59,26 +60,54 @@ const ChatBot = ({
 	// used to determine if users provided their own chatbotprovider
 	const chatBotContext = useChatBotContext();
 
-	// handle DOM loaded event to ensure chatbot is loaded after DOM is ready (SSR support)
-	const [isDomLoaded, setIsDomLoaded] = useState<boolean>(false);
+	// handles shadow container ref
+	const shadowContainerRef = useRef<HTMLDivElement | null>(null);
 
+	// handles react root ref (to avoid recreating it)
+	const reactRootRef = useRef<Root | null>(null);
+
+	// handles rendering of chatbot inside shadow dom
 	useEffect(() => {
-		setIsDomLoaded(true);
-	}, []);
+		if (!shadowContainerRef.current) {
+			return;
+		}
+
+		// checks if shadow root exists, otherwise attach to it
+		if (!shadowContainerRef.current.shadowRoot) {
+			shadowContainerRef.current.attachShadow({ mode: "open" });
+		}
+
+		// if no shadow root, return
+		const shadowRoot = shadowContainerRef.current.shadowRoot;
+		if (!shadowRoot) {
+			return;
+		}
+
+		import("react-dom/client")
+			.then(({ createRoot }) => {
+				// handles react >=18
+				if (!reactRootRef.current) {
+					reactRootRef.current = createRoot(shadowRoot);
+				}
+				reactRootRef.current.render(renderChatBot());
+			})
+			.catch(() => {
+				// handles react <18
+				import("react-dom").then(({ render }) => {
+					render(renderChatBot(), shadowRoot);
+				});
+			});
+	}, [configLoaded]);
 
 	/**
 	 * Renders chatbot with provider depending on whether one was provided by the user.
 	 */
 	const renderChatBot = () => {
-		if (!isDomLoaded) {
-			return null;
-		}
-
 		if (chatBotContext) {
 			return (
 				<>
-					<ChatBotLoader id={id} flow={flow} settings={settings} styles={styles} themes={themes}
-						setConfigLoaded={setConfigLoaded}
+					<ChatBotLoader shadowContainerRef={shadowContainerRef} id={id} flow={flow} settings={settings}
+						styles={styles} themes={themes} setConfigLoaded={setConfigLoaded}
 					/>
 					{configLoaded && <ChatBotContainer plugins={plugins} />}
 				</>
@@ -86,17 +115,23 @@ const ChatBot = ({
 		}
 		return (
 			<ChatBotProvider>
-				<>
-					<ChatBotLoader id={id} flow={flow} settings={settings} styles={styles} themes={themes}
-						setConfigLoaded={setConfigLoaded}
-					/>
-					{configLoaded && <ChatBotContainer plugins={plugins} />}
-				</>
+				<ChatBotLoader shadowContainerRef={shadowContainerRef} id={id} flow={flow} settings={settings}
+					styles={styles} themes={themes} setConfigLoaded={setConfigLoaded}
+				/>
+				{configLoaded && <ChatBotContainer plugins={plugins} />}
 			</ChatBotProvider>
 		)
 	}
 
-	return renderChatBot();
+	return (
+		chatBotContext !== null ? ( 
+			<div ref={shadowContainerRef} id={`shadow-container-${id}`}></div>
+		) : (
+			<ChatBotProvider>
+				<div ref={shadowContainerRef} id={`shadow-container-${id}`}></div>
+			</ChatBotProvider>
+		)
+	)
 };
 
 export default ChatBot;
