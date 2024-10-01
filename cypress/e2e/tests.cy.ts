@@ -123,8 +123,19 @@ describe("Chat Bot Test Suite", () => {
 		);
 	});
 
-	it("Sends goodbye and verifies bot reply", () => {
+	it("Sends goodbye, scrolls away, and verifies new message prompt", () => {
 		cy.getShadow(".rcb-chat-input-textarea").type("Goodbye!{enter}");
+		cy.getShadow(".rcb-chat-body-container").scrollTo("top");
+		cy.getShadow(".rcb-message-prompt-container").should("be.visible");
+	});
+
+	it("Scrolls to bottom on new message prompt click", () => {
+		cy.getShadow(".rcb-message-prompt-container").click();
+		cy.getShadow(".rcb-chat-body-container").should(($el) => {
+			const scrollPosition = $el[0].scrollTop + $el[0].offsetHeight;
+			const totalHeight = $el[0].scrollHeight;
+			expect(scrollPosition).to.be.closeTo(totalHeight, 5);
+		});
 		cy.getShadow(".rcb-bot-message").contains("You have reached the end of the conversation!")
 			.should("be.visible");
 	});
@@ -168,21 +179,6 @@ describe("Chat Bot Test Suite", () => {
 			} else {
 				cy.log("Character counter does not exist, skipping char limit test.");
 			}
-		});
-	});
-
-	it("Verifies new message prompt", () => {
-		cy.getShadow(".rcb-chat-input-textarea").type("Hello{enter}");
-		cy.getShadow(".rcb-chat-body-container").scrollTo("top");
-		cy.getShadow(".rcb-message-prompt-container").should("be.visible");
-	});
-
-	it("Scrolls to bottom on new message prompt click", () => {
-		cy.getShadow(".rcb-message-prompt-container").click();
-		cy.getShadow(".rcb-chat-body-container").should(($el) => {
-			const scrollPosition = $el[0].scrollTop + $el[0].offsetHeight;
-			const totalHeight = $el[0].scrollHeight;
-			expect(scrollPosition).to.be.closeTo(totalHeight, 5);
 		});
 	});
 

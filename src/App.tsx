@@ -97,7 +97,12 @@ function App() {
 			path: "loop"
 		},
 		loop: {
-			message: "You have reached the end of the conversation!",
+			message: (params: Params) => {
+				// sends the message half a second later to facilitate testing of new message prompt
+				setTimeout(() => {
+					params.injectMessage("You have reached the end of the conversation!");
+				}, 500)
+			},
 			path: "loop"
 		},
 		incorrect_answer: {
