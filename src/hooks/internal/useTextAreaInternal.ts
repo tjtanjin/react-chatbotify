@@ -108,8 +108,11 @@ export const useTextAreaInternal = () => {
 	 * Retrieves text area value.
 	 */
 	const getTextAreaValue = useCallback(() => {
-		return inputRef.current?.value;
-	}, [inputRef.current]);
+		if (inputRef && inputRef.current) {
+			return inputRef.current.value;
+		}
+		return "";
+	}, []);
 
 	/**
 	 * Toggles text area disabled.
