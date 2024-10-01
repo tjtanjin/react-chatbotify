@@ -1,17 +1,17 @@
-name: Integration Test
-run-name: Integration Test
+name: Unit Test
+run-name: Unit Test
 
 on:
   workflow_run:
-    workflows: [Unit Test]
+    workflows: [Build]
     types: [completed]
     branches:
       - main
   workflow_dispatch:
 
 jobs:
-  integration-test:
-    name: Run Integration Test
+  unit-test:
+    name: Run Unit Test
     runs-on: ubuntu-latest
 
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -36,5 +36,5 @@ jobs:
         run: |
           npm run start &
 
-      - name: Run Integration Tests
-        run: npm run cy:run
+      - name: Run Unit Tests
+        run: npm run test

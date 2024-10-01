@@ -26,5 +26,8 @@ yarn-error.log*
 # cypress
 /cypress/screenshots
 
+# jest
+/coverage
+
 # temp file generated for ssr test
 ./ssr/ssrTestIndexNoCssImport.js

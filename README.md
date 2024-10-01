@@ -6,6 +6,7 @@
 <p align="center">
   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml/badge.svg" /> </a>
   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml/badge.svg" /> </a>
+  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/unit_test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/unit_test.yml/badge.svg" /> </a>
   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/integration_test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/integration_test.yml/badge.svg" /> </a>
    <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/library_test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/library_test.yml/badge.svg" /> </a>
   <a href="https://www.npmjs.com/package/react-chatbotify"> <img src="https://img.shields.io/npm/v/react-chatbotify?logo=semver&label=version&color=%2331c854" /> </a>

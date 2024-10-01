@@ -14,7 +14,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
 
-type ChatBotProviderContextType = {
+export type ChatBotProviderContextType = {
 	loadConfig: (id: string, flow: Flow, settings: Settings, styles: Styles,
 		themes: Theme | Theme[] | undefined,
 		shadowContainerRef: MutableRefObject<HTMLDivElement | null>) => Promise<void>;

@@ -32,6 +32,9 @@
     "prepack": "tsc && vite build && node ./scripts/post-build.js",
     "start": "vite serve",
     "prepare": "husky install",
+    "test": "jest __tests__/",
+    "test:watch": "jest --watch __tests__/",
+    "test:coverage": "jest --coverage __tests__/",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "validate:ssr": "node ./ssr/ssr-validate.js"
@@ -47,7 +50,10 @@
     "react-dom": ">=16.14.0 <20.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
     "@types/dom-speech-recognition": "^0.0.4",
+    "@types/jest": "^29.5.13",
     "@types/react": "^18.3.6",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
@@ -60,8 +66,12 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^8.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.1.6",
     "vite": "^4.5.2",
     "vite-plugin-eslint2": "^4.4.2",
