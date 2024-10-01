@@ -26,7 +26,7 @@ const removeFiles = (files) => {
 			if (err && err.code !== "ENOENT") {
 				console.error(`Error deleting ${file}:`, err);
 			} else {
-				console.log(`${file} was deleted or does not exist.`);
+				console.info(`${file} was deleted or does not exist.`);
 			}
 		});
 	});
@@ -38,7 +38,7 @@ const copyIndexDtsToCts = (src, dest) => {
 		if (err) {
 			console.error(`Error copying ${src} to ${dest}:`, err);
 		} else {
-			console.log(`Copied ${src} to ${dest}`);
+			console.info(`Copied ${src} to ${dest}`);
 		}
 	});
 };
