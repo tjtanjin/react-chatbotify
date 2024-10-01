@@ -102,7 +102,7 @@ const VoiceButton = () => {
 		<div
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
-				if (inputRef.current?.disabled) {
+				if (textAreaDisabled) {
 					return;
 				}
 				toggleVoice();
