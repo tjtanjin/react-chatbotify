@@ -15,7 +15,7 @@ const usePathsContext = () => useContext(PathsContext);
 /**
  * Creates provider to wrap the chatbot container.
  */
-const PathsProvider = ({ children }: { children: JSX.Element }) => {
+const PathsProvider = ({ children }: { children: React.ReactNode }) => {
 	// handles paths of the user
 	const [paths, setPaths] = useState<string[]>([]);
 

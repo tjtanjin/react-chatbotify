@@ -21,7 +21,7 @@ const SettingsProvider = ({
 	settings = DefaultSettings,
 	setSettings
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 	settings: Settings;
 	setSettings: Dispatch<SetStateAction<Settings>>;
 }) => {

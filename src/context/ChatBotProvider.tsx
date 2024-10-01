@@ -28,7 +28,7 @@ export const useChatBotContext = () => {
 const ChatBotProvider = ({
 	children
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 }) => {
 	// handles bot id ref
 	const botIdRef = useRef<string>("");

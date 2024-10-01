@@ -68,7 +68,7 @@ const BotStatesProvider = ({
 	children,
 	settings
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 	settings?: Settings;
 }) => {
 	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);

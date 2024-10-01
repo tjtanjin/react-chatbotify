@@ -29,7 +29,7 @@ const BotRefsProvider = ({
 	botIdRef,
 	flowRef,
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 	botIdRef: RefObject<string>;
 	flowRef: MutableRefObject<Flow>;
 }) => {

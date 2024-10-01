@@ -15,7 +15,7 @@ const useToastsContext = () => useContext(ToastsContext);
 /**
  * Creates provider to wrap the chatbot container.
  */
-const ToastsProvider = ({ children }: { children: JSX.Element }) => {
+const ToastsProvider = ({ children }: { children: React.ReactNode }) => {
 	// handles toasts shown in the chatbot
 	const [toasts, setToasts] = useState<Toast[]>([]);
 

@@ -15,7 +15,7 @@ const useMessagesContext = () => useContext(MessagesContext);
 /**
  * Creates provider to wrap the chatbot container.
  */
-const MessagesProvider = ({ children }: { children: JSX.Element }) => {
+const MessagesProvider = ({ children }: { children: React.ReactNode }) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	return (
 		<MessagesContext.Provider value={{ messages, setMessages }}>

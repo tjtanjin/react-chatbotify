@@ -21,7 +21,7 @@ const StylesProvider = ({
 	styles = DefaultStyles,
 	setStyles
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 	styles: Styles;
 	setStyles: Dispatch<SetStateAction<Styles>>;
 }) => {
