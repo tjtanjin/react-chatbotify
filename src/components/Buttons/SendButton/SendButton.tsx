@@ -1,6 +1,7 @@
 import { useState, MouseEvent } from "react";
 
 import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
+import { useBotStatesContext } from "../../../context/BotStatesContext";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
 
@@ -16,6 +17,9 @@ const SendButton = () => {
 	// handles styles
 	const { styles } = useStylesContext();
 
+	// handles bot states
+	const { textAreaDisabled } = useBotStatesContext();
+
 	// tracks if send button is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -26,6 +30,13 @@ const SendButton = () => {
 	const sendButtonStyle: React.CSSProperties = {
 		backgroundColor: settings.general?.primaryColor,
 		...styles.sendButtonStyle
+	};
+
+	// styles for disabled send button
+	const sendButtonDisabledStyle: React.CSSProperties = {
+		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		backgroundColor: settings.general?.primaryColor,
+		...styles.sendButtonDisabledStyle
 	};
 
 	// styles for hovered send button
@@ -60,9 +71,14 @@ const SendButton = () => {
 			onMouseLeave={handleMouseLeave}
 			onMouseDown={async (event: MouseEvent) => {
 				event?.preventDefault();
+				if (textAreaDisabled) {
+					return;
+				}
 				await handleSubmitText();
 			}}
-			style={isHovered ? sendButtonHoveredStyle : sendButtonStyle}
+			style={textAreaDisabled
+				? sendButtonDisabledStyle
+				: (isHovered ? sendButtonHoveredStyle : sendButtonStyle)}
 			className="rcb-send-button"
 		>
 			<span className="rcb-send-icon" style={sendIconStyle} />

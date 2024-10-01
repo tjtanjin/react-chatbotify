@@ -32,6 +32,7 @@ export type Styles = {
 	chatHistoryButtonStyle?: React.CSSProperties;
 	chatHistoryButtonHoveredStyle?: React.CSSProperties;
 	sendButtonStyle?: React.CSSProperties;
+	sendButtonDisabledStyle?: React.CSSProperties;
 	sendButtonHoveredStyle?: React.CSSProperties;
 	audioButtonStyle?: React.CSSProperties;
 	audioButtonDisabledStyle?: React.CSSProperties;

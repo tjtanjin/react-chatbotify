@@ -47,7 +47,7 @@ const FileAttachmentButton = () => {
 	const { openChat } = useChatWindowInternal();
 
 	// handles input text area
-	const {  setTextAreaValue } = useTextAreaInternal();
+	const { setTextAreaValue } = useTextAreaInternal();
 
 	// handles user input submission
 	const { handleSubmitText } = useSubmitInputInternal();

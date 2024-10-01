@@ -32,6 +32,7 @@ export const DefaultStyles: Styles = {
 	chatHistoryButtonHoveredStyle: {},
 	sendButtonStyle: {},
 	sendButtonHoveredStyle: {},
+	sendButtonDisabledStyle: {},
 	audioButtonStyle: {},
 	audioButtonDisabledStyle: {},
 	closeChatButtonStyle: {},
