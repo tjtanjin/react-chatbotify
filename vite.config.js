@@ -1,6 +1,5 @@
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import dts from "vite-plugin-dts";
 import path from "path";
 import eslint from "vite-plugin-eslint2";
 
@@ -20,7 +19,13 @@ export default ({mode}) => {
         formats: ["es", "cjs"],
       },
       rollupOptions: {
-        external: ["react", "react-dom", /node_modules/],
+        external: [
+          "react",
+          "react-dom",
+          "react-dom/server",
+          "react/jsx-runtime",
+          "react/jsx-dev-runtime"
+        ],
         output: {
           globals: {
             react: "React",
@@ -40,7 +45,6 @@ export default ({mode}) => {
       react({
         include: "**/*.{jsx,tsx}",
       }),
-      dts(),
       eslint()
     ],
     server: {
