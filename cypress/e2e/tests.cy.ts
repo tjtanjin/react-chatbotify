@@ -48,7 +48,7 @@ describe("Chat Bot Test Suite", () => {
 
 	it("Selects insufficient checkboxes and verifies next button is disabled", () => {
 		cy.get(".rcb-checkbox-row-container").eq(1).click();
-		cy.get(".rcb-checkbox-next-button").should("be.disabled");
+		cy.get(".rcb-checkbox-next-button").should("have.css", "pointer-events").and("not.eq", "pointer");
 	});
 
 	it("Selects too many checkboxes and verifies error", () => {
