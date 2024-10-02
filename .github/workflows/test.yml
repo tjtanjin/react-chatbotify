@@ -67,7 +67,7 @@ jobs:
       - name: Run Integration Tests
         run: npm run cy:run
 
-  pack-library:
+  package-library:
     needs: integration-test
     name: Package Library
     runs-on: ubuntu-latest
@@ -87,8 +87,8 @@ jobs:
       - name: Build Project
         run: npm run build --if-present
 
-      - name: Pack Library
-        id: pack
+      - name: Package Library
+        id: package
         run: |
           npm pack
           echo "PACKAGE_NAME=$(ls *.tgz)" >> $GITHUB_ENV
@@ -98,9 +98,10 @@ jobs:
         with:
           name: react-chatbotify-package
           path: ${{ env.PACKAGE_NAME }}
+          retention-days: 1 
 
   compatibility-test:
-    needs: pack-library
+    needs: package-library
     name: Run Compatibility Test
     runs-on: ubuntu-latest
 
