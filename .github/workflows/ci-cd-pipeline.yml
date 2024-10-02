@@ -4,8 +4,31 @@ run-name: Full CI/CD Pipeline
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "*.md" # ignore all markdown files at root
+      - "*.js" # ignore all js files at root
+      - "*.ts" # ignore all ts files at root
+      - "assets/**" # ignore root assets
+      - "docs/**" # ignore all docs
+      - "scripts/**" # ignore all scripts
+      - "ssr/**" # ignore ssr files
+      - ".github/**/*.md" # ignore markdown files for .github
+      - ".github/FUNDING.yml" # ignore funding yml
+      - ".eslintrc" # ignore eslint changes
+      - ".gitignore" # ignore git ignore changes
   pull_request:
     branches: ["main"]
+      - "*.md" # ignore all markdown files at root
+      - "*.js" # ignore all js files at root
+      - "*.ts" # ignore all ts files at root
+      - "assets/**" # ignore root assets
+      - "docs/**" # ignore all docs
+      - "scripts/**" # ignore all scripts
+      - "ssr/**" # ignore ssr files
+      - ".github/**/*.md" # ignore markdown files for .github
+      - ".github/FUNDING.yml" # ignore funding yml
+      - ".eslintrc" # ignore eslint changes
+      - ".gitignore" # ignore git ignore changes
   workflow_dispatch:
 
 jobs:
