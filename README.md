@@ -4,12 +4,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/lint.yml/badge.svg" /> </a>
-  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/build.yml/badge.svg" /> </a>
-  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/unit_test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/unit_test.yml/badge.svg" /> </a>
-  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/integration_test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/integration_test.yml/badge.svg" /> </a>
-   <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/library_test.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/library_test.yml/badge.svg" /> </a>
+  <a href="https://github.com/tjtanjin/react-chatbotify/actions/workflows/ci-cd-pipeline.yml"> <img src="https://github.com/tjtanjin/react-chatbotify/actions/workflows/ci-cd-pipeline.yml/badge.svg" /> </a>
   <a href="https://www.npmjs.com/package/react-chatbotify"> <img src="https://img.shields.io/npm/v/react-chatbotify?logo=semver&label=version&color=%2331c854" /> </a>
+  <a href="https://www.npmjs.com/package/react-chatbotify"> <img src="https://img.shields.io/badge/react-16--19-orange?logo=react&label=react" /> </a>
   <a href="https://www.npmjs.com/package/react-chatbotify"> <img src="https://img.shields.io/npm/d18m/react-chatbotify?logo=npm&label=npm%20downloads&color=%232281c2" /> </a>
   <a href="https://discord.gg/6R4DK4G5Zh"> <img src="https://img.shields.io/endpoint?url=https://my-api.tjtanjin.com/aggregator/api/v1/get/rcb_discord_member_count&logo=discord&logoColor=ffffff" /> </a>
 
@@ -35,6 +32,8 @@
 React ChatBotify is an intuitive and versatile chatbot library tailored to streamline your development process while providing the flexibility to implement advanced features. It is crafted to meet a wide range of requirements, whether you're building a straightforward FAQ chatbot, an intricate conversational interface or even an integration with Large Language Models (LLMs).
 
 React ChatBotify aims to simplify the creation of chatbots by offering a user-friendly experience while accommodating the diverse needs of developers. With its extensive capabilities, you can easily customize and expand your chatbot's functionalities. From basic interactions to sophisticated conversational flows, React ChatBotify empowers you to build chatbots that meet your specific project goals. Head over to our [community showcases](https://github.com/tjtanjin/react-chatbotify/blob/main/SHOWCASES.md) and get inspired to start your own today!
+
+React ChatBotify is currently supported on **React versions 16, 17, 18 and 19**. You may install the library with the following command:
 
 `npm install react-chatbotify --save`
 
