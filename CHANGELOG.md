@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## v2.0.0-beta.14 (01-10-2024)
+## v2.0.0-beta.14 (03-10-2024)
 
 **Fixed:**
 - Fixed an issue where having multiple chatbots can cause styling conflicts with themes
@@ -10,13 +10,16 @@
 - Fixed an issue where toggling open the chat window does not emit its associated event
 - Fixed a rare issue where spamming messages too fast can cause autoscroll to bottom to not work properly
 - Fixed notification badge style to prevent it from becoming oval-shaped
+- Fixed an issue with the library packaging process, reduces overall size by nearly 60%!
 
 **Added:**
+- Added proper support for React 19!
 - Added a new `useChatHistory` hook that provides 3 new actions (`showChatHistory`, `getHistoryMessages` and `setHistoryMessages`)
 - Added a new `sendButtonDisabledStyle` (send button is now properly disabled when textarea is disabled as well)
+- Improved localised styling of chatbots to reduce conflicts with host websites (and with other chatbots)
 
 **Note:**
-The library size has been signfiicantly reduced, and the chatbot is now isolated within a shadow dom (this was also necessary to fix theme styling conflicts arising from the use of multiple chatbots). This should provide a better experience for users, as well as eliminate concerns about the host website styles conflicting with the chatbot and vice versa (ensures chatbot style is consistent regardless of the host website it is being added to). Overall, these are very neat improvements!
+This update brings about a couple of fantastic improvements - drastically reduced library size (by nearly 60%), React 19 support and improved localised styles!
 
 ## v2.0.0-beta.13 (26-09-2024)
 
