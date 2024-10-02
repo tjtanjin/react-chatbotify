@@ -68,7 +68,7 @@ jobs:
         run: npm run cy:run
 
   pack-library:
-    #needs: integration-test
+    needs: integration-test
     name: Package Library
     runs-on: ubuntu-latest
 
