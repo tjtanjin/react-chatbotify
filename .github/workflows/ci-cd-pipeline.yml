@@ -18,6 +18,7 @@ on:
       - ".gitignore" # ignore git ignore changes
   pull_request:
     branches: ["main"]
+    paths-ignore:
       - "*.md" # ignore all markdown files at root
       - "*.js" # ignore all js files at root
       - "*.ts" # ignore all ts files at root
