@@ -1,16 +1,17 @@
 name: Lint & Build
-run-name: Full CI/CD Pipeline
+run-name: Lint & Build
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version to use"
+        required: true
+        type: string
 
 jobs:
   lint:
-    name: Lint
+    name: Run Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

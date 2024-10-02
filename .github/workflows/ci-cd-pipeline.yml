@@ -1,0 +1,16 @@
+name: CI/CD Status
+run-name: Full CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  trigger-full-ci:
+    name: CI
+    uses: ./.github/workflows/lint-and-build.yml
+    with:
+      node-version: "22.4.1"
