@@ -1,2 +1,1 @@
-import "./commands";
 import "./functions";

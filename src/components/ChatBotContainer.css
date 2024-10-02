@@ -1,9 +1,13 @@
 /* Package Globals */
 
-[class^="rcb"] {
+.rcb-chatbot-global {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	line-height: 1.5;
 }
+
+/* ChatBot Commons */
+
 
 /* Chat Window */
 

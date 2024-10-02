@@ -1,6 +1,5 @@
 import { createContext, MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 
-import { applyCssStyles } from "../services/ThemeService";
 import { parseConfig } from "../utils/configParser";
 import { BotRefsProvider } from "./BotRefsContext";
 import { BotStatesProvider } from "./BotStatesContext";
@@ -17,7 +16,7 @@ import { Theme } from "../types/Theme";
 export type ChatBotProviderContextType = {
 	loadConfig: (id: string, flow: Flow, settings: Settings, styles: Styles,
 		themes: Theme | Theme[] | undefined,
-		shadowContainerRef: MutableRefObject<HTMLDivElement | null>) => Promise<void>;
+		styleRootRef: MutableRefObject<HTMLStyleElement | null>) => Promise<void>;
 };
 // Create a context to detect whether ChatBotProvider is present
 const ChatBotContext = createContext<ChatBotProviderContextType | undefined>(undefined);
@@ -50,14 +49,14 @@ const ChatBotProvider = ({
 	}, []);
 
 	/**
-	 * Loads configurations for the chatbot and applies styles within the shadow DOM.
+	 * Loads configurations for the chatbot and applies css styles.
 	 *
 	 * @param botId id of the chatbot
 	 * @param flow conversation flow for the bot
 	 * @param settings settings to setup the bot
 	 * @param styles styles to apply to the bot
 	 * @param themes themes to apply to the bot
-	 * @param shadowContainerRef ref to the shadow container
+	 * @param styleRootRef ref to the style container
 	 */
 	const loadConfig = async (
 		botId: string,
@@ -65,18 +64,16 @@ const ChatBotProvider = ({
 		settings: Settings,
 		styles: Styles,
 		themes: Theme | Theme[] | undefined,
-		shadowContainerRef: MutableRefObject<HTMLDivElement | null>,
+		styleRootRef: MutableRefObject<HTMLStyleElement | null>,
 	) => {
 		botIdRef.current = botId;
 		botFlowRef.current = flow;
-		const combinedConfig = await parseConfig(settings, styles, themes);
+		const combinedConfig = await parseConfig(botId, settings, styles, themes);
 
-		// applies css styles only to the shadow dom
-		const shadowRoot = shadowContainerRef.current?.shadowRoot;
-		if (shadowRoot) {
-			await applyCssStyles(shadowRoot, combinedConfig.cssStylesText);
+		// applies css styles directly to chatbot
+		if (styleRootRef.current) {
+			styleRootRef.current.textContent = combinedConfig.cssStylesText;
 		}
-
 		// applies combined bot settings and styles
 		setBotSettings(combinedConfig.settings);
 		setBotStyles(combinedConfig.inlineStyles);

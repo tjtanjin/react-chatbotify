@@ -131,12 +131,14 @@ const UserCheckboxes = ({
 					</div>
 				);
 			})}
-			<button
+			<div
 				style={botCheckboxNextStyle}
 				className="rcb-checkbox-next-button"
-				disabled={disabled || checkedBoxes.size < (checkboxes.min as number)}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
+					if (disabled || checkedBoxes.size < (checkboxes.min as number)) {
+						return;
+					}
 					const userInput = Array.from(checkedItems).join(", ");
 					setDisabled(!checkboxes.reusable as boolean);
 					let sendInChat: boolean;
@@ -148,7 +150,7 @@ const UserCheckboxes = ({
 					handleSubmitText(userInput, sendInChat);
 				}}
 			>
-			</button>
+			</div>
 		</div>
 	);
 };

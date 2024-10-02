@@ -37,7 +37,7 @@ const ChatBotButton = () => {
 	return (
 		<>
 			{!settings.general?.embedded &&
-				<button
+				<div
 					aria-label="Open Chat"
 					style={chatButtonStyle}
 					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
@@ -52,7 +52,7 @@ const ChatBotButton = () => {
 							{unreadCount}
 						</span>
 					}
-				</button>
+				</div>
 			}
 		</>
 	);

@@ -65,7 +65,7 @@ const ChatBotContainer = ({
 	 * Retrieves class name for window state.
 	 */
 	const windowStateClass = useMemo(() => {
-		const windowClass = "rcb-chat-bot ";
+		const windowClass = "rcb-chatbot-global ";
 		if (settings.general?.embedded) {
 			return windowClass + "rcb-window-embedded";
 		} else if (isChatWindowOpen) {

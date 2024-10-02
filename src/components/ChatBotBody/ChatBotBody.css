@@ -57,6 +57,7 @@
 }
 
 .rcb-bot-message {
+	text-align: left;
 	margin-left: 16px;
 }
 
@@ -80,6 +81,7 @@
 }
 
 .rcb-user-message {
+	text-align: right;
 	margin-right: 16px;
 }
 

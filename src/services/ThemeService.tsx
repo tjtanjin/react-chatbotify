@@ -63,27 +63,6 @@ export const setCachedTheme = (id: string, version: string, settings: Settings, 
 }
 
 /**
- * Applies the CSS styles directly to the shadow DOM.
- *
- * @param shadowRoot shadow DOM root where styles should be applied
- * @param cssStylesText css styles to apply (as a string)
- */
-export const applyCssStyles = async (shadowRoot: ShadowRoot, cssStylesText: string) => {	
-	try {
-		const styleElement = document.createElement("style");
-		styleElement.textContent = `
-		:host {
-		  all: initial;
-		}
-		${cssStylesText}
-	  `;
-		shadowRoot.appendChild(styleElement);
-	} catch (error) {
-		console.warn("Failed to scope styles to chatbot", error);
-	}
-};
-
-/**
  * Fetches the theme version from meta.json file.
  *
  * @param id id of the theme
@@ -108,9 +87,10 @@ const fetchThemeVersionFromMeta = async (id: string, baseUrl: string) => {
 /**
  * Processes information for a given theme and retrieves its settings via CDN.
  * 
+ * @param botId id of the chatbot
  * @param theme theme to process and retrieve config for
  */
-export const processAndFetchThemeConfig = async (theme: Theme):
+export const processAndFetchThemeConfig = async (botId: string, theme: Theme):
 	Promise<{settings: Settings, inlineStyles: Styles, cssStylesText: string}> => {
 
 	const { id, version, baseUrl = DEFAULT_URL, cacheDuration = DEFAULT_EXPIRATION } = theme;
@@ -125,7 +105,12 @@ export const processAndFetchThemeConfig = async (theme: Theme):
 	// try to get non-expired theme cache for specified theme and version
 	const cache = getCachedTheme(id, themeVersion, cacheDuration);
 	if (cache) {
-		return { settings: cache.settings, inlineStyles: cache.inlineStyles, cssStylesText: cache.cssStylesText}
+		const scopedCssText = cache.cssStylesText
+			.split('}')
+			.map(rule => rule.trim() ? `#${botId} ${rule}}` : '')
+			.join('\n');
+    
+		return { settings: cache.settings, inlineStyles: cache.inlineStyles, cssStylesText: scopedCssText}
 	}
 
 	// for no cache found, construct urls for styles.css, settings.json and settings.json
@@ -137,7 +122,11 @@ export const processAndFetchThemeConfig = async (theme: Theme):
 	let cssStylesText = "";
 	const cssStylesResponse = await fetch(cssStylesUrl);
 	if (cssStylesResponse.ok) {
-		cssStylesText = await cssStylesResponse.text();
+		const cssRawText = await cssStylesResponse.text();
+		cssStylesText = cssRawText
+			.split('}')
+			.map(rule => rule.trim() ? `#${botId} ${rule}}` : '')
+			.join('\n');
 	} else {
 		console.info(`Could not fetch styles.css from ${cssStylesUrl}`);
 	}

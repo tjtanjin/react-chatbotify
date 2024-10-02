@@ -16,7 +16,7 @@ import { Theme } from "../types/Theme";
  * @param styles styles to setup the bot
  * @param themes themes to apply to the bot
  * @param setConfigLoaded setter to indicate when config is fully loaded
- * @param shadowContainerRef ref to the shadow container
+ * @param styleRootRef ref to the style container
  */
 const ChatBotLoader = ({
 	id,
@@ -25,7 +25,7 @@ const ChatBotLoader = ({
 	styles,
 	themes,
 	setConfigLoaded,
-	shadowContainerRef,
+	styleRootRef,
 }: {
 	id: string;
 	flow: Flow;
@@ -33,7 +33,7 @@ const ChatBotLoader = ({
 	styles: Styles;
 	themes: Theme | Array<Theme>;
 	setConfigLoaded: Dispatch<SetStateAction<boolean>>;
-	shadowContainerRef: MutableRefObject<HTMLDivElement | null>;
+	styleRootRef: MutableRefObject<HTMLStyleElement | null>;
 }) => {
 	// used to load config to the provider
 	const chatBotContext = useChatBotContext();
@@ -43,7 +43,7 @@ const ChatBotLoader = ({
 
 	// always ensures that the ref is in sync with the latest flow
 	// necessary for state updates in user-provided flows to be reflected timely
-	if (flowRef.current !== flow) {
+	if (flowRef && flowRef.current !== flow) {
 		flowRef.current = flow;
 	}
 
@@ -52,7 +52,7 @@ const ChatBotLoader = ({
 	 */
 	const runLoadConfig = async () => {
 		if (chatBotContext?.loadConfig) {
-			await chatBotContext.loadConfig(id, flow, settings, styles, themes, shadowContainerRef);
+			await chatBotContext.loadConfig(id, flow, settings, styles, themes, styleRootRef);
 			setConfigLoaded(true);
 		}
 	}

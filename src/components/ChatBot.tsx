@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { Root } from "react-dom/client";
+import { useRef, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import ChatBotLoader from "./ChatBotLoader";
@@ -60,76 +59,32 @@ const ChatBot = ({
 	// used to determine if users provided their own chatbotprovider
 	const chatBotContext = useChatBotContext();
 
-	// handles shadow container ref
-	const shadowContainerRef = useRef<HTMLDivElement | null>(null);
-
-	// handles react root ref (to avoid recreating it)
-	const reactRootRef = useRef<Root | null>(null);
-
-	// handles rendering of chatbot inside shadow dom
-	useEffect(() => {
-		if (!shadowContainerRef.current) {
-			return;
-		}
-
-		// checks if shadow root exists, otherwise attach to it
-		if (!shadowContainerRef.current.shadowRoot) {
-			shadowContainerRef.current.attachShadow({ mode: "open" });
-		}
-
-		// if no shadow root, return
-		const shadowRoot = shadowContainerRef.current.shadowRoot;
-		if (!shadowRoot) {
-			return;
-		}
-
-		import("react-dom/client")
-			.then(({ createRoot }) => {
-				// handles react >=18
-				if (!reactRootRef.current) {
-					reactRootRef.current = createRoot(shadowRoot);
-				}
-				reactRootRef.current.render(renderChatBot());
-			})
-			.catch(() => {
-				// handles react <18
-				import("react-dom").then(({ render }) => {
-					render(renderChatBot(), shadowRoot);
-				});
-			});
-	}, [configLoaded]);
+	// handles style root container ref
+	const styleRootRef = useRef<HTMLStyleElement | null>(null);
 
 	/**
 	 * Renders chatbot with provider depending on whether one was provided by the user.
 	 */
-	const renderChatBot = () => {
-		if (chatBotContext) {
-			return (
-				<>
-					<ChatBotLoader shadowContainerRef={shadowContainerRef} id={id} flow={flow} settings={settings}
-						styles={styles} themes={themes} setConfigLoaded={setConfigLoaded}
-					/>
-					{configLoaded && <ChatBotContainer plugins={plugins} />}
-				</>
-			);
-		}
-		return (
-			<ChatBotProvider>
-				<ChatBotLoader shadowContainerRef={shadowContainerRef} id={id} flow={flow} settings={settings}
-					styles={styles} themes={themes} setConfigLoaded={setConfigLoaded}
-				/>
-				{configLoaded && <ChatBotContainer plugins={plugins} />}
-			</ChatBotProvider>
-		)
-	}
+	const renderChatBot = () => (
+		<>
+			<ChatBotLoader styleRootRef={styleRootRef} id={id} flow={flow} settings={settings}
+				styles={styles} themes={themes} setConfigLoaded={setConfigLoaded}
+			/>
+			{configLoaded && <ChatBotContainer plugins={plugins} />}
+		</>
+	)
 
 	return (
-		chatBotContext !== null ? ( 
-			<div ref={shadowContainerRef} id={`shadow-container-${id}`}></div>
-		) : (
+		chatBotContext == null ? ( 
 			<ChatBotProvider>
-				<div ref={shadowContainerRef} id={`shadow-container-${id}`}></div>
+				<style ref={styleRootRef}/>
+				<div id={id}>{renderChatBot()}</div>
 			</ChatBotProvider>
+		) : (
+			<>
+				<style ref={styleRootRef}/>
+				<div id={id}>{renderChatBot()}</div>
+			</>
 		)
 	)
 };

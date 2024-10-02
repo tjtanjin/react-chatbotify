@@ -40,6 +40,7 @@ function App() {
 			message: "Interesting! Pick any 2 pets below.",
 			checkboxes: {items: ["Dog", "Cat", "Rabbit", "Hamster"], min:2, max: 2},
 			function: (params: Params) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
+			chatDisabled: true,
 			path: "ask_height",
 		},
 		ask_height: {
