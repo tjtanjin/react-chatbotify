@@ -33,6 +33,8 @@ const AudioButton = () => {
 
 	return (
 		<div
+			aria-label={settings.ariaLabel?.audioButton ?? "toggle audio"}
+			role="button" 
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
 				toggleAudio();

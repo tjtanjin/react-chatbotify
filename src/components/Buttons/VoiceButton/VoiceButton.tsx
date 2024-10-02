@@ -100,6 +100,8 @@ const VoiceButton = () => {
 
 	return (
 		<div
+			aria-label={settings.ariaLabel?.voiceButton ?? "toggle voice"}
+			role="button" 
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
 				if (textAreaDisabled) {

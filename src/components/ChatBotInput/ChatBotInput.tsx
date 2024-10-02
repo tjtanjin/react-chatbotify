@@ -166,6 +166,8 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 
 	return (
 		<div 
+			aria-label={settings.ariaLabel?.inputTextArea ?? "input text area"}
+			role="textbox" 
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
 				// checks if user is interacting with chatbot for the first time

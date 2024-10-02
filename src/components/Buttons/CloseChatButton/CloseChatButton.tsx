@@ -27,6 +27,8 @@ const CloseChatButton = () => {
 
 	return (
 		<div
+			aria-label={settings.ariaLabel?.closeChatButton ?? "close chat"}
+			role="button" 
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
 				openChat(false);

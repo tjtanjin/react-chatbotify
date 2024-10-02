@@ -14,12 +14,13 @@
 
 **Added:**
 - Added proper support for React 19!
+- Added a new `ariaLabel` section to improve accessibility support
 - Added a new `useChatHistory` hook that provides 3 new actions (`showChatHistory`, `getHistoryMessages` and `setHistoryMessages`)
 - Added a new `sendButtonDisabledStyle` (send button is now properly disabled when textarea is disabled as well)
 - Improved localised styling of chatbots to reduce conflicts with host websites (and with other chatbots)
 
 **Note:**
-This update brings about a couple of fantastic improvements - drastically reduced library size (by nearly 60%), React 19 support and improved localised styles!
+This update brings about a couple of fantastic improvements - drastically reduced library size (by nearly 60%), React 19 support, improved localised styles and better accessibility support!
 
 ## v2.0.0-beta.13 (26-09-2024)
 

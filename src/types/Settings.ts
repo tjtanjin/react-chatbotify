@@ -149,5 +149,16 @@ export type Settings = {
 		rcbUserSubmitText?: boolean;
 		rcbUserUploadFile?: boolean;
 		rcbTextAreaChangeValue?: boolean;
+	},
+	ariaLabel?: {
+		chatButton?: string;
+		audioButton?: string;
+		closeChatButton?: string;
+		emojiButton?: string;
+		fileAttachmentButton?: string;
+		notificationButton?: string;
+		sendButton?: string;
+		voiceButton?: string;
+		inputTextArea?: string;
 	}
 }

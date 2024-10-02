@@ -128,6 +128,8 @@ const EmojiButton = () => {
 	return (
 		<>
 			<div
+				aria-label={settings.ariaLabel?.emojiButton ?? "emoji picker"}
+				role="button" 
 				ref={iconContainerRef}
 				className={`${textAreaDisabled ? "rcb-emoji-button-disabled" : "rcb-emoji-button-enabled"}`}
 				style={textAreaDisabled ? emojiButtonDisabledStyle : styles.emojiButtonStyle}

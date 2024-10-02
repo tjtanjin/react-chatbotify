@@ -33,6 +33,8 @@ const NotificationButton = () => {
 
 	return (
 		<div
+			aria-label={settings.ariaLabel?.notificationButton ?? "toggle notifications"}
+			role="button" 
 			onMouseDown={(event: MouseEvent) => {
 				event.preventDefault();
 				toggleNotifications();

@@ -38,7 +38,8 @@ const ChatBotButton = () => {
 		<>
 			{!settings.general?.embedded &&
 				<div
-					aria-label="Open Chat"
+					aria-label={settings.ariaLabel?.chatButton ?? "open chat"}
+					role="button"
 					style={chatButtonStyle}
 					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}

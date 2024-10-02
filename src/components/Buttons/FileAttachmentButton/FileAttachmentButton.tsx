@@ -129,6 +129,8 @@ const FileAttachmentButton = () => {
 		<>
 			{blockAllowsAttachment ? (
 				<label
+					aria-label={settings.ariaLabel?.fileAttachmentButton ?? "upload file"}
+					role="button" 
 					className="rcb-attach-button-enabled"
 					style={styles.fileAttachmentButtonStyle}
 				>

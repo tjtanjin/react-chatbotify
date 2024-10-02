@@ -183,5 +183,16 @@ export const DefaultSettings: Settings = {
 		rcbUserSubmitText: false,
 		rcbUserUploadFile: false,
 		rcbTextAreaChangeValue: false,
+	},
+	ariaLabel: {
+		chatButton: "open chat",
+		audioButton: "toggle audio",
+		closeChatButton: "close chat",
+		emojiButton: "emoji picker",
+		fileAttachmentButton: "upload file",
+		notificationButton: "toggle notifications",
+		sendButton: "send message",
+		voiceButton: "toggle voice",
+		inputTextArea: "input text area",
 	}
 }

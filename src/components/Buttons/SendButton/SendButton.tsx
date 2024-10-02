@@ -67,6 +67,8 @@ const SendButton = () => {
 	
 	return (
 		<div
+			aria-label={settings.ariaLabel?.sendButton ?? "send message"}
+			role="button" 
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			onMouseDown={async (event: MouseEvent) => {
