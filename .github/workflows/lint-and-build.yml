@@ -55,8 +55,8 @@ jobs:
         if: startsWith(matrix.node-version, '19') || startsWith(matrix.node-version, '20') || startsWith(matrix.node-version, '21') || startsWith(matrix.node-version, '22')
         run: npm run validate:ssr
 
-  trigger-functional-tests:
-    needs: lint
+  trigger-tests:
+    needs: build
     name: "Run Tests"
     uses: ./.github/workflows/test.yml
     with:
