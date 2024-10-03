@@ -36,7 +36,7 @@ jobs:
           npm run start &
 
       - name: Run Unit Tests
-        run: npm run test
+        run: npm run unit:test
 
   integration-test:
     needs: unit-test
@@ -65,7 +65,7 @@ jobs:
           npm run start &
 
       - name: Run Integration Tests
-        run: npm run cy:run
+        run: npm run int:test
 
   package-library:
     needs: integration-test
@@ -163,4 +163,4 @@ jobs:
 
       - name: Run Library Tests
         run: |
-          npm run cy:run
+          npm run int:test

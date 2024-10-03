@@ -252,7 +252,7 @@ Unit tests are done via [**Jest**](https://jestjs.io/), and you will find *jest.
 
 ### Integration Test
 
-Integration tests are done via [**cypress**](https://www.cypress.io/), and you will find *cypress.config.js* and the *cypress* folder to be relevant. Currently, integration testing uses the default chatbot flow and settings for development that can be found within *App.tsx*. A series of automated actions are carried out and its results are verified by test cases. In future, it would be great to include a variety of flows/settings as testing against different setups will make the integration tests more comprehensive. For debugging purposes, you may also find it useful to run the test with `npm run cy:open`.
+Integration tests are done via [**cypress**](https://www.cypress.io/), and you will find *cypress.config.js* and the *cypress* folder to be relevant. Currently, integration testing uses the default chatbot flow and settings for development that can be found within *App.tsx*. A series of automated actions are carried out and its results are verified by test cases. In future, it would be great to include a variety of flows/settings as testing against different setups will make the integration tests more comprehensive. For debugging purposes, you may also find it useful to run the test with `npm run int:test:open`.
 
 ### Compatibility Test
 
