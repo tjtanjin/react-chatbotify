@@ -1,4 +1,4 @@
-import { useToastInternal } from "./internal/useToastInternal";
+import { useToastInternal } from "./internal/useToastsInternal";
 
 /**
  * External custom hook for managing toasts.

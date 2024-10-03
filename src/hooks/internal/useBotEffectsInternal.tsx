@@ -13,7 +13,7 @@ import { useChatHistoryInternal } from "./useChatHistoryInternal";
 import { usePathsInternal } from "./usePathsInternal";
 import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useMessagesInternal } from "./useMessagesInternal";
-import { useToastInternal } from "./useToastInternal";
+import { useToastInternal } from "./useToastsInternal";
 import { useVoiceInternal } from "./useVoiceInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";

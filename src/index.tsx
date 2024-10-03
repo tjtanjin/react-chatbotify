@@ -43,7 +43,7 @@ import { usePaths } from "./hooks/usePaths";
 import { useSettings } from "./hooks/useSettings";
 import { useStyles } from "./hooks/useStyles";
 import { useTextArea } from "./hooks/useTextArea";
-import { useToast } from "./hooks/useToast";
+import { useToast } from "./hooks/useToasts";
 import { useVoice } from "./hooks/useVoice";
 import { useChatHistory } from "./hooks/useChatHistory";
 

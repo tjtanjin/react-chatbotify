@@ -8,7 +8,7 @@ import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useVoiceInternal } from "./useVoiceInternal";
 import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
-import { useToastInternal } from "./useToastInternal";
+import { useToastInternal } from "./useToastsInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
