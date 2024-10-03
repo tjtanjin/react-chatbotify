@@ -11,6 +11,7 @@
 - Fixed a rare issue where spamming messages too fast can cause autoscroll to bottom to not work properly
 - Fixed notification badge style to prevent it from becoming oval-shaped
 - Fixed an issue with the library packaging process, reduces overall size by nearly 60%!
+- Renamed `useToast` hook to `useToasts` for consistency
 
 **Added:**
 - Added proper support for React 19!
