@@ -29,11 +29,11 @@
   <img height="400px" src="https://github.com/user-attachments/assets/dd957c4b-0ff4-42e9-8097-4efb7c98055a" />
 </p>
 
-React ChatBotify is an intuitive and versatile chatbot library tailored to streamline your development process while providing the flexibility to implement advanced features. It is crafted to meet a wide range of requirements, whether you're building a straightforward FAQ chatbot, an intricate conversational interface or even an integration with Large Language Models (LLMs).
+Welcome to React ChatBotify, an intuitive and versatile library that allows you to build responsive chatbots with ease. Whether you're aiming to create a simple FAQ bot or a sophisticated conversational interface integrated with Large Language Models (LLMs), React ChatBotify provides the tools and flexibility you need to bring your vision to life.
 
-React ChatBotify aims to simplify the creation of chatbots by offering a user-friendly experience while accommodating the diverse needs of developers. With its extensive capabilities, you can easily customize and expand your chatbot's functionalities. From basic interactions to sophisticated conversational flows, React ChatBotify empowers you to build chatbots that meet your specific project goals. Head over to our [community showcases](https://github.com/tjtanjin/react-chatbotify/blob/main/SHOWCASES.md) and get inspired to start your own today!
+Designed with developers in mind, React ChatBotify simplifies the chatbot development process without compromising on functionality. Its intuitive API and comprehensive customization options allow you to tailor your chatbot to meet specific project requirements seamlessly. From handling basic interactions to managing complex and advanced conversational flows, our library empowers you to deliver engaging user experiences. Head over to our [**community showcases**](https://github.com/tjtanjin/react-chatbotify/blob/main/SHOWCASES.md) or join [**our discord**](https://discord.gg/6R4DK4G5Zh) to get inspired and start crafting your chatbot today!
 
-React ChatBotify is currently supported on **React versions 16, 17, 18 and 19**. You may install the library with the following command:
+React ChatBotify is currently compatible with **React versions 16, 17, 18, and 19**. Get started today by installing the library with the following command:
 
 `npm install react-chatbotify --save`
 
@@ -41,23 +41,23 @@ Note that this repository contains the code for the library. If you're looking f
 
 ### Features
 
-React ChatBotify offers a wide array of features designed to enhance your chatbot experience. Here are just a few of the key features:
+React ChatBotify is packed with a comprehensive set of features designed to elevate your chatbot development experience. Explore some of its standout capabilities:
 
-- **Dynamic Outputs:** Create interactive conversations by dynamically generating messages and defining multiple conversation paths based on user inputs.
-- **Custom Components:** Seamlessly integrate your own custom components into the chatbot interface to boast your application's unique design and functionality.
-- **Stream Responses:** Integrate with LLM models and custom endpoints to stream (or even simulate) your bot responses for an elevated user experience.
-- **Timeouts and Auto-Transitions:** Set timeouts and automate transitions between chatbot paths, providing users with a guided flow and journey.
-- **Voice Input & Audio Output:** Enable voice input for users to interact with the chatbot through speech, and leverage audio output capabilities to provide spoken responses or prompts.
-- **Chat Notifications:** Keep users informed with real-time chat notifications, ensuring they never miss important updates or new messages.
-- **Checkbox & Options Support:** Utilize checkboxes and options within the chatbot interface, allowing users to select from a list of choices and easily make selections.
-- **Emoji Picker:** Enhance the chatbot's expression and engagement with users by incorporating emojis into messages, adding a touch of personality and emotion.
-- **File Attachments:** Seamlessly handle file attachments within the chatbot, enabling users to share and receive documents, images, or other relevant files during conversations.
-- **Sensitive Input:** Handle sensitive information from your users by masking them, maintaining user confidentiality.
-- **Mobile-Friendly Interface:** Provide smooth user experience across various devices with our mobile-friendly chatbot interface.
-- **Themes:** Choose from a wide variety of community themes, stack multiple themes together, and explore endless possibilities to customize the appearance of your chatbot!
-- **Plugins:** Choose from numerous custom plugins to enhance and extend the features/functionalities of your chatbot, and if you can't find what you're looking for, build your own!
-- **Custom Events:** Leverage on custom events emitted by the chatbot to perform your own application logic.
-- **Custom Hooks:** The custom hooks provided by the chatbot exposes functionalities that you can tap on to interact with the chatbot from your own components.
+- **Themes:** Customize the chatbot's appearance with a wide variety of community themes, or combine multiple themes to achieve your desired look and feel.
+- **Plugins:** Extend your chatbot's functionality with numerous custom plugins, or create your own to meet specific needs.
+- **Dynamic Outputs:** Craft interactive conversations by dynamically generating messages and defining multiple dialogue paths based on user inputs.
+- **Custom Components:** Easily integrate your own custom components into the chatbot interface to boast your application's unique design and functionality.
+- **Stream Responses:** Connect with Large Language Models (LLMs) and custom endpoints to stream/simulate bot responses, enhancing user engagement and experience.
+- **Timeouts and Auto-Transitions:** Configure timeouts and automate transitions between conversation paths to guide users seamlessly through their interactions.
+- **Voice Input & Audio Output:** Empower users to interact using voice commands and receive spoken responses, adding a hands-free dimension to your chatbot.
+- **Chat Notifications:** Keep users informed with real-time notifications, ensuring they stay updated with the latest messages and interactions.
+- **Checkbox & Options Support:** Incorporate checkboxes and selectable options within the chat interface, enabling users to make choices effortlessly.
+- **Emoji Picker:** Allow users to express their personalities and emotions in conversations by incorporating emojis, enhancing user engagement.
+- **File Attachments:** Facilitate the exchange of documents, images, and other files within the chat, allowing users to upload content seamlessly.
+- **Sensitive Input:** Protect user privacy by masking sensitive information inputted into the chatbot, ensuring confidentiality.
+- **Mobile-Friendly Interface:** Deliver a smooth and responsive user experience across all devices with our optimized mobile-friendly design.
+- **Custom Events:** Utilize custom events emitted by the chatbot to trigger application-specific logic, enhancing integration and interactivity.
+- **Custom Hooks:** Leverage the provided custom hooks to interact with the chatbot from your own components, streamlining integration and functionality.
 
 These features, **along with many others**, empower developers to create highly interactive and personalized chatbot experiences tailored to their specific application requirements.
 
@@ -85,24 +85,20 @@ Typescript
 For a thorough walkthrough on getting started, you may refer to the [**Quickstart Guide**](https://react-chatbotify.com/docs/introduction/quickstart/) on the [**Documentation Website**](https://react-chatbotify.com/).
 
 ### Documentation
-A full documentation (along with a **live playground**) for the library can be found at the following link:
+A full documentation (along with a [**live playground**](https://react-chatbotify.com/playground/)) for the library can be found at the following link:
 
 - https://react-chatbotify.com/
 
-Examples on the website are also run on a live editor so feel free to explore to your heart's content!
+[**Examples**](https://react-chatbotify.com/docs/examples/basic_form/) on the website are also run on a live editor so feel free to explore to your heart's content!
 
 ### Team
 * [Tan Jin](https://github.com/tjtanjin)
 
 ### Contributing
-If you are looking to contribute to the project, you may find the [**Developer Guide**](https://github.com/tjtanjin/react-chatbotify/blob/main/docs/DeveloperGuide.md) useful.
-
-In general, the forking workflow is encouraged and you may open a pull request with clear descriptions on the changes and what they are intended to do (enhancement, bug fixes etc). Alternatively, you may simply raise bugs or suggestions by opening an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues) or raising it up on [**discord**](https://discord.gg/6R4DK4G5Zh).
-
-Note: Templates have been created for pull requests and issues to guide you in the process.
+If you are looking to contribute, please refer to the [**Contributing Guide**](https://github.com/tjtanjin/react-chatbotify/blob/main/CONTRIBUTING.md). A special section has also been added for [**Hacktoberfest**](https://hacktoberfest.com/) participants!
 
 ### Support
-If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), raise it up on [**discord**](https://discord.gg/6R4DK4G5Zh), or drop me an email at: **cjtanjin@gmail.com.**
+If there are any questions pertaining to the application itself (usage or implementation wise), you may create an [**issue**](https://github.com/tjtanjin/react-chatbotify/issues), reach out on [**discord**](https://discord.gg/6R4DK4G5Zh), or drop me an email at: **cjtanjin@gmail.com**.
 
 ### Attributions
 #### Images
