@@ -1,6 +1,6 @@
 import { Dispatch, MutableRefObject, SetStateAction, useEffect } from "react";
 
-import { useChatBotContext } from "../context/ChatBotProvider";
+import { useChatBotContext } from "../context/ChatBotContext";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";

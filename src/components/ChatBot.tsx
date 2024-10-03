@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import ChatBotContainer from "./ChatBotContainer";
 import ChatBotLoader from "./ChatBotLoader";
 import { generateSecureUUID } from "../utils/idGenerator";
-import ChatBotProvider, { useChatBotContext } from "../context/ChatBotProvider";
+import ChatBotProvider, { useChatBotContext } from "../context/ChatBotContext";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";

@@ -1,5 +1,5 @@
 import ChatBot from "./components/ChatBot";
-import ChatBotProvider from "./context/ChatBotProvider";
+import ChatBotProvider from "./context/ChatBotContext";
 
 import { getDefaultSettings } from "./utils/configParser";
 import { getDefaultStyles } from "./utils/configParser";
