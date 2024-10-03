@@ -4,7 +4,7 @@ import { useChatWindowInternal } from "../../src/hooks/internal/useChatWindowInt
 import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";
 import { RcbEvent } from "../../src/constants/RcbEvent";
 
-import { TestChatBotProvider } from "../__mocks__/TestChatBotProvider";
+import { TestChatBotProvider } from "../__mocks__/TestChatBotContext";
 import { MockDefaultSettings } from "../__mocks__/constants";
 
 // mocks internal hooks and services

@@ -6,7 +6,7 @@ import { BotRefsProvider } from '../../src/context/BotRefsContext';
 import { BotStatesProvider } from '../../src/context/BotStatesContext';
 import { PathsProvider } from '../../src/context/PathsContext';
 import { MessagesProvider } from '../../src/context/MessagesContext';
-import { ChatBotProviderContextType } from '../../src/context/ChatBotProvider';
+import { ChatBotProviderContextType } from '../../src/context/ChatBotContext';
 import { Settings } from '../../src/types/Settings';
 import { Styles } from '../../src/types/Styles';
 import { DefaultStyles } from '../../src/constants/internal/DefaultStyles';
