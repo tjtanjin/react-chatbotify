@@ -120,11 +120,12 @@ export const useBotEffectInternal = () => {
 		}, 1)
 	}, [])
 
-	// renders chat history button if enabled
+	// renders chat history button if enabled and triggers update if chat history configurations change
 	useEffect(() => {
 		if (settings.chatHistory?.disabled) {
 			localStorage.removeItem(settings.chatHistory?.storageKey as string);
 		} else {
+			setHistoryStorageValues(settings);
 			const chatHistory = localStorage.getItem(settings.chatHistory?.storageKey as string);
 			if (chatHistory != null) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
@@ -135,11 +136,6 @@ export const useBotEffectInternal = () => {
 				}
 			}
 		}
-	}, []);
-
-	// triggers update to chat history options
-	useEffect(() => {
-		setHistoryStorageValues(settings);
 	}, [settings.chatHistory?.storageKey, settings.chatHistory?.maxEntries, settings.chatHistory?.disabled]);
 
 	// handles virtualkeyboard api (if supported on browser) on mobile devices

@@ -22,7 +22,12 @@ export const useChatHistoryInternal = () => {
 	const { setMessages } = useMessagesContext();
 
 	// handles bot states
-	const { isLoadingChatHistory, setIsLoadingChatHistory, setTextAreaDisabled } = useBotStatesContext();
+	const {
+		isLoadingChatHistory,
+		setIsLoadingChatHistory,
+		textAreaDisabled,
+		setTextAreaDisabled
+	} = useBotStatesContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -46,8 +51,9 @@ export const useChatHistoryInternal = () => {
 			}
 		}
 		setIsLoadingChatHistory(true);
+		const prevTextAreaDisabled = textAreaDisabled;
 		setTextAreaDisabled(true);
-		loadChatHistory(settings, styles, chatHistory, setMessages, setTextAreaDisabled);
+		loadChatHistory(settings, styles, chatHistory, setMessages, prevTextAreaDisabled, setTextAreaDisabled);
 	}, [settings, styles, setMessages, setTextAreaDisabled]);
 
 	return { isLoadingChatHistory, setIsLoadingChatHistory, showChatHistory };

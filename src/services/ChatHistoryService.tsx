@@ -120,13 +120,16 @@ const parseMessageToString = (message: Message) => {
 /**
  * Loads chat history into the chat window for user view.
  * 
- * @param settings options provided to the bot
+ * @param settings settings provided to the bot
+ * @param styles styles provided to the bot
  * @param chatHistory chat history to show
  * @param setMessages setter for updating messages
+ * @param prevTextAreaDisabled boolean indicating if text area was previously disabled
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
 const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
-	setMessages: Dispatch<SetStateAction<Message[]>>, setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
+	setMessages: Dispatch<SetStateAction<Message[]>>, prevTextAreaDisabled: boolean,
+	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
 	if (chatHistory != null) {
@@ -157,7 +160,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setTextAreaDisabled(settings.chatInput?.disabled ?? false);
+				setTextAreaDisabled(prevTextAreaDisabled ?? settings.chatInput?.disabled ?? false);
 			}, 500)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
