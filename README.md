@@ -81,6 +81,12 @@ Typescript
 #### Project Repository
 - https://github.com/tjtanjin/react-chatbotify
 
+#### Other Relevant Repositories
+- https://github.com/tjtanjin/react-chatbotify-docs
+- https://github.com/tjtanjin/react-chatbotify-themes
+- https://github.com/tjtanjin/react-chatbotify-gallery-website
+- https://github.com/tjtanjin/react-chatbotify-gallery-api
+
 ### Quickstart
 For a thorough walkthrough on getting started, you may refer to the [**Quickstart Guide**](https://react-chatbotify.com/docs/introduction/quickstart/) on the [**Documentation Website**](https://react-chatbotify.com/).
 
