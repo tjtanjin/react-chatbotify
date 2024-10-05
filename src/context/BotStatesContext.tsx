@@ -5,7 +5,7 @@ import { Settings } from "../types/Settings";
 /**
  * Creates the useBotStatesContext() hook to manage common states.
  */
-type BotStatesContextType = {
+export type BotStatesContextType = {
 	isBotTyping: boolean;
 	setIsBotTyping: Dispatch<SetStateAction<boolean>>;
 	
