@@ -35,7 +35,11 @@ const RcbEvent = {
 	USER_UPLOAD_FILE: "rcb-user-upload-file",
 
 	// text area value change
-	TEXT_AREA_CHANGE_VALUE: "rcb-text-area-change-value"
+	TEXT_AREA_CHANGE_VALUE: "rcb-text-area-change-value",
+
+	// chatbot loading
+	PRE_LOAD_CHATBOT: "rcb-pre-load-chatbot",
+	POST_LOAD_CHATBOT: "rcb-post-load-chatbot",
 }
 
 export { RcbEvent };

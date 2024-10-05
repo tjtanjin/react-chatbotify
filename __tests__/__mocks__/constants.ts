@@ -6,6 +6,8 @@ export const MockDefaultSettings = {
 	event: {
 		rcbPreInjectMessage: true,
 		rcbPostInjectMessage: true,
+		rcbPreLoadChatBot: true,
+		rcbPostLoadChatBot: true,
 		rcbStartStreamMessage: true,
 		rcbChunkStreamMessage: true,
 		rcbStopStreamMessage: true,

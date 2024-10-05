@@ -18,6 +18,8 @@ import { RcbLoadChatHistoryEvent } from "./types/events/RcbLoadChatHistoryEvent"
 import { RcbToggleChatWindowEvent } from "./types/events/RcbToggleChatWindowEvent";
 import { RcbToggleAudioEvent } from "./types/events/RcbToggleAudioEvent";
 import { RcbPreInjectMessageEvent } from "./types/events/RcbPreInjectMessageEvent";
+import { RcbPreLoadChatBotEvent } from "./types/events/RcbPreLoadChatBotEvent";
+import { RcbPostLoadChatBotEvent } from "./types/events/RcbPostLoadChatBotEvent";
 import { RcbToggleNotificationsEvent } from "./types/events/RcbToggleNotificationsEvent";
 import { RcbToggleVoiceEvent } from "./types/events/RcbToggleVoiceEvent";
 import { RcbStartStreamMessageEvent } from "./types/events/RcbStartStreamMessageEvent";
@@ -69,6 +71,8 @@ export type {
 export type {
 	RcbPreInjectMessageEvent,
 	RcbPostInjectMessageEvent,
+	RcbPreLoadChatBotEvent,
+	RcbPostLoadChatBotEvent,
 	RcbStartStreamMessageEvent,
 	RcbChunkStreamMessageEvent,
 	RcbStopStreamMessageEvent,

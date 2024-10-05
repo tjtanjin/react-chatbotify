@@ -168,6 +168,8 @@ export const DefaultSettings: Settings = {
 	event: {
 		rcbPreInjectMessage: false,
 		rcbPostInjectMessage: false,
+		rcbPreLoadChatBot: false,
+		rcbPostLoadChatBot: false,
 		rcbStartStreamMessage: false,
 		rcbChunkStreamMessage: false,
 		rcbStopStreamMessage: false,

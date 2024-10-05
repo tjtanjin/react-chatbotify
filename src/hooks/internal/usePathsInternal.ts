@@ -55,7 +55,7 @@ export const usePathsInternal = () => {
 		if (settings.event?.rcbChangePath) {
 			const currPath = getCurrPath();
 			const prevPath = getPrevPath();
-			const details = {id: botIdRef.current, currPath, prevPath}
+			const details = {botId: botIdRef.current, currPath, prevPath}
 			event = emitRcbEvent(RcbEvent.CHANGE_PATH, details, {currPath, prevPath, nextPath: pathToGo});
 			if (event.defaultPrevented) {
 				return false;

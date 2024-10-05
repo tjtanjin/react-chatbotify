@@ -10,6 +10,8 @@ const cancellableMap = {
 	[RcbEvent.TOGGLE_CHAT_WINDOW]: true,
 	[RcbEvent.PRE_INJECT_MESSAGE]: true,
 	[RcbEvent.POST_INJECT_MESSAGE]: false,
+	[RcbEvent.PRE_LOAD_CHATBOT]: true,
+	[RcbEvent.POST_LOAD_CHATBOT]: false,
 	[RcbEvent.START_STREAM_MESSAGE]: true,
 	[RcbEvent.CHUNK_STREAM_MESSAGE]: true,
 	[RcbEvent.STOP_STREAM_MESSAGE]: true,

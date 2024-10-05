@@ -1,6 +1,8 @@
 import { EventHandler } from "react";
 import { RcbPreInjectMessageEvent } from "../src/types/events/RcbPreInjectMessageEvent";
 import { RcbPostInjectMessageEvent } from "../src/types/events/RcbPostInjectMessageEvent";
+import { RcbPreLoadChatBotEvent } from "../src/types/events/RcbPreLoadChatBotEvent";
+import { RcbPostLoadChatBotEvent } from "../src/types/events/RcbPostLoadChatBotEvent";
 import { RcbLoadChatHistoryEvent } from "../src/types/events/RcbLoadChatHistoryEvent";
 import { RcbToggleChatWindowEvent } from "../src/types/events/RcbToggleChatWindowEvent";
 import { RcbToggleAudioEvent } from "../src/types/events/RcbToggleAudioEvent";
@@ -76,5 +78,9 @@ declare global {
 
 		// textarea change value
 		"rcb-text-area-change-value": RcbTextAreaChangeValueEvent;
+
+		// chatbot loading
+		"rcb-pre-load-chatbot": RcbPreLoadChatBotEvent;
+		"rcb-post-load-chatbot": RcbPostLoadChatBotEvent;
 	}
 }
