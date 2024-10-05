@@ -55,7 +55,7 @@ describe("useChatHistoryInternal Hook", () => {
 
 		// mocks loadChatHistory to resolve successfully
 		mockLoadChatHistory.mockImplementation(
-			(settings, styles, chatHistory, setMessages, setTextAreaDisabled) => {
+			(settings, styles, chatHistory, setMessages, prevTextAreaDisabled, setTextAreaDisabled) => {
 				setMessages(chatHistory);
 				setTextAreaDisabled(false);
 				return Promise.resolve();
@@ -90,6 +90,7 @@ describe("useChatHistoryInternal Hook", () => {
 			expect.any(Object),
 			initialChatHistory,
 			expect.any(Function),
+			expect.any(Boolean),
 			expect.any(Function)
 		);
 
