@@ -1,4 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
+import { expect } from "@jest/globals";
 
 import { getHistoryMessages, loadChatHistory } from "../../src/services/ChatHistoryService";
 import { generateSecureUUID } from "../../src/utils/idGenerator";

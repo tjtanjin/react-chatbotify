@@ -1,4 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
+import { expect } from "@jest/globals";
 
 import { useAudioInternal } from "../../src/hooks/internal/useAudioInternal";
 import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";

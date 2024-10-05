@@ -1,4 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
+import { expect } from "@jest/globals";
 
 import { useNotificationInternal } from "../../src/hooks/internal/useNotificationsInternal";
 import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";

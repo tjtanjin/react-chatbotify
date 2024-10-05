@@ -1,4 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
+import { expect } from "@jest/globals";
 
 import { syncVoiceWithChatInput } from "../../src/services/VoiceService";
 import { useVoiceInternal } from "../../src/hooks/internal/useVoiceInternal";

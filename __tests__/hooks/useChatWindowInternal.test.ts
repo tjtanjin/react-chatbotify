@@ -1,4 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
+import { expect } from "@jest/globals";
 
 import { useChatWindowInternal } from "../../src/hooks/internal/useChatWindowInternal";
 import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";

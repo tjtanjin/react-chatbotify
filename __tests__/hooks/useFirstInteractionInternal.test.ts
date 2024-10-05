@@ -1,7 +1,9 @@
-import { renderHook, act } from '@testing-library/react';
-import { useFirstInteractionInternal } from '../../src/hooks/internal/useFirstInteractionInternal';
+import { renderHook, act } from "@testing-library/react";
+import { expect } from "@jest/globals";
 
-jest.mock('../../src/context/BotStatesContext', () => ({
+import { useFirstInteractionInternal } from "../../src/hooks/internal/useFirstInteractionInternal";
+
+jest.mock("../../src/context/BotStatesContext", () => ({
   useBotStatesContext: jest.fn(() => ({
     hasInteractedPage: false,
     setHasInteractedPage: jest.fn(),
@@ -10,17 +12,17 @@ jest.mock('../../src/context/BotStatesContext', () => ({
   })),
 }));
 
-jest.mock('../../src/context/SettingsContext', () => ({
+jest.mock("../../src/context/SettingsContext", () => ({
   useSettingsContext: jest.fn(() => ({
     settings: {
       general: {
-        flowStartTrigger: 'ON_PAGE_INTERACT',
+        flowStartTrigger: "ON_PAGE_INTERACT",
       },
     },
   })),
 }));
 class MockSpeechSynthesisUtterance {
-    text = '';
+    text = "";
     onend: () => void = () => {};
   
     constructor() {
@@ -39,7 +41,7 @@ class MockSpeechSynthesisUtterance {
   global.SpeechSynthesisUtterance = MockSpeechSynthesisUtterance as any;
   global.speechSynthesis = MockSpeechSynthesis as any;
 
-describe('useFirstInteractionInternal', () => {
+describe("useFirstInteractionInternal", () => {
   let setHasInteractedPage: jest.Mock;
   let setHasFlowStarted: jest.Mock;
 
@@ -47,7 +49,7 @@ describe('useFirstInteractionInternal', () => {
     setHasInteractedPage = jest.fn();
     setHasFlowStarted = jest.fn();
 
-    (require('../../src/context/BotStatesContext').useBotStatesContext as jest.Mock).mockReturnValue({
+    (require("../../src/context/BotStatesContext").useBotStatesContext as jest.Mock).mockReturnValue({
       hasInteractedPage: false,
       setHasInteractedPage,
       hasFlowStarted: false,
@@ -59,7 +61,7 @@ describe('useFirstInteractionInternal', () => {
     jest.clearAllMocks();
   });
 
-  it('should call setHasInteractedPage and setHasFlowStarted on interaction', () => {
+  it("should call setHasInteractedPage and setHasFlowStarted on interaction", () => {
     const { result } = renderHook(() => useFirstInteractionInternal());
 
     act(() => {
