@@ -22,7 +22,7 @@ export const useRcbEventInternal = () => {
 	 * @param data additional data to include with the event
 	 */
 	const callRcbEvent = useCallback((eventName: typeof RcbEvent[keyof typeof RcbEvent], data: object) => {
-		const details = {id: botIdRef.current, currPath: getCurrPath(), prevPath: getPrevPath()}
+		const details = {botId: botIdRef.current, currPath: getCurrPath(), prevPath: getPrevPath()}
 		return emitRcbEvent(eventName, details, data);
 	}, [paths])
 
