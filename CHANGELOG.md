@@ -1,5 +1,17 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.15 (06-10-2024)
+
+**Fixed:**
+- Fixed an issue where having `settings.chatHistory.autoLoad: true` will cause the chat history to disappear
+- Fixed an issue where loading of chat history may cause previously disabled text area to become enabled
+- Renamed `id` inside `event.detail` to `botId` for better clarity
+
+**Added:**
+- Added a new `rcb-pre-load-chatbot` event
+- Added a new `rcb-post-load-chatbot` event
+- Added a new `useBotId` hook
+
 ## v2.0.0-beta.14 (03-10-2024)
 
 **Fixed:**

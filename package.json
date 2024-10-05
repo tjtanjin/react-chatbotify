@@ -12,8 +12,8 @@
   "files": [
     "./dist"
   ],
-  "version": "2.0.0-beta.14",
-  "description": "A modern React library for creating a flexible and extensible chatbot.",
+  "version": "2.0.0-beta.15",
+  "description": "A modern React library for creating flexible and extensible chatbots.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
