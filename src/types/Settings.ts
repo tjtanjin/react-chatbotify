@@ -134,8 +134,6 @@ export type Settings = {
 	event?: {
 		rcbPreInjectMessage?: boolean;
 		rcbPostInjectMessage?: boolean;
-		rcbPreLoadChatBot?: boolean;
-		rcbPostLoadChatBot?: boolean;
 		rcbStartStreamMessage?: boolean;
 		rcbChunkStreamMessage?: boolean;
 		rcbStopStreamMessage?: boolean;
@@ -151,6 +149,8 @@ export type Settings = {
 		rcbUserSubmitText?: boolean;
 		rcbUserUploadFile?: boolean;
 		rcbTextAreaChangeValue?: boolean;
+		rcbPreLoadChatBot?: boolean;
+		rcbPostLoadChatBot?: boolean;
 	},
 	ariaLabel?: {
 		chatButton?: string;

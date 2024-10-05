@@ -168,8 +168,6 @@ export const DefaultSettings: Settings = {
 	event: {
 		rcbPreInjectMessage: false,
 		rcbPostInjectMessage: false,
-		rcbPreLoadChatBot: false,
-		rcbPostLoadChatBot: false,
 		rcbStartStreamMessage: false,
 		rcbChunkStreamMessage: false,
 		rcbStopStreamMessage: false,
@@ -185,6 +183,8 @@ export const DefaultSettings: Settings = {
 		rcbUserSubmitText: false,
 		rcbUserUploadFile: false,
 		rcbTextAreaChangeValue: false,
+		rcbPreLoadChatBot: false,
+		rcbPostLoadChatBot: false,
 	},
 	ariaLabel: {
 		chatButton: "open chat",
