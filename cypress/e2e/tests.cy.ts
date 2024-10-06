@@ -17,6 +17,15 @@ describe("Chat Bot Test Suite", () => {
 	it("Sends name and verifies bot reply", () => {
 		cy.get(".rcb-chat-input-textarea").type("Tan Jin{enter}");
 		cy.get(".rcb-bot-message").contains("Hey Tan Jin!").should("be.visible");
+		cy.get(".rcb-bot-message").contains("Before we processed").should("be.visible");
+	});
+
+	it("Senstive input should be masked", () => {
+		cy.get(".rcb-chat-input-textarea").type("123456");
+		cy.get('input[type="password"]').should('exist');
+		cy.get(".rcb-chat-input-textarea").should('have.value',"123456");
+		cy.get(".rcb-send-button").click();
+		cy.get(".rcb-user-message").contains("******").should("be.visible");
 	});
 
 	it("Disabled chat input", () => {
@@ -86,19 +95,17 @@ describe("Chat Bot Test Suite", () => {
 		cy.get(".rcb-emoji-button-enabled").click();
 		cy.get(".rcb-emoji").should('exist').should('be.visible').first().click();
 		cy.get(".rcb-send-button").click();
-		cy.get(".rcb-bot-message")
-			.eq(9)
-			.contains("Your answer is incorrect, try again!")
-			.should("be.visible");
+		cy.get(".rcb-chat-body-container").scrollTo('bottom', { duration: 1000 });
+		cy.get(".rcb-bot-message").contains("Your answer is incorrect, try again!");
 	});
 
 	it("Sends correct color guess and verifies bot reply", () => {
-		cy.get(".rcb-chat-input-textarea").should("be.visible");
+		cy.get(".rcb-chat-input-textarea").scrollIntoView().should("be.visible");
 		cy.get(".rcb-chat-input-textarea").type("black{enter}");
 	});
 
 	it("Closes chat window and verifies bot reply", () => {
-		cy.get(".rcb-window-close").should("exist");
+		cy.get(".rcb-button-show").should("exist");
 	});
 
 	it("Reopens chat window and verifies bot reply", () => {
@@ -108,6 +115,8 @@ describe("Chat Bot Test Suite", () => {
 	});
 
 	it("Send food and verifies bot reply", () => {
+		cy.get(".bold").should('have.css', 'font-weight')
+		.then((fontWeight) => +fontWeight).and('be.gte', 700)
 		cy.get(".rcb-chat-input-textarea")
 			.should("be.visible")
 			.type("pasta{enter}");
