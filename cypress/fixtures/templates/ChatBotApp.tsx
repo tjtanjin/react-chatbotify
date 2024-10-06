@@ -3,6 +3,7 @@
 import ChatBot, { Flow, Params } from "react-chatbotify";
 
 function App() {
+	const [name, setName] = useState("");
 
 	// Serves as an example flow used during the development phase - covers all possible attributes in a block.
 	// restore to default state before running selenium tests (or update the test cases if necessary)!
