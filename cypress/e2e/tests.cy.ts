@@ -20,7 +20,7 @@ describe("Chat Bot Test Suite", () => {
 		cy.get(".rcb-bot-message").contains("Before we processed").should("be.visible");
 	});
 
-	it("Senstive input should be masked", () => {
+	it("Sensitive input should be masked", () => {
 		cy.get(".rcb-chat-input-textarea").type("123456");
 		cy.get('input[type="password"]').should('exist');
 		cy.get(".rcb-chat-input-textarea").should('have.value',"123456");

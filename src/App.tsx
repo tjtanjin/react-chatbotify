@@ -106,7 +106,7 @@ function App() {
 		},
 		close_chat: {
 			message: "I went into hiding but you found me! Ok tell me, "+
-			"<b class='bold'>what's your favourite food?</b>",
+				"<b class='bold'>what's your favourite food?</b>",
 			path: "ask_image"
 		},
 		ask_image: {
