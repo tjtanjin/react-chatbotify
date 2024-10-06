@@ -194,15 +194,15 @@ describe("Chat Bot Test Suite", () => {
 	const themeId = "new-theme";
 	const themeVersion = "1.0.0";
 	const defaultExpiration = 3;
-	const themeSettings = { key: "value" };
-	const inlineStyles = { styleKey: "styleValue" };
+	const settings = {};
+	const inlineStyles = {};
 	const cssStylesText = "body { background-color: red; }";
 
 	it("Should retrieve the theme if not expired", () => {
 		cy.chatbotify.setCachedTheme(
 			themeId,
 			themeVersion,
-			themeSettings,
+			settings,
 			inlineStyles,
 			cssStylesText
 		);
@@ -214,16 +214,16 @@ describe("Chat Bot Test Suite", () => {
 		);
 
 		expect(theme).to.exist;
-		expect(theme.settings).to.deep.equal(themeSettings);
-		expect(theme.inlineStyles).to.deep.equal(inlineStyles);
-		expect(theme.cssStylesText).to.equal(cssStylesText);
+		expect(theme?.settings).to.deep.equal(settings);
+		expect(theme?.inlineStyles).to.deep.equal(inlineStyles);
+		expect(theme?.cssStylesText).to.equal(cssStylesText);
 	});
 
 	it("Should not retrieve the theme if expired", () => {
 		cy.chatbotify.setCachedTheme(
 			themeId,
 			themeVersion,
-			themeSettings,
+			settings,
 			inlineStyles,
 			cssStylesText
 		);
