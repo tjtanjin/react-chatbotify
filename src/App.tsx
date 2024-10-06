@@ -1,18 +1,38 @@
+import { useState } from "react";
 import ChatBot from "./components/ChatBot";
 import { Flow } from "./types/Flow";
 import { Params } from "./types/Params";
 
 function App() {
+	const [name, setName] = useState("")
 
 	// Serves as an example flow used during the development phase - covers all possible attributes in a block.
 	// restore to default state before running selenium tests (or update the test cases if necessary)!
 	const flow: Flow = {
 		start: {
 			message: "Hello! What is your name?",
-			path: "ask_age_group",
+			path: "show_name",
+		},
+		show_name : {
+			message: (params: Params) => `Hey ${params.userInput}! Nice to meet you.`,
+			function: (params: Params) => setName(params.userInput),
+			transition: {duration: 1000},
+			path: "ask_token",
+		},
+		ask_token: {
+			message: () => "Before we processed, we need to verify your profile id, "
+			+ "Enter your 6 digit profile id",
+			isSensitive: true,
+			path: (params: Params) => {
+				if (params.userInput.length !== 6) {
+					return "incorrect_answer"
+				} else {
+					return "ask_age_group";
+				}
+			},
 		},
 		ask_age_group: {
-			message: (params: Params) => `Hey ${params.userInput}! Nice to meet you, what is your age group?`,
+			message: () => `Hey ${name}!, Your account got verified, May i know your age group?`,
 			options: ["child", "teen", "adult"],
 			chatDisabled: true,
 			path: () => "ask_math_question",
@@ -85,7 +105,8 @@ function App() {
 			},
 		},
 		close_chat: {
-			message: "I went into hiding but you found me! Ok tell me, what's your favourite food?",
+			message: "I went into hiding but you found me! Ok tell me, "+
+			"<b class='bold'>what's your favourite food?</b>",
 			path: "ask_image"
 		},
 		ask_image: {
@@ -123,9 +144,10 @@ function App() {
 						settings={{
 							audio: {disabled: false},
 							chatInput: {botDelay: 1000},
-							userBubble: {showAvatar: true},
-							botBubble: {showAvatar: true},
+							userBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
+							botBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
 							voice: {disabled: false},
+							sensitiveInput: {asterisksCount: 6},
 						}}
 					></ChatBot>
 				</div>
