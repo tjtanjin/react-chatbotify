@@ -1,15 +1,15 @@
 import { renderHook, act } from "@testing-library/react";
 import { expect } from "@jest/globals";
 
-import { useAudioInternal } from "../../src/hooks/internal/useAudioInternal";
-import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";
-import { RcbEvent } from "../../src/constants/RcbEvent";
+import { useAudioInternal } from "../../../src/hooks/internal/useAudioInternal";
+import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
+import { RcbEvent } from "../../../src/constants/RcbEvent";
 
-import { TestChatBotProvider } from "../__mocks__/TestChatBotContext";
-import { MockDefaultSettings } from "../__mocks__/constants";
+import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
+import { MockDefaultSettings } from "../../__mocks__/constants";
 
 // mocks internal hooks
-jest.mock("../../src/hooks/internal/useRcbEventInternal");
+jest.mock("../../../src/hooks/internal/useRcbEventInternal");
 const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<typeof useRcbEventInternal>;
 
 /**

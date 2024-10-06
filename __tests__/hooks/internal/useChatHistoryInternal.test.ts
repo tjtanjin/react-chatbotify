@@ -1,19 +1,19 @@
 import { renderHook, act } from "@testing-library/react";
 import { expect } from "@jest/globals";
 
-import { getHistoryMessages, loadChatHistory } from "../../src/services/ChatHistoryService";
-import { generateSecureUUID } from "../../src/utils/idGenerator";
-import { useChatHistoryInternal } from "../../src/hooks/internal/useChatHistoryInternal";
-import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";
-import { RcbEvent } from "../../src/constants/RcbEvent";
+import { getHistoryMessages, loadChatHistory } from "../../../src/services/ChatHistoryService";
+import { generateSecureUUID } from "../../../src/utils/idGenerator";
+import { useChatHistoryInternal } from "../../../src/hooks/internal/useChatHistoryInternal";
+import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
+import { RcbEvent } from "../../../src/constants/RcbEvent";
 
-import { TestChatBotProvider } from "../__mocks__/TestChatBotContext";
-import { MockDefaultSettings } from "../__mocks__/constants";
+import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
+import { MockDefaultSettings } from "../../__mocks__/constants";
 
 // mocks internal hooks and services
-jest.mock("../../src/hooks/internal/useRcbEventInternal");
+jest.mock("../../../src/hooks/internal/useRcbEventInternal");
 const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<typeof useRcbEventInternal>;
-jest.mock("../../src/services/ChatHistoryService");
+jest.mock("../../../src/services/ChatHistoryService");
 const mockGetHistoryMessages = getHistoryMessages as jest.MockedFunction<typeof getHistoryMessages>;
 const mockLoadChatHistory = loadChatHistory as jest.MockedFunction<typeof loadChatHistory>;
 

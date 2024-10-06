@@ -1,17 +1,17 @@
 import { renderHook, act } from "@testing-library/react";
 import { expect } from "@jest/globals";
 
-import { syncVoiceWithChatInput } from "../../src/services/VoiceService";
-import { useVoiceInternal } from "../../src/hooks/internal/useVoiceInternal";
-import { useRcbEventInternal } from "../../src/hooks/internal/useRcbEventInternal";
-import { RcbEvent } from "../../src/constants/RcbEvent";
+import { syncVoiceWithChatInput } from "../../../src/services/VoiceService";
+import { useVoiceInternal } from "../../../src/hooks/internal/useVoiceInternal";
+import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
+import { RcbEvent } from "../../../src/constants/RcbEvent";
 
-import { TestChatBotProvider } from "../__mocks__/TestChatBotContext";
-import { MockDefaultSettings } from "../__mocks__/constants";
+import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
+import { MockDefaultSettings } from "../../__mocks__/constants";
 
 // mocks internal hooks and services
-jest.mock("../../src/hooks/internal/useRcbEventInternal");
-jest.mock("../../src/services/VoiceService");
+jest.mock("../../../src/hooks/internal/useRcbEventInternal");
+jest.mock("../../../src/services/VoiceService");
 const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<typeof useRcbEventInternal>;
 const mockSyncVoiceWithChatInput = syncVoiceWithChatInput as jest.MockedFunction<typeof syncVoiceWithChatInput>;
 
