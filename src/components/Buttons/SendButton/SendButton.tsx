@@ -36,12 +36,14 @@ const SendButton = () => {
 	const sendButtonDisabledStyle: React.CSSProperties = {
 		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 		backgroundColor: settings.general?.primaryColor,
+		...styles.sendButtonStyle, // by default inherit the base style for send button
 		...styles.sendButtonDisabledStyle
 	};
 
 	// styles for hovered send button
 	const sendButtonHoveredStyle: React.CSSProperties = {
 		backgroundColor: settings.general?.secondaryColor,
+		...styles.sendButtonStyle, // by default inherit the base style for send button
 		...styles.sendButtonHoveredStyle
 	};
 	
