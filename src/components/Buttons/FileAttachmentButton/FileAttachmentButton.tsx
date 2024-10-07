@@ -55,6 +55,7 @@ const FileAttachmentButton = () => {
 	// styles for file attachment disabled button
 	const fileAttachmentButtonDisabledStyle = {
 		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		...styles.fileAttachmentButtonStyle, // by default inherit the base style
 		...styles.fileAttachmentButtonDisabledStyle
 	}
 
@@ -67,6 +68,7 @@ const FileAttachmentButton = () => {
 	// styles for file attachment disabled icon
 	const fileAttachmentIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.fileAttachment?.icon})`,
+		...styles.fileAttachmentIconStyle, // by default inherit the base style
 		...styles.fileAttachmentIconDisabledStyle
 	};
 

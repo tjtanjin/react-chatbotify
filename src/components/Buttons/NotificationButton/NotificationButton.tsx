@@ -28,6 +28,7 @@ const NotificationButton = () => {
 	// styles for notification disabled icon
 	const notificationIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.notification?.icon})`,
+		...styles.notificationIconStyle, // by default inherit the base style
 		...styles.notificationIconDisabledStyle
 	};
 
@@ -39,7 +40,10 @@ const NotificationButton = () => {
 				event.preventDefault();
 				toggleNotifications();
 			}}
-			style={notificationsToggledOn ? styles.notificationButtonStyle : styles.notificationButtonDisabledStyle}
+			style={notificationsToggledOn
+				? styles.notificationButtonStyle
+				: {...styles.notificationButtonStyle, ...styles.notificationButtonDisabledStyle}
+			}
 		>
 			<span
 				className={`rcb-notification-icon-${

@@ -36,6 +36,7 @@ const EmojiButton = () => {
 	// styles for emoji disabled button
 	const emojiButtonDisabledStyle: React.CSSProperties = {
 		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		...styles.emojiButtonStyle, // by default inherit the base style
 		...styles.emojiButtonDisabledStyle
 	};
 
@@ -48,6 +49,7 @@ const EmojiButton = () => {
 	// styles for emoji disabled icon
 	const emojiIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.emoji?.icon})`,
+		...styles.emojiIconStyle, // by default inherit the base style
 		...styles.emojiIconDisabledStyle
 	};
 

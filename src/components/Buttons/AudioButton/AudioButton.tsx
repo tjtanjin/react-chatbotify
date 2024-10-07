@@ -28,6 +28,7 @@ const AudioButton = () => {
 	// styles for audio disabled icon
 	const audioIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.audio?.icon})`,
+		...styles.audioIconStyle, // by default inherit the base style
 		...styles.audioIconDisabledStyle
 	};
 
@@ -39,7 +40,10 @@ const AudioButton = () => {
 				event.preventDefault();
 				toggleAudio();
 			}}
-			style={audioToggledOn ? styles.audioButtonStyle : styles.audioButtonDisabledStyle}
+			style={audioToggledOn
+				? styles.audioButtonStyle
+				: {...styles.audioButtonStyle, ...styles.audioButtonDisabledStyle}
+			}
 		>
 			<span
 				className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}

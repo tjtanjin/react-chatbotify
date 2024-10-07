@@ -72,6 +72,7 @@ const VoiceButton = () => {
 	// styles for voice disabled icon
 	const voiceIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.voice?.icon})`,
+		...styles.voiceIconStyle, // by default inherit the base style
 		...styles.voiceIconDisabledStyle
 	};
 
@@ -109,7 +110,10 @@ const VoiceButton = () => {
 				}
 				toggleVoice();
 			}}
-			style={voiceToggledOn && !textAreaDisabled ? styles.voiceButtonStyle : styles.voiceButtonDisabledStyle}
+			style={voiceToggledOn && !textAreaDisabled
+				? styles.voiceButtonStyle
+				: {...styles.voiceButtonStyle, ...styles.voiceButtonDisabledStyle}
+			}
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}
 		>
 			<span
