@@ -9,8 +9,6 @@ import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Theme } from "../types/Theme";
 import { Plugin } from "../types/Plugin";
-import { DefaultSettings } from "../constants/internal/DefaultSettings";
-import { DefaultStyles } from "../constants/internal/DefaultStyles";
 import { WelcomeFlow } from "../constants/internal/WelcomeFlow";
 
 /**
@@ -42,8 +40,8 @@ const ChatBot = ({
 	// handles cases where any props are empty
 	const finalBotId = useMemo(() => id || generateSecureUUID(), []);
 	const finalFlow = (!flow || Object.keys(flow).length === 0) ? WelcomeFlow : flow;
-    const finalSettings = !settings ? {} : settings;
-    const finalStyles = !styles ? {} : styles;
+	const finalSettings = !settings ? {} : settings;
+	const finalStyles = !styles ? {} : styles;
 
 	// handles loading of chatbot only when config is loaded
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
