@@ -38,7 +38,7 @@ const ChatBot = ({
 }) => {
 
 	// handles cases where any props are empty
-	const finalBotId = useMemo(() => id || generateSecureUUID(), []);
+	const finalBotId = useMemo(() => id || "rcb-" + generateSecureUUID(), []);
 	const finalFlow = (!flow || Object.keys(flow).length === 0) ? WelcomeFlow : flow;
 	const finalSettings = !settings ? {} : settings;
 	const finalStyles = !styles ? {} : styles;
