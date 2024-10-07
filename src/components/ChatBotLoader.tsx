@@ -1,4 +1,4 @@
-import { Dispatch, MutableRefObject, SetStateAction, useEffect } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useMemo } from "react";
 
 import { emitRcbEvent } from "../services/RcbEventService";
 import { useChatBotContext } from "../context/ChatBotContext";
@@ -40,6 +40,9 @@ const ChatBotLoader = ({
 	setConfigLoaded: Dispatch<SetStateAction<boolean>>;
 	styleRootRef: MutableRefObject<HTMLStyleElement | null>;
 }) => {
+	// memoized chatbot id
+	const memoizedId = useMemo(() => id, []);
+
 	// used to load config to the provider
 	const chatBotContext = useChatBotContext();
 
@@ -58,7 +61,7 @@ const ChatBotLoader = ({
 	const runLoadConfig = async () => {
 		// handles pre load chatbot event
 		if (settings.event?.rcbPreLoadChatBot) {
-			const event = emitRcbEvent(RcbEvent.PRE_LOAD_CHATBOT, {botId: id, currPath: null, prevPath: null}, 
+			const event = emitRcbEvent(RcbEvent.PRE_LOAD_CHATBOT, {botId: memoizedId, currPath: null, prevPath: null}, 
 				{
 					flow,
 					settings,
@@ -73,13 +76,13 @@ const ChatBotLoader = ({
 		}
 
 		if (chatBotContext?.loadConfig) {
-			await chatBotContext.loadConfig(id, flow, settings, styles, themes, styleRootRef);
+			await chatBotContext.loadConfig(memoizedId, flow, settings, styles, themes, styleRootRef);
 			setConfigLoaded(true);
 		}
 
 		// handles post load chatbot event
 		if (settings.event?.rcbPostLoadChatBot) {
-			emitRcbEvent(RcbEvent.POST_LOAD_CHATBOT, {botId: id, currPath: null, prevPath: null}, 
+			emitRcbEvent(RcbEvent.POST_LOAD_CHATBOT, {botId: memoizedId, currPath: null, prevPath: null}, 
 				{
 					flow,
 					settings,
