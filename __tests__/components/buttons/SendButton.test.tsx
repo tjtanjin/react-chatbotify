@@ -42,7 +42,7 @@ describe("SendButton Component", () => {
 		});
 
 		(useStylesContext as jest.Mock).mockReturnValue({
-			styles: DefaultStyles
+			styles: {}
 		});
 	});
 
@@ -77,10 +77,14 @@ describe("SendButton Component", () => {
 		expect(button).toHaveStyle(`backgroundColor: ${DefaultSettings.general?.primaryColor}`);
 	});
 
-	it("renders default aria-label and color when not provided and testArea is enabled", () => {
+	it("renders default aria-label and default style color while testArea is enabled", () => {
 		// remove provided settings
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {}
+		});
+
+		(useStylesContext as jest.Mock).mockReturnValue({
+			styles: DefaultStyles
 		});
 
 		// enable textArea
@@ -112,10 +116,14 @@ describe("SendButton Component", () => {
 		expect(button).toHaveStyle(`backgroundColor: ${DefaultStyles.sendButtonStyle?.backgroundColor}`);
 	});
 
-	it("renders with disabled style and doesn't change color on hover when textArea is disabled", () => {
+	it("renders with disabled default style color and doesn't change color on hover when textArea is disabled", () => {
 		// remove provided settings
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {}
+		});
+
+		(useStylesContext as jest.Mock).mockReturnValue({
+			styles: DefaultStyles
 		});
 
 		render(<SendButton />);
