@@ -43,6 +43,7 @@ const MediaDisplay = ({
 						<div
 							style={mediaDisplayContainerStyle}
 							className="rcb-media-display-image-container rcb-media-entry"
+							data-testid="media-display-image-container"
 						>
 							<img src={fileUrl} alt="Image Display" className="rcb-media-display-image" />
 						</div>
@@ -51,6 +52,7 @@ const MediaDisplay = ({
 						<div 
 							style={mediaDisplayContainerStyle}
 							className="rcb-media-display-video-container rcb-media-entry"
+							data-testid="media-display-video-container"
 						>
 							<video controls className="rcb-media-display-video">
 								<source src={fileUrl} type={file.type} />
@@ -60,6 +62,7 @@ const MediaDisplay = ({
 					)}
 					{fileType === "audio" && fileUrl && (
 						<audio
+							data-testid="media-display-audio-container" 
 							style={{
 								maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 							}}
