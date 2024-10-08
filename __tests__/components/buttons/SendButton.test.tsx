@@ -77,7 +77,7 @@ describe("SendButton Component", () => {
 		expect(button).toHaveStyle(`backgroundColor: ${DefaultSettings.general?.primaryColor}`);
 	});
 
-	it("renders default aria-label and default style color while testArea is enabled", () => {
+	it("renders default aria-label and default style color while textArea is enabled", () => {
 		// remove provided settings
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {}
