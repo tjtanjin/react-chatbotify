@@ -22,24 +22,24 @@ jest.mock("../../../src/context/SettingsContext", () => ({
 	})),
 }));
 class MockSpeechSynthesisUtterance {
-		text = "";
-		onend: () => void = () => {};
-	
-		constructor() {
-			setTimeout(() => {
-				this.onend();
-			}, 0);
-		}
+	text = "";
+	onend: () => void = () => {};
+
+	constructor() {
+		setTimeout(() => {
+			this.onend();
+		}, 0);
 	}
+}
 	
-	const MockSpeechSynthesis = {
-		speak: jest.fn().mockImplementation((utterance: MockSpeechSynthesisUtterance) => {
-			utterance.onend();
-		}),
-	};
-	
-	global.SpeechSynthesisUtterance = MockSpeechSynthesisUtterance as any;
-	global.speechSynthesis = MockSpeechSynthesis as any;
+const MockSpeechSynthesis = {
+	speak: jest.fn().mockImplementation((utterance: MockSpeechSynthesisUtterance) => {
+		utterance.onend();
+	}),
+};
+
+global.SpeechSynthesisUtterance = MockSpeechSynthesisUtterance as any;
+global.speechSynthesis = MockSpeechSynthesis as any;
 
 describe("useFirstInteractionInternal", () => {
 	let setHasInteractedPage: jest.Mock;
