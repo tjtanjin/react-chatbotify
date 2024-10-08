@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.16 (08-10-2024)
+
+**Fixed:**
+- Fixed an issue where themes may not load properly
+- Buttons now properly inherit base styles even in different states (e.g. disabled, hovered)
+
 ## v2.0.0-beta.15 (06-10-2024)
 
 **Fixed:**
