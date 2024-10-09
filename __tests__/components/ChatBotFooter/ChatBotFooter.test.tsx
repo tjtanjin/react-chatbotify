@@ -5,7 +5,6 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/jest-globals";
 
 import ChatBotFooter from "../../../src/components/ChatBotFooter/ChatBotFooter"
-import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
 
 /**
  * Helper function to render AudioButton with different settings.
@@ -21,9 +20,9 @@ import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
 
 const renderChatBotFooter = ({ buttons }: { buttons: JSX.Element[] }) => {
 	return render(
-		<TestChatBotProvider>
+
 			<ChatBotFooter buttons={buttons}></ChatBotFooter>
-		</TestChatBotProvider>
+
 	);
 };
 
