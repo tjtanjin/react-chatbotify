@@ -1,2 +1,2 @@
 // __mocks__/fileMock.ts
-export default "";
+export const botAvatar = "../../assets/bot_avatar.svg";
