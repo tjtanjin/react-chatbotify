@@ -55,6 +55,8 @@ const ChatHistoryButton = () => {
 					showChatHistory();
 				}}
 				className="rcb-view-history-button"
+				role="button"
+				tabIndex={0} 
 			>
 				<p>
 					{settings.chatHistory?.viewChatHistoryButtonText}
