@@ -6,8 +6,7 @@ import "@testing-library/jest-dom/jest-globals";
 
 import ChatBotFooter from "../../../src/components/ChatBotFooter/ChatBotFooter"
 import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
-import AudioButton from "../../../src/components/Buttons/AudioButton/AudioButton";
-import EmojiButton from "../../../src/components/Buttons/EmojiButton/EmojiButton";
+
 /**
  * Helper function to render AudioButton with different settings.
  *
@@ -32,16 +31,18 @@ const renderChatBotFooter = ({ buttons }: { buttons: JSX.Element[] }) => {
 describe("ChatBotFooter Component", () => {
 	it("renders the chatbotfooter container component", () => {
 		const buttons = [
-			<AudioButton key="audio-button" />,
-			<EmojiButton key="emoji-button" />,
+			<button key="mock-button-1" role="button">Mock Button 1</button>,
+			<button key="mock-button-2" role="button">Mock Button 2</button>
 		];
 		renderChatBotFooter({ buttons })
 
 		const footerContainer = screen.getByTestId("chatbot-footer-container");
 		expect(footerContainer).toBeInTheDocument();
 
-		expect(screen.getByLabelText("toggle audio")).toBeInTheDocument();
-		expect(screen.getByLabelText("emoji picker")).toBeInTheDocument();
+		const footerbuttons =screen.getAllByRole("button");
+		expect(footerbuttons).toHaveLength(2);
+		expect(footerbuttons[0]).toBeInTheDocument();
+		expect(footerbuttons[1]).toBeInTheDocument();
 
 		const icon = footerContainer.querySelector("span");
 		expect(icon).toBeInTheDocument();
