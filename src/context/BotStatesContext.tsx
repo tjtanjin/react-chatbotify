@@ -21,6 +21,9 @@ export type BotStatesContextType = {
 	notificationsToggledOn: boolean;
 	setNotificationsToggledOn: Dispatch<SetStateAction<boolean>>;
 
+	isChatHistoryLoaded: boolean;
+	setIsChatHistoryLoaded: Dispatch<SetStateAction<boolean>>;
+
 	isLoadingChatHistory: boolean;
 	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>;
 
@@ -78,6 +81,7 @@ const BotStatesProvider = ({
 	const [notificationsToggledOn, setNotificationsToggledOn] = useState<boolean>(
 		settings?.notification?.defaultToggledOn ?? true
 	);
+	const [isChatHistoryLoaded, setIsChatHistoryLoaded] = useState<boolean>(false);
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
 	const [isScrolling, setIsScrolling] = useState<boolean>(false);
 	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(true);
@@ -107,6 +111,8 @@ const BotStatesProvider = ({
 			setVoiceToggledOn,
 			notificationsToggledOn,
 			setNotificationsToggledOn,
+			isChatHistoryLoaded,
+			setIsChatHistoryLoaded,
 			isLoadingChatHistory,
 			setIsLoadingChatHistory,
 			isScrolling,

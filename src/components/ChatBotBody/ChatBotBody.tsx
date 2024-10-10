@@ -47,6 +47,7 @@ const ChatBotBody = ({
 		isBotTyping,
 		isLoadingChatHistory,
 		setIsLoadingChatHistory,
+		setIsChatHistoryLoaded,
 		isScrolling,
 		setIsScrolling,
 		setUnreadCount
@@ -99,6 +100,7 @@ const ChatBotBody = ({
 			const scrollDifference = scrollHeight - chatScrollHeight;
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
 			setIsLoadingChatHistory(false);
+			setIsChatHistoryLoaded(true);
 			return;
 		}
 

@@ -50,6 +50,7 @@ export const useBotEffectInternal = () => {
 
 	// handles bot states
 	const {
+		isChatHistoryLoaded,
 		isChatWindowOpen,
 		isBotTyping,
 		isScrolling,
@@ -119,6 +120,11 @@ export const useBotEffectInternal = () => {
 			setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
 		}, 1)
 	}, [])
+
+	// enables text area when chat history is loaded
+	useEffect(() => {
+		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
+	}, [isChatHistoryLoaded])
 
 	// renders chat history button if enabled and triggers update if chat history configurations change
 	useEffect(() => {
