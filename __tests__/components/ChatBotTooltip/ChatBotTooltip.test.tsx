@@ -7,7 +7,7 @@ import { useChatWindowInternal } from "../../../src/hooks/internal/useChatWindow
 import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { useStylesContext } from "../../../src/context/StylesContext";
 
-// Mock the dependencies to isolate the component under test
+// Mock the contexts and hooks
 jest.mock("../../../src/hooks/internal/useIsDesktopInternal");
 jest.mock("../../../src/hooks/internal/useChatWindowInternal");
 jest.mock("../../../src/context/SettingsContext");
@@ -16,22 +16,22 @@ jest.mock("../../../src/context/StylesContext");
 describe("ChatBotTooltip Component", () => {
 	// Set up default mock return values before each test
 	beforeEach(() => {
-		(useIsDesktopInternal as jest.Mock).mockReturnValue(true); // Assume desktop for all tests
+		(useIsDesktopInternal as jest.Mock).mockReturnValue(true); 
 		(useChatWindowInternal as jest.Mock).mockReturnValue({
 			isChatWindowOpen: false,
-			openChat: jest.fn(), // Mock the openChat function
+			openChat: jest.fn(), 
 		});
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: { primaryColor: "blue", secondaryColor: "#000", embedded: false },
-				tooltip: { text: "Chatbot Tooltip" }, // Default tooltip text
+				tooltip: { text: "Chatbot Tooltip" }, 
 			},
 		});
 		(useStylesContext as jest.Mock).mockReturnValue({
 			styles: {
 				chatButtonStyle: { width: 75 },
 				chatWindowStyle: { width: 375 },
-				tooltipStyle: {}, // Default styles
+				tooltipStyle: {}, 
 			},
 		});
 	}); 
@@ -43,68 +43,79 @@ describe("ChatBotTooltip Component", () => {
 
 	// Test: Render the tooltip when mode is "ALWAYS" and on desktop
 	it('renders tooltip when mode is "ALWAYS" and isDesktop is true', () => {
+		// Mock the context to return settings with mode "ALWAYS"
 		(useSettingsContext as jest.Mock).mockReturnValueOnce({
 			settings: {
 				tooltip: { mode: "ALWAYS", text: "Chatbot Tooltip" },
 			},
 		});
 
+		// Render the component and ensure the tooltip is shown
 		render(<ChatBotTooltip />);
-		const tooltip = screen.getByText("Chatbot Tooltip");
-		expect(tooltip).toBeInTheDocument(); // Ensure tooltip is rendered
-		expect(tooltip).toHaveClass("rcb-tooltip-show"); // Ensure tooltip is visible
+		const tooltip = screen.getByTestId("chat-tooltip");
+		expect(tooltip).toBeInTheDocument(); 
+		expect(tooltip).toHaveClass("rcb-tooltip-show"); 
 	});
 
 	// Test: Ensure the tooltip is hidden when mode is "NEVER"
 	it('hides tooltip when mode is "NEVER"', () => {
+		// Mock the context to return settings with mode "NEVER"
 		(useSettingsContext as jest.Mock).mockReturnValueOnce({
 			settings: {
 				tooltip: { mode: "NEVER", text: "Chatbot Tooltip" },
 			},
 		});
 
+		// Render the component and ensure the tooltip is rendered but hidden
 		render(<ChatBotTooltip />);
-		const tooltip = screen.queryByText("Chatbot Tooltip");
-		expect(tooltip).not.toBeInTheDocument(); // Tooltip should not be in the document
+		const tooltip = screen.getByTestId("chat-tooltip");
+		expect(tooltip).toBeInTheDocument();
+		expect(tooltip).toHaveClass("rcb-tooltip-hide");
 	});
 
-	// Test: Show the tooltip when mode is "START" and it hasn't been shown yet
+	// Test: Show the tooltip when mode is "START" (when component is rendered for the first time)
 	it('shows tooltip when mode is "START" and shownTooltipOnStart is false', () => {
+		// Mock the context to return settings with mode "START"
 		(useSettingsContext as jest.Mock).mockReturnValueOnce({
 			settings: {
 				tooltip: { mode: "START", text: "Chatbot Tooltip" },
 			},
 		});
 
+		// Render the component and ensure the tooltip is shown
 		render(<ChatBotTooltip />);
 		const tooltip = screen.getByText("Chatbot Tooltip");
-		expect(tooltip).toBeInTheDocument(); // Ensure tooltip is rendered
+		expect(tooltip).toBeInTheDocument(); 
 	});
 
-	// Test: Ensure the tooltip shows when mode is "CLOSE" and the chat window is closed
-	it('shows tooltip when mode is "CLOSE" and isChatWindowOpen is false', () => {
+	// Test: Ensure the tooltip shows when mode is "CLOSE"
+	it('shows tooltip when mode is "CLOSE"', () => {
+		// Mock the context to return settings with mode "CLOSE"
 		(useSettingsContext as jest.Mock).mockReturnValueOnce({
 			settings: {
 				tooltip: { mode: "CLOSE", text: "Chatbot Tooltip" },
 			},
 		});
 
+		// Render the component and ensure the tooltip is shown
 		render(<ChatBotTooltip />);
 		const tooltip = screen.getByText("Chatbot Tooltip");
-		expect(tooltip).toBeInTheDocument(); // Ensure tooltip is rendered
+		expect(tooltip).toBeInTheDocument();
 	});
 
 	// Test: Ensure clicking the tooltip calls the openChat function
 	it("calls openChat function when tooltip is clicked", () => {
+		// Mock the function that opens the chat
 		const mockOpenChat = jest.fn();
 		(useChatWindowInternal as jest.Mock).mockReturnValue({
 			isChatWindowOpen: false,
 			openChat: mockOpenChat,
 		});
 
+		// Render the component, simulate click event and verify that openChat is called
 		render(<ChatBotTooltip />);
 		const tooltip = screen.getByText("Chatbot Tooltip");
-		fireEvent.click(tooltip); // Simulate clicking the tooltip
-		expect(mockOpenChat).toHaveBeenCalledWith(true); // Ensure openChat was called with true
+		fireEvent.click(tooltip); 
+		expect(mockOpenChat).toHaveBeenCalledWith(true); 
 	});
 });
