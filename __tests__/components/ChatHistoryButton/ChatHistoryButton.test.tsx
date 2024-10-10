@@ -27,7 +27,7 @@ describe("ChatHistoryButton", () => {
 	};
 
 	const mockStyles = {
-		chatHistoryButtonStyle: { backgroundColor: "#ffffff", border: "1px solid #ccc" },
+		chatHistoryButtonStyle: { backgroundColor: "#ffffff", border: "1px solid", borderColor: "#ccc" },
 		chatHistoryButtonHoveredStyle: { backgroundColor: "#f0f0f0" },
 	};
 
@@ -49,7 +49,7 @@ describe("ChatHistoryButton", () => {
 		// Verify the button's initial styles
 		const button = screen.getByRole("button");
 		expect(button).toHaveStyle("background-color: #ffffff");
-		expect(button).toHaveStyle("border: 1px solid #ccc");
+		expect(button).toHaveStyle("border: 1px solid; border-color: #ccc");
 	});
 
 	it("changes styles when hovered", () => {
