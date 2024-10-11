@@ -105,11 +105,7 @@ export const processAndFetchThemeConfig = async (botId: string, theme: Theme):
 	// try to get non-expired theme cache for specified theme and version
 	const cache = getCachedTheme(id, themeVersion, cacheDuration);
 	if (cache) {
-		const scopedCssText = cache.cssStylesText
-			.split('}')
-			.map(rule => rule.trim() ? `#${botId} ${rule}}` : '')
-			.join('\n');
-    
+		const scopedCssText = getScopedCssStylesText(botId, cache.cssStylesText);
 		return { settings: cache.settings, inlineStyles: cache.inlineStyles, cssStylesText: scopedCssText}
 	}
 
@@ -122,11 +118,7 @@ export const processAndFetchThemeConfig = async (botId: string, theme: Theme):
 	let cssStylesText = "";
 	const cssStylesResponse = await fetch(cssStylesUrl);
 	if (cssStylesResponse.ok) {
-		const cssRawText = await cssStylesResponse.text();
-		cssStylesText = cssRawText
-			.split('}')
-			.map(rule => rule.trim() ? `#${botId} ${rule}}` : '')
-			.join('\n');
+		cssStylesText = await cssStylesResponse.text();
 	} else {
 		console.info(`Could not fetch styles.css from ${cssStylesUrl}`);
 	}
@@ -150,5 +142,36 @@ export const processAndFetchThemeConfig = async (botId: string, theme: Theme):
 	}
 
 	setCachedTheme(id, themeVersion, settings, inlineStyles, cssStylesText);
-	return {settings, inlineStyles, cssStylesText};
+
+	// scopes the css styles to isolate between chatbots
+	const scopedCssText = getScopedCssStylesText(botId, cssStylesText);
+	return {settings, inlineStyles, cssStylesText: scopedCssText};
 }
+
+/**
+ * Retrieves scoped css styles text.
+ *
+ * @param botId id of bot to scope to
+ * @param cssStylesText css styles text to apply in the scope
+ */
+const getScopedCssStylesText = (botId: string, cssStylesText: string) => {
+	const scopedCssText = cssStylesText.split(/(?<=})/)
+        .map(rule => {
+            const trimmedRule = rule.trim();
+            // ignores comments
+            if (trimmedRule.startsWith('/*')) {
+				return trimmedRule;
+			}
+
+            // ignores imports, keyframes and media queries
+            if (trimmedRule.startsWith('@import') || trimmedRule.startsWith('@keyframes')
+				|| trimmedRule.startsWith('@media')) {
+                return trimmedRule;
+            }
+
+            // scopes regular css rules with bot id
+            return trimmedRule ? `#${botId} ${trimmedRule}` : '';
+        })
+        .join('\n');
+	return scopedCssText;
+} 
