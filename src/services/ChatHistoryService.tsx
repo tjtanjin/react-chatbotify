@@ -128,8 +128,7 @@ const parseMessageToString = (message: Message) => {
  * @param setTextAreaDisabled setter for enabling/disabling user text area
  */
 const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
-	setMessages: Dispatch<SetStateAction<Message[]>>, prevTextAreaDisabled: boolean,
-	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
+	setMessages: Dispatch<SetStateAction<Message[]>>) => {
 
 	historyLoaded = true;
 	if (chatHistory != null) {
@@ -160,7 +159,6 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setTextAreaDisabled(prevTextAreaDisabled ?? settings.chatInput?.disabled ?? false);
 			}, 500)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
