@@ -87,6 +87,7 @@ const ChatBotTooltip = () => {
 		<>
 			{!settings.general?.embedded &&
 				<div 
+					data-testid="chat-tooltip"
 					style={tooltipStyle}
 					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}
 					onClick={() => openChat(true)}
