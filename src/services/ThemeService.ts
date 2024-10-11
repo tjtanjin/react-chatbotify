@@ -156,22 +156,22 @@ export const processAndFetchThemeConfig = async (botId: string, theme: Theme):
  */
 const getScopedCssStylesText = (botId: string, cssStylesText: string) => {
 	const scopedCssText = cssStylesText.split(/(?<=})/)
-        .map(rule => {
-            const trimmedRule = rule.trim();
-            // ignores comments
-            if (trimmedRule.startsWith('/*')) {
+		.map(rule => {
+			const trimmedRule = rule.trim();
+			// ignores comments
+			if (trimmedRule.startsWith('/*')) {
 				return trimmedRule;
 			}
 
-            // ignores imports, keyframes and media queries
-            if (trimmedRule.startsWith('@import') || trimmedRule.startsWith('@keyframes')
+			// ignores imports, keyframes and media queries
+			if (trimmedRule.startsWith('@import') || trimmedRule.startsWith('@keyframes')
 				|| trimmedRule.startsWith('@media')) {
-                return trimmedRule;
-            }
+				return trimmedRule;
+			}
 
-            // scopes regular css rules with bot id
-            return trimmedRule ? `#${botId} ${trimmedRule}` : '';
-        })
-        .join('\n');
+			// scopes regular css rules with bot id
+			return trimmedRule ? `#${botId} ${trimmedRule}` : '';
+		})
+		.join('\n');
 	return scopedCssText;
 } 
