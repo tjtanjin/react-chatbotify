@@ -8,30 +8,30 @@ import { DefaultSettings } from "../../../src/constants/internal/DefaultSettings
 
 // Helper function to render ChatBotButton within TestChatBotProvider
 const renderChatBotButton = () => {
-  return render(
-    <TestChatBotProvider initialSettings={DefaultSettings}>
-      <ChatBotButton />  
-    </TestChatBotProvider>
-  );
+	return render(
+		<TestChatBotProvider initialSettings={DefaultSettings}>
+			<ChatBotButton />  
+		</TestChatBotProvider>
+	);
 };
 
 describe('ChatBotButton', () => {
-  it('renders ChatBotButton correctly', () => {
-    renderChatBotButton();
-    const button = screen.getByRole('button');
-    expect(button).toBeInTheDocument();
-  });
+	it('renders ChatBotButton correctly', () => {
+		renderChatBotButton();
+		const button = screen.getByRole('button');
+		expect(button).toBeInTheDocument();
+	});
 
-  // Mock visibility toggle function (assuming it's triggered by a button click)
-  it('toggles visibility classes correctly based on internal function', () => {
-    renderChatBotButton();
-    const button = screen.getByRole('button');
+	// Mock visibility toggle function (assuming it's triggered by a button click)
+	it('toggles visibility classes correctly based on internal function', () => {
+		renderChatBotButton();
+		const button = screen.getByRole('button');
 
-    // Initially visible
-    expect(button).toHaveClass('rcb-button-show');
+		// Initially visible
+		expect(button).toHaveClass('rcb-button-show');
 
-    // Simulate state change or function that hides the button
-    fireEvent.click(button); // Assuming the button click triggers visibility toggle
-    expect(button).toHaveClass('rcb-button-hide');  // Check if the class changes to hidden
-  });
+		// Simulate state change or function that hides the button
+		fireEvent.click(button); // Assuming the button click triggers visibility toggle
+		expect(button).toHaveClass('rcb-button-hide');  // Check if the class changes to hidden
+	});
 });
