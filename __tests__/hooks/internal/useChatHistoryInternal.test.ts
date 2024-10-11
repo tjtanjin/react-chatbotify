@@ -27,25 +27,25 @@ describe("useChatHistoryInternal Hook", () => {
 
 	// initial values
 	const initialIsLoadingChatHistory = false;
-    const initialChatHistory = [
-        {
-            id: generateSecureUUID(),
-            sender: "user",
-            content: "Hello",
-            type: "string",
-            timestamp: new Date().toUTCString()
-        },
-        {
-            id: generateSecureUUID(),
-            sender: "bot",
-            content: "Hi there!",
-            type: "string",
-            timestamp: new Date().toUTCString()
-        },
-    ];
+	const initialChatHistory = [
+		{
+			id: generateSecureUUID(),
+			sender: "user",
+			content: "Hello",
+			type: "string",
+			timestamp: new Date().toUTCString()
+		},
+		{
+			id: generateSecureUUID(),
+			sender: "bot",
+			content: "Hi there!",
+			type: "string",
+			timestamp: new Date().toUTCString()
+		},
+	];
 
 	it("should load chat history correctly, change state and emit rcb-load-chat-history event", async () => {
-        // mocks rcb event handler
+		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
 			callRcbEvent: callRcbEventMock,
@@ -56,9 +56,8 @@ describe("useChatHistoryInternal Hook", () => {
 
 		// mocks loadChatHistory to resolve successfully
 		mockLoadChatHistory.mockImplementation(
-			(settings, styles, chatHistory, setMessages, prevTextAreaDisabled, setTextAreaDisabled) => {
+			(settings, styles, chatHistory, setMessages) => {
 				setMessages(chatHistory);
-				setTextAreaDisabled(false);
 				return Promise.resolve();
 			}
 		);
@@ -82,20 +81,18 @@ describe("useChatHistoryInternal Hook", () => {
 		// checks if get history messages was called
 		expect(mockGetHistoryMessages).toHaveBeenCalledTimes(1);
 
-        // checks if callRcbEvent was called with rcb-load-chat-history and correct arguments
+		// checks if callRcbEvent was called with rcb-load-chat-history and correct arguments
 		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.LOAD_CHAT_HISTORY, {});
-		
-        // checks if load chat history was called
-        expect(mockLoadChatHistory).toHaveBeenCalledWith(
+
+		// checks if load chat history was called
+		expect(mockLoadChatHistory).toHaveBeenCalledWith(
 			MockDefaultSettings,
 			expect.any(Object),
 			initialChatHistory,
 			expect.any(Function),
-			expect.any(Boolean),
-			expect.any(Function)
 		);
 
-        // checks if history is being loaded
+		// checks if history is being loaded
 		expect(result.current.isLoadingChatHistory).toBe(true);
 	});
 
@@ -125,13 +122,13 @@ describe("useChatHistoryInternal Hook", () => {
 		// checks if get history messages was called
 		expect(mockGetHistoryMessages).toHaveBeenCalledTimes(1);
 
-        // checks if callRcbEvent was called with rcb-load-chat-history and correct arguments
+		// checks if callRcbEvent was called with rcb-load-chat-history and correct arguments
 		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.LOAD_CHAT_HISTORY, {});
 
-        // checks if load chat history was not called
+		// checks if load chat history was not called
 		expect(mockLoadChatHistory).not.toHaveBeenCalled();
 
-        // checks if history is being loaded
+		// checks if history is being loaded
 		expect(result.current.isLoadingChatHistory).toBe(false);
 	});
 });
