@@ -1,5 +1,3 @@
-import { isValidElement } from "react";
-
 import { generateSecureUUID } from "./idGenerator";
 
 /**
@@ -13,7 +11,7 @@ export const createMessage = (content: string | JSX.Element, sender: string, ) =
 		id: generateSecureUUID(),
 		content,
 		sender,
-		type: isValidElement(content) ? "object" : "string",
+		type: typeof content === "string" ? "string" : "object",
 		timestamp: new Date().toUTCString()
 	};
 }
