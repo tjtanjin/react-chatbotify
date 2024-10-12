@@ -49,8 +49,6 @@ export const useChatHistoryInternal = () => {
 			}
 		}
 		setIsLoadingChatHistory(true);
-		// const prevTextAreaDisabled = textAreaDisabled;
-		// setTextAreaDisabled(true);
 		loadChatHistory(settings, styles, chatHistory, setMessages);
 	}, [settings, styles, setMessages]);
 
