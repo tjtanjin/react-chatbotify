@@ -26,23 +26,12 @@
 	width: 80%;
 	cursor: pointer;
 	background-color: #fff;
-	animation: checkboxes-entry 0.5s ease-out;
+	animation: rcb-animations-checkboxes-entry 0.5s ease-out;
 	overflow: hidden;
 }
 
 .rcb-checkbox-row-container:hover {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); 
-}
-
-@keyframes checkboxes-entry {
-	0% {
-	  transform: translateX(-100%);
-	  opacity: 0;
-	}
-	100% {
-	  transform: translateX(0);
-	  opacity: 1;
-	}
 }
 
 /* Checkbox Row */
@@ -100,7 +89,7 @@
 	width: 80%;
 	cursor: pointer;
 	background-color: #fff;
-	animation: checkboxes-entry 0.5s ease-out;
+	animation: rcb-animations-checkboxes-entry 0.5s ease-out;
 }
 
 .rcb-checkbox-next-button::before {

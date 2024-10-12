@@ -43,16 +43,5 @@
 /* Media Display Entry Animations */
 
 .rcb-media-entry {
-	animation: media-entry 0.3s ease-in backwards;
-}
-
-@keyframes media-entry {
-	0% {
-		transform: translate(100%, 50%) scale(0);
-		opacity: 0;
-	}
-	100% {
-		transform: translate(0, 0) scale(1);
-		opacity: 1;
-	}
+	animation: rcb-animation-user-message-entry 0.3s ease-in backwards;
 }
