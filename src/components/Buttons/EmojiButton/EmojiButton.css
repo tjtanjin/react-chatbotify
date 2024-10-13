@@ -31,7 +31,7 @@
 }
 
 .rcb-emoji-icon-disabled {
-	opacity: 0.4;
+	opacity: 0.5;
 }
 
 .rcb-emoji-button-enabled::after {

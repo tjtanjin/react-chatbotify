@@ -120,7 +120,8 @@ export type Settings = {
 		disabled?: boolean;
 		multiple?: boolean;
 		accept?: string;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		sendFileName?: boolean;
 		showMediaDisplay?: boolean;
 	}
