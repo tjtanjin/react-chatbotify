@@ -5,12 +5,12 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/jest-globals";
 
 import CloseChatButton from "../../../src/components/Buttons/CloseChatButton/CloseChatButton";
-import { DefaultSettings } from "../../../src/constants/internal/DefaultSettings";
-import { closeChatIcon } from "../../__mocks__/fileMock";
-
 import { useChatWindowInternal } from "../../../src/hooks/internal/useChatWindowInternal";
 import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { useStylesContext } from "../../../src/context/StylesContext";
+import { DefaultSettings } from "../../../src/constants/internal/DefaultSettings";
+
+import { closeChatIcon } from "../../__mocks__/fileMock";
 
 // Mock the hooks used in the component
 jest.mock("../../../src/hooks/internal/useChatWindowInternal");

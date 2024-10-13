@@ -7,14 +7,24 @@ import "@testing-library/jest-dom/jest-globals";
 import NotificationButton from "../../../src/components/Buttons/NotificationButton/NotificationButton";
 import { DefaultSettings } from "../../../src/constants/internal/DefaultSettings";
 
-import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
+import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext"
+import { notificationIcon, notificationIconDisabled } from "../../__mocks__/fileMock";
 
 /**
  * Helper function to render NotificationButton with different settings.
  *
- * @param initialSettings initial settings for the TestChatBotProvider
+ * @param disabled boolean indicating if notification is disabled
+ * @param defaultToggledOn boolean idnicating if notification is toggled on by default
  */
-const renderNotificationButton = (initialSettings = { notification: { disabled: false, defaultToggledOn: false } }) => {
+const renderNotificationButton = (disabled: boolean, defaultToggledOn: boolean) => {
+	const initialSettings = {
+		notification: {
+			disabled: disabled,
+			defaultToggledOn: defaultToggledOn,
+			icon: notificationIcon,
+			iconDisabled: notificationIconDisabled
+		}
+	};
 	return render(
 		<TestChatBotProvider initialSettings={initialSettings}>
 			<NotificationButton />
@@ -28,79 +38,75 @@ const renderNotificationButton = (initialSettings = { notification: { disabled: 
 describe("NotificationButton Component", () => {
 	it("renders with correct aria-label and initial state when defaultToggledOn is false and not disabled", () => {
 		// settings used for this test to render notification button
-		const initialSettings = { notification: { disabled: false, defaultToggledOn: false } };
-		renderNotificationButton(initialSettings);
+		renderNotificationButton(false, false);
 
 		// retrieves button and icon
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.notificationButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-notification-icon");
 		expect(button).toBeInTheDocument();
 
 		// checks new state
-		expect(icon).toHaveClass("rcb-notification-icon-off");
+		expect(icon).toHaveStyle("fill: #e8eaed");
 	});
 
 	it("toggles notification state when clicked (initially off)", () => {
 		// settings used for this test to render notification button
-		const initialSettings = { notification: { disabled: false, defaultToggledOn: false } };
-		renderNotificationButton(initialSettings);
+		renderNotificationButton(false, false);
 
 		// retrieves button and icon
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.notificationButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-notification-icon");
 		expect(button).toBeInTheDocument();
 
 		// checks initial state
-		expect(icon).toHaveClass("rcb-notification-icon-off");
+		expect(icon).toHaveStyle("fill: #e8eaed");
 
 		// clicks the button to toggle notification
 		fireEvent.mouseDown(button);
 
 		// checks new state
-		expect(icon).toHaveClass("rcb-notification-icon-on");
+		expect(icon).toHaveStyle("fill: #fcec3d");
 	});
 
 	it("renders with notification toggled on initially and toggles to off when clicked", () => {
 		// settings used for this test to render notification button
-		const initialSettings = { notification: { disabled: false, defaultToggledOn: true } };
-		renderNotificationButton(initialSettings);
+		renderNotificationButton(false, true);
 
 		// retrieves button and icon
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.notificationButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-notification-icon");
 		expect(button).toBeInTheDocument();
 
 		// checks initial state
-		expect(icon).toHaveClass("rcb-notification-icon-on");
+		expect(icon).toHaveStyle("fill: #fcec3d");
 
 		// clicks the button to toggle notification
 		fireEvent.mouseDown(button);
 
 		// checks new state
-		expect(icon).toHaveClass("rcb-notification-icon-off");
+		expect(icon).toHaveStyle("fill: #e8eaed");
 	});
 
 	it("toggles notification back to on after being toggled off", () => {
 		// settings used for this test to render notification button
-		const initialSettings = { notification: { disabled: false, defaultToggledOn: true } };
-		renderNotificationButton(initialSettings);
+		renderNotificationButton(false, true);
 
 		// retrieves button and icon
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.notificationButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-notification-icon");
 		expect(button).toBeInTheDocument();
 
 		// checks initial state
-		expect(icon).toHaveClass("rcb-notification-icon-on");
+		expect(icon).toHaveStyle("fill: #fcec3d");
 
 		// clicks the button to toggle notification
 		fireEvent.mouseDown(button);
 
 		// checks new state
-		expect(icon).toHaveClass("rcb-notification-icon-off");
+		expect(icon).toHaveStyle("fill: #e8eaed");
 
 		// checks new state
 		fireEvent.mouseDown(button);
-		expect(icon).toHaveClass("rcb-notification-icon-on");
+		expect(icon).toHaveStyle("fill: #fcec3d");
 	});
 });
