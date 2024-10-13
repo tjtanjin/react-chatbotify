@@ -21,7 +21,7 @@ export type Settings = {
 		text?: string;
 	},
 	chatButton?: {
-		icon: string;
+		icon?: string;
 	},
 	header?: {
 		title?: string | JSX.Element;
@@ -126,7 +126,8 @@ export type Settings = {
 	}
 	emoji?: {
 		disabled?: boolean;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		list?: string[] ;
 	},
 	toast?: {

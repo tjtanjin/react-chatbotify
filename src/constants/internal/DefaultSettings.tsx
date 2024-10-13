@@ -12,7 +12,7 @@ import closeChatIcon from "../../assets/close_chat_icon.svg";
 import sendButtonIcon from "../../assets/send_icon.svg";
 import { ReactComponent as voiceIcon } from '../../assets/voice_icon.svg';
 import { ReactComponent as voiceIconDisabled } from '../../assets/voice_icon_disabled.svg';
-import emojiIcon from "../../assets/emoji_icon.svg";
+import { ReactComponent as emojiIcon } from '../../assets/emoji_icon.svg';
 import { ReactComponent as audioIcon } from '../../assets/audio_icon.svg';
 import { ReactComponent as audioIconDisabled } from '../../assets/audio_icon_disabled.svg';
 import notificationSound from "../../assets/notification_sound.wav";
@@ -164,6 +164,7 @@ export const DefaultSettings: Settings = {
 	emoji: {
 		disabled: false,
 		icon: emojiIcon,
+		iconDisabled: emojiIcon,
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	toast: {
