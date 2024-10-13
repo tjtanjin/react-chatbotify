@@ -9,7 +9,7 @@ import { ReactComponent as fileAttachmentIcon } from '../../assets/file_attachme
 import { ReactComponent as notificationIcon } from '../../assets/notification_icon.svg';
 import { ReactComponent as notificationIconDisabled } from '../../assets/notification_icon_disabled.svg';
 import { ReactComponent as closeChatIcon } from '../../assets/close_chat_icon.svg';
-import sendButtonIcon from "../../assets/send_icon.svg";
+import { ReactComponent as sendButtonIcon } from '../../assets/send_icon.svg';
 import { ReactComponent as voiceIcon } from '../../assets/voice_icon.svg';
 import { ReactComponent as voiceIconDisabled } from '../../assets/voice_icon_disabled.svg';
 import { ReactComponent as emojiIcon } from '../../assets/emoji_icon.svg';

@@ -65,7 +65,7 @@ export type Settings = {
 		showCharacterCount?: boolean;
 		characterLimit?: number;
 		botDelay?: number;
-		sendButtonIcon?: string;
+		sendButtonIcon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		blockSpam?: boolean;
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;

@@ -50,7 +50,16 @@ const SendButton = () => {
 	// styles for send icon
 	const sendIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
+		fill: "#fff",
 		...styles.sendIconStyle
+	};
+
+	// styles for disabled send icon
+	const sendIconDisabledStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
+		fill: "#fff",
+		...styles.sendIconStyle, // by default inherit the base style
+		...styles.sendIconDisabledStyle
 	};
 
 	/**
@@ -67,6 +76,24 @@ const SendButton = () => {
 		setIsHovered(false);
 	};
 	
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = settings.chatInput?.sendButtonIcon;
+		if (typeof IconComponent === "string") {
+			return (
+				<span className="rcb-send-icon" style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className="rcb-send-icon" >
+				<IconComponent style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}/>
+			</span>
+		)
+	}
+
 	return (
 		<div
 			aria-label={settings.ariaLabel?.sendButton ?? "send message"}
@@ -85,7 +112,7 @@ const SendButton = () => {
 				: (isHovered ? sendButtonHoveredStyle : sendButtonStyle)}
 			className="rcb-send-button"
 		>
-			<span className="rcb-send-icon" style={sendIconStyle} />
+			{renderButton()}
 		</div>
 	);
 };
