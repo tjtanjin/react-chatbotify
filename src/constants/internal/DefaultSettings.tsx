@@ -4,14 +4,17 @@ import { Button } from "../Button";
 import actionDisabledIcon from "../../assets/action_disabled_icon.svg";
 import botAvatar from "../../assets/bot_avatar.svg";
 import userAvatar from "../../assets/user_avatar.svg";
-import chatIcon from "../../assets/chat_icon.svg";
-import fileAttachmentIcon from "../../assets/file_attachment_icon.svg";
-import notificationIcon from "../../assets/notification_icon.svg";
-import closeChatIcon from "../../assets/close_chat_icon.svg";
-import sendButtonIcon from "../../assets/send_icon.svg";
-import voiceIcon from "../../assets/voice_icon.svg";
-import emojiIcon from "../../assets/emoji_icon.svg";
-import audioIcon from "../../assets/audio_icon.svg";
+import { ReactComponent as chatIcon } from "../../assets/chat_icon.svg";
+import { ReactComponent as fileAttachmentIcon } from '../../assets/file_attachment_icon.svg';
+import { ReactComponent as notificationIcon } from '../../assets/notification_icon.svg';
+import { ReactComponent as notificationIconDisabled } from '../../assets/notification_icon_disabled.svg';
+import { ReactComponent as closeChatIcon } from '../../assets/close_chat_icon.svg';
+import { ReactComponent as sendButtonIcon } from '../../assets/send_icon.svg';
+import { ReactComponent as voiceIcon } from '../../assets/voice_icon.svg';
+import { ReactComponent as voiceIconDisabled } from '../../assets/voice_icon_disabled.svg';
+import { ReactComponent as emojiIcon } from '../../assets/emoji_icon.svg';
+import { ReactComponent as audioIcon } from '../../assets/audio_icon.svg';
+import { ReactComponent as audioIconDisabled } from '../../assets/audio_icon_disabled.svg';
 import notificationSound from "../../assets/notification_sound.wav";
 
 // default settings provided to the bot
@@ -56,6 +59,7 @@ export const DefaultSettings: Settings = {
 		defaultToggledOn: true,
 		volume: 0.2,
 		icon: notificationIcon,
+		iconDisabled: notificationIconDisabled,
 		sound: notificationSound,
 		showCount: true,
 	},
@@ -67,6 +71,7 @@ export const DefaultSettings: Settings = {
 		rate: 1,
 		volume: 1,
 		icon: audioIcon,
+		iconDisabled: audioIconDisabled,
 	},
 	chatHistory: {
 		disabled: false,
@@ -129,6 +134,7 @@ export const DefaultSettings: Settings = {
 		autoSendPeriod: 1000,
 		sendAsAudio: false,
 		icon: voiceIcon,
+		iconDisabled: voiceIconDisabled,
 	},
 	footer: {
 		text: (
@@ -152,12 +158,14 @@ export const DefaultSettings: Settings = {
 		multiple: true,
 		accept: ".png",
 		icon: fileAttachmentIcon,
+		iconDisabled: fileAttachmentIcon,
 		sendFileName: true,
 		showMediaDisplay: false,
 	},
 	emoji: {
 		disabled: false,
 		icon: emojiIcon,
+		iconDisabled: emojiIcon,
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	toast: {

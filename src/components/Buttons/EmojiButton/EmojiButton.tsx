@@ -43,12 +43,14 @@ const EmojiButton = () => {
 	// styles for emoji icon
 	const emojiIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.emoji?.icon})`,
+		fill: "#a6a6a6",
 		...styles.emojiIconStyle
 	};
 
 	// styles for emoji disabled icon
 	const emojiIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.emoji?.icon})`,
+		fill: "#a6a6a6",
 		...styles.emojiIconStyle, // by default inherit the base style
 		...styles.emojiIconDisabledStyle
 	};
@@ -127,6 +129,27 @@ const EmojiButton = () => {
 		}
 	};
 
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = textAreaDisabled ? settings.emoji?.iconDisabled : settings.emoji?.icon;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}
+					style={textAreaDisabled ? emojiIconDisabledStyle : emojiIconStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}>
+				<IconComponent style={textAreaDisabled ? emojiIconDisabledStyle : emojiIconStyle}/>
+			</span>
+		)
+	}
+
 	return (
 		<>
 			<div
@@ -137,10 +160,7 @@ const EmojiButton = () => {
 				style={textAreaDisabled ? emojiButtonDisabledStyle : styles.emojiButtonStyle}
 				onMouseDown={togglePopup}
 			>
-				<span
-					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}
-					style={textAreaDisabled ? emojiIconDisabledStyle : emojiIconStyle}
-				/>
+				{renderButton()}
 			</div>
 			{showPopup && (
 				<div className="rcb-emoji-button-popup" ref={popupRef}>

@@ -66,18 +66,7 @@
 }
 
 .rcb-bot-message-entry {
-	animation: bot-entry 0.3s ease-in backwards;
-}
-
-@keyframes bot-entry {
-	0% {
-		transform: translate(-100%, 50%) scale(0);
-		opacity: 0;
-	}
-	100% {
-		transform: translate(0, 0) scale(1);
-		opacity: 1;
-	}
+	animation: rcb-animation-bot-message-entry 0.3s ease-in backwards;
 }
 
 .rcb-user-message {
@@ -90,18 +79,7 @@
 }
 
 .rcb-user-message-entry {
-	animation: user-entry 0.3s ease-in backwards;
-}
-
-@keyframes user-entry {
-	0% {
-		transform: translate(100%, 50%) scale(0);
-		opacity: 0;
-	}
-	100% {
-		transform: translate(0, 0) scale(1);
-		opacity: 1;
-	}
+	animation: rcb-animation-user-message-entry 0.3s ease-in backwards;
 }
 
 .rcb-message-bot-avatar,
@@ -136,7 +114,7 @@
 	border-radius: 50%;
 	background-color: #ccc;
 	margin-right: 4px;
-	animation: rcb-typing 1s infinite;
+	animation: rcb-animation-bot-typing 1s infinite;
 }
 
 .rcb-dot:nth-child(2) {
@@ -145,18 +123,6 @@
 
 .rcb-dot:nth-child(3) {
   	animation-delay: 0.4s;
-}
-
-@keyframes rcb-typing {
-	0% {
-		opacity: 0.4;
-	}
-	50% {
-		opacity: 1
-	}
-	100% {
-		opacity: 0.4;
-	}
 }
 
 /* Toast Container */

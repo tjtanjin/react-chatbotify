@@ -12,6 +12,8 @@ import { useSubmitInputInternal } from "../../../src/hooks/internal/useSubmitInp
 import { useStylesContext } from "../../../src/context/StylesContext";
 import { DefaultStyles } from "../../../src/constants/internal/DefaultStyles";
 
+import { sendIcon } from "../../__mocks__/fileMock";
+
 jest.mock("../../../src/context/SettingsContext");
 jest.mock("../../../src/context/BotStatesContext");
 jest.mock("../../../src/hooks/internal/useSubmitInputInternal");
@@ -29,6 +31,9 @@ describe("SendButton Component", () => {
 					secondaryColor: DefaultSettings.general?.secondaryColor,
 				},
 				ariaLabel: { sendButton: DefaultSettings.ariaLabel?.sendButton },
+				chatInput: {
+					sendButtonIcon: sendIcon
+				}
 			}
 		});
 
@@ -56,7 +61,7 @@ describe("SendButton Component", () => {
 		render(<SendButton />);
 
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.sendButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-send-icon");
 
 		expect(button).toBeInTheDocument();
 		expect(icon).toBeInTheDocument();
@@ -95,7 +100,7 @@ describe("SendButton Component", () => {
 		render(<SendButton />);
 
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.sendButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-send-icon");
 
 		expect(button).toBeInTheDocument();
 		expect(icon).toBeInTheDocument();
@@ -129,7 +134,7 @@ describe("SendButton Component", () => {
 		render(<SendButton />);
 
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.sendButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-send-icon");
 
 		expect(button).toBeInTheDocument();
 		expect(icon).toBeInTheDocument();
@@ -158,7 +163,7 @@ describe("SendButton Component", () => {
 		render(<SendButton />);
 
 		const button = screen.getByRole("button", { name: DefaultSettings.ariaLabel?.sendButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-send-icon");
 
 		expect(button).toBeInTheDocument();
 		expect(icon).toBeInTheDocument();
@@ -197,7 +202,7 @@ describe("SendButton Component", () => {
 		render(<SendButton />);
 
 		const button = screen.getByRole('button', { name: DefaultSettings.ariaLabel?.sendButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-send-icon");
 
 		expect(button).toBeInTheDocument();
 		expect(icon).toBeInTheDocument();
@@ -218,7 +223,7 @@ describe("SendButton Component", () => {
 		render(<SendButton />);
 
 		const button = screen.getByRole('button', { name: DefaultSettings.ariaLabel?.sendButton });
-		const icon = button.querySelector("span");
+		const icon = screen.getByTestId("rcb-send-icon");
 
 		expect(button).toBeInTheDocument();
 		expect(icon).toBeInTheDocument();

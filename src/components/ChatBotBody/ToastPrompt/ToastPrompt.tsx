@@ -78,7 +78,7 @@ const Toast = ({
 						dismissToast(id);
 					}
 				}}
-				className="rcb-toast-prompt-text"
+				className="rcb-toast-prompt"
 			>
 				{content}
 			</div>

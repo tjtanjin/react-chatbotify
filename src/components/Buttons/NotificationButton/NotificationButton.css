@@ -1,7 +1,6 @@
 /* Notification Icon */
 
-.rcb-notification-icon-on,
-.rcb-notification-icon-off {
+.rcb-notification-icon {
 	position: relative;
 	display: inline-block;
 	background-size: cover;
@@ -12,12 +11,7 @@
 	margin-left: 5px;
 }
 
-.rcb-notification-icon-off {
-	filter: grayscale(100%);
-}
-
-.rcb-notification-icon-on::after,
-.rcb-notification-icon-off::after {
+.rcb-notification-icon::after {
 	content: "";
 	position: absolute;
 	top: 50%;
@@ -31,8 +25,7 @@
 	transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-.rcb-notification-icon-on:hover::after,
-.rcb-notification-icon-off:hover::after {
+.rcb-notification-icon:hover::after {
 	width: 130%;
 	height: 130%;
 	opacity: 1;

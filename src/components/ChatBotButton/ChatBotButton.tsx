@@ -33,6 +33,27 @@ const ChatBotButton = () => {
 		backgroundImage: `url(${settings.chatButton?.icon})`,
 		...styles.chatIconStyle
 	};
+
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = settings.chatButton?.icon;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className="rcb-toggle-icon"
+					style={chatIconStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className="rcb-toggle-icon">
+				<IconComponent style={chatIconStyle}/>
+			</span>
+		)
+	}
 	
 	return (
 		<>
@@ -44,10 +65,7 @@ const ChatBotButton = () => {
 					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
 					onClick={toggleChatWindow}
 				>
-					<span
-						className="rcb-toggle-icon"
-						style={chatIconStyle}
-					/>
+					{renderButton()}
 					{!settings.notification?.disabled && settings.notification?.showCount &&
 						<span style={styles.notificationBadgeStyle} className="rcb-badge">
 							{unreadCount}

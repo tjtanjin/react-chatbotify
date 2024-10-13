@@ -18,13 +18,13 @@
 .rcb-toggle-button.rcb-button-hide {
 	opacity: 0;
 	visibility: hidden;
-	animation: collapse 0.3s ease-in-out forwards;
+	animation: rcb-animation-collapse 0.3s ease-in-out forwards;
 }
 
 .rcb-toggle-button.rcb-button-show {
 	opacity: 1;
 	visibility: visible;
-	animation: expand 0.3s ease-in-out forwards;
+	animation: rcb-animation-expand 0.3s ease-in-out forwards;
 }
 
 /* ChatBot Toggle Icon */
@@ -40,28 +40,6 @@
 	background-repeat: no-repeat;
 	margin: auto;
 	border-radius: inherit;
-}
-
-@keyframes expand {
-	0% {
-		transform: translate(100%, 100%) scale(0);
-		opacity: 0;
-	}
-	100% {
-		transform: translate(0, 0) scale(1);
-		opacity: 1;
-	}
-}
-
-@keyframes collapse {
-	0% {
-		transform: translate(0, 0) scale(1);
-		opacity: 1;
-	}
-	100% {
-		transform: translate(100%, 100%) scale(0);
-		opacity: 0;
-	}
 }
 
 /* ChatBot Notification Badge*/

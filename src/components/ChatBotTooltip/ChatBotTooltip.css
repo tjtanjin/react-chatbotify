@@ -24,33 +24,11 @@
 .rcb-chat-tooltip.rcb-tooltip-hide {
 	opacity: 0;
 	visibility: hidden;
-	animation: tooltip-out 0.5s ease-in-out;
+	animation: rcb-animation-tooltip-out 0.5s ease-in-out;
 }
 
 .rcb-chat-tooltip.rcb-tooltip-show {
 	opacity: 1;
 	visibility: visible;
-	animation: tooltip-in 0.5s ease-in-out;
-}
-
-@keyframes tooltip-in {
-	0% {
-	  opacity: 0;
-	  transform: translateY(-5px);
-	}
-	100% {
-	  opacity: 1;
-	  transform: translateY(0);
-	}
-  }
-  
-@keyframes tooltip-out {
-	0% {
-	  opacity: 1;
-	  transform: translateY(0);
-	}
-	100% {
-	  opacity: 0;
-	  transform: translateY(-5px);
-	}
+	animation: rcb-animation-tooltip-in 0.5s ease-in-out;
 }

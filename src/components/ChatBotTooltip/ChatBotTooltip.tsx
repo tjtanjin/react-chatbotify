@@ -74,7 +74,7 @@ const ChatBotTooltip = () => {
 		right: (styles.chatButtonStyle?.width as number ?? 75) + 40,
 		bottom: 30,
 		backgroundColor: settings.general?.secondaryColor,
-		color: settings.general?.secondaryColor,
+		color: "#fff",
 		...styles.tooltipStyle
 	};
 
@@ -87,11 +87,12 @@ const ChatBotTooltip = () => {
 		<>
 			{!settings.general?.embedded &&
 				<div 
+					data-testid="chat-tooltip"
 					style={tooltipStyle}
 					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}
 					onClick={() => openChat(true)}
 				>
-					<span style={{ color: "#fff" }}>{settings.tooltip?.text}</span>
+					<span>{settings.tooltip?.text}</span>
 					<span className="rcb-chat-tooltip-tail" style={tooltipTailStyle}></span>
 				</div>
 			}

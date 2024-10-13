@@ -22,8 +22,32 @@ const CloseChatButton = () => {
 	// styles for close chat icon
 	const closeChatIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.header?.closeChatIcon})`,
+		fill: "#e8eaed",
+		stroke: "#e8eaed",
 		...styles.closeChatIconStyle
 	};
+
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = settings.header?.closeChatIcon;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className="rcb-close-chat-icon"
+					data-testid="rcb-close-chat-icon"
+					style={closeChatIconStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className="rcb-close-chat-icon" data-testid="rcb-close-chat-icon">
+				<IconComponent style={closeChatIconStyle}/>
+			</span>
+		)
+	}
 
 	return (
 		<div
@@ -35,10 +59,7 @@ const CloseChatButton = () => {
 			}}
 			style={styles.closeChatButtonStyle}
 		>
-			<span
-				className="rcb-close-chat-icon"
-				style={closeChatIconStyle}
-			/>
+			{renderButton()}
 		</div>
 	);
 };

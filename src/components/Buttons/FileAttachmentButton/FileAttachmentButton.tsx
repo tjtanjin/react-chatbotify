@@ -62,12 +62,14 @@ const FileAttachmentButton = () => {
 	// styles for file attachment icon
 	const fileAttachmentIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.fileAttachment?.icon})`,
+		fill: "#a6a6a6",
 		...styles.fileAttachmentIconStyle
 	};
 
 	// styles for file attachment disabled icon
 	const fileAttachmentIconDisabledStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.fileAttachment?.icon})`,
+		fill: "#a6a6a6",
 		...styles.fileAttachmentIconStyle, // by default inherit the base style
 		...styles.fileAttachmentIconDisabledStyle
 	};
@@ -127,41 +129,52 @@ const FileAttachmentButton = () => {
 		}
 	};
 
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = blockAllowsAttachment
+			? settings.fileAttachment?.icon
+			: settings.fileAttachment?.iconDisabled;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className={blockAllowsAttachment ? "rcb-attach-icon-enabled" : "rcb-attach-icon-disabled"}
+					style={blockAllowsAttachment ? fileAttachmentIconStyle : fileAttachmentIconDisabledStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className={blockAllowsAttachment ? "rcb-attach-icon-enabled" : "rcb-attach-icon-disabled"}>
+				<IconComponent style={blockAllowsAttachment
+					? fileAttachmentIconStyle
+					: fileAttachmentIconDisabledStyle}
+				/>
+			</span>
+		)
+	}
+
 	return (
-		<>
-			{blockAllowsAttachment ? (
-				<label
-					aria-label={settings.ariaLabel?.fileAttachmentButton ?? "upload file"}
-					role="button" 
-					className="rcb-attach-button-enabled"
-					style={styles.fileAttachmentButtonStyle}
-				>
-					<input
-						className="rcb-attach-input"
-						type="file"
-						onChange={handleUpload}
-						multiple={settings.fileAttachment?.multiple}
-						accept={settings.fileAttachment?.accept}
-					/>
-					<span
-						className="rcb-attach-icon-enabled"
-						style={fileAttachmentIconStyle}
-					/>
-				</label>
-			) : (
-				<label 
-					className="rcb-attach-button-disabled"
-					style={fileAttachmentButtonDisabledStyle}
-				>
-					<input disabled type="file" />
-					<span 
-						className="rcb-attach-icon-disabled"
-						style={fileAttachmentIconDisabledStyle}
-					>
-					</span>
-				</label>
-			)}
-		</>
+		<label
+			aria-label={settings.ariaLabel?.fileAttachmentButton ?? "upload file"}
+			role="button" 
+			className={blockAllowsAttachment? "rcb-attach-button-enabled" : "rcb-attach-button-disabled"}
+			style={blockAllowsAttachment
+				? styles.fileAttachmentButtonStyle
+				: fileAttachmentButtonDisabledStyle
+			}
+		>
+			<input
+				className="rcb-attach-input"
+				type="file"
+				onChange={handleUpload}
+				multiple={settings.fileAttachment?.multiple}
+				accept={settings.fileAttachment?.accept}
+				disabled={!blockAllowsAttachment}
+			/>
+			{renderButton()}
+		</label>
 	);
 };
 

@@ -22,15 +22,44 @@ const NotificationButton = () => {
 	// styles for notification icon
 	const notificationIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.notification?.icon})`,
+		fill: "#fcec3d",
 		...styles.notificationIconStyle
 	};
 
 	// styles for notification disabled icon
 	const notificationIconDisabledStyle: React.CSSProperties = {
-		backgroundImage: `url(${settings.notification?.icon})`,
+		backgroundImage: `url(${settings.notification?.iconDisabled})`,
+		fill: "#e8eaed",
 		...styles.notificationIconStyle, // by default inherit the base style
 		...styles.notificationIconDisabledStyle
 	};
+
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = notificationsToggledOn
+			? settings.notification?.icon
+			: settings.notification?.iconDisabled;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className="rcb-notification-icon"
+					data-testid="rcb-notification-icon"
+					style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className="rcb-notification-icon" data-testid="rcb-notification-icon">
+				<IconComponent
+					style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}
+					data-testid="rcb-notification-icon-svg"
+				/>
+			</span>
+		)
+	}
 
 	return (
 		<div
@@ -45,12 +74,7 @@ const NotificationButton = () => {
 				: {...styles.notificationButtonStyle, ...styles.notificationButtonDisabledStyle}
 			}
 		>
-			<span
-				className={`rcb-notification-icon-${
-					notificationsToggledOn ? "on" : "off"
-				}`}
-				style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}
-			/>
+			{renderButton()}
 		</div>
 	);
 };
