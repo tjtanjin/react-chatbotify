@@ -136,7 +136,7 @@ const FileAttachmentButton = () => {
 		const IconComponent = blockAllowsAttachment
 			? settings.fileAttachment?.icon
 			: settings.fileAttachment?.iconDisabled;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className={blockAllowsAttachment ? "rcb-attach-icon-enabled" : "rcb-attach-icon-disabled"}

@@ -106,7 +106,7 @@ const VoiceButton = () => {
 	 */
 	const renderButton = () => {
 		const IconComponent = voiceToggledOn ? settings.voice?.icon : settings.voice?.iconDisabled;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className={`rcb-voice-icon${voiceToggledOn && !textAreaDisabled ? "-on" : ""}`}

@@ -134,7 +134,7 @@ const EmojiButton = () => {
 	 */
 	const renderButton = () => {
 		const IconComponent = textAreaDisabled ? settings.emoji?.iconDisabled : settings.emoji?.icon;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className={`${textAreaDisabled ? "rcb-emoji-icon-disabled" : "rcb-emoji-icon-enabled"}`}

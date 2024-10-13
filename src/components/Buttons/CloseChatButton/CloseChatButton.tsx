@@ -32,7 +32,7 @@ const CloseChatButton = () => {
 	 */
 	const renderButton = () => {
 		const IconComponent = settings.header?.closeChatIcon;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className="rcb-close-chat-icon"

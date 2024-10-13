@@ -81,14 +81,18 @@ const SendButton = () => {
 	 */
 	const renderButton = () => {
 		const IconComponent = settings.chatInput?.sendButtonIcon;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
-				<span className="rcb-send-icon" style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}/>
+				<span
+					className="rcb-send-icon"
+					data-testid="rcb-send-icon"
+					style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}
+				/>
 			)
 		}
 		return (
 			IconComponent &&
-			<span className="rcb-send-icon" >
+			<span className="rcb-send-icon" data-testid="rcb-send-icon">
 				<IconComponent style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}/>
 			</span>
 		)

@@ -41,7 +41,7 @@ const NotificationButton = () => {
 		const IconComponent = notificationsToggledOn
 			? settings.notification?.icon
 			: settings.notification?.iconDisabled;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className="rcb-notification-icon"

@@ -39,7 +39,7 @@ const AudioButton = () => {
 	 */
 	const renderButton = () => {
 		const IconComponent = audioToggledOn ? settings.audio?.icon : settings.audio?.iconDisabled;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className="rcb-audio-icon"

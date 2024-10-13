@@ -39,7 +39,7 @@ const ChatBotButton = () => {
 	 */
 	const renderButton = () => {
 		const IconComponent = settings.chatButton?.icon;
-		if (typeof IconComponent === "string") {
+		if (!IconComponent || typeof IconComponent === "string") {
 			return (
 				<span
 					className="rcb-toggle-icon"
