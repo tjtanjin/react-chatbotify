@@ -72,7 +72,7 @@ const VoiceButton = () => {
 
 	// styles for voice disabled icon
 	const voiceIconDisabledStyle: React.CSSProperties = {
-		backgroundImage: `url(${settings.voice?.icon})`,
+		backgroundImage: `url(${settings.voice?.iconDisabled})`,
 		fill: "#9aa0a6",
 		...styles.voiceIconStyle, // by default inherit the base style
 		...styles.voiceIconDisabledStyle

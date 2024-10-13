@@ -28,7 +28,7 @@ const AudioButton = () => {
 
 	// styles for audio disabled icon
 	const audioIconDisabledStyle: React.CSSProperties = {
-		backgroundImage: `url(${settings.audio?.icon})`,
+		backgroundImage: `url(${settings.audio?.iconDisabled})`,
 		fill: "#e8eaed",
 		...styles.audioIconStyle, // by default inherit the base style
 		...styles.audioIconDisabledStyle
