@@ -53,7 +53,10 @@ const NotificationButton = () => {
 		return (
 			IconComponent &&
 			<span className="rcb-notification-icon" data-testid="rcb-notification-icon">
-				<IconComponent style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}/>
+				<IconComponent
+					style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}
+					data-testid="rcb-notification-icon-svg"
+				/>
 			</span>
 		)
 	}

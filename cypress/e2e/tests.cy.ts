@@ -150,13 +150,15 @@ describe("Chat Bot Test Suite", () => {
 	});
 
 	it("Toggles notifications", () => {
-		cy.get(".rcb-notification-icon-on").click();
-		cy.get(".rcb-notification-icon-off").should("be.visible");
+		cy.get("[data-testid='rcb-notification-icon-svg']").click();
+		cy.wait(100);
+		cy.get("[data-testid='rcb-notification-icon-svg']").should('have.css', 'fill', 'rgb(232, 234, 237)'); 
 	});
 
 	it("Toggles audio", () => {
-		cy.get(".rcb-audio-icon-off").click();
-		cy.get(".rcb-audio-icon-on").should("be.visible");
+		cy.get("[data-testid='rcb-audio-icon-svg']").click();
+		cy.wait(100);
+		cy.get("[data-testid='rcb-audio-icon-svg']").should('have.css', 'fill', 'rgb(252, 236, 61)'); 
 	});
 
 	it("Toggles voice", () => {

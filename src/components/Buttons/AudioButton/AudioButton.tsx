@@ -51,7 +51,10 @@ const AudioButton = () => {
 		return (
 			IconComponent &&
 			<span className="rcb-audio-icon" data-testid="rcb-audio-icon">
-				<IconComponent style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}/>
+				<IconComponent
+					style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}
+					data-testid="rcb-audio-icon-svg"
+				/>
 			</span>
 		)
 	}
