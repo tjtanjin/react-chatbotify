@@ -37,8 +37,7 @@
 
 /* Voice Icon */
 
-.rcb-voice-icon-on,
-.rcb-voice-icon-off {
+.rcb-voice-icon {
 	width: 60%;
 	height: 60%;
 	background-size: cover;
@@ -48,6 +47,6 @@
 	background-position: center;
 }
 
-.rcb-voice-icon-on {
+.rcb-voice-icon.on {
     animation: rcb-animation-ping 1s infinite;
 }

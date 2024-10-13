@@ -109,14 +109,14 @@ const VoiceButton = () => {
 		if (typeof IconComponent === "string") {
 			return (
 				<span
-					className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
+					className={`rcb-voice-icon${voiceToggledOn && !textAreaDisabled ? "-on" : ""}`}
 					style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}
 				/>
 			)
 		}
 		return (
 			IconComponent &&
-			<span className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}>
+			<span className={`rcb-voice-icon ${voiceToggledOn && !textAreaDisabled ? "on" : ""}`}>
 				<IconComponent style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}/>
 			</span>
 		)

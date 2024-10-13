@@ -1,7 +1,6 @@
 /* Audio Icon */
 
-.rcb-audio-icon-on,
-.rcb-audio-icon-off {
+.rcb-audio-icon {
 	position: relative;
 	display: inline-block;
 	background-size: cover;
@@ -12,12 +11,7 @@
 	margin-left: 5px;
 }
 
-.rcb-audio-icon-off {
-	filter: grayscale(100%);
-}
-
-.rcb-audio-icon-on::after,
-.rcb-audio-icon-off::after {
+.rcb-audio-icon::after {
 	content: "";
 	position: absolute;
 	top: 50%;
@@ -31,8 +25,7 @@
 	transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-.rcb-audio-icon-on:hover::after,
-.rcb-audio-icon-off:hover::after {
+.rcb-audio-icon:hover::after {
 	width: 130%;
 	height: 130%;
 	opacity: 1;

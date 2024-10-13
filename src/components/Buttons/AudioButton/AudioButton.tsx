@@ -42,14 +42,14 @@ const AudioButton = () => {
 		if (typeof IconComponent === "string") {
 			return (
 				<span
-					className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}
+					className="rcb-audio-icon"
 					style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}
 				/>
 			)
 		}
 		return (
 			IconComponent &&
-			<span className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}>
+			<span className="rcb-audio-icon">
 				<IconComponent style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}/>
 			</span>
 		)

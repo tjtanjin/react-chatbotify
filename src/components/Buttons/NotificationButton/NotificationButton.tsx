@@ -44,14 +44,14 @@ const NotificationButton = () => {
 		if (typeof IconComponent === "string") {
 			return (
 				<span
-					className={`rcb-notification-icon-${notificationsToggledOn ? "on" : "off"}`}
+					className="rcb-notification-icon"
 					style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}
 				/>
 			)
 		}
 		return (
 			IconComponent &&
-			<span className={`rcb-notification-icon-${notificationsToggledOn ? "on" : "off"}`}>
+			<span className="rcb-notification-icon">
 				<IconComponent style={notificationsToggledOn? notificationIconStyle : notificationIconDisabledStyle}/>
 			</span>
 		)
