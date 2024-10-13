@@ -6,7 +6,8 @@ import botAvatar from "../../assets/bot_avatar.svg";
 import userAvatar from "../../assets/user_avatar.svg";
 import chatIcon from "../../assets/chat_icon.svg";
 import fileAttachmentIcon from "../../assets/file_attachment_icon.svg";
-import notificationIcon from "../../assets/notification_icon.svg";
+import { ReactComponent as notificationIcon } from '../../assets/notification_icon.svg';
+import { ReactComponent as notificationIconDisabled } from '../../assets/notification_icon_disabled.svg';
 import closeChatIcon from "../../assets/close_chat_icon.svg";
 import sendButtonIcon from "../../assets/send_icon.svg";
 import { ReactComponent as voiceIcon } from '../../assets/voice_icon.svg';
@@ -58,6 +59,7 @@ export const DefaultSettings: Settings = {
 		defaultToggledOn: true,
 		volume: 0.2,
 		icon: notificationIcon,
+		iconDisabled: notificationIconDisabled,
 		sound: notificationSound,
 		showCount: true,
 	},

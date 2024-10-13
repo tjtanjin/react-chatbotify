@@ -34,7 +34,8 @@ export type Settings = {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
 		volume?: number;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		sound?: string;
 		showCount?: boolean;
 	},
