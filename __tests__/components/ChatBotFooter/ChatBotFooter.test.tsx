@@ -21,7 +21,7 @@ import ChatBotFooter from "../../../src/components/ChatBotFooter/ChatBotFooter"
 const renderChatBotFooter = ({ buttons }: { buttons: JSX.Element[] }) => {
 	return render(
 
-			<ChatBotFooter buttons={buttons}></ChatBotFooter>
+		<ChatBotFooter buttons={buttons}></ChatBotFooter>
 
 	);
 };
