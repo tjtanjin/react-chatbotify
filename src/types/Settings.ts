@@ -108,7 +108,8 @@ export type Settings = {
 		autoSendDisabled?: boolean;
 		autoSendPeriod?: number;
 		sendAsAudio?: boolean;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	footer?: {
 		text?: string | JSX.Element;

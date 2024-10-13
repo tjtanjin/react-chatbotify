@@ -51,7 +51,3 @@
 .rcb-voice-icon-on {
     animation: rcb-animation-ping 1s infinite;
 }
-
-.rcb-voice-icon-off {
-    filter: grayscale(100%);
-}
