@@ -28,7 +28,7 @@ export type Settings = {
 		showAvatar?: boolean;
 		avatar?: string;
 		buttons?: Array<JSX.Element | string>;
-		closeChatIcon?: string;
+		closeChatIcon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	notification?: {
 		disabled?: boolean;
