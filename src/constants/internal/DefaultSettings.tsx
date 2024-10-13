@@ -4,7 +4,7 @@ import { Button } from "../Button";
 import actionDisabledIcon from "../../assets/action_disabled_icon.svg";
 import botAvatar from "../../assets/bot_avatar.svg";
 import userAvatar from "../../assets/user_avatar.svg";
-import chatIcon from "../../assets/chat_icon.svg";
+import { ReactComponent as chatIcon } from "../../assets/chat_icon.svg";
 import { ReactComponent as fileAttachmentIcon } from '../../assets/file_attachment_icon.svg';
 import { ReactComponent as notificationIcon } from '../../assets/notification_icon.svg';
 import { ReactComponent as notificationIconDisabled } from '../../assets/notification_icon_disabled.svg';

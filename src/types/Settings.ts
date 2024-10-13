@@ -21,7 +21,7 @@ export type Settings = {
 		text?: string;
 	},
 	chatButton?: {
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	header?: {
 		title?: string | JSX.Element;
