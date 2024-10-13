@@ -6,6 +6,7 @@ import "@testing-library/jest-dom/jest-globals";
 
 import CloseChatButton from "../../../src/components/Buttons/CloseChatButton/CloseChatButton";
 import { DefaultSettings } from "../../../src/constants/internal/DefaultSettings";
+import { closeChatIcon } from "../../__mocks__/fileMock";
 
 import { useChatWindowInternal } from "../../../src/hooks/internal/useChatWindowInternal";
 import { useSettingsContext } from "../../../src/context/SettingsContext";
@@ -31,7 +32,7 @@ describe("CloseChatButton", () => {
 		// Mock the return value of useSettingsContext hook
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
-				header: { closeChatIcon: DefaultSettings.header?.closeChatIcon },
+				header: { closeChatIcon },
 				ariaLabel: { closeChatButton: DefaultSettings.ariaLabel?.closeChatButton },
 			},
 		});
@@ -69,13 +70,11 @@ describe("CloseChatButton", () => {
 	it("applies the correct background image to the close chat icon", () => {
 		// Render the CloseChatButton component
 		render(<CloseChatButton />);
-		// Get the button element by its role
-		const button = screen.getByRole("button");
-		// Get the span element inside the button (assumed to be the icon)
-		const icon = button.querySelector("span");
+		// Get the icon element by its data test id
+		const icon = screen.getByTestId("rcb-close-chat-icon");
 
-		// Check if the background image is set correctly
-		expect(icon).toHaveStyle(`background-image: url(${DefaultSettings.header?.closeChatIcon})`);
+		// Check if the fill is set correctly
+		expect(icon).toHaveStyle("fill: #e8eaed");
 	});
 
 	it("applies the default aria-label when none is provided in settings", () => {
@@ -99,15 +98,15 @@ describe("CloseChatButton", () => {
 		render(<CloseChatButton />);
 		// Get the button element by its role
 		const button = screen.getByRole("button");
-		// Get the span element inside the button (assumed to be the icon)
-		const icon = button.querySelector("span");
+		// Get the icon element by its data test id
+		const icon = screen.getByTestId("rcb-close-chat-icon");
 
 		// Assert that the button has the correct background color
 		expect(button).toHaveStyle("background-color: gray");
 		// Assert that the icon has the correct color
 		expect(icon).toHaveStyle("color: red");
-		// Assert that the icon has the correct background image
-		expect(icon).toHaveStyle(`background-image: url(${DefaultSettings.header?.closeChatIcon})`);
+		// Assert that the icon has correct fill
+		expect(icon).toHaveStyle("fill: #e8eaed");
 	});
 
 	it("calls openChat(false) when the button is clicked", () => {

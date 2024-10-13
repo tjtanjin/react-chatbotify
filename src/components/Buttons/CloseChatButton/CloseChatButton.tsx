@@ -36,13 +36,14 @@ const CloseChatButton = () => {
 			return (
 				<span
 					className="rcb-close-chat-icon"
+					data-testid="rcb-close-chat-icon"
 					style={closeChatIconStyle}
 				/>
 			)
 		}
 		return (
 			IconComponent &&
-			<span className="rcb-close-chat-icon">
+			<span className="rcb-close-chat-icon" data-testid="rcb-close-chat-icon">
 				<IconComponent style={closeChatIconStyle}/>
 			</span>
 		)
