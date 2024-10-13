@@ -22,7 +22,7 @@ const NotificationButton = () => {
 	// styles for notification icon
 	const notificationIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.notification?.icon})`,
-		fill: "#e8eaed",
+		fill: "#fcec3d",
 		...styles.notificationIconStyle
 	};
 

@@ -22,7 +22,7 @@ const AudioButton = () => {
 	// styles for audio icon
 	const audioIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.audio?.icon})`,
-		fill: "#e8eaed",
+		fill: "#fcec3d",
 		...styles.audioIconStyle
 	};
 
