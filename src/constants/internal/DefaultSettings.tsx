@@ -11,7 +11,8 @@ import closeChatIcon from "../../assets/close_chat_icon.svg";
 import sendButtonIcon from "../../assets/send_icon.svg";
 import voiceIcon from "../../assets/voice_icon.svg";
 import emojiIcon from "../../assets/emoji_icon.svg";
-import audioIcon from "../../assets/audio_icon.svg";
+import { ReactComponent as audioIcon } from '../../assets/audio_icon.svg';
+import { ReactComponent as audioIconDisabled } from '../../assets/audio_icon_disabled.svg';
 import notificationSound from "../../assets/notification_sound.wav";
 
 // default settings provided to the bot
@@ -67,6 +68,7 @@ export const DefaultSettings: Settings = {
 		rate: 1,
 		volume: 1,
 		icon: audioIcon,
+		iconDisabled: audioIconDisabled,
 	},
 	chatHistory: {
 		disabled: false,

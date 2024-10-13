@@ -45,7 +45,8 @@ export type Settings = {
 		voiceNames?: string[];
 		rate?: number;
 		volume?: number;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	chatHistory?: {
 		disabled?: boolean;
