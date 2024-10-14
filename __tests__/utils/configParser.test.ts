@@ -100,7 +100,7 @@ describe("parseConfig", () => {
       themes
     );
 
-    expect(result.settings.chatInput?.botDelay).toBe(500); // Enforces minimum botDelay
+    expect(result.settings.chatInput?.botDelay).toBe(500);
     expect(result.inlineStyles.bodyStyle?.color).toBe("blue");
     expect(result.cssStylesText).toBe("");
   });
