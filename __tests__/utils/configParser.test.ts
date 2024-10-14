@@ -33,7 +33,6 @@ describe("parseConfig", () => {
     const defaultStyles = getDefaultStyles();
     expect(defaultStyles).toEqual(DefaultStyles);
   });
-  // });
 
   it("should parse the config correctly without themes or provided settings/styles", async () => {
     const botId = "bot123";
