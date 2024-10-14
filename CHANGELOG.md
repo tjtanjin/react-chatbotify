@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.18 (14-10-2024)
+
+**Fixed:**
+- Excluded comments from theme css files parsing
+- Fixed an issue where icon was not rendered correctly in footer
+
 ## v2.0.0-beta.17 (13-10-2024)
 
 **Fixed:**

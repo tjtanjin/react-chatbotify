@@ -158,10 +158,6 @@ const getScopedCssStylesText = (botId: string, cssStylesText: string) => {
 	const scopedCssText = cssStylesText.split(/(?<=})/)
 		.map(rule => {
 			const trimmedRule = rule.trim();
-			// ignores comments
-			if (trimmedRule.startsWith('/*')) {
-				return trimmedRule;
-			}
 
 			// ignores imports, keyframes and media queries
 			if (trimmedRule.startsWith('@import') || trimmedRule.startsWith('@keyframes')
