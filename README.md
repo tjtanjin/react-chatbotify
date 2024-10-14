@@ -26,7 +26,7 @@
 ### Introduction
 
 <p align="center">
-  <img height="400px" src="https://github.com/user-attachments/assets/dd957c4b-0ff4-42e9-8097-4efb7c98055a" />
+  <img height="400px" src="https://github.com/user-attachments/assets/6153cd2e-dc21-4c8a-8d91-388fc01d974b" />
 </p>
 
 Welcome to React ChatBotify, an intuitive and versatile library that allows you to build responsive chatbots with ease. Whether you're aiming to create a simple FAQ bot or a sophisticated conversational interface integrated with Large Language Models (LLMs), React ChatBotify provides the tools and flexibility you need to bring your vision to life.
