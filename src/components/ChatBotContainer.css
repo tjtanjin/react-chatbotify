@@ -4,6 +4,7 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: 1.5;
+	z-index: 9999;
 }
 
 /* ChatBot Commons */
