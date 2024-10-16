@@ -142,7 +142,7 @@ const UserCheckboxes = ({
 					const userInput = Array.from(checkedItems).join(", ");
 					setDisabled(!checkboxes.reusable as boolean);
 					let sendInChat: boolean;
-					if (checkboxes.sendOutput) {
+					if (checkboxes.sendOutput != null) {
 						sendInChat = checkboxes.sendOutput;
 					} else {
 						sendInChat = settings.chatInput?.sendCheckboxOutput ?? true;
