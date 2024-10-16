@@ -19,7 +19,7 @@ export type Block = {
 		((params: Params) => Promise<{items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean}>);
 	component?: JSX.Element | void | ((params: Params) => JSX.Element | void) |
 	((params: Params) => Promise<JSX.Element | void>);
-	chatDisabled?: boolean | ((params: Params) => boolean) | ((params: Params) => Promise<boolean>);
+	chatDisabled?: boolean | ((params: Params) => boolean) | ((params: Params) => Promise<boolean>) | null;
 	isSensitive?: boolean | ((params: Params) => boolean) | ((params: Params) => Promise<boolean>);
 	transition?: number | {duration: number, interruptable?: boolean} | void | 
 		((params: Params) =>  number | {duration: number, interruptable?: boolean} | void) |
