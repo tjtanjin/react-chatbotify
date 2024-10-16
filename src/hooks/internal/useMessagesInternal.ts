@@ -109,7 +109,14 @@ export const useMessagesInternal = () => {
 			message = event.data.message;
 		}
 
-		processAudio(settings, audioToggledOn, isChatWindowOpen, message);
+		let useMarkup = false;
+		if (sender === "bot") {
+			useMarkup = settings.botBubble?.dangerouslySetInnerHtml as boolean;
+		} else if (sender === "user") {
+			useMarkup = settings.userBubble?.dangerouslySetInnerHtml as boolean;
+		}
+
+		processAudio(settings, audioToggledOn, isChatWindowOpen, message, useMarkup);
 		const isBotStream = typeof message.content === "string"
 			&& message.sender === "bot" && settings?.botBubble?.simStream;
 		const isUserStream = typeof message.content === "string"
@@ -117,11 +124,9 @@ export const useMessagesInternal = () => {
 
 		if (isBotStream) {
 			const streamSpeed = settings.botBubble?.streamSpeed as number;
-			const useMarkup = settings.botBubble?.dangerouslySetInnerHtml as boolean;
 			await simulateStream(message, streamSpeed, useMarkup);
 		} else if (isUserStream) {
 			const streamSpeed = settings.userBubble?.streamSpeed as number;
-			const useMarkup = settings.userBubble?.dangerouslySetInnerHtml as boolean;
 			await simulateStream(message, streamSpeed, useMarkup);
 		} else {
 			setMessages((prevMessages) => [...prevMessages, message]);

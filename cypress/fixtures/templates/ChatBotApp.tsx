@@ -20,7 +20,7 @@ function App() {
 			path: "ask_token",
 		},
 		ask_token: {
-			message: () => "Before we processed, we need to verify your profile id, "
+			message: () => "Before we proceed, we need to verify your profile id, "
 			+ "Enter your 6 digit profile id",
 			isSensitive: true,
 			path: (params: Params) => {
