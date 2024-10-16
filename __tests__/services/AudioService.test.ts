@@ -72,7 +72,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		};
 		const voiceToggledOn = true;
 		const isChatWindowOpen = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is not called
 		expect(mockSpeak).not.toHaveBeenCalled();
@@ -99,7 +100,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio
 		const voiceToggledOn = true;
 		const isChatWindowOpen = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is not called
 		expect(mockSpeak).not.toHaveBeenCalled();
@@ -126,7 +128,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio
 		const voiceToggledOn = true;
 		const isChatWindowOpen = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is not called
 		expect(mockSpeak).not.toHaveBeenCalled();
@@ -154,7 +157,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		};
 		const voiceToggledOn = true;
 		const isChatWindowOpen = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is not called
 		expect(mockSpeak).not.toHaveBeenCalled();
@@ -179,7 +183,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		};
 		const voiceToggledOn = false;
 		const isChatWindowOpen = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is not called
 		expect(mockSpeak).not.toHaveBeenCalled();
@@ -204,7 +209,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		};
 		const voiceToggledOn = true;
 		const isChatWindowOpen = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is called correctly
 		expect(mockSpeak).toHaveBeenCalledTimes(1);
@@ -236,7 +242,8 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		};
 		const voiceToggledOn = true;
 		const isChatWindowOpen = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message);
+		const useMarkup = false;
+		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
 
 		// checks that speak is called correctly
 		expect(mockSpeak).toHaveBeenCalledTimes(1);
