@@ -42,6 +42,7 @@ const ChatBot = ({
 	const finalFlow = (!flow || Object.keys(flow).length === 0) ? WelcomeFlow : flow;
 	const finalSettings = !settings ? {} : settings;
 	const finalStyles = !styles ? {} : styles;
+	const finalThemes = !themes ? [] : themes;
 
 	// handles loading of chatbot only when config is loaded
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
@@ -58,7 +59,7 @@ const ChatBot = ({
 	const renderChatBot = () => (
 		<>
 			<ChatBotLoader styleRootRef={styleRootRef} id={finalBotId} flow={finalFlow} settings={finalSettings}
-				styles={finalStyles} themes={themes} plugins={plugins} setConfigLoaded={setConfigLoaded}
+				styles={finalStyles} themes={finalThemes} plugins={plugins} setConfigLoaded={setConfigLoaded}
 			/>
 			{configLoaded && <ChatBotContainer plugins={plugins} />}
 		</>
