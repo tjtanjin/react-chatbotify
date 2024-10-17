@@ -28,6 +28,7 @@ const ChatBotLoader = ({
 	styles,
 	themes,
 	plugins,
+	configLoaded,
 	setConfigLoaded,
 	styleRootRef,
 }: {
@@ -37,6 +38,7 @@ const ChatBotLoader = ({
 	styles: Styles;
 	themes: Theme | Array<Theme>;
 	plugins: Array<Plugin>;
+	configLoaded: boolean;
 	setConfigLoaded: Dispatch<SetStateAction<boolean>>;
 	styleRootRef: MutableRefObject<HTMLStyleElement | null>;
 }) => {
@@ -95,8 +97,10 @@ const ChatBotLoader = ({
 	}
 
 	useEffect(() => {
-		runLoadConfig();
-	}, [themes]);
+		if(!configLoaded) {
+			runLoadConfig();
+		}
+	}, [configLoaded, themes]);
 
 	return null;
 };

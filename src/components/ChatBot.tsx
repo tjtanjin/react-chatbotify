@@ -58,7 +58,8 @@ const ChatBot = ({
 	const renderChatBot = () => (
 		<>
 			<ChatBotLoader styleRootRef={styleRootRef} id={finalBotId} flow={finalFlow} settings={finalSettings}
-				styles={finalStyles} themes={themes} plugins={plugins} setConfigLoaded={setConfigLoaded}
+				styles={finalStyles} themes={themes} plugins={plugins} configLoaded={configLoaded}
+				setConfigLoaded={setConfigLoaded}
 			/>
 			{configLoaded && <ChatBotContainer plugins={plugins} />}
 		</>
