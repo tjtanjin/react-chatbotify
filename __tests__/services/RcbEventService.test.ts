@@ -20,6 +20,7 @@ describe('emitRcbEvent', () => {
     // Clear all mocks after each test to prevent interference between tests
     afterEach(() => {
         jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     // Test for emitting a cancellable event
@@ -36,12 +37,15 @@ describe('emitRcbEvent', () => {
         const result = emitRcbEvent(eventName, eventDetail, data);
 
         // Verify that the event was dispatched correctly
-        expect(dispatchedEvent).toBeTruthy();
-        expect(dispatchedEvent?.type).toBe(eventName);
-        expect(dispatchedEvent?.detail).toEqual(eventDetail);
-        expect(dispatchedEvent?.cancelable).toBe(true);
-        expect((dispatchedEvent as RcbBaseEvent).data).toEqual(data);
-        expect(result).toBe(dispatchedEvent);
+        if (dispatchedEvent) {
+            expect(dispatchedEvent.type).toBe(eventName);
+            expect(dispatchedEvent.detail).toEqual(eventDetail);
+            expect(dispatchedEvent.cancelable).toBe(true);
+            expect((dispatchedEvent as RcbBaseEvent).data).toEqual(data);
+            expect(result).toBe(dispatchedEvent);
+        } else {
+            fail('No event was dispatched');
+        }
     });
 
     // Test for emitting a non-cancellable event
@@ -57,12 +61,15 @@ describe('emitRcbEvent', () => {
         const result = emitRcbEvent(eventName, eventDetail, data);
 
         // Verify that the event was dispatched as non-cancellable
-        expect(dispatchedEvent).toBeTruthy();
-        expect(dispatchedEvent?.type).toBe(eventName);
-        expect(dispatchedEvent?.detail).toEqual(eventDetail);
-        expect(dispatchedEvent?.cancelable).toBe(false);
-        expect((dispatchedEvent as RcbBaseEvent).data).toEqual(data);
-        expect(result).toBe(dispatchedEvent);
+        if (dispatchedEvent) {
+            expect(dispatchedEvent.type).toBe(eventName);
+            expect(dispatchedEvent.detail).toEqual(eventDetail);
+            expect(dispatchedEvent.cancelable).toBe(false);
+            expect((dispatchedEvent as RcbBaseEvent).data).toEqual(data);
+            expect(result).toBe(dispatchedEvent);
+        } else {
+            fail('No event was dispatched');
+        }
     });
 
     // Test for handling an event with empty data
@@ -77,11 +84,14 @@ describe('emitRcbEvent', () => {
         const result = emitRcbEvent(eventName, eventDetail, {});
 
         // Verify the event was dispatched with empty data
-        expect(dispatchedEvent).toBeTruthy();
-        expect(dispatchedEvent?.type).toBe(eventName);
-        expect(dispatchedEvent?.detail).toEqual(eventDetail);
-        expect((dispatchedEvent as RcbBaseEvent).data).toEqual({});
-        expect(result).toBe(dispatchedEvent);
+        if (dispatchedEvent) {
+            expect(dispatchedEvent.type).toBe(eventName);
+            expect(dispatchedEvent.detail).toEqual(eventDetail);
+            expect((dispatchedEvent as RcbBaseEvent).data).toEqual({});
+            expect(result).toBe(dispatchedEvent);
+        } else {
+            fail('No event was dispatched');
+        }
     });
 
     // Test for handling an event with no detail and empty data
@@ -95,14 +105,17 @@ describe('emitRcbEvent', () => {
         }, {});
 
         // Verify the event was dispatched with null details and empty data
-        expect(dispatchedEvent).toBeTruthy();
-        expect(dispatchedEvent?.type).toBe(eventName);
-        expect(dispatchedEvent?.detail).toEqual({ 
-            botId: null, 
-            currPath: null, 
-            prevPath: null 
-        });
-        expect((dispatchedEvent as RcbBaseEvent).data).toEqual({});
-        expect(result).toBe(dispatchedEvent);
+        if (dispatchedEvent) {
+            expect(dispatchedEvent.type).toBe(eventName);
+            expect(dispatchedEvent.detail).toEqual({ 
+                botId: null, 
+                currPath: null, 
+                prevPath: null 
+            });
+            expect((dispatchedEvent as RcbBaseEvent).data).toEqual({});
+            expect(result).toBe(dispatchedEvent);
+        } else {
+            fail('No event was dispatched');
+        }
     });
 });
