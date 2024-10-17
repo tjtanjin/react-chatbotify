@@ -6,7 +6,7 @@ import "@testing-library/jest-dom/jest-globals";
 import ToastPrompt from "../../../src/components/ChatBotBody/ToastPrompt/ToastPrompt";
 import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { useStylesContext } from "../../../src/context/StylesContext";
-import { useToastInternal } from "../../../src/hooks/internal/useToastsInternal";
+import { useToastsInternal } from "../../../src/hooks/internal/useToastsInternal";
 
 // Mock the contexts
 jest.mock("../../../src/context/SettingsContext");
@@ -47,7 +47,7 @@ describe("ToastPrompt Component", () => {
 			},
 		});
 
-		(useToastInternal as jest.Mock).mockReturnValue({
+		(useToastsInternal as jest.Mock).mockReturnValue({
 			dismissToast: dismissToastMock,
 		});
 	});
@@ -183,7 +183,7 @@ describe("ToastPrompt Component", () => {
     
 		// Mock the dismissToast function
 		const dismissToastMock = jest.fn();
-		(useToastInternal as jest.Mock).mockReturnValue({
+		(useToastsInternal as jest.Mock).mockReturnValue({
 			dismissToast: dismissToastMock,
 		});
     
@@ -215,7 +215,7 @@ describe("ToastPrompt Component", () => {
 
 	it("does not dismiss toast on click when dismissOnClick is false", () => {
 		const dismissToastMock = jest.fn();
-		(useToastInternal as jest.Mock).mockReturnValue({
+		(useToastsInternal as jest.Mock).mockReturnValue({
 			dismissToast: dismissToastMock,
 		});
 
