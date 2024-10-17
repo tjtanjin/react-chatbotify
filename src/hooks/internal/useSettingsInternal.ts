@@ -9,6 +9,11 @@ export const useSettingsInternal = () => {
 	// handles settings
 	const { settings, setSettings } = useSettingsContext();
 
+    /**
+     * Updates the settings for the chatbot.
+     *
+     * @param fields fields to update
+     */
     const updateSettings = (fields: object) => {
         setSettings(getCombinedConfig(fields, settings) as Settings);
     }
