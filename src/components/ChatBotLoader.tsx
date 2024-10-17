@@ -96,7 +96,7 @@ const ChatBotLoader = ({
 
 	useEffect(() => {
 		runLoadConfig();
-	}, []);
+	}, [themes]);
 
 	return null;
 };
