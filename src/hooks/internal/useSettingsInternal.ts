@@ -1,4 +1,4 @@
-import { getCombinedConfig } from "../../utils/configParser";
+import { deepClone, getCombinedConfig } from "../../utils/configParser";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { Settings } from "../../types/Settings";
 
@@ -15,7 +15,7 @@ export const useSettingsInternal = () => {
      * @param fields fields to update
      */
     const updateSettings = (fields: object) => {
-        setSettings(getCombinedConfig(fields, settings) as Settings);
+        setSettings(deepClone(getCombinedConfig(fields, settings) as Settings));
     }
 
 	return {

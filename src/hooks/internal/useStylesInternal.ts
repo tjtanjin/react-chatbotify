@@ -1,4 +1,4 @@
-import { getCombinedConfig } from "../../utils/configParser";
+import { deepClone, getCombinedConfig } from "../../utils/configParser";
 import { useStylesContext } from "../../context/StylesContext";
 import { Styles } from "../../types/Styles";
 
@@ -15,7 +15,7 @@ export const useStylesInternal = () => {
      * @param fields fields to update
      */
     const updateStyles = (fields: object) => {
-        setStyles(getCombinedConfig(fields, styles) as Styles);
+        setStyles(deepClone(getCombinedConfig(fields, styles) as Styles));
     }
 
 	return {
