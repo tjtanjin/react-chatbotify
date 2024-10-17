@@ -13,7 +13,7 @@ import { useChatHistoryInternal } from "./useChatHistoryInternal";
 import { usePathsInternal } from "./usePathsInternal";
 import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useMessagesInternal } from "./useMessagesInternal";
-import { useToastInternal } from "./useToastsInternal";
+import { useToastsInternal } from "./useToastsInternal";
 import { useVoiceInternal } from "./useVoiceInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -46,7 +46,7 @@ export const useBotEffectInternal = () => {
 	const { getCurrPath, getPrevPath, goToPath, paths } = usePathsInternal();
 
 	// handles toast
-	const { showToast, dismissToast } = useToastInternal();
+	const { showToast, dismissToast } = useToastsInternal();
 
 	// handles bot states
 	const {

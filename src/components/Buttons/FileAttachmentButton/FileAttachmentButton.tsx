@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { getMediaFileDetails } from "../../../utils/mediaFileParser";
-import { useToastInternal } from "../../../hooks/internal/useToastsInternal";
+import { useToastsInternal } from "../../../hooks/internal/useToastsInternal";
 import { useChatWindowInternal } from "../../../hooks/internal/useChatWindowInternal";
 import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
 import { useMessagesInternal } from "../../../hooks/internal/useMessagesInternal";
@@ -38,7 +38,7 @@ const FileAttachmentButton = () => {
 	const flow = flowRef.current as Flow;
 
 	// handles toasts
-	const { showToast, dismissToast } = useToastInternal();
+	const { showToast, dismissToast } = useToastsInternal();
 	
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();

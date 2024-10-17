@@ -1,13 +1,15 @@
+import { expect } from "@jest/globals";
+
 // Import the functions to be tested and types needed for the theme data
 import {
   getCachedTheme,
   setCachedTheme,
 } from "../../src/services/ThemeService";
 import { ThemeCacheData } from "../../src/types/internal/ThemeCacheData";
-import { viteConfig } from "../../viteconfig";
+import { viteConfig } from "../../src/viteconfig";
 
 // Mock the vite import so that the environment variables can be controlled in tests
-jest.mock("../../viteconfig", () => ({
+jest.mock("../../src/viteconfig", () => ({
   viteConfig: {
     DEFAULT_URL: "http://localhost:mock",
     DEFAULT_EXPIRATION: "60",
