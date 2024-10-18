@@ -31,6 +31,7 @@ const ChatBotButton = () => {
 	// styles for chat icon
 	const chatIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.chatButton?.icon})`,
+		fill: "#fff",
 		...styles.chatIconStyle
 	};
 

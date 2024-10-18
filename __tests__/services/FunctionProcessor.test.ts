@@ -1,3 +1,5 @@
+import { expect } from "@jest/globals";
+
 import { processFunction } from "../../src/services/BlockService/FunctionProcessor";
 import { Block } from "../../src/types/Block";
 import { Params } from "../../src/types/Params";

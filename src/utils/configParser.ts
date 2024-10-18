@@ -77,7 +77,7 @@ export const parseConfig = async (botId: string, providedSettings: Settings | un
  * @param preferredConfig config provided by the user to the bot
  * @param baseConfig the base config that the provided config will overwrite
  */
-const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Settings |
+export const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Settings |
 	Styles): Settings | Styles => {
 
 	const stack: Array<{ source: object, target: object }> = [{ source: preferredConfig, target: baseConfig }];
@@ -118,7 +118,7 @@ const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Setti
  * @param obj object to clone
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
+export const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
 	if (obj === null || typeof obj !== "object") {
 		return obj;
 	}

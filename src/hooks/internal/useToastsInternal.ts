@@ -10,7 +10,7 @@ import { RcbEvent } from "../../constants/RcbEvent";
 /**
  * Internal custom hook for managing toasts.
  */
-export const useToastInternal = () => {
+export const useToastsInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 

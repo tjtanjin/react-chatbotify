@@ -1,5 +1,7 @@
 import React from "react";
 
+import { expect } from "@jest/globals";
+
 import { processAudio } from "../../src/services/AudioService";
 import { generateSecureUUID } from "../../src/utils/idGenerator";
 import { Settings } from "../../src/types/Settings";
