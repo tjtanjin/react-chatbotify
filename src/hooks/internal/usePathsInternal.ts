@@ -75,11 +75,11 @@ export const usePathsInternal = () => {
 	}, [paths, setPaths, settings]);
 
 	/**
-     * Replaces (overwrites entirely) the current paths with the new paths.
-     */
+	 * Replaces (overwrites entirely) the current paths with the new paths.
+	 */
 	const replacePaths = (newPaths: Array<string>) => {
-        setPaths(newPaths);
-    }
+		setPaths(newPaths);
+	}
 
 	return {
 		getCurrPath,

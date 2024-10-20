@@ -9,25 +9,25 @@ export const useSettingsInternal = () => {
 	// handles settings
 	const { settings, setSettings } = useSettingsContext();
 
-    /**
-     * Updates the settings for the chatbot.
-     *
-     * @param fields fields to update
-     */
-    const updateSettings = (fields: object) => {
-        setSettings(deepClone(getCombinedConfig(fields, settings) as Settings));
-    }
+	/**
+	 * Updates the settings for the chatbot.
+	 *
+	 * @param fields fields to update
+	 */
+	const updateSettings = (fields: object) => {
+		setSettings(deepClone(getCombinedConfig(fields, settings) as Settings));
+	}
 
-    /**
-     * Replaces (overwrites entirely) the current settings with the new settings.
-     */
-    const replaceSettings = (newSettings: Settings) => {
-        setSettings(newSettings);
-    }
+	/**
+	 * Replaces (overwrites entirely) the current settings with the new settings.
+	 */
+	const replaceSettings = (newSettings: Settings) => {
+		setSettings(newSettings);
+	}
 
 	return {
 		settings,
 		replaceSettings,
-        updateSettings
+		updateSettings
 	};
 };

@@ -101,7 +101,7 @@ export const useToastsInternal = () => {
 	/**
 	 * Replaces (overwrites entirely) the current toasts with the new toasts.
 	 */
-	 const replaceToasts = (newToasts: Array<Toast>) => {
+	const replaceToasts = (newToasts: Array<Toast>) => {
 		setToasts(newToasts);
 	}
 
