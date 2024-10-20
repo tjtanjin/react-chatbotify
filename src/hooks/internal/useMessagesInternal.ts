@@ -29,7 +29,6 @@ export const useMessagesInternal = () => {
 		audioToggledOn,
 		isChatWindowOpen,
 		isScrolling,
-		isBotTyping,
 		setIsBotTyping,
 		setUnreadCount
 	} = useBotStatesContext();
