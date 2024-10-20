@@ -118,30 +118,6 @@ const ChatBotBody = ({
 		}
 	}, [messages.length, isBotTyping]);
 
-	// shifts scroll position when scroll height changes
-	useEffect(() => {
-		if (!chatBodyRef.current) {
-			return;
-		}
-
-		// used to return chat history to correct height
-		setChatScrollHeight(chatBodyRef.current.scrollHeight);
-
-		if (!isScrolling) {
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (isChatWindowOpen) {
-				setUnreadCount(0);
-			}
-		}
-	}, [chatBodyRef.current?.scrollHeight]);
-
-	// sets unread count to 0 if not scrolling
-	useEffect(() => {
-		if (!isScrolling) {
-			setUnreadCount(0);
-		}
-	}, [isScrolling]);
-
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.
 	 */
@@ -149,15 +125,24 @@ const ChatBotBody = ({
 		if (!chatBodyRef.current) {
 			return;
 		}
+
+		// used to return chat history to correct height
+		setChatScrollHeight(chatBodyRef.current.scrollHeight);
+
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
-		setIsScrolling(
-			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30)
-		);
+		const isScrolling = scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30);
+		setIsScrolling(isScrolling);
 
 		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
 		// this is necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom
-		if (!isScrolling && scrollTop + clientHeight >= scrollHeight - 1) {
-			chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+		if (!isScrolling) {
+			if (scrollTop + clientHeight >= scrollHeight - 1) {
+				chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+			}
+
+			if (isChatWindowOpen) {
+				setUnreadCount(0);
+			}
 		}
 	};
 
