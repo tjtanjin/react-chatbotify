@@ -98,10 +98,17 @@ export const useToastsInternal = () => {
 		return id;
 	}, [callRcbEvent, setToasts]);
 
+	/**
+     * Replaces (overwrites entirely) the current toasts with the new toasts.
+     */
+	 const replaceToasts = (newToasts: Array<Toast>) => {
+        setToasts(newToasts);
+    }
+
 	return {
 		showToast,
 		dismissToast,
 		toasts,
-		setToasts
+		replaceToasts
 	};
 };

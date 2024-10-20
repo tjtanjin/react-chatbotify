@@ -18,9 +18,16 @@ export const useSettingsInternal = () => {
         setSettings(deepClone(getCombinedConfig(fields, settings) as Settings));
     }
 
+    /**
+     * Replaces (overwrites entirely) the current settings with the new settings.
+     */
+    const replaceSettings = (newSettings: Settings) => {
+        setSettings(newSettings);
+    }
+
 	return {
 		settings,
-		setSettings,
+		replaceSettings,
         updateSettings
 	};
 };

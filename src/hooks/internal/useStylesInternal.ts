@@ -18,9 +18,16 @@ export const useStylesInternal = () => {
         setStyles(deepClone(getCombinedConfig(fields, styles) as Styles));
     }
 
+    /**
+     * Replaces (overwrites entirely) the current styles with the new styles.
+     */
+    const replaceStyles = (newStyles: Styles) => {
+        setStyles(newStyles);
+    }
+
 	return {
 		styles,
-		setStyles,
+		replaceStyles,
         updateStyles
 	};
 };

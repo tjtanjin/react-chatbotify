@@ -5,12 +5,12 @@ import { useToastsInternal } from "./internal/useToastsInternal";
  */
 export const useToasts = () => {
 	// handles toasts
-	const { showToast, dismissToast, toasts, setToasts } = useToastsInternal();
+	const { showToast, dismissToast, toasts, replaceToasts } = useToastsInternal();
 
 	return {
 		showToast,
 		dismissToast,
 		toasts,
-		setToasts
+		replaceToasts
 	};
 };

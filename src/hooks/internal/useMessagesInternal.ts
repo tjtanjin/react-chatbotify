@@ -255,12 +255,19 @@ export const useMessagesInternal = () => {
 		return true;
 	}, [callRcbEvent, messages, settings.event?.rcbStopStreamMessage, streamMessageMap])
 
+	/**
+     * Replaces (overwrites entirely) the current messages with the new messages.
+     */
+	const replaceMessages = (newMessages: Array<Message>) => {
+        setMessages(newMessages);
+    }
+
 	return {
 		endStreamMessage,
 		injectMessage,
 		removeMessage,
 		streamMessage,
 		messages,
-		setMessages
+		replaceMessages
 	};
 };

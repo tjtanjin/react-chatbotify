@@ -17,6 +17,7 @@ jest.mock("../../../src/utils/configParser", () => ({
 
 describe("useSettingsInternal", () => {
     const mockSetSettings = jest.fn();
+    const mockReplaceSettings = jest.fn();
     const mockSettings: Settings = { general: { primaryColor: "red" } };
 
     beforeEach(() => {
@@ -24,15 +25,17 @@ describe("useSettingsInternal", () => {
         (useSettingsContext as jest.Mock).mockReturnValue({
             settings: mockSettings,
             setSettings: mockSetSettings,
+            replaceSettings: mockReplaceSettings,
         });
     });
 
-    it("should return settings, setSettings and updateSettings method", () => {
+    it("should return settings, replaceSettings and updateSettings method", () => {
         const { result } = renderHook(() => useSettingsInternal());
 
         expect(result.current.settings).toEqual(mockSettings);
-        expect(result.current.setSettings).toBe(mockSetSettings);
+        expect(result.current.replaceSettings).toBeDefined();
         expect(result.current.updateSettings).toBeDefined();
+        expect(typeof result.current.replaceSettings).toBe("function");
         expect(typeof result.current.updateSettings).toBe("function");
     });
 

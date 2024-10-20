@@ -39,7 +39,7 @@ export const useBotEffectsInternal = () => {
 		removeMessage,
 		streamMessage,
 		messages,
-		setMessages
+		replaceMessages,
 	} = useMessagesInternal();
 
 	// handles paths
@@ -125,7 +125,7 @@ export const useBotEffectsInternal = () => {
 			if (chatHistory != null) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
 				const messageContent = createMessage(<ChatHistoryButton/>, "system");
-				setMessages([messageContent]);
+				replaceMessages([messageContent]);
 				if (settings.chatHistory?.autoLoad) {
 					showChatHistory();
 				}

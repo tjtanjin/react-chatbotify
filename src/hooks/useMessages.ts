@@ -11,7 +11,7 @@ export const useMessages = () => {
 		removeMessage,
 		streamMessage,
 		messages,
-		setMessages
+		replaceMessages,
 	} = useMessagesInternal();
 
 	return {
@@ -20,6 +20,6 @@ export const useMessages = () => {
 		removeMessage,
 		streamMessage,
 		messages,
-		setMessages,
+		replaceMessages,
 	};
 };
