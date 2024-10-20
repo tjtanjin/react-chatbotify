@@ -304,7 +304,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// if chatbot is embedded and visible, no need to notify
-		if (settings.general?.embedded && isChatBotVisible(chatBodyRef.current as HTMLDivElement) || isBotTyping) {
+		if (settings.general?.embedded && isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
 			return;
 		}
 
