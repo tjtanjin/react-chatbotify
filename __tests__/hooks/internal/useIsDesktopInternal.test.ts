@@ -5,7 +5,7 @@ const originalNavigator = window.navigator;
 const originalInnerWidth = window.innerWidth;
 
 const mockWindowProperty = (property: string, value: any) => {
-Object.defineProperty(window, property, {
+    Object.defineProperty(window, property, {
         configurable: true,
         writable: true,
         value,
