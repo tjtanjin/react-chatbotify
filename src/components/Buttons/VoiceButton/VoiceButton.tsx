@@ -1,4 +1,4 @@
-import { useEffect, MouseEvent, useState, useRef } from "react";
+import { useEffect, MouseEvent, useRef } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
@@ -42,17 +42,6 @@ const VoiceButton = () => {
 	// tracks audio chunk (if voice is sent as audio)
 	const audioChunksRef = useRef<BlobPart[]>([]);
 
-	// serves as a workaround (together with useEffect hook) for sending voice input, can consider a better approach
-	const [voiceInputTrigger, setVoiceInputTrigger] = useState<boolean>(false);
-	useEffect(() => {
-		if (settings.voice?.sendAsAudio) {
-			handleSendAsAudio();
-			audioChunksRef.current = [];
-		} else {
-			handleSubmitText();
-		}
-	}, [voiceInputTrigger])
-	
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
@@ -82,7 +71,12 @@ const VoiceButton = () => {
 	 * Handles submission of user voice input.
 	 */
 	const triggerSendVoiceInput = () => {
-		setVoiceInputTrigger(prev => !prev);
+		if (settings.voice?.sendAsAudio) {
+			handleSendAsAudio();
+			audioChunksRef.current = [];
+		} else {
+			handleSubmitText();
+		}
 	}
 
 	/*
