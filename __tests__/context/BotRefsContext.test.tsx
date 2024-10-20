@@ -109,22 +109,22 @@ describe("BotRefsContext", () => {
 				<TestComponent />
 			</BotRefsProvider>
 		);
-	  
+
 		// verifies initial values
 		expect(screen.getByTestId("botIdRef")).toHaveTextContent(`botIdRef: ${botIdRef.current.toString()}`);
 		expect(screen.getByTestId("flowRef")).toHaveTextContent(`flowRef: ${flowRef.current.toString()}`);
-	  
+
 		// updates refs
 		botIdRef.current = "updated-chatbot-id-2";
 		flowRef.current = {start: {message: "Goodbye!"}};
-	  
+
 		// rerenders for updated values
 		rerender(
 			<BotRefsProvider botIdRef={botIdRef} flowRef={flowRef}>
 				<TestComponent />
 			</BotRefsProvider>
 		);
-	  
+
 		// checks expected ref values
 		expect(screen.getByTestId("botIdRef")).toHaveTextContent(`botIdRef: ${botIdRef.current.toString()}`);
 		expect(screen.getByTestId("flowRef")).toHaveTextContent(`flowRef: ${flowRef.current.toString()}`);
