@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import ToastPrompt from "./ToastPrompt/ToastPrompt";
+import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
@@ -26,7 +27,6 @@ const ChatBotBody = ({
 	chatScrollHeight: number;
 	setChatScrollHeight: Dispatch<SetStateAction<number>>;
 }) => {
-
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -34,7 +34,7 @@ const ChatBotBody = ({
 	const { styles } = useStylesContext();
 
 	// handles messages
-	const { messages } = useMessagesContext();
+	const { messages, setMessages } = useMessagesContext();
 
 	// handles toasts
 	const { toasts } = useToastsContext();
@@ -44,12 +44,11 @@ const ChatBotBody = ({
 
 	// handles bot states
 	const {
-		isBotTyping,
 		isLoadingChatHistory,
+		isBotTyping,
 		setIsLoadingChatHistory,
-		isScrolling,
 		setIsScrolling,
-		setUnreadCount
+		setUnreadCount,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -88,35 +87,20 @@ const ChatBotBody = ({
 		...styles.toastPromptContainerStyle
 	};
 
-	// shifts scroll position when messages are updated and when bot is typing
 	useEffect(() => {
 		if (isLoadingChatHistory) {
-			if (!chatBodyRef.current) {
-				return;
-			}
-
-			const { scrollHeight } = chatBodyRef.current;
-			const scrollDifference = scrollHeight - chatScrollHeight;
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
-			setIsLoadingChatHistory(false);
-			return;
-		}
-
-		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
-			// defer update to next event loop, handles edge case where messages are sent too fast
-			// and the scrolling does not properly reach the bottom
+			loadChatHistory(settings, styles, getHistoryMessages(), setMessages);
 			setTimeout(() => {
 				if (!chatBodyRef.current) {
 					return;
 				}
-
-				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-				if (isChatWindowOpen) {
-					setUnreadCount(0);
-				}
-			})
+				const { scrollHeight } = chatBodyRef.current;
+				const scrollDifference = scrollHeight - chatScrollHeight;
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
+				setIsLoadingChatHistory(false);
+			}, 501)
 		}
-	}, [messages.length, isBotTyping]);
+	}, [isLoadingChatHistory])
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.

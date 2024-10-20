@@ -48,7 +48,8 @@ const ChatBotContainer = ({
 	const { inputRef } = useBotRefsContext();
 
 	// handles chat window
-	const { chatScrollHeight,
+	const {
+		chatScrollHeight,
 		setChatScrollHeight,
 		viewportHeight,
 		viewportWidth,

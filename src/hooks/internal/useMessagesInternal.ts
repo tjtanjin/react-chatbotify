@@ -314,6 +314,19 @@ export const useMessagesInternal = () => {
 		}
 
 		playNotificationSound();
+
+		// if auto scroll to bottom, then scroll to bottom
+		if (settings.chatWindow?.autoJumpToBottom) {
+			// defer update to next event loop, handles edge case where messages are sent too fast
+			// and the scrolling does not properly reach the bottom
+			setTimeout(() => {
+				if (!chatBodyRef.current) {
+					return;
+				}
+
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+			})
+		}
 	}
 
 	return {

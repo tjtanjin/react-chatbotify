@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
+import { getHistoryMessages } from "../../services/ChatHistoryService";
 import { useRcbEventInternal } from "./useRcbEventInternal";
-import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
@@ -49,7 +49,6 @@ export const useChatHistoryInternal = () => {
 			}
 		}
 		setIsLoadingChatHistory(true);
-		loadChatHistory(settings, styles, chatHistory, setMessages);
 	}, [settings, styles, setMessages]);
 
 	return { isLoadingChatHistory, setIsLoadingChatHistory, showChatHistory };

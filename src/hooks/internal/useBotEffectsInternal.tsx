@@ -49,7 +49,9 @@ export const useBotEffectsInternal = () => {
 
 	// handles bot states
 	const {
+		isBotTyping,
 		isChatWindowOpen,
+		isScrolling,
 		hasFlowStarted,
 		setIsChatWindowOpen,
 		setTextAreaDisabled,
@@ -62,7 +64,7 @@ export const useBotEffectsInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { chatBodyRef, flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
 	const flow = flowRef.current as Flow;
 
 	// handles chat window
@@ -111,6 +113,13 @@ export const useBotEffectsInternal = () => {
 			setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
 		}, 1)
 	}, [])
+
+	// scrolls to bottom if bot is typing and user is not scrolling
+	useEffect(() => {
+		if (!isScrolling && chatBodyRef?.current) {
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+		}
+	}, [isBotTyping])
 
 	// renders chat history button if enabled and triggers update if chat history configurations change
 	useEffect(() => {
