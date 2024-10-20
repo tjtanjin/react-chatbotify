@@ -321,7 +321,7 @@ export const useMessagesInternal = () => {
 			playNotificationSound();
 		}
 
-		// if auto scroll to bottom, then scroll to bottom
+		// if auto scroll enabled or is not scrolling, then scroll to bottom
 		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
@@ -331,7 +331,7 @@ export const useMessagesInternal = () => {
 				}
 
 				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			})
+			}, 1)
 		}
 	}
 
