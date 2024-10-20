@@ -1,5 +1,19 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.19 (18-10-2024)
+
+**Fixed:**
+- Fixed an issue where using `ChatBotProvider` for hooks will cause infinite re-renders
+- Fixed an issue where audio service will read out html tags
+- Fixed an issue where `sendOutput` field is being ignored for `options` and `checkboxes` attributes
+- Fixed an issue where tooltip had a much lower z-index than chat window, causing it to be partially hidden
+- Fixed an issue with the `useToasts` hook not being imported correctly
+- Fixed an issue where chatbot button svg icon was not rendered correctly on mobile devices
+
+**Added:**
+- Added a new `updateSettings` utility function to the `useSettings` hook (refer to documentation for details)
+- Added a new `updateStyles` utility function to the `useStyles` hook (refer to documentation for details)
+
 ## v2.0.0-beta.18 (14-10-2024)
 
 **Fixed:**

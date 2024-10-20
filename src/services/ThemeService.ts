@@ -2,7 +2,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
 import { ThemeCacheData } from "../types/internal/ThemeCacheData";
-import { viteConfig } from "../../viteconfig";
+import { viteConfig } from "../viteconfig";
 
 // The configuration values like DEFAULT_URL, DEFAULT_EXPIRATION, and CACHE_KEY_PREFIX
 // were previously accessed using `import.meta.env` directly. To centralize and 
@@ -63,8 +63,6 @@ export const setCachedTheme = (id: string, version: string, settings: Settings, 
 		cssStylesText,
 		cacheDate: currentTimeInSeconds
 	};
-
-	console.log(themeCacheData);
 
 	localStorage.setItem(`${CACHE_KEY_PREFIX}_${id}_${version}`, JSON.stringify(themeCacheData));
 }

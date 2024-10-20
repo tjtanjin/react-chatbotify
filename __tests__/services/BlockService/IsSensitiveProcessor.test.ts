@@ -1,3 +1,5 @@
+import { expect } from "@jest/globals";
+
 import { processIsSensitive } from "../../../src/services/BlockService/IsSensitiveProcessor";
 import { Block } from "../../../src/types/Block";
 import { Params } from "../../../src/types/Params";

@@ -1,11 +1,11 @@
-import { useToastInternal } from "./internal/useToastsInternal";
+import { useToastsInternal } from "./internal/useToastsInternal";
 
 /**
  * External custom hook for managing toasts.
  */
-export const useToast = () => {
+export const useToasts = () => {
 	// handles toasts
-	const { showToast, dismissToast, toasts, setToasts } = useToastInternal();
+	const { showToast, dismissToast, toasts, setToasts } = useToastsInternal();
 
 	return {
 		showToast,
