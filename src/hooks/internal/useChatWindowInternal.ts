@@ -19,7 +19,8 @@ export const useChatWindowInternal = () => {
 		viewportHeight,
 		setViewportHeight,
 		viewportWidth,
-		setViewportWidth
+		setViewportWidth,
+		setUnreadCount
 	} = useBotStatesContext();
 
 	// handles rcb events
@@ -42,7 +43,13 @@ export const useChatWindowInternal = () => {
 				return;
 			}
 		}
-		setIsChatWindowOpen(prev => !prev);
+		setIsChatWindowOpen(prev => {
+			// if currently false means opening so set unread count to 0
+			if (!prev) {
+				setUnreadCount(0);
+			}
+			return !prev;
+		});
 	}, []);
 
 	/**
