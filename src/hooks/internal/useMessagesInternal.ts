@@ -292,31 +292,37 @@ export const useMessagesInternal = () => {
 	}
 
 	/**
-	 * Handles post messages updates such as saving chat history and playing notification sound.
+	 * Handles post messages updates such as saving chat history, scrolling to bottom
+	 * and playing notification sound.
 	 */
 	const handlePostMessagesUpdate = (updatedMessages: Array<Message>) => {
 		saveChatHistory(updatedMessages);
 
+		// tracks if notification should be played
+		let shouldNotify = true;
+
 		// if messages are empty or chatbot is open and user is not scrolling, no need to notify
 		if (updatedMessages.length === 0 || isChatWindowOpen && !isScrolling) {
-			return;
+			shouldNotify = false;
 		}
 
 		// if chatbot is embedded and visible, no need to notify
 		if (settings.general?.embedded && isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
-			return;
+			shouldNotify = false;
 		}
 
 		const lastMessage = updatedMessages[updatedMessages.length - 1];
 		// if message is sent by user or is bot typing or bot is embedded, return
 		if (!lastMessage || lastMessage.sender === "user") {
-			return;
+			shouldNotify = false;
 		}
 
-		playNotificationSound();
+		if (shouldNotify) {
+			playNotificationSound();
+		}
 
 		// if auto scroll to bottom, then scroll to bottom
-		if (settings.chatWindow?.autoJumpToBottom) {
+		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
 			setTimeout(() => {
