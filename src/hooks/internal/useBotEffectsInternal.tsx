@@ -25,7 +25,7 @@ import { Params } from "../../types/Params";
 /**
  * Internal custom hook for common use effects.
  */
-export const useBotEffectInternal = () => {
+export const useBotEffectsInternal = () => {
 	// handles platform
 	const isDesktop = useIsDesktopInternal();
 
@@ -53,7 +53,6 @@ export const useBotEffectInternal = () => {
 		isChatWindowOpen,
 		isBotTyping,
 		isScrolling,
-		timeoutId,
 		hasFlowStarted,
 		setIsChatWindowOpen,
 		setTextAreaDisabled,
@@ -73,7 +72,7 @@ export const useBotEffectInternal = () => {
 	const { viewportHeight, setViewportHeight, setViewportWidth, openChat } = useChatWindowInternal();
 
 	// handles notifications
-	const { playNotificationSound, setUnreadCount, setUpNotifications } = useNotificationInternal();
+	const { playNotificationSound, setUpNotifications } = useNotificationInternal();
 
 	// handles user first interaction
 	const { handleFirstInteraction } = useFirstInteractionInternal();
@@ -103,13 +102,9 @@ export const useBotEffectInternal = () => {
 		};
 	}, []);
 
-	// default setup for notifications
+	// default setup for notifications, text area, chat window, audio and voice
 	useEffect(() => {
 		setUpNotifications();
-	}, [])
-
-	// default setup for text area, chat window, audio and voice
-	useEffect(() => {
 		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 		setIsChatWindowOpen(settings.chatWindow?.defaultOpen as boolean);
 		setAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
@@ -195,13 +190,6 @@ export const useBotEffectInternal = () => {
 
 		playNotificationSound();
 	}, [messages.length]);
-
-	// resets unread count on opening chat
-	useEffect(() => {
-		if (isChatWindowOpen) {
-			setUnreadCount(0);
-		}
-	}, [isChatWindowOpen]);
 
 	// handles scrolling/resizing window on mobile devices
 	useEffect(() => {
@@ -293,6 +281,4 @@ export const useBotEffectInternal = () => {
 			goToPath("start");
 		}
 	}, [hasFlowStarted, settings.general?.flowStartTrigger]);
-
-	return { timeoutId }
 };
