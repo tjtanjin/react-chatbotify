@@ -74,8 +74,6 @@ describe("processCheckboxes", () => {
 		const expectedCheckboxes = { items: ["Item 1", "Item 2"], min: 2, max: 2 };
 		expect(mockParams.injectMessage).toHaveBeenCalled();
 		const [content] = (mockParams.injectMessage as jest.Mock).mock.calls[0];
-		console.log("content.props.checkboxes:", content.props.checkboxes);
-		console.log("expectedCheckboxes:", expectedCheckboxes);
 
 		expect(content.props.checkboxes).toMatchObject(expectedCheckboxes);
 	});

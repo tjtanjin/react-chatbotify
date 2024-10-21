@@ -5,11 +5,11 @@ import { useStylesInternal } from "./internal/useStylesInternal";
  */
 export const useStyles = () => {
 	// handles styles
-	const { styles, setStyles, updateStyles } = useStylesInternal();
+	const { styles, replaceStyles, updateStyles } = useStylesInternal();
 
 	return {
 		styles,
-		setStyles,
+		replaceStyles,
 		updateStyles
 	};
 };

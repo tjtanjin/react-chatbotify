@@ -9,18 +9,25 @@ export const useStylesInternal = () => {
 	// handles styles
 	const { styles, setStyles } = useStylesContext();
 
-    /**
-     * Updates the styles for the chatbot.
-     *
-     * @param fields fields to update
-     */
-    const updateStyles = (fields: object) => {
-        setStyles(deepClone(getCombinedConfig(fields, styles) as Styles));
-    }
+	/**
+	 * Updates the styles for the chatbot.
+	 *
+	 * @param fields fields to update
+	 */
+	const updateStyles = (fields: object) => {
+		setStyles(deepClone(getCombinedConfig(fields, styles) as Styles));
+	}
+
+	/**
+	 * Replaces (overwrites entirely) the current styles with the new styles.
+	 */
+	const replaceStyles = (newStyles: Styles) => {
+		setStyles(newStyles);
+	}
 
 	return {
 		styles,
-		setStyles,
-        updateStyles
+		replaceStyles,
+		updateStyles
 	};
 };

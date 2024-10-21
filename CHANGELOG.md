@@ -1,5 +1,19 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.20 (21-10-2024)
+
+**Fixed:**
+- Fixed an issue with the default chatbot footer icon
+- Improved checks for desktop/mobile devices
+- Reduced unnecessary re-renders (minor optimizations)
+- Properly fixed chatbot svg icon on mobile
+
+**Added:**
+- Added new `replaceSettings`, `replaceStyles`, `replaceMessages`, `replacePaths` and `replaceToasts` utility functions to their respective hooks (replaces their respective state setters)
+
+**Note:**
+Hooks no longer directly expose state setters (not a great practice, and hinders optimizations that can be done within the library itself). The new functions serve as a drop-in replacement for the state setters.
+
 ## v2.0.0-beta.19 (18-10-2024)
 
 **Fixed:**

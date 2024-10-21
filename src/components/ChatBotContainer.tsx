@@ -8,7 +8,7 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { useButtonInternal } from "../hooks/internal/useButtonsInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
-import { useBotEffectInternal } from "../hooks/internal/useBotEffectsInternal";
+import { useBotEffectsInternal } from "../hooks/internal/useBotEffectsInternal";
 import { useIsDesktopInternal } from "../hooks/internal/useIsDesktopInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useBotStatesContext } from "../context/BotStatesContext";
@@ -48,7 +48,7 @@ const ChatBotContainer = ({
 	const { inputRef } = useBotRefsContext();
 
 	// handles chat window
-	const { chatScrollHeight,
+	const {
 		setChatScrollHeight,
 		viewportHeight,
 		viewportWidth,
@@ -59,7 +59,7 @@ const ChatBotContainer = ({
 	const { headerButtons, chatInputButtons, footerButtons } = useButtonInternal();
 
 	// loads all use effects
-	useBotEffectInternal();
+	useBotEffectsInternal();
 
 	/**
 	 * Retrieves class name for window state.
@@ -146,7 +146,7 @@ const ChatBotContainer = ({
 					}
 					<div style={getChatWindowStyle()} className="rcb-chat-window">
 						{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
-						<ChatBotBody chatScrollHeight={chatScrollHeight} setChatScrollHeight={setChatScrollHeight}/>
+						<ChatBotBody setChatScrollHeight={setChatScrollHeight}/>
 						{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
 						{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
 					</div>
