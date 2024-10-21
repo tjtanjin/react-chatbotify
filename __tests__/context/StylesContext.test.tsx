@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
-import { StylesProvider, useStylesContext } from '../../../src/context/StylesContext';
-import { DefaultStyles } from "../../../src/constants/internal/DefaultStyles";
+import { StylesProvider, useStylesContext } from '../../src/context/StylesContext';
+import { DefaultStyles } from "../../src/constants/internal/DefaultStyles";
 import '@testing-library/jest-dom';
 
 
