@@ -49,7 +49,6 @@ const ChatBotContainer = ({
 
 	// handles chat window
 	const {
-		chatScrollHeight,
 		setChatScrollHeight,
 		viewportHeight,
 		viewportWidth,
@@ -147,7 +146,7 @@ const ChatBotContainer = ({
 					}
 					<div style={getChatWindowStyle()} className="rcb-chat-window">
 						{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
-						<ChatBotBody chatScrollHeight={chatScrollHeight} setChatScrollHeight={setChatScrollHeight}/>
+						<ChatBotBody setChatScrollHeight={setChatScrollHeight}/>
 						{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
 						{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
 					</div>

@@ -1,8 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
+import { Dispatch, SetStateAction, CSSProperties, MouseEvent } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import ToastPrompt from "./ToastPrompt/ToastPrompt";
-import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
@@ -17,14 +16,11 @@ import "./ChatBotBody.css";
 /**
  * Contains chat messages between the user and bot.
  * 
- * @param chatScrollHeight number representing chat window scroll height
  * @param setChatScrollHeight setter for tracking chat window scroll height
  */
 const ChatBotBody = ({
-	chatScrollHeight,
 	setChatScrollHeight,
 }: {
-	chatScrollHeight: number;
 	setChatScrollHeight: Dispatch<SetStateAction<number>>;
 }) => {
 	// handles settings
@@ -34,7 +30,7 @@ const ChatBotBody = ({
 	const { styles } = useStylesContext();
 
 	// handles messages
-	const { messages, setMessages } = useMessagesContext();
+	const { messages } = useMessagesContext();
 
 	// handles toasts
 	const { toasts } = useToastsContext();
@@ -44,9 +40,7 @@ const ChatBotBody = ({
 
 	// handles bot states
 	const {
-		isLoadingChatHistory,
 		isBotTyping,
-		setIsLoadingChatHistory,
 		setIsScrolling,
 		setUnreadCount,
 	} = useBotStatesContext();
@@ -86,21 +80,6 @@ const ChatBotBody = ({
 		maxWidth: (styles.chatWindowStyle?.width as number ?? 375)  - 50,
 		...styles.toastPromptContainerStyle
 	};
-
-	useEffect(() => {
-		if (isLoadingChatHistory) {
-			loadChatHistory(settings, styles, getHistoryMessages(), setMessages);
-			setTimeout(() => {
-				if (!chatBodyRef.current) {
-					return;
-				}
-				const { scrollHeight } = chatBodyRef.current;
-				const scrollDifference = scrollHeight - chatScrollHeight;
-				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
-				setIsLoadingChatHistory(false);
-			}, 501)
-		}
-	}, [isLoadingChatHistory])
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.

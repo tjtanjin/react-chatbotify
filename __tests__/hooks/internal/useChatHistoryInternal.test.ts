@@ -90,6 +90,9 @@ describe("useChatHistoryInternal Hook", () => {
 			expect.any(Object),
 			initialChatHistory,
 			expect.any(Function),
+			expect.any(Object),
+			expect.any(Number),
+			expect.any(Function),
 		);
 
 		// checks if history is being loaded
