@@ -154,7 +154,7 @@ export const DefaultSettings: Settings = {
 						background: "linear-gradient(to right, #42b0c5, #491d8d)",
 					}}
 				>
-					<ChatIcon style={{ width: "80%", height: "80%" }} />
+					<ChatIcon style={{ width: "80%", height: "80%", fill: "#fff" }} />
 				</div>
 				<span key={2} style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
