@@ -4,7 +4,6 @@ import ChatHistoryButton from "../../components/ChatHistoryButton/ChatHistoryBut
 import { preProcessBlock } from "../../services/BlockService/BlockService";
 import { saveChatHistory, setHistoryStorageValues } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
-import { isChatBotVisible } from "../../utils/displayChecker";
 import { useIsDesktopInternal } from "./useIsDesktopInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useNotificationInternal } from "./useNotificationsInternal";
@@ -39,7 +38,7 @@ export const useBotEffectsInternal = () => {
 		removeMessage,
 		streamMessage,
 		messages,
-		setMessages
+		replaceMessages,
 	} = useMessagesInternal();
 
 	// handles paths
@@ -50,8 +49,8 @@ export const useBotEffectsInternal = () => {
 
 	// handles bot states
 	const {
-		isChatWindowOpen,
 		isBotTyping,
+		isChatWindowOpen,
 		isScrolling,
 		hasFlowStarted,
 		setIsChatWindowOpen,
@@ -65,14 +64,14 @@ export const useBotEffectsInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, chatBodyRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { chatBodyRef, flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
 	const flow = flowRef.current as Flow;
 
 	// handles chat window
 	const { viewportHeight, setViewportHeight, setViewportWidth, openChat } = useChatWindowInternal();
 
 	// handles notifications
-	const { playNotificationSound, setUpNotifications } = useNotificationInternal();
+	const { setUpNotifications } = useNotificationInternal();
 
 	// handles user first interaction
 	const { handleFirstInteraction } = useFirstInteractionInternal();
@@ -115,6 +114,13 @@ export const useBotEffectsInternal = () => {
 		}, 1)
 	}, [])
 
+	// scrolls to bottom if bot is typing and user is not scrolling
+	useEffect(() => {
+		if (!isScrolling && chatBodyRef?.current) {
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+		}
+	}, [isBotTyping])
+
 	// renders chat history button if enabled and triggers update if chat history configurations change
 	useEffect(() => {
 		if (settings.chatHistory?.disabled) {
@@ -125,7 +131,7 @@ export const useBotEffectsInternal = () => {
 			if (chatHistory != null) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
 				const messageContent = createMessage(<ChatHistoryButton/>, "system");
-				setMessages([messageContent]);
+				replaceMessages([messageContent]);
 				if (settings.chatHistory?.autoLoad) {
 					showChatHistory();
 				}
@@ -167,29 +173,6 @@ export const useBotEffectsInternal = () => {
 			}
 		});
 	}, [isDesktop]);
-
-	// triggers saving of chat history and checks for notifications
-	useEffect(() => {
-		saveChatHistory(messages);
-
-		// if messages are empty or chatbot is open and user is not scrolling, no need to notify
-		if (messages.length === 0 || isChatWindowOpen && !isScrolling) {
-			return;
-		}
-
-		// if chatbot is embedded and visible, no need to notify
-		if (settings.general?.embedded && isChatBotVisible(chatBodyRef.current as HTMLDivElement) || isBotTyping) {
-			return;
-		}
-
-		const lastMessage = messages[messages.length - 1];
-		// if message is sent by user or is bot typing or bot is embedded, return
-		if (!lastMessage || lastMessage.sender === "user") {
-			return;
-		}
-
-		playNotificationSound();
-	}, [messages.length]);
 
 	// handles scrolling/resizing window on mobile devices
 	useEffect(() => {

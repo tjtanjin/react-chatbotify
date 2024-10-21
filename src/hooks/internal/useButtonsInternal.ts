@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import {
 	createAudioButton,
@@ -20,11 +20,6 @@ export const useButtonInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
-	// buttons to show in header, chat input and footer
-	const [headerButtons, setHeaderButtons] = useState<Array<JSX.Element>>([]);
-	const [chatInputButtons, setChatInputButtons] = useState<Array<JSX.Element>>([]);
-	const [footerButtons, setFooterButtons] = useState<Array<JSX.Element>>([]);
-	
 	// handles the rendering of buttons
 	const staticButtonComponentMap = useMemo(() => ({
 		[Button.CLOSE_CHAT_BUTTON]: () => createCloseChatButton(),
@@ -36,13 +31,15 @@ export const useButtonInternal = () => {
 		[Button.VOICE_MESSAGE_BUTTON]: () => createVoiceButton()
 	}), []);
 
-	// sets buttons to be shown
-	useEffect(() => {
-		const buttonConfig = getButtonConfig(settings, staticButtonComponentMap);
-		setHeaderButtons(buttonConfig.header);
-		setChatInputButtons(buttonConfig.chatInput);
-		setFooterButtons(buttonConfig.footer);
+	// computes button configurations whenever settings or map changes
+	const { header, chatInput, footer } = useMemo(() => {
+		return getButtonConfig(settings, staticButtonComponentMap);
 	}, [settings, staticButtonComponentMap]);
 
-	return {headerButtons, chatInputButtons, footerButtons};
+	// memoizes creation of jsx elements
+	const headerButtons = useMemo(() => header, [header]);
+	const chatInputButtons = useMemo(() => chatInput, [chatInput]);
+	const footerButtons = useMemo(() => footer, [footer]);
+
+	return { headerButtons, chatInputButtons, footerButtons };
 };
