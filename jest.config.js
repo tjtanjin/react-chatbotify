@@ -13,5 +13,4 @@ export default {
 	testPathIgnorePatterns: [
 		"__tests__/__mocks__"
 	],
-	"maxWorkers": 2
 };
