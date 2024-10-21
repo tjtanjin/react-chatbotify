@@ -59,7 +59,7 @@ describe("useMessagesInternal", () => {
     expect(result.current).toHaveProperty("removeMessage");
     expect(result.current).toHaveProperty("streamMessage");
     expect(result.current).toHaveProperty("messages");
-    expect(result.current).toHaveProperty("setMessages");
+    expect(result.current).toHaveProperty("replaceMessages");
   });
 
   it("should inject a message correctly", async () => {
