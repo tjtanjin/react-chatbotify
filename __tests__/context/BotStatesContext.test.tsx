@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BotStatesProvider, useBotStatesContext } from '../../../src/context/BotStatesContext';
+import { BotStatesProvider, useBotStatesContext } from '../../src/context/BotStatesContext';
 import '@testing-library/jest-dom';
 
 
