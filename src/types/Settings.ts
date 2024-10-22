@@ -12,8 +12,6 @@ export type Settings = {
 		showInputRow?: boolean;
 		actionDisabledIcon?: string;
 		embedded?: boolean;
-		desktopEnabled?: boolean;
-		mobileEnabled?: boolean;
 		flowStartTrigger?: string;
 	},
 	tooltip?: {
@@ -167,5 +165,9 @@ export type Settings = {
 		sendButton?: string;
 		voiceButton?: string;
 		inputTextArea?: string;
+	},
+	device?: {
+		desktopEnabled?: boolean;
+		mobileEnabled?: boolean;
 	}
 }

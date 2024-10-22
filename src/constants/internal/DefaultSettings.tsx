@@ -30,8 +30,6 @@ export const DefaultSettings: Settings = {
 		showInputRow: true,
 		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
-		desktopEnabled: true,
-		mobileEnabled: true,
 		flowStartTrigger: "ON_LOAD",
 	},
 	tooltip: {
@@ -212,5 +210,9 @@ export const DefaultSettings: Settings = {
 		sendButton: "send message",
 		voiceButton: "toggle voice",
 		inputTextArea: "input text area",
+	},
+	device: {
+		desktopEnabled: true,
+		mobileEnabled: true,
 	}
 }
