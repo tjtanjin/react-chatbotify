@@ -74,6 +74,13 @@ export const usePathsInternal = () => {
 		return true;
 	}, [paths, setPaths, settings]);
 
+	/**
+	 * Replaces (overwrites entirely) the current paths with the new paths.
+	 */
+	const replacePaths = (newPaths: Array<string>) => {
+		setPaths(newPaths);
+	}
+
 	return {
 		getCurrPath,
 		getPrevPath,
@@ -81,6 +88,6 @@ export const usePathsInternal = () => {
 		blockAllowsAttachment,
 		setBlockAllowsAttachment,
 		paths,
-		setPaths
+		replacePaths
 	};
 };

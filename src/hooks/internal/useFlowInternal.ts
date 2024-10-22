@@ -1,21 +1,21 @@
+import { useMessagesInternal } from "./useMessagesInternal";
+import { usePathsInternal } from "./usePathsInternal";
+import { useToastsInternal } from "./useToastsInternal";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
-import { useMessagesContext } from "../../context/MessagesContext";
-import { usePathsContext } from "../../context/PathsContext";
-import { useToastsContext } from "../../context/ToastsContext";
 
 /**
  * Internal custom hook for managing flow.
  */
 export const useFlowInternal = () => {
 	// handles messages
-	const { setMessages } = useMessagesContext();
+	const { replaceMessages } = useMessagesInternal();
 	
 	// handles paths
-	const { setPaths } = usePathsContext();
+	const { replacePaths } = usePathsInternal();
 
 	// handles toasts
-	const { setToasts } = useToastsContext();
+	const { replaceToasts } = useToastsInternal();
 
 	// handles bot states
 	const { hasFlowStarted } = useBotStatesContext();
@@ -27,9 +27,9 @@ export const useFlowInternal = () => {
 	 * Restarts the conversation flow for the chatbot.
 	 */
 	const restartFlow = () => {
-		setMessages([]);
-		setToasts([]);
-		setPaths(["start"]);
+		replaceMessages([]);
+		replaceToasts([]);
+		replacePaths(["start"]);
 	}
 	
 	/**

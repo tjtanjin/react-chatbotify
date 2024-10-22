@@ -1,4 +1,4 @@
-import { useEffect, MouseEvent, useState, useRef } from "react";
+import { useEffect, MouseEvent, useRef, useState } from "react";
 
 import MediaDisplay from "../../ChatBotBody/MediaDisplay/MediaDisplay";
 import { startVoiceRecording, stopVoiceRecording } from "../../../services/VoiceService";
@@ -52,7 +52,7 @@ const VoiceButton = () => {
 			handleSubmitText();
 		}
 	}, [voiceInputTrigger])
-	
+
 	// handles starting and stopping of voice recording on toggle
 	useEffect(() => {
 		if (voiceToggledOn) {
