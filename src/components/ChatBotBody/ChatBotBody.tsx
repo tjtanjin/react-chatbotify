@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, CSSProperties, MouseEvent } from "react";
+import { Dispatch, SetStateAction, CSSProperties, MouseEvent, useEffect } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import ToastPrompt from "./ToastPrompt/ToastPrompt";
@@ -41,6 +41,7 @@ const ChatBotBody = ({
 	// handles bot states
 	const {
 		isBotTyping,
+		isScrolling,
 		setIsScrolling,
 		setUnreadCount,
 	} = useBotStatesContext();
@@ -80,6 +81,20 @@ const ChatBotBody = ({
 		maxWidth: (styles.chatWindowStyle?.width as number ?? 375)  - 50,
 		...styles.toastPromptContainerStyle
 	};
+
+	// shifts scroll position when scroll height changes and determines if a user is scrolling in chat window.
+	useEffect(() => {
+		if (!chatBodyRef.current) {
+			return;
+		}
+
+		// used to return chat history to correct height
+		setChatScrollHeight(chatBodyRef.current.scrollHeight);
+
+		if (!isScrolling) {
+			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+		}
+	}, [chatBodyRef.current?.scrollHeight]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.

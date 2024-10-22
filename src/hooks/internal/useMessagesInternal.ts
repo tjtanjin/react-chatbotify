@@ -94,7 +94,6 @@ export const useMessagesInternal = () => {
 							break;
 						}
 					}
-					handlePostMessagesUpdate(updatedMessages);
 					return updatedMessages;
 				});
 			}, streamSpeed);
@@ -138,6 +137,12 @@ export const useMessagesInternal = () => {
 		const isUserStream = typeof message.content === "string"
 			&& message.sender === "user" && settings?.userBubble?.simStream;
 
+		// handles post-message inject event
+		setUnreadCount(prev => prev + 1);
+		if (settings.event?.rcbPostInjectMessage) {
+			callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
+		}
+
 		if (isBotStream) {
 			const streamSpeed = settings.botBubble?.streamSpeed as number;
 			await simulateStream(message, streamSpeed, useMarkup);
@@ -150,12 +155,6 @@ export const useMessagesInternal = () => {
 				handlePostMessagesUpdate(updatedMessages);
 				return updatedMessages;
 			});
-		}
-
-		// handles post-message inject event
-		setUnreadCount(prev => prev + 1);
-		if (settings.event?.rcbPostInjectMessage) {
-			callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
 		}
 
 		return message.id;
