@@ -107,7 +107,7 @@ const SendButton = () => {
 				<IconComponent
 					style={textAreaDisabled ?
 						sendIconDisabledStyle :
-						(isHovered ? sendButtonHoveredStyle : sendButtonStyle)
+						(isHovered ? sendIconHoveredStyle : sendIconStyle)
 					}
 				/>
 			</span>
