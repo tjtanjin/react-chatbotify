@@ -214,5 +214,6 @@ export const DefaultSettings: Settings = {
 	device: {
 		desktopEnabled: true,
 		mobileEnabled: true,
+		applyMobileOptimizations: true,
 	}
 }

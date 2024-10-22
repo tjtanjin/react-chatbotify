@@ -1,7 +1,16 @@
 import { useMemo } from 'react';
 
+import { useSettingsContext } from '../../context/SettingsContext';
+
 export const useIsDesktopInternal = () => {
+	const { settings } = useSettingsContext();
+
 	const isDesktop = useMemo(() => {
+		// if not applying mobile optimizations, can just use desktop behavior
+		if (!settings.device?.applyMobileOptimizations) {
+			return true;
+		}
+
 		if (typeof window === 'undefined' || !window.navigator) {
 			return false; // Default to false if running on server-side
 		}
@@ -11,7 +20,7 @@ export const useIsDesktopInternal = () => {
 
 		// device is desktop if it is not a mobile agent and if the width is wide enough
 		return isNotMobileUA && isWideEnough;
-	}, []);
+	}, [settings.device?.applyMobileOptimizations]);
 
 	// boolean indicating if user is on desktop (otherwise treated as on mobile)
 	return isDesktop;

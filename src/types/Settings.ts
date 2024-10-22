@@ -169,5 +169,6 @@ export type Settings = {
 	device?: {
 		desktopEnabled?: boolean;
 		mobileEnabled?: boolean;
+		applyMobileOptimizations?: boolean;
 	}
 }
