@@ -62,6 +62,14 @@ const SendButton = () => {
 		...styles.sendIconDisabledStyle
 	};
 
+	// styles for hovered send icon
+	const sendIconHoveredStyle: React.CSSProperties = {
+		backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
+		fill: "#fff",
+		...styles.sendIconStyle, // by default inherit the base style
+		...styles.sendIconHoveredStyle
+	};
+
 	/**
 	 * Handles mouse enter event on send button.
 	 */
@@ -86,14 +94,22 @@ const SendButton = () => {
 				<span
 					className="rcb-send-icon"
 					data-testid="rcb-send-icon"
-					style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}
+					style={textAreaDisabled ?
+						sendIconDisabledStyle :
+						(isHovered ? sendIconHoveredStyle : sendIconStyle)
+					}
 				/>
 			)
 		}
 		return (
 			IconComponent &&
 			<span className="rcb-send-icon" data-testid="rcb-send-icon">
-				<IconComponent style={textAreaDisabled ? sendIconDisabledStyle : sendIconStyle}/>
+				<IconComponent
+					style={textAreaDisabled ?
+						sendIconDisabledStyle :
+						(isHovered ? sendButtonHoveredStyle : sendButtonStyle)
+					}
+				/>
 			</span>
 		)
 	}
