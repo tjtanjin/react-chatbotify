@@ -1,8 +1,13 @@
 import { renderHook } from '@testing-library/react';
+
+import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { useIsDesktopInternal} from "../../../src/hooks/internal/useIsDesktopInternal";
 
 const originalNavigator = window.navigator;
 const originalInnerWidth = window.innerWidth;
+
+// Mock the contexts
+jest.mock("../../../src/context/SettingsContext");
 
 const mockWindowProperty = (property: string, value: any) => {
     Object.defineProperty(window, property, {
@@ -13,6 +18,13 @@ const mockWindowProperty = (property: string, value: any) => {
 };
 
 describe('useIsDesktopInternal', () => {
+    beforeEach(() => {
+		// default mock values
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: { device: { applyMobileOptimizations: true } },
+		});
+	});
+
     afterEach(() => {
         Object.defineProperty(window, 'navigator', {
             configurable: true,
@@ -69,6 +81,20 @@ describe('useIsDesktopInternal', () => {
             userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         });
         mockWindowProperty('innerWidth', 768);
+
+        const { result } = renderHook(() => useIsDesktopInternal());
+        expect(result.current).toBe(true);
+    });
+
+    it('should return true if mobile optimizations are not applied even if user is on mobile', () => {
+        (useSettingsContext as jest.Mock).mockReturnValue({
+			settings: { device: { applyMobileOptimizations: false } },
+		});
+
+        mockWindowProperty('navigator', {
+            userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        });
+        mockWindowProperty('innerWidth', 500);
 
         const { result } = renderHook(() => useIsDesktopInternal());
         expect(result.current).toBe(true);
