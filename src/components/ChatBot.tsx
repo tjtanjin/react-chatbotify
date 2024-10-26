@@ -69,7 +69,7 @@ const ChatBot = ({
 			<ChatBotLoader styleRootRef={styleRootRef} id={finalBotId} flow={finalFlow} settings={finalSettings}
 				styles={finalStyles} themes={finalThemes} plugins={finalPlugins} setConfigLoaded={setConfigLoaded}
 			/>
-			{configLoaded && <ChatBotContainer plugins={plugins} />}
+			{configLoaded && <ChatBotContainer plugins={plugins} setFinalThemes={setFinalThemes} />}
 		</>
 	)
 
