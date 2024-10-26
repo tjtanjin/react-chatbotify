@@ -1,5 +1,18 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.21 (22-10-2024)
+
+**Minor Breaking Change:**
+- The `desktopEnabled` and `mobileEnabled` properties previously found under `settings.general` have been moved to a new `settings.device` section
+
+**Fixed:**
+- Fixed an issue with notification sound spams when streaming messages
+
+**Added:**
+- Added a new `sendIconHoveredStyle` to allow users to define send icon styles on hover
+- Added a new `device` section (which the `desktopEnabled` and `mobileEnabled` properties are moved to)
+- Added a new `applyMobileOptimizations` property to the newly added `settings.device` section
+
 ## v2.0.0-beta.20 (21-10-2024)
 
 **Fixed:**
