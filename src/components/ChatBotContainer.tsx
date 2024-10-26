@@ -97,8 +97,8 @@ const ChatBotContainer = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return (isDesktop && settings.general?.desktopEnabled)
-			|| (!isDesktop && settings.general?.mobileEnabled);
+		return (isDesktop && settings.device?.desktopEnabled)
+			|| (!isDesktop && settings.device?.mobileEnabled);
 	}
 
 	return (
