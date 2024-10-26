@@ -14,36 +14,36 @@ export const usePluginsInternal = (plugins: Array<Plugin> | undefined,
 	const { updateSettings } = useSettingsInternal();
 	const { updateStyles } = useStylesInternal();
 
-	// initializes plugins
-	const configs = plugins?.map((pluginHook) => pluginHook());
+	// initializes plugins and retrieves info for setup
+	const setUpInfo = plugins?.map((pluginHook) => pluginHook());
 
 	useEffect(() => {
 		// applies plugin themes, settings and styles if specified
-		configs?.forEach((pluginConfig) => {
-			if (pluginConfig.themes) {
-				if (Array.isArray(pluginConfig.themes)) {
+		setUpInfo?.forEach((setUpInfo) => {
+			if (setUpInfo.themes) {
+				if (Array.isArray(setUpInfo.themes)) {
 					setFinalThemes(prev => {
 						if (Array.isArray(prev)) {
-							return [...prev, ...pluginConfig.themes as Array<Theme>];
+							return [...prev, ...setUpInfo.themes as Array<Theme>];
 						} else {
-							return [prev, ...pluginConfig.themes as Array<Theme>];
+							return [prev, ...setUpInfo.themes as Array<Theme>];
 						}
 					});
 				} else {
 					setFinalThemes(prev => {
 						if (Array.isArray(prev)) {
-							return [...prev, pluginConfig.themes as Theme];
+							return [...prev, setUpInfo.themes as Theme];
 						} else {
-							return [prev, pluginConfig.themes as Theme];
+							return [prev, setUpInfo.themes as Theme];
 						}
 					});
 				}
 			}
-			if (pluginConfig?.settings) {
-				updateSettings(pluginConfig.settings);
+			if (setUpInfo?.settings) {
+				updateSettings(setUpInfo.settings);
 			}
-			if (pluginConfig?.styles) {
-				updateStyles(pluginConfig.styles);
+			if (setUpInfo?.styles) {
+				updateStyles(setUpInfo.styles);
 			}
 		});
 	}, [plugins])
