@@ -1,6 +1,6 @@
 // Import required testing utilities and hooks
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useToastInternal } from '../../../src/hooks/internal/useToastsInternal';
+import { useToastsInternal } from '../../../src/hooks/internal/useToastsInternal';
 import { useSettingsContext } from '../../../src/context/SettingsContext';
 import { useToastsContext } from '../../../src/context/ToastsContext';
 import { useRcbEventInternal } from '../../../src/hooks/internal/useRcbEventInternal';
@@ -15,7 +15,7 @@ jest.mock('../../../src/utils/idGenerator', () => ({
 	generateSecureUUID: jest.fn(),
 }));
 
-describe('useToastInternal', () => {
+describe('useToastsInternal', () => {
 	let mockSettingsContext: any;
 	let mockToastsContext: any;
 	let mockRcbEventInternal: any;
@@ -57,7 +57,7 @@ describe('useToastInternal', () => {
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false, 
 			data: { toast: { id: 'mocked-uuid', content: 'New toast content', timeout: undefined } 
 			} });
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		act(() => {
 			result.current.showToast('New toast content');
 		});
@@ -73,7 +73,7 @@ describe('useToastInternal', () => {
 	it('should not add a new toast if maxCount is reached and forbidOnMax is true', () => {
 		// Test forbidding new toast if maxCount is reached
 		mockToastsContext.toasts = [{ id: '1' }, { id: '2' }, { id: '3' }];
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		const toastId = result.current.showToast('Toast content');
 		expect(toastId).toBeNull();
 		expect(mockToastsContext.setToasts).not.toHaveBeenCalled();
@@ -87,7 +87,7 @@ describe('useToastInternal', () => {
 			defaultPrevented: false, data: { toast: { id: 'mocked-uuid', 
 				content: 'New toast content', timeout: undefined } 
 			} });
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		act(() => {
 			result.current.showToast('New toast content');
 		});
@@ -108,7 +108,7 @@ describe('useToastInternal', () => {
 		const toast = { id: 'toast-1', content: 'Toast to dismiss' };
 		mockToastsContext.toasts = [toast];
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false });
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		act(() => {
 			result.current.dismissToast('toast-1');
 		});
@@ -123,7 +123,7 @@ describe('useToastInternal', () => {
 	it('should not dismiss a toast if the id is not found', () => {
 		// Test no dismissal if ID not found
 		mockToastsContext.toasts = [{ id: 'toast-2', content: 'Another toast' }];
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		const resultId = result.current.dismissToast('invalid-id');
 		expect(resultId).toBeNull();
 		expect(mockToastsContext.setToasts).not.toHaveBeenCalled();
@@ -132,7 +132,7 @@ describe('useToastInternal', () => {
 	it('should not show toast if rcbShowToast event is prevented', () => {
 		// Test prevention of toast display by event
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: true });
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		const resultId = result.current.showToast('Prevented toast');
 		expect(resultId).toBeNull();
 		expect(mockToastsContext.setToasts).not.toHaveBeenCalled();
@@ -143,7 +143,7 @@ describe('useToastInternal', () => {
 		const toast = { id: 'toast-1', content: 'Toast to dismiss' };
 		mockToastsContext.toasts = [toast];
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false });
-		const { result } = renderHook(() => useToastInternal());
+		const { result } = renderHook(() => useToastsInternal());
 		act(() => {
 			result.current.dismissToast('toast-1');
 		});
