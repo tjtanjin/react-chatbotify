@@ -1,5 +1,5 @@
 // Import required testing utilities and hooks
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, act } from "@testing-library/react";
 import { useToastsInternal } from '../../../src/hooks/internal/useToastsInternal';
 import { useSettingsContext } from '../../../src/context/SettingsContext';
 import { useToastsContext } from '../../../src/context/ToastsContext';
