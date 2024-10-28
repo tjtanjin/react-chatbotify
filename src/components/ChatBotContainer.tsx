@@ -1,4 +1,4 @@
-import { MouseEvent, useMemo } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useMemo } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -10,11 +10,13 @@ import { useButtonInternal } from "../hooks/internal/useButtonsInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
 import { useBotEffectsInternal } from "../hooks/internal/useBotEffectsInternal";
 import { useIsDesktopInternal } from "../hooks/internal/useIsDesktopInternal";
+import { usePluginsInternal } from "../hooks/internal/usePluginsInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useBotStatesContext } from "../context/BotStatesContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { useStylesContext } from "../context/StylesContext";
 import { Plugin } from "../types/Plugin";
+import { Theme } from "../types/Theme";
 
 import "./ChatBotContainer.css";
 
@@ -24,14 +26,12 @@ import "./ChatBotContainer.css";
  * @param plugins plugins to initialize
  */
 const ChatBotContainer = ({
-	plugins
+	plugins,
+	setFinalThemes
 }: {
 	plugins?: Array<Plugin>;
+	setFinalThemes: Dispatch<SetStateAction<Theme | Array<Theme>>>;
 }) => {
-	
-	// loads plugins
-	plugins?.map((plugin) => plugin());
-
 	// handles platform
 	const isDesktop = useIsDesktopInternal();
 
@@ -60,6 +60,9 @@ const ChatBotContainer = ({
 
 	// loads all use effects
 	useBotEffectsInternal();
+
+	// loads plugins
+	usePluginsInternal(plugins, setFinalThemes);
 
 	/**
 	 * Retrieves class name for window state.
