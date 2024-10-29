@@ -47,19 +47,6 @@ describe("ChatBotContainer Component", () => {
 			setAudioToggledOn: jest.fn(),
 		});
 
-		(useSettingsContext as jest.Mock).mockReturnValue({
-			settings: {
-				general: {
-					showHeader: true,
-					showFooter: true,
-					showInputRow: true,
-					flowStartTrigger: "ON_CHATBOT_INTERACT",
-					desktopEnabled: true,
-					mobileEnabled: true,
-				},
-			},
-		});
-
 		(useStylesContext as jest.Mock).mockReturnValue({
 			styles: {
 				chatWindowStyle: { background: 'white', color: 'black' },
@@ -81,6 +68,18 @@ describe("ChatBotContainer Component", () => {
 	});
 
 	it("renders ChatBotContainer with header, body, input, and footer", () => {
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: {
+				general: {
+					showHeader: true,
+					showFooter: true,
+					showInputRow: true,
+					flowStartTrigger: "ON_CHATBOT_INTERACT",
+					desktopEnabled: true,
+					mobileEnabled: true,
+				},
+			},
+		});
 		render(<ChatBotContainer />);
 
 		const headerButton = screen.getByText("Header Button");
@@ -90,5 +89,125 @@ describe("ChatBotContainer Component", () => {
 		expect(headerButton).toBeInTheDocument();
 		expect(inputButton).toBeInTheDocument();
 		expect(footerButton).toBeInTheDocument();
+	});
+
+	it("renders header when settings.general.showHeader is true", () => {
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: {
+				general: {
+					showHeader: true,
+					showFooter: false,
+					showInputRow: false,
+					flowStartTrigger: "ON_CHATBOT_INTERACT",
+					desktopEnabled: true,
+					mobileEnabled: true,
+				},
+			},
+		});
+		render(<ChatBotContainer />);
+
+		expect(screen.queryByText("Header Button")).toBeInTheDocument();
+		expect(screen.queryByText("Input Button")).not.toBeInTheDocument();
+		expect(screen.queryByText("Footer Button")).not.toBeInTheDocument();
+	});
+
+	it("renders input button when settings.general.showInputRow is true", () => {
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: {
+				general: {
+					showHeader: false,
+					showFooter: false,
+					showInputRow: true,
+					flowStartTrigger: "ON_CHATBOT_INTERACT",
+					desktopEnabled: true,
+					mobileEnabled: true,
+				},
+			},
+		});
+		
+		render(<ChatBotContainer />);
+	
+		expect(screen.queryByText("Input Button")).toBeInTheDocument();
+		expect(screen.queryByText("Header Button")).not.toBeInTheDocument();
+		expect(screen.queryByText("Footer Button")).not.toBeInTheDocument();
+	});
+
+	it("renders footer button when settings.general.showFooter is true", () => {
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: {
+				general: {
+					showHeader: false,
+					showFooter: true,
+					showInputRow: false,
+					flowStartTrigger: "ON_CHATBOT_INTERACT",
+					desktopEnabled: true,
+					mobileEnabled: true,
+				},
+			},
+		});
+		
+		render(<ChatBotContainer />);
+	
+		expect(screen.queryByText("Footer Button")).toBeInTheDocument();
+		expect(screen.queryByText("Header Button")).not.toBeInTheDocument();
+		expect(screen.queryByText("Input Button")).not.toBeInTheDocument();
+	});	
+
+	it("sets flow started on mouse down if it hasn't started", () => {
+		const setHasFlowStarted = jest.fn(); // Mock function for setHasFlowStarted
+		const setUnreadCount = jest.fn(); // Mock function for setUnreadCount
+		const setTextAreaDisabled = jest.fn(); // Mock function for setTextAreaDisabled
+		const setIsChatWindowOpen = jest.fn(); // Mock function for setIsChatWindowOpen
+		const setAudioToggledOn = jest.fn(); // Mock function for setAudioToggledOn
+
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: {
+				general: {
+					showHeader: true,
+					showFooter: true,
+					showInputRow: true,
+					flowStartTrigger: "ON_CHATBOT_INTERACT",
+					desktopEnabled: true,
+					mobileEnabled: true,
+				},
+			},
+		});
+
+		(useBotStatesContext as jest.Mock).mockReturnValue({
+			hasFlowStarted: false,
+			setHasFlowStarted,
+			setUnreadCount,
+			setTextAreaDisabled,
+			setIsChatWindowOpen,
+			setAudioToggledOn,
+			// Add other necessary mock return values here
+		});
+
+		render(<ChatBotContainer />);
+        
+		// Use 'textbox' role instead of 'dialog'
+		const chatInput = screen.getByRole('textbox', { name: 'input text area' });
+		chatInput.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+
+		// Check that setHasFlowStarted was called with true
+		expect(setHasFlowStarted).toHaveBeenCalledWith(true);
+	});
+
+	it("does not render chatbot when shouldShowChatBot is false", () => {
+		(useIsDesktopInternal as jest.Mock).mockReturnValue(false);
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: {
+				general: {
+					showHeader: false,
+					showFooter: false,
+					showInputRow: false,
+					embedded: false,
+					mobileEnabled: false, // Setting this to false
+				},
+			},
+		});
+		render(<ChatBotContainer />);
+		
+		expect(screen.queryByText("Header Button")).not.toBeInTheDocument();
 	});
 });
