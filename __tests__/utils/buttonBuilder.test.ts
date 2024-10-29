@@ -23,9 +23,11 @@ const mockLocalStorage = (() => {
 	};
 })();
 
-Object.defineProperty(window, "localStorage", {
-	value: mockLocalStorage,
-});
+if (typeof window !== 'undefined') {
+    Object.defineProperty(window, 'localStorage', {
+        value: mockLocalStorage,
+    });
+}
 
 describe('getButtonConfig', () => {
 	const buttonComponentMap = {
