@@ -2,6 +2,23 @@ import { getButtonConfig, createAudioButton, createNotificationButton, createClo
 	createSendButton, createFileAttachmentButton, createEmojiButton} from "../../src/utils/buttonBuilder";
 import { Button} from "../../src";
 
+const mockLocalStorage = (() => {
+	let store: { [key: string]: string } = {};
+	return {
+		getItem: (key: string) => store[key] || null,
+		setItem: (key: string, value: string) => {
+			store[key] = value.toString();
+		},
+		clear: () => {
+			store = {};
+		},
+	};
+})();
+
+Object.defineProperty(window, "localStorage", {
+	value: mockLocalStorage,
+});
+
 describe('getButtonConfig', () => {
 	const buttonComponentMap = {
 		[Button.AUDIO_BUTTON]: createAudioButton,
