@@ -1,8 +1,14 @@
+// chatbot import
 import ChatBot from "./components/ChatBot";
+
+// provider import
 import ChatBotProvider from "./context/ChatBotContext";
 
+// util imports
 import { getDefaultSettings } from "./utils/configParser";
 import { getDefaultStyles } from "./utils/configParser";
+
+// type imports
 import { Block } from "./types/Block";
 import { Params } from "./types/Params";
 import { Flow } from "./types/Flow";
@@ -46,7 +52,7 @@ import { usePaths } from "./hooks/usePaths";
 import { useSettings } from "./hooks/useSettings";
 import { useStyles } from "./hooks/useStyles";
 import { useTextArea } from "./hooks/useTextArea";
-import { useToast } from "./hooks/useToasts";
+import { useToasts } from "./hooks/useToasts";
 import { useVoice } from "./hooks/useVoice";
 import { useChatHistory } from "./hooks/useChatHistory";
 
@@ -109,7 +115,7 @@ export {
 	useSettings,
 	useStyles,
 	useTextArea,
-	useToast,
+	useToasts,
 	useVoice,
 	useChatHistory
 }

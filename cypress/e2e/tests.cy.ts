@@ -17,7 +17,7 @@ describe("Chat Bot Test Suite", () => {
 	it("Sends name and verifies bot reply", () => {
 		cy.get(".rcb-chat-input-textarea").type("Tan Jin{enter}");
 		cy.get(".rcb-bot-message").contains("Hey Tan Jin!").should("be.visible");
-		cy.get(".rcb-bot-message").contains("Before we processed").should("be.visible");
+		cy.get(".rcb-bot-message").contains("Before we proceed").should("be.visible");
 	});
 
 	it("Sensitive input should be masked", () => {
@@ -150,13 +150,15 @@ describe("Chat Bot Test Suite", () => {
 	});
 
 	it("Toggles notifications", () => {
-		cy.get(".rcb-notification-icon-on").click();
-		cy.get(".rcb-notification-icon-off").should("be.visible");
+		cy.get("[data-testid='rcb-notification-icon-svg']").click();
+		cy.wait(100);
+		cy.get("[data-testid='rcb-notification-icon-svg']").should('have.css', 'fill', 'rgb(232, 234, 237)'); 
 	});
 
 	it("Toggles audio", () => {
-		cy.get(".rcb-audio-icon-off").click();
-		cy.get(".rcb-audio-icon-on").should("be.visible");
+		cy.get("[data-testid='rcb-audio-icon-svg']").click();
+		cy.wait(100);
+		cy.get("[data-testid='rcb-audio-icon-svg']").should('have.css', 'fill', 'rgb(252, 236, 61)'); 
 	});
 
 	it("Toggles voice", () => {

@@ -2,10 +2,15 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 import { Theme } from "../types/Theme";
 import { ThemeCacheData } from "../types/internal/ThemeCacheData";
+import { viteConfig } from "../viteconfig";
 
-const DEFAULT_URL = import.meta.env?.VITE_THEME_BASE_CDN_URL;
-const DEFAULT_EXPIRATION = import.meta.env?.VITE_THEME_DEFAULT_CACHE_EXPIRATION;
-const CACHE_KEY_PREFIX = import.meta.env?.VITE_THEME_CACHE_KEY_PREFIX;
+// The configuration values like DEFAULT_URL, DEFAULT_EXPIRATION, and CACHE_KEY_PREFIX
+// were previously accessed using `import.meta.env` directly. To centralize and 
+// simplify configuration management, they have been moved to a separate Vite config file 
+// (viteconfig.ts) and are imported here.
+const DEFAULT_URL = viteConfig.DEFAULT_URL;
+const DEFAULT_EXPIRATION = viteConfig.DEFAULT_EXPIRATION;
+const CACHE_KEY_PREFIX = viteConfig.CACHE_KEY_PREFIX;
 
 /**
  * Fetches the cached theme if it exist and checks for expiry.
@@ -158,10 +163,6 @@ const getScopedCssStylesText = (botId: string, cssStylesText: string) => {
 	const scopedCssText = cssStylesText.split(/(?<=})/)
 		.map(rule => {
 			const trimmedRule = rule.trim();
-			// ignores comments
-			if (trimmedRule.startsWith('/*')) {
-				return trimmedRule;
-			}
 
 			// ignores imports, keyframes and media queries
 			if (trimmedRule.startsWith('@import') || trimmedRule.startsWith('@keyframes')

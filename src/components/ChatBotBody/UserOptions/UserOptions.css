@@ -26,19 +26,8 @@
 	border-style: solid;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
-	animation: options-entry 0.5s ease-out;
+	animation: rcb-animation-options-entry 0.5s ease-out;
 	overflow: hidden;
-}
-
-@keyframes options-entry {
-	0% {
-	  transform: scale(0);
-	  opacity: 0;
-	}
-	100% {
-	  transform: scale(1);
-	  opacity: 1;
-	}
 }
 
 .rcb-options:hover {

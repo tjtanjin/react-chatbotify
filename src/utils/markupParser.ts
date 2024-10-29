@@ -41,3 +41,19 @@ export const parseMarkupMessage = (message: string) => {
 	}
 	return result;
 }
+
+/**
+ * Strips HTML tags from a string using DOMParser.
+ *
+ * @param html HTML string to strip tags from
+ */
+export const stripHtml = (html: string) => {
+	if (typeof window.DOMParser !== "undefined") {
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(html, "text/html");
+		return doc.body.textContent || "";
+	}
+
+	// fallback for environments without DOMParser
+	return html.replace(/<\/?[^>]+(>|$)/g, "");
+}

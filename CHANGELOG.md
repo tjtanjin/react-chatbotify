@@ -1,5 +1,66 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.21 (22-10-2024)
+
+**Minor Breaking Change:**
+- The `desktopEnabled` and `mobileEnabled` properties previously found under `settings.general` have been moved to a new `settings.device` section
+
+**Fixed:**
+- Fixed an issue with notification sound spams when streaming messages
+
+**Added:**
+- Added a new `sendIconHoveredStyle` to allow users to define send icon styles on hover
+- Added a new `device` section (which the `desktopEnabled` and `mobileEnabled` properties are moved to)
+- Added a new `applyMobileOptimizations` property to the newly added `settings.device` section
+
+## v2.0.0-beta.20 (21-10-2024)
+
+**Fixed:**
+- Fixed an issue with the default chatbot footer icon
+- Improved checks for desktop/mobile devices
+- Reduced unnecessary re-renders (minor optimizations)
+- Properly fixed chatbot svg icon on mobile
+
+**Added:**
+- Added new `replaceSettings`, `replaceStyles`, `replaceMessages`, `replacePaths` and `replaceToasts` utility functions to their respective hooks (replaces their respective state setters)
+
+**Note:**
+Hooks no longer directly expose state setters (not a great practice, and hinders optimizations that can be done within the library itself). The new functions serve as a drop-in replacement for the state setters.
+
+## v2.0.0-beta.19 (18-10-2024)
+
+**Fixed:**
+- Fixed an issue where using `ChatBotProvider` for hooks will cause infinite re-renders
+- Fixed an issue where audio service will read out html tags
+- Fixed an issue where `sendOutput` field is being ignored for `options` and `checkboxes` attributes
+- Fixed an issue where tooltip had a much lower z-index than chat window, causing it to be partially hidden
+- Fixed an issue with the `useToasts` hook not being imported correctly
+- Fixed an issue where chatbot button svg icon was not rendered correctly on mobile devices
+
+**Added:**
+- Added a new `updateSettings` utility function to the `useSettings` hook (refer to documentation for details)
+- Added a new `updateStyles` utility function to the `useStyles` hook (refer to documentation for details)
+
+## v2.0.0-beta.18 (14-10-2024)
+
+**Fixed:**
+- Excluded comments from theme css files parsing
+- Fixed an issue where icon was not rendered correctly in footer
+
+## v2.0.0-beta.17 (13-10-2024)
+
+**Fixed:**
+- Fixed improper parsing of css files in themes
+- Fixed toast animation not working
+
+**Added:**
+- Updated button with svgs from: https://fonts.google.com/
+- Added disabled icon support for all buttons (now possible to have different icons for enabled/disabled state)
+- Added svg component support for button icons (conveniently use the `fill` attribute to recolor icons!)
+- Added a new `sendIconDisabledStyle`
+- Loading of chat history no longer locks the text area
+- Standardized keyframe naming conventions
+
 ## v2.0.0-beta.16 (08-10-2024)
 
 **Fixed:**

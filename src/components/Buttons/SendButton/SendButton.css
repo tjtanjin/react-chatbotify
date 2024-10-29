@@ -2,7 +2,6 @@
 
 .rcb-send-button {
 	display: inline-flex;
-	align-items: center;
 	justify-content: center;
 	text-transform: uppercase;
 	border: none;
@@ -18,8 +17,9 @@
 /* Send Icon */
 
 .rcb-send-icon {
-	width: 60%;
-	height: 60%;
+	width: 50%;
+	height: 50%;
+	transform: translateY(20%);
 	background-size: cover;
 	object-fit: cover;
 	background-size: contain;

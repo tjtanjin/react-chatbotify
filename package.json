@@ -12,7 +12,7 @@
   "files": [
     "./dist"
   ],
-  "version": "2.0.0-beta.16",
+  "version": "2.0.0-beta.21",
   "description": "A modern React library for creating flexible and extensible chatbots.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -50,7 +50,7 @@
     "react-dom": ">=16.14.0 <20.0.0 || ^19.0.0-0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
     "@types/dom-speech-recognition": "^0.0.4",
     "@types/jest": "^29.5.13",

@@ -22,15 +22,42 @@ const AudioButton = () => {
 	// styles for audio icon
 	const audioIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.audio?.icon})`,
+		fill: "#fcec3d",
 		...styles.audioIconStyle
 	};
 
 	// styles for audio disabled icon
 	const audioIconDisabledStyle: React.CSSProperties = {
-		backgroundImage: `url(${settings.audio?.icon})`,
+		backgroundImage: `url(${settings.audio?.iconDisabled})`,
+		fill: "#e8eaed",
 		...styles.audioIconStyle, // by default inherit the base style
 		...styles.audioIconDisabledStyle
 	};
+
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = audioToggledOn ? settings.audio?.icon : settings.audio?.iconDisabled;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className="rcb-audio-icon"
+					data-testid="rcb-audio-icon"
+					style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className="rcb-audio-icon" data-testid="rcb-audio-icon">
+				<IconComponent
+					style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}
+					data-testid="rcb-audio-icon-svg"
+				/>
+			</span>
+		)
+	}
 
 	return (
 		<div
@@ -45,10 +72,7 @@ const AudioButton = () => {
 				: {...styles.audioButtonStyle, ...styles.audioButtonDisabledStyle}
 			}
 		>
-			<span
-				className={`rcb-audio-icon-${audioToggledOn ? "on" : "off"}`}
-				style={audioToggledOn ? audioIconStyle : audioIconDisabledStyle}
-			/>
+			{renderButton()}
 		</div>
 	);
 };

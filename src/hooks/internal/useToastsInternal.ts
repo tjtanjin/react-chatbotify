@@ -10,7 +10,7 @@ import { RcbEvent } from "../../constants/RcbEvent";
 /**
  * Internal custom hook for managing toasts.
  */
-export const useToastInternal = () => {
+export const useToastsInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -98,10 +98,17 @@ export const useToastInternal = () => {
 		return id;
 	}, [callRcbEvent, setToasts]);
 
+	/**
+	 * Replaces (overwrites entirely) the current toasts with the new toasts.
+	 */
+	const replaceToasts = (newToasts: Array<Toast>) => {
+		setToasts(newToasts);
+	}
+
 	return {
 		showToast,
 		dismissToast,
 		toasts,
-		setToasts
+		replaceToasts
 	};
 };

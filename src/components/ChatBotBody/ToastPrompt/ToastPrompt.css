@@ -1,28 +1,15 @@
-.rcb-toast-prompt-text {
-    padding: 6px 12px;
-    border-radius: 5px;
-    color: #7a7a7a;
-    font-size: 12px;
-    text-align: center;
-    background-color: #fff;
-    border: 0.5px solid #7a7a7a;
-    cursor: pointer;
-    transition: color 0.3s ease, border-color 0.3s ease;
-    z-index: 9999;
-    width: 100%;
-    margin-top: 6px;
-}
-
-@keyframes popIn {
-    0% {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-    70% {
-      transform: scale(1.1);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-    }
+.rcb-toast-prompt {
+	padding: 6px 12px;
+	border-radius: 5px;
+	color: #7a7a7a;
+	font-size: 12px;
+	text-align: center;
+	background-color: #fff;
+	border: 0.5px solid #7a7a7a;
+	cursor: pointer;
+	transition: color 0.3s ease, border-color 0.3s ease;
+	z-index: 9999;
+	width: 100%;
+	margin-top: 6px;
+	animation: rcb-animation-pop-in 0.3s ease-in-out;
 }

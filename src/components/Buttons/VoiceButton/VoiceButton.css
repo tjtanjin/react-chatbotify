@@ -37,8 +37,7 @@
 
 /* Voice Icon */
 
-.rcb-voice-icon-on,
-.rcb-voice-icon-off {
+.rcb-voice-icon {
 	width: 60%;
 	height: 60%;
 	background-size: cover;
@@ -48,21 +47,6 @@
 	background-position: center;
 }
 
-.rcb-voice-icon-on {
-    animation: ping 1s infinite;
-}
-
-.rcb-voice-icon-off {
-    filter: grayscale(100%);
-}
-
-@keyframes ping {
-    0% {
-        filter: brightness(100%);
-        opacity: 1;
-    }
-    50% {
-        filter: brightness(50%);
-        opacity: 0.8;
-    }
+.rcb-voice-icon.on {
+    animation: rcb-animation-ping 1s infinite;
 }

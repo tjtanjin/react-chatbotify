@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import ChatBotLoader from "./ChatBotLoader";
@@ -26,8 +26,8 @@ const ChatBot = ({
 	flow,
 	settings,
 	styles,
-	themes = [],
-	plugins = []
+	themes,
+	plugins,
 }: {
 	id?: string;
 	flow?: Flow;
@@ -42,6 +42,7 @@ const ChatBot = ({
 	const finalFlow = (!flow || Object.keys(flow).length === 0) ? WelcomeFlow : flow;
 	const finalSettings = !settings ? {} : settings;
 	const finalStyles = !styles ? {} : styles;
+	const finalPlugins = !plugins ? [] : plugins;
 
 	// handles loading of chatbot only when config is loaded
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
@@ -52,15 +53,23 @@ const ChatBot = ({
 	// handles style root container ref
 	const styleRootRef = useRef<HTMLStyleElement | null>(null);
 
+	// special handling for themes to be a state, to facilitate users updating themes directly
+	const [finalThemes, setFinalThemes] = useState<Theme | Array<Theme>>(!themes ? []: themes);
+	useEffect(() => {
+		if (themes) {
+			setFinalThemes(themes);
+		}
+	}, [themes])
+
 	/**
 	 * Renders chatbot with provider depending on whether one was provided by the user.
 	 */
 	const renderChatBot = () => (
 		<>
 			<ChatBotLoader styleRootRef={styleRootRef} id={finalBotId} flow={finalFlow} settings={finalSettings}
-				styles={finalStyles} themes={themes} plugins={plugins} setConfigLoaded={setConfigLoaded}
+				styles={finalStyles} themes={finalThemes} plugins={finalPlugins} setConfigLoaded={setConfigLoaded}
 			/>
-			{configLoaded && <ChatBotContainer plugins={plugins} />}
+			{configLoaded && <ChatBotContainer plugins={plugins} setFinalThemes={setFinalThemes} />}
 		</>
 	)
 

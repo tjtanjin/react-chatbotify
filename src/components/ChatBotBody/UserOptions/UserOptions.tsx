@@ -107,7 +107,7 @@ const UserOptions = ({
 							}
 							setDisabled(!options.reusable as boolean);
 							let sendInChat: boolean;
-							if (options.sendOutput) {
+							if (options.sendOutput != null) {
 								sendInChat = options.sendOutput;
 							} else {
 								sendInChat = settings.chatInput?.sendOptionOutput ?? true;

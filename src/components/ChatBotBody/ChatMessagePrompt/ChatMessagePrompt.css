@@ -1,48 +1,34 @@
 .rcb-message-prompt-container.visible {
-    position: sticky;
-    bottom: 0px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    animation: popIn 0.3s ease-in-out;
-    pointer-events: auto;
+	position: sticky;
+	bottom: 0px;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 1;
+	animation: rcb-animation-pop-in 0.3s ease-in-out;
+	pointer-events: auto;
 }
 
 .rcb-message-prompt-container.hidden {
-    opacity: 0;
-    height: 0px; /* work around for hiding element while still having animation */
-    visibility: hidden;
-    pointer-events: none;
+	opacity: 0;
+	height: 0px; /* work around for hiding element while still having animation */
+	visibility: hidden;
+	pointer-events: none;
 }
 
 .rcb-message-prompt-text {
-    padding: 6px 12px;
-    border-radius: 20px;
-    color: #adadad;
-    font-size: 12px;
-    background-color: #fff;
-    border: 0.5px solid #adadad;
-    cursor: pointer;
-    transition: color 0.3s ease, border-color 0.3s ease;
-    z-index: 9999;
+	padding: 6px 12px;
+	border-radius: 20px;
+	color: #adadad;
+	font-size: 12px;
+	background-color: #fff;
+	border: 0.5px solid #adadad;
+	cursor: pointer;
+	transition: color 0.3s ease, border-color 0.3s ease;
+	z-index: 9999;
 }
 
 .rcb-message-prompt-container.hidden .rcb-message-prompt-text {
-    padding: 0px;
-}
-
-@keyframes popIn {
-    0% {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-    70% {
-      transform: scale(1.1);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-    }
+	padding: 0px;
 }

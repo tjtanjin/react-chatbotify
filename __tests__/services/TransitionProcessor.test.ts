@@ -1,3 +1,5 @@
+import { expect } from "@jest/globals";
+
 // Importing necessary functions and types
 import { processTransition } from "../../src/services/BlockService/TransitionProcessor"; 
 import { postProcessBlock } from "../../src/services/BlockService/BlockService"; 

@@ -12,8 +12,6 @@ export type Settings = {
 		showInputRow?: boolean;
 		actionDisabledIcon?: string;
 		embedded?: boolean;
-		desktopEnabled?: boolean;
-		mobileEnabled?: boolean;
 		flowStartTrigger?: string;
 	},
 	tooltip?: {
@@ -21,20 +19,21 @@ export type Settings = {
 		text?: string;
 	},
 	chatButton?: {
-		icon: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	header?: {
 		title?: string | JSX.Element;
 		showAvatar?: boolean;
 		avatar?: string;
 		buttons?: Array<JSX.Element | string>;
-		closeChatIcon?: string;
+		closeChatIcon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	notification?: {
 		disabled?: boolean;
 		defaultToggledOn?: boolean;
 		volume?: number;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		sound?: string;
 		showCount?: boolean;
 	},
@@ -45,7 +44,8 @@ export type Settings = {
 		voiceNames?: string[];
 		rate?: number;
 		volume?: number;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	chatHistory?: {
 		disabled?: boolean;
@@ -63,7 +63,7 @@ export type Settings = {
 		showCharacterCount?: boolean;
 		characterLimit?: number;
 		botDelay?: number;
-		sendButtonIcon?: string;
+		sendButtonIcon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		blockSpam?: boolean;
 		sendOptionOutput?: boolean;
 		sendCheckboxOutput?: boolean;
@@ -107,7 +107,8 @@ export type Settings = {
 		autoSendDisabled?: boolean;
 		autoSendPeriod?: number;
 		sendAsAudio?: boolean;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 	},
 	footer?: {
 		text?: string | JSX.Element;
@@ -117,13 +118,15 @@ export type Settings = {
 		disabled?: boolean;
 		multiple?: boolean;
 		accept?: string;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		sendFileName?: boolean;
 		showMediaDisplay?: boolean;
 	}
 	emoji?: {
 		disabled?: boolean;
-		icon?: string;
+		icon?: string | React.FC<React.SVGProps<SVGSVGElement>>;
+		iconDisabled?: string | React.FC<React.SVGProps<SVGSVGElement>>;
 		list?: string[] ;
 	},
 	toast?: {
@@ -162,5 +165,10 @@ export type Settings = {
 		sendButton?: string;
 		voiceButton?: string;
 		inputTextArea?: string;
+	},
+	device?: {
+		desktopEnabled?: boolean;
+		mobileEnabled?: boolean;
+		applyMobileOptimizations?: boolean;
 	}
 }

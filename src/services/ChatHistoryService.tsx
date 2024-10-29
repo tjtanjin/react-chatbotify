@@ -124,12 +124,13 @@ const parseMessageToString = (message: Message) => {
  * @param styles styles provided to the bot
  * @param chatHistory chat history to show
  * @param setMessages setter for updating messages
- * @param prevTextAreaDisabled boolean indicating if text area was previously disabled
- * @param setTextAreaDisabled setter for enabling/disabling user text area
+ * @param chatBodyRef reference to the chat body
+ * @param chatScrollHeight current chat scroll height
+ * @param setIsLoadingChatHistory setter for whether chat history is loading
  */
 const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
-	setMessages: Dispatch<SetStateAction<Message[]>>, prevTextAreaDisabled: boolean,
-	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>) => {
+	setMessages: Dispatch<SetStateAction<Message[]>>, chatBodyRef: React.RefObject<HTMLDivElement | null>,
+	chatScrollHeight: number, setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
 	if (chatHistory != null) {
@@ -160,8 +161,18 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
-				setTextAreaDisabled(prevTextAreaDisabled ?? settings.chatInput?.disabled ?? false);
 			}, 500)
+
+			// slight delay afterwards to maintain scroll position
+			setTimeout(() => {
+				if (!chatBodyRef.current) {
+					return;
+				}
+				const { scrollHeight } = chatBodyRef.current;
+				const scrollDifference = scrollHeight - chatScrollHeight;
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
+				setIsLoadingChatHistory(false);
+			}, 510)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
 			localStorage.removeItem(settings.chatHistory?.storageKey as string);

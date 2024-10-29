@@ -1,7 +1,9 @@
 import { useCallback } from "react";
 
-import { useRcbEventInternal } from "./useRcbEventInternal";
 import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
+import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useChatWindowInternal } from "./useChatWindowInternal";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
@@ -25,12 +27,16 @@ export const useChatHistoryInternal = () => {
 	const {
 		isLoadingChatHistory,
 		setIsLoadingChatHistory,
-		textAreaDisabled,
-		setTextAreaDisabled
 	} = useBotStatesContext();
+
+	// handles bot refs
+	const { chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
+
+	// handles chat window
+	const { chatScrollHeight } = useChatWindowInternal();
 
 	/**
 	 * Loads and shows chat history in the chat window.
@@ -51,10 +57,10 @@ export const useChatHistoryInternal = () => {
 			}
 		}
 		setIsLoadingChatHistory(true);
-		const prevTextAreaDisabled = textAreaDisabled;
-		setTextAreaDisabled(true);
-		loadChatHistory(settings, styles, chatHistory, setMessages, prevTextAreaDisabled, setTextAreaDisabled);
-	}, [settings, styles, setMessages, setTextAreaDisabled]);
+		loadChatHistory(settings, styles, chatHistory, setMessages,
+			chatBodyRef, chatScrollHeight, setIsLoadingChatHistory
+		);
+	}, [settings, styles, setMessages]);
 
 	return { isLoadingChatHistory, setIsLoadingChatHistory, showChatHistory };
 };

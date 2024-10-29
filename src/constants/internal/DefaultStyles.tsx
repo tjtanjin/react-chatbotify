@@ -57,6 +57,8 @@ export const DefaultStyles: Styles = {
 	voiceIconStyle: {},
 	voiceIconDisabledStyle: {},
 	sendIconStyle: {},
+	sendIconDisabledStyle: {},
+	sendIconHoveredStyle: {},
 	rcbTypingIndicatorContainerStyle: {},
 	rcbTypingIndicatorDotStyle: {},
 	toastPromptContainerStyle: {},

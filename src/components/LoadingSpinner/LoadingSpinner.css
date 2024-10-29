@@ -17,14 +17,5 @@
 	height: 22px;
 	border-radius: 50%;
 	border: 4px solid #f3f3f3;
-	animation: rcb-spin 1s linear infinite;
-}
-  
-@keyframes rcb-spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+	animation: rcb-animation-spin 1s linear infinite;
 }

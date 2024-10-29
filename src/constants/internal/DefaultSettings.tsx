@@ -4,14 +4,17 @@ import { Button } from "../Button";
 import actionDisabledIcon from "../../assets/action_disabled_icon.svg";
 import botAvatar from "../../assets/bot_avatar.svg";
 import userAvatar from "../../assets/user_avatar.svg";
-import chatIcon from "../../assets/chat_icon.svg";
-import fileAttachmentIcon from "../../assets/file_attachment_icon.svg";
-import notificationIcon from "../../assets/notification_icon.svg";
-import closeChatIcon from "../../assets/close_chat_icon.svg";
-import sendButtonIcon from "../../assets/send_icon.svg";
-import voiceIcon from "../../assets/voice_icon.svg";
-import emojiIcon from "../../assets/emoji_icon.svg";
-import audioIcon from "../../assets/audio_icon.svg";
+import { ReactComponent as ChatIcon } from "../../assets/chat_icon.svg";
+import { ReactComponent as FileAttachmentIcon } from '../../assets/file_attachment_icon.svg';
+import { ReactComponent as NotificationIcon } from '../../assets/notification_icon.svg';
+import { ReactComponent as NotificationIconDisabled } from '../../assets/notification_icon_disabled.svg';
+import { ReactComponent as CloseChatIcon } from '../../assets/close_chat_icon.svg';
+import { ReactComponent as SendButtonIcon } from '../../assets/send_icon.svg';
+import { ReactComponent as VoiceIcon } from '../../assets/voice_icon.svg';
+import { ReactComponent as VoiceIconDisabled } from '../../assets/voice_icon_disabled.svg';
+import { ReactComponent as EmojiIcon } from '../../assets/emoji_icon.svg';
+import { ReactComponent as AudioIcon } from '../../assets/audio_icon.svg';
+import { ReactComponent as AudioIconDisabled } from '../../assets/audio_icon_disabled.svg';
 import notificationSound from "../../assets/notification_sound.wav";
 
 // default settings provided to the bot
@@ -27,8 +30,6 @@ export const DefaultSettings: Settings = {
 		showInputRow: true,
 		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
-		desktopEnabled: true,
-		mobileEnabled: true,
 		flowStartTrigger: "ON_LOAD",
 	},
 	tooltip: {
@@ -36,7 +37,7 @@ export const DefaultSettings: Settings = {
 		text: "Talk to me! 😊",
 	},
 	chatButton: {
-		icon: chatIcon,
+		icon: ChatIcon,
 	},
 	header: {
 		title: (
@@ -49,13 +50,14 @@ export const DefaultSettings: Settings = {
 		showAvatar: true,
 		avatar: botAvatar,
 		buttons: [Button.NOTIFICATION_BUTTON, Button.AUDIO_BUTTON, Button.CLOSE_CHAT_BUTTON],
-		closeChatIcon: closeChatIcon,
+		closeChatIcon: CloseChatIcon,
 	},
 	notification: {
 		disabled: false,
 		defaultToggledOn: true,
 		volume: 0.2,
-		icon: notificationIcon,
+		icon: NotificationIcon,
+		iconDisabled: NotificationIconDisabled,
 		sound: notificationSound,
 		showCount: true,
 	},
@@ -66,7 +68,8 @@ export const DefaultSettings: Settings = {
 		voiceNames: ["Microsoft David - English (United States)", "Alex (English - United States)"],
 		rate: 1,
 		volume: 1,
-		icon: audioIcon,
+		icon: AudioIcon,
+		iconDisabled: AudioIconDisabled,
 	},
 	chatHistory: {
 		disabled: false,
@@ -84,7 +87,7 @@ export const DefaultSettings: Settings = {
 		showCharacterCount: false,
 		characterLimit: -1,
 		botDelay: 1000,
-		sendButtonIcon: sendButtonIcon,
+		sendButtonIcon: SendButtonIcon,
 		blockSpam: true,
 		sendOptionOutput: true,
 		sendCheckboxOutput: true,
@@ -128,7 +131,8 @@ export const DefaultSettings: Settings = {
 		autoSendDisabled: false,
 		autoSendPeriod: 1000,
 		sendAsAudio: false,
-		icon: voiceIcon,
+		icon: VoiceIcon,
+		iconDisabled: VoiceIconDisabled,
 	},
 	footer: {
 		text: (
@@ -136,12 +140,20 @@ export const DefaultSettings: Settings = {
 				onClick={() => window.open("https://react-chatbotify.com")}
 			>
 				<span key={0}>Powered By </span>
-				<img key={1} style={{
-					borderRadius: "50%",
-					width: 14, height: 14, backgroundImage: `url(${chatIcon}),
-					linear-gradient(to right, #42b0c5, #491d8d)`
-				}}>
-				</img>
+				<div
+					key={1}
+					style={{
+						borderRadius: "50%",
+						width: 14,
+						height: 14,
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						background: "linear-gradient(to right, #42b0c5, #491d8d)",
+					}}
+				>
+					<ChatIcon style={{ width: "80%", height: "80%", fill: "#fff" }} />
+				</div>
 				<span key={2} style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
 		),
@@ -151,13 +163,15 @@ export const DefaultSettings: Settings = {
 		disabled: false,
 		multiple: true,
 		accept: ".png",
-		icon: fileAttachmentIcon,
+		icon: FileAttachmentIcon,
+		iconDisabled: FileAttachmentIcon,
 		sendFileName: true,
 		showMediaDisplay: false,
 	},
 	emoji: {
 		disabled: false,
-		icon: emojiIcon,
+		icon: EmojiIcon,
+		iconDisabled: EmojiIcon,
 		list: ["😀", "😃", "😄", "😅", "😊", "😌", "😇", "🙃", "🤣", "😍", "🥰", "🥳", "🎉", "🎈", "🚀", "⭐️"]
 	},
 	toast: {
@@ -196,5 +210,10 @@ export const DefaultSettings: Settings = {
 		sendButton: "send message",
 		voiceButton: "toggle voice",
 		inputTextArea: "input text area",
+	},
+	device: {
+		desktopEnabled: true,
+		mobileEnabled: true,
+		applyMobileOptimizations: true,
 	}
 }

@@ -1,4 +1,4 @@
-import { MouseEvent, useMemo } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useMemo } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -8,13 +8,15 @@ import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import { useButtonInternal } from "../hooks/internal/useButtonsInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
-import { useBotEffectInternal } from "../hooks/internal/useBotEffectsInternal";
+import { useBotEffectsInternal } from "../hooks/internal/useBotEffectsInternal";
 import { useIsDesktopInternal } from "../hooks/internal/useIsDesktopInternal";
+import { usePluginsInternal } from "../hooks/internal/usePluginsInternal";
 import { useBotRefsContext } from "../context/BotRefsContext";
 import { useBotStatesContext } from "../context/BotStatesContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { useStylesContext } from "../context/StylesContext";
 import { Plugin } from "../types/Plugin";
+import { Theme } from "../types/Theme";
 
 import "./ChatBotContainer.css";
 
@@ -24,14 +26,12 @@ import "./ChatBotContainer.css";
  * @param plugins plugins to initialize
  */
 const ChatBotContainer = ({
-	plugins
+	plugins,
+	setFinalThemes
 }: {
 	plugins?: Array<Plugin>;
+	setFinalThemes: Dispatch<SetStateAction<Theme | Array<Theme>>>;
 }) => {
-	
-	// loads plugins
-	plugins?.map((plugin) => plugin());
-
 	// handles platform
 	const isDesktop = useIsDesktopInternal();
 
@@ -48,7 +48,7 @@ const ChatBotContainer = ({
 	const { inputRef } = useBotRefsContext();
 
 	// handles chat window
-	const { chatScrollHeight,
+	const {
 		setChatScrollHeight,
 		viewportHeight,
 		viewportWidth,
@@ -59,7 +59,10 @@ const ChatBotContainer = ({
 	const { headerButtons, chatInputButtons, footerButtons } = useButtonInternal();
 
 	// loads all use effects
-	useBotEffectInternal();
+	useBotEffectsInternal();
+
+	// loads plugins
+	usePluginsInternal(plugins, setFinalThemes);
 
 	/**
 	 * Retrieves class name for window state.
@@ -97,8 +100,8 @@ const ChatBotContainer = ({
 	 * Checks if chatbot should be shown depending on platform.
 	 */
 	const shouldShowChatBot = () => {
-		return (isDesktop && settings.general?.desktopEnabled)
-			|| (!isDesktop && settings.general?.mobileEnabled);
+		return (isDesktop && settings.device?.desktopEnabled)
+			|| (!isDesktop && settings.device?.mobileEnabled);
 	}
 
 	return (
@@ -146,7 +149,7 @@ const ChatBotContainer = ({
 					}
 					<div style={getChatWindowStyle()} className="rcb-chat-window">
 						{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
-						<ChatBotBody chatScrollHeight={chatScrollHeight} setChatScrollHeight={setChatScrollHeight}/>
+						<ChatBotBody setChatScrollHeight={setChatScrollHeight}/>
 						{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
 						{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
 					</div>
