@@ -9,6 +9,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 
 // variables used to track history, updated when settings.chatHistory value changes
+let storage = localStorage;
 let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
@@ -82,7 +83,14 @@ const getHistoryMessages = () => {
  * @param messages chat history messages to set
  */
 const setHistoryMessages = (messages: Message[]) => {
-	localStorage.setItem(historyStorageKey, JSON.stringify(messages));
+	storage.setItem(historyStorageKey, JSON.stringify(messages));
+}
+
+/**
+ * Clears existing history messages.
+ */
+const clearHistoryMessages = () => {
+	storage.removeItem(historyStorageKey);
 }
 
 /**
@@ -91,10 +99,13 @@ const setHistoryMessages = (messages: Message[]) => {
  * @param settings options provided to the bot
  */
 const setHistoryStorageValues = (settings: Settings) => {
+	if (settings.chatHistory?.storageType?.toUpperCase() === "SESSION_STORAGE") {
+		storage = sessionStorage;
+	}
 	historyStorageKey = settings.chatHistory?.storageKey as string;
 	historyMaxEntries = settings.chatHistory?.maxEntries as number;
 	historyDisabled = settings.chatHistory?.disabled as boolean;
-	historyMessages = parseHistoryMessages(localStorage.getItem(historyStorageKey) as string);
+	historyMessages = parseHistoryMessages(storage.getItem(historyStorageKey) as string);
 }
 
 /**
@@ -175,7 +186,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 			}, 510)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
-			localStorage.removeItem(settings.chatHistory?.storageKey as string);
+			storage.removeItem(settings.chatHistory?.storageKey as string);
 		}
 	}
 }
@@ -347,5 +358,6 @@ export {
 	loadChatHistory,
 	getHistoryMessages,
 	setHistoryMessages,
+	clearHistoryMessages,
 	setHistoryStorageValues
 }

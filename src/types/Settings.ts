@@ -51,6 +51,7 @@ export type Settings = {
 		disabled?: boolean;
 		maxEntries?: number;
 		storageKey?: string;
+		storageType?: string;
 		viewChatHistoryButtonText?: string;
 		chatHistoryLineBreakText?: string;
 		autoLoad?: boolean;
