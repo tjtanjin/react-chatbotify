@@ -29,6 +29,12 @@ const Toast = ({
 	// handles styles
 	const { styles } = useStylesContext();
 
+	// localized styles to prevent conflicting toast style updates
+	const [localizedStyles] = useState({
+		toastPromptStyle: { ...styles.toastPromptStyle },
+		toastPromptHoveredStyle: { ...styles.toastPromptHoveredStyle }
+	});
+
 	// handles toasts
 	const { dismissToast } = useToastsInternal();
 
@@ -39,7 +45,7 @@ const Toast = ({
 	const toastPromptHoveredStyle: React.CSSProperties = {
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
-		...styles.toastPromptHoveredStyle
+		...localizedStyles.toastPromptHoveredStyle
 	};
 
 	useEffect(() => {
@@ -71,7 +77,7 @@ const Toast = ({
 			<div
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? toastPromptHoveredStyle : styles.toastPromptStyle}
+				style={isHovered ? toastPromptHoveredStyle : localizedStyles.toastPromptStyle}
 				onMouseDown={(event: MouseEvent) => {
 					if (settings.toast?.dismissOnClick) {
 						event.preventDefault();
