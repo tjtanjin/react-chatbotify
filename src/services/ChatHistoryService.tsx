@@ -9,7 +9,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 
 // variables used to track history, updated when settings.chatHistory value changes
-let storage = localStorage;
+let storage: Storage;
 let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
@@ -101,6 +101,8 @@ const clearHistoryMessages = () => {
 const setHistoryStorageValues = (settings: Settings) => {
 	if (settings.chatHistory?.storageType?.toUpperCase() === "SESSION_STORAGE") {
 		storage = sessionStorage;
+	} else {
+		storage = localStorage;
 	}
 	historyStorageKey = settings.chatHistory?.storageKey as string;
 	historyMaxEntries = settings.chatHistory?.maxEntries as number;
