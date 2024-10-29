@@ -15,10 +15,21 @@ jest.mock('../../../src/utils/idGenerator', () => ({
 	generateSecureUUID: jest.fn(),
 }));
 
+// Define types for mock contexts and events
+ type MockSettingsContextType = { 
+	settings: { toast: { 
+		maxCount: number; forbidOnMax: boolean; }; 
+		event: { rcbShowToast: boolean; rcbDismissToast: boolean; };
+	 }; };
+  type MockToastsContextType = { toasts: Array<{ id: string; content?: string }>; 
+  setToasts: jest.Mock; }; 
+  type MockRcbEventInternalType = { callRcbEvent: jest.Mock;};
+
+
 describe('useToastsInternal', () => {
-	let mockSettingsContext: any;
-	let mockToastsContext: any;
-	let mockRcbEventInternal: any;
+	let mockSettingsContext: MockSettingsContextType; 
+	let mockToastsContext: MockToastsContextType; 
+	let mockRcbEventInternal: MockRcbEventInternalType
 
 	beforeEach(() => {
 		// Set up mock settings and contexts before each test
