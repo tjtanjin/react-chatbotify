@@ -2,6 +2,14 @@ import { getButtonConfig, createAudioButton, createNotificationButton, createClo
 	createSendButton, createFileAttachmentButton, createEmojiButton} from "../../src/utils/buttonBuilder";
 import { Button} from "../../src";
 
+jest.mock("../../src/viteconfig", () => ({
+	viteConfig: {
+		DEFAULT_URL: "http://localhost:mock",
+		DEFAULT_EXPIRATION: "60",
+		CACHE_KEY_PREFIX: "VITE_THEME_CACHE_KEY_PREFIX",
+	},
+}));
+
 const mockLocalStorage = (() => {
 	let store: { [key: string]: string } = {};
 	return {
