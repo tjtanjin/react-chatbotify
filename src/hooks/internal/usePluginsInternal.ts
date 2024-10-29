@@ -20,7 +20,7 @@ export const usePluginsInternal = (plugins: Array<Plugin> | undefined,
 	useEffect(() => {
 		// applies plugin themes, settings and styles if specified
 		setUpInfo?.forEach((setUpInfo) => {
-			if (setUpInfo.themes) {
+			if (setUpInfo?.themes) {
 				if (Array.isArray(setUpInfo.themes)) {
 					setFinalThemes(prev => {
 						if (Array.isArray(prev)) {

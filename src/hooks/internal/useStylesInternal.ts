@@ -15,6 +15,9 @@ export const useStylesInternal = () => {
 	 * @param fields fields to update
 	 */
 	const updateStyles = (fields: object) => {
+		if (!fields || Object.keys(fields).length === 0) {
+			return;
+		}
 		setStyles(deepClone(getCombinedConfig(fields, styles) as Styles));
 	}
 

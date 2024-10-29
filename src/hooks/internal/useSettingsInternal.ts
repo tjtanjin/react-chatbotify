@@ -15,6 +15,9 @@ export const useSettingsInternal = () => {
 	 * @param fields fields to update
 	 */
 	const updateSettings = (fields: object) => {
+		if (!fields || Object.keys(fields).length === 0) {
+			return;
+		}
 		setSettings(deepClone(getCombinedConfig(fields, settings) as Settings));
 	}
 
