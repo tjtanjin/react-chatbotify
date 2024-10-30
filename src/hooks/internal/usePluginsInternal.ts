@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { getCombinedConfig } from "../../utils/configParser";
 import { useSettingsInternal } from "./useSettingsInternal";
 import { useStylesInternal } from "./useStylesInternal";
 import { Plugin } from "../../types/Plugin";
-import { Theme } from "../../types/Theme";
 
 /**
  * Internal custom hook to handle plugins.
