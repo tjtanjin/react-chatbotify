@@ -1,15 +1,14 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 
+import { getCombinedConfig } from "../../utils/configParser";
 import { useSettingsInternal } from "./useSettingsInternal";
 import { useStylesInternal } from "./useStylesInternal";
 import { Plugin } from "../../types/Plugin";
-import { Theme } from "../../types/Theme";
 
 /**
  * Internal custom hook to handle plugins.
  */
-export const usePluginsInternal = (plugins: Array<Plugin> | undefined,
-	setFinalThemes: Dispatch<SetStateAction<Theme | Array<Theme>>>) => {
+export const usePluginsInternal = (plugins: Array<Plugin> | undefined) => {
 
 	const { updateSettings } = useSettingsInternal();
 	const { updateStyles } = useStylesInternal();
@@ -18,33 +17,19 @@ export const usePluginsInternal = (plugins: Array<Plugin> | undefined,
 	const setUpInfo = plugins?.map((pluginHook) => pluginHook());
 
 	useEffect(() => {
+		let pluginSettings = {};
+		let pluginStyles = {};
 		// applies plugin themes, settings and styles if specified
 		setUpInfo?.forEach((setUpInfo) => {
-			if (setUpInfo.themes) {
-				if (Array.isArray(setUpInfo.themes)) {
-					setFinalThemes(prev => {
-						if (Array.isArray(prev)) {
-							return [...prev, ...setUpInfo.themes as Array<Theme>];
-						} else {
-							return [prev, ...setUpInfo.themes as Array<Theme>];
-						}
-					});
-				} else {
-					setFinalThemes(prev => {
-						if (Array.isArray(prev)) {
-							return [...prev, setUpInfo.themes as Theme];
-						} else {
-							return [prev, setUpInfo.themes as Theme];
-						}
-					});
-				}
+			if (setUpInfo?.settings && Object.keys(setUpInfo?.settings).length !== 0) {
+				pluginSettings = getCombinedConfig(setUpInfo.settings, pluginSettings);
 			}
-			if (setUpInfo?.settings) {
-				updateSettings(setUpInfo.settings);
-			}
-			if (setUpInfo?.styles) {
-				updateStyles(setUpInfo.styles);
+			if (setUpInfo?.styles && Object.keys(setUpInfo?.styles).length !== 0) {
+				pluginStyles = getCombinedConfig(setUpInfo.styles, pluginStyles);
 			}
 		});
+
+		updateSettings(pluginSettings);
+		updateStyles(pluginStyles);
 	}, [plugins])
 };

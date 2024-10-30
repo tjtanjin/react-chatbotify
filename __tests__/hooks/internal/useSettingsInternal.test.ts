@@ -74,8 +74,8 @@ describe("useSettingsInternal", () => {
             result.current.updateSettings({});
         });
 
-        expect(getCombinedConfig).toHaveBeenCalledWith({}, mockSettings);
-        expect(deepClone).toHaveBeenCalledWith(mockSettings);
-        expect(mockSetSettings).toHaveBeenCalledWith(mockSettings);
+        expect(getCombinedConfig).not.toHaveBeenCalledWith({}, mockSettings);
+        expect(deepClone).not.toHaveBeenCalledWith(mockSettings);
+        expect(mockSetSettings).not.toHaveBeenCalledWith(mockSettings);
     });
 });

@@ -9,7 +9,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 
 // variables used to track history, updated when settings.chatHistory value changes
-let storage = localStorage;
+let storage: Storage;
 let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
@@ -22,7 +22,7 @@ let historyMessages: Message[] = [];
  * @param messages messages containing current conversation with the bot
  */
 const saveChatHistory = async (messages: Message[]) => {
-	if (historyDisabled) {
+	if (historyDisabled || !storage) {
 		return;
 	}
 	
@@ -83,6 +83,9 @@ const getHistoryMessages = () => {
  * @param messages chat history messages to set
  */
 const setHistoryMessages = (messages: Message[]) => {
+	if (!storage) {
+		return;
+	}
 	storage.setItem(historyStorageKey, JSON.stringify(messages));
 }
 
@@ -90,6 +93,9 @@ const setHistoryMessages = (messages: Message[]) => {
  * Clears existing history messages.
  */
 const clearHistoryMessages = () => {
+	if (!storage) {
+		return;
+	}
 	storage.removeItem(historyStorageKey);
 }
 
@@ -101,6 +107,8 @@ const clearHistoryMessages = () => {
 const setHistoryStorageValues = (settings: Settings) => {
 	if (settings.chatHistory?.storageType?.toUpperCase() === "SESSION_STORAGE") {
 		storage = sessionStorage;
+	} else {
+		storage = localStorage;
 	}
 	historyStorageKey = settings.chatHistory?.storageKey as string;
 	historyMaxEntries = settings.chatHistory?.maxEntries as number;
