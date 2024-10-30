@@ -269,9 +269,10 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
 const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties}) => {
 	if (classList.contains("rcb-options-container") || classList.contains("rcb-checkbox-container")) {
 		if (Object.prototype.hasOwnProperty.call(attributes, "class")) {
-			attributes["class"] = `${classList.toString()} rcb-options-offset`;
+			attributes["className"] = `${classList.toString()} rcb-options-offset`;
+			delete attributes["class"];
 		} else {
-			attributes["class"] = "rcb-options-offset"
+			attributes["className"] = "rcb-options-offset"
 		}
 	}
 	return attributes;
@@ -294,6 +295,8 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botOptionStyle
 		}
+		attributes["className"] = classList.toString();
+		delete attributes["class"];
 	}
 	return attributes;
 }
@@ -315,6 +318,8 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botCheckboxRowStyle
 		}
+		attributes["className"] = classList.toString();
+		delete attributes["class"];
 	}
 	return attributes;
 }
@@ -336,6 +341,8 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botCheckboxNextStyle
 		}
+		attributes["className"] = classList.toString();
+		delete attributes["class"];
 	}
 	return attributes;
 }
@@ -357,6 +364,8 @@ const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[
 			maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 			...styles.mediaDisplayContainerStyle
 		}
+		attributes["className"] = classList.toString();
+		delete attributes["class"];
 	}
 	return attributes;
 }
