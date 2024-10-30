@@ -22,7 +22,7 @@ let historyMessages: Message[] = [];
  * @param messages messages containing current conversation with the bot
  */
 const saveChatHistory = async (messages: Message[]) => {
-	if (historyDisabled) {
+	if (historyDisabled || !storage) {
 		return;
 	}
 	
@@ -83,6 +83,9 @@ const getHistoryMessages = () => {
  * @param messages chat history messages to set
  */
 const setHistoryMessages = (messages: Message[]) => {
+	if (!storage) {
+		return;
+	}
 	storage.setItem(historyStorageKey, JSON.stringify(messages));
 }
 
@@ -90,6 +93,9 @@ const setHistoryMessages = (messages: Message[]) => {
  * Clears existing history messages.
  */
 const clearHistoryMessages = () => {
+	if (!storage) {
+		return;
+	}
 	storage.removeItem(historyStorageKey);
 }
 

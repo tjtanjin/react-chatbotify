@@ -1,4 +1,4 @@
-import { Dispatch, MouseEvent, SetStateAction, useMemo } from "react";
+import { MouseEvent, useMemo } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -16,7 +16,6 @@ import { useBotStatesContext } from "../context/BotStatesContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { useStylesContext } from "../context/StylesContext";
 import { Plugin } from "../types/Plugin";
-import { Theme } from "../types/Theme";
 
 import "./ChatBotContainer.css";
 
@@ -27,10 +26,8 @@ import "./ChatBotContainer.css";
  */
 const ChatBotContainer = ({
 	plugins,
-	setFinalThemes
 }: {
 	plugins?: Array<Plugin>;
-	setFinalThemes: Dispatch<SetStateAction<Theme | Array<Theme>>>;
 }) => {
 	// handles platform
 	const isDesktop = useIsDesktopInternal();
@@ -62,7 +59,7 @@ const ChatBotContainer = ({
 	useBotEffectsInternal();
 
 	// loads plugins
-	usePluginsInternal(plugins, setFinalThemes);
+	usePluginsInternal(plugins);
 
 	/**
 	 * Retrieves class name for window state.
