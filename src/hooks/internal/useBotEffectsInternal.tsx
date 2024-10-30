@@ -5,7 +5,6 @@ import { preProcessBlock } from "../../services/BlockService/BlockService";
 import {
 	clearHistoryMessages,
 	getHistoryMessages,
-	saveChatHistory,
 	setHistoryStorageValues
 } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
@@ -42,7 +41,6 @@ export const useBotEffectsInternal = () => {
 		injectMessage,
 		removeMessage,
 		streamMessage,
-		messages,
 		replaceMessages,
 	} = useMessagesInternal();
 
@@ -258,7 +256,6 @@ export const useBotEffectsInternal = () => {
 			// auto cleanup streaming and save messages on path change (not ideal)
 			// todo: remove this in v3, users should call `params.endStreamMessage()`
 			streamMessageMap.current.clear();
-			saveChatHistory(messages);
 		}
 		callNewBlock(currPath, block, params);
 	}, [paths]);
