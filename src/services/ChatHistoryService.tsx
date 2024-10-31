@@ -235,14 +235,19 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
 				return acc;
 			}, {} as { [key: string]: string | CSSProperties });
 
-			const classList = (node as Element).classList;
-			if (settings.botBubble?.showAvatar) {
-				attributes = addStyleToContainers(classList, attributes);
+			// if have class property, repopulate styles and rename to className instead
+			if (Object.prototype.hasOwnProperty.call(attributes, "class")) {
+				const classList = (node as Element).classList;
+				attributes["className"] = classList.toString();
+				delete attributes["class"];
+				if (settings.botBubble?.showAvatar) {
+					attributes = addStyleToContainers(classList, attributes);
+				}
+				attributes = addStyleToOptions(classList, attributes, settings, styles);
+				attributes = addStyleToCheckboxRows(classList, attributes, settings, styles);
+				attributes = addStyleToCheckboxNextButton(classList, attributes, settings, styles);
+				attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, styles);
 			}
-			attributes = addStyleToOptions(classList, attributes, settings, styles);
-			attributes = addStyleToCheckboxRows(classList, attributes, settings, styles);
-			attributes = addStyleToCheckboxNextButton(classList, attributes, settings, styles);
-			attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, styles);
 
 			const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link",
 				"meta", "source", "track", "wbr"];
@@ -268,12 +273,7 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
  */
 const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties}) => {
 	if (classList.contains("rcb-options-container") || classList.contains("rcb-checkbox-container")) {
-		if (Object.prototype.hasOwnProperty.call(attributes, "class")) {
-			attributes["className"] = `${classList.toString()} rcb-options-offset`;
-			delete attributes["class"];
-		} else {
-			attributes["className"] = "rcb-options-offset"
-		}
+		attributes["className"] = `${classList.toString()} rcb-options-offset`;
 	}
 	return attributes;
 }
@@ -295,8 +295,6 @@ const addStyleToOptions = (classList: DOMTokenList, attributes: {[key: string]: 
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botOptionStyle
 		}
-		attributes["className"] = classList.toString();
-		delete attributes["class"];
 	}
 	return attributes;
 }
@@ -318,8 +316,6 @@ const addStyleToCheckboxRows = (classList: DOMTokenList, attributes: {[key: stri
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botCheckboxRowStyle
 		}
-		attributes["className"] = classList.toString();
-		delete attributes["class"];
 	}
 	return attributes;
 }
@@ -341,8 +337,6 @@ const addStyleToCheckboxNextButton = (classList: DOMTokenList, attributes: {[key
 			cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
 			...styles.botCheckboxNextStyle
 		}
-		attributes["className"] = classList.toString();
-		delete attributes["class"];
 	}
 	return attributes;
 }
@@ -364,8 +358,6 @@ const addStyleToMediaDisplayContainer = (classList: DOMTokenList, attributes: {[
 			maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 			...styles.mediaDisplayContainerStyle
 		}
-		attributes["className"] = classList.toString();
-		delete attributes["class"];
 	}
 	return attributes;
 }
