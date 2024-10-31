@@ -1,5 +1,16 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.22 (31-10-2024)
+
+**Fixed:**
+- Fixed a rare issue where the latest message sent may not be saved into chat history
+- Fixed error messages in console when chat history loads options or checkboxes
+
+**Added:**
+- Added a new `storageType` property to `settings.chatHistory` that allows users to specify `LOCAL_STORAGE` or `SESSION_STORAGE` for storing chat messages
+- Improved plugin experience by allowing plugin developers to include auto-setups
+- Toasts styles are now handled independently, allowing different toasts to show up concurrently
+
 ## v2.0.0-beta.21 (22-10-2024)
 
 **Minor Breaking Change:**

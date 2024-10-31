@@ -12,7 +12,7 @@
   "files": [
     "./dist"
   ],
-  "version": "2.0.0-beta.21",
+  "version": "2.0.0-beta.22",
   "description": "A modern React library for creating flexible and extensible chatbots.",
   "type": "module",
   "main": "./dist/index.cjs",
