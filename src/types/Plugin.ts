@@ -9,5 +9,4 @@ export type Plugin = (...args: unknown[]) => {
     name: string;
     settings?: Settings;
     styles?: Styles;
-    themes?: Theme | Array<Theme>;
 }

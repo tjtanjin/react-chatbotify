@@ -80,7 +80,9 @@ export const parseConfig = async (botId: string, providedSettings: Settings | un
 export const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig: Settings |
 	Styles): Settings | Styles => {
 
-	const stack: Array<{ source: object, target: object }> = [{ source: preferredConfig, target: baseConfig }];
+	const stack: Array<{ source: { [key: string]: any }, target: { [key: string]: any } }> = [
+		{ source: preferredConfig, target: baseConfig }
+	];
 	
 	while (stack.length) {
 		const poppedItem = stack.pop();
@@ -98,6 +100,9 @@ export const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig
 				source[keyAsObjectType] !== null && 
 				!Array.isArray(source[keyAsObjectType])
 			) {
+				if (typeof target[keyAsObjectType] !== "object" || target[keyAsObjectType] === null) {
+					target[keyAsObjectType] = {};
+				}
 				stack.push({ source: source[keyAsObjectType], target: target[keyAsObjectType] });
 			} else {
 				try {
