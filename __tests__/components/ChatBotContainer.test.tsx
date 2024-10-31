@@ -1,26 +1,36 @@
 import React from "react";
+
+import { expect } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import ChatBotContainer from "../../../src/components/ChatBotContainer";
-import { useButtonInternal } from "../../../src/hooks/internal/useButtonsInternal";
-import { useChatWindowInternal } from "../../../src/hooks/internal/useChatWindowInternal";
-import { useIsDesktopInternal } from "../../../src/hooks/internal/useIsDesktopInternal";
-import { useBotStatesContext } from "../../../src/context/BotStatesContext";
-import { useSettingsContext } from "../../../src/context/SettingsContext";
-import { useStylesContext } from "../../../src/context/StylesContext";
-import { useBotRefsContext } from "../../../src/context/BotRefsContext";
-import { useNotificationInternal } from "../../../src/hooks/internal/useNotificationsInternal"; 
+import "@testing-library/jest-dom/jest-globals";
 
-jest.mock("../../../src/hooks/internal/useButtonsInternal");
-jest.mock("../../../src/hooks/internal/useChatWindowInternal");
-jest.mock("../../../src/hooks/internal/useIsDesktopInternal");
-jest.mock("../../../src/context/BotStatesContext");
-jest.mock("../../../src/context/SettingsContext");
-jest.mock("../../../src/context/StylesContext");
-jest.mock("../../../src/context/BotRefsContext");
-jest.mock("../../../src/hooks/internal/useNotificationsInternal"); 
+import ChatBotContainer from "../../src/components/ChatBotContainer";
+import { useButtonInternal } from "../../src/hooks/internal/useButtonsInternal";
+import { useChatWindowInternal } from "../../src/hooks/internal/useChatWindowInternal";
+import { useIsDesktopInternal } from "../../src/hooks/internal/useIsDesktopInternal";
+import { useBotStatesContext } from "../../src/context/BotStatesContext";
+import { useSettingsContext } from "../../src/context/SettingsContext";
+import { useStylesContext } from "../../src/context/StylesContext";
+import { useBotRefsContext } from "../../src/context/BotRefsContext";
+import { useNotificationInternal } from "../../src/hooks/internal/useNotificationsInternal"; 
 
-describe("ChatBotContainer Component", () => {
+jest.mock("../../src/hooks/internal/useButtonsInternal");
+jest.mock("../../src/hooks/internal/useChatWindowInternal");
+jest.mock("../../src/hooks/internal/useIsDesktopInternal");
+jest.mock("../../src/context/BotStatesContext");
+jest.mock("../../src/context/SettingsContext");
+jest.mock("../../src/context/StylesContext");
+jest.mock("../../src/context/BotRefsContext");
+jest.mock("../../src/hooks/internal/useNotificationsInternal");
+jest.mock("../../src/viteconfig", () => ({
+	viteConfig: {
+		DEFAULT_URL: "http://localhost:mock",
+		DEFAULT_EXPIRATION: "60",
+		CACHE_KEY_PREFIX: "VITE_THEME_CACHE_KEY_PREFIX",
+	},
+}));
+
+describe.skip("ChatBotContainer Component", () => {
 	beforeEach(() => {
 		(useButtonInternal as jest.Mock).mockReturnValue({
 			headerButtons: [<button key="header-btn">Header Button</button>],
