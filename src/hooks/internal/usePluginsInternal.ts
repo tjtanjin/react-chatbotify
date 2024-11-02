@@ -13,19 +13,19 @@ export const usePluginsInternal = (plugins: Array<Plugin> | undefined) => {
 	const { updateSettings } = useSettingsInternal();
 	const { updateStyles } = useStylesInternal();
 
-	// initializes plugins and retrieves info for setup
-	const setUpInfo = plugins?.map((pluginHook) => pluginHook());
+	// initializes plugins and retrieves metadata for setup
+	const pluginMetaData = plugins?.map((pluginHook) => pluginHook());
 
 	useEffect(() => {
 		let pluginSettings = {};
 		let pluginStyles = {};
-		// applies plugin themes, settings and styles if specified
-		setUpInfo?.forEach((setUpInfo) => {
-			if (setUpInfo?.settings && Object.keys(setUpInfo?.settings).length !== 0) {
-				pluginSettings = getCombinedConfig(setUpInfo.settings, pluginSettings);
+		// applies plugin settings and styles if specified
+		pluginMetaData?.forEach((pluginMetaData) => {
+			if (pluginMetaData?.settings && Object.keys(pluginMetaData?.settings).length !== 0) {
+				pluginSettings = getCombinedConfig(pluginMetaData.settings, pluginSettings);
 			}
-			if (setUpInfo?.styles && Object.keys(setUpInfo?.styles).length !== 0) {
-				pluginStyles = getCombinedConfig(setUpInfo.styles, pluginStyles);
+			if (pluginMetaData?.styles && Object.keys(pluginMetaData?.styles).length !== 0) {
+				pluginStyles = getCombinedConfig(pluginMetaData.styles, pluginStyles);
 			}
 		});
 
