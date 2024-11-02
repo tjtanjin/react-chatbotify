@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { deepClone, getCombinedConfig } from "../../utils/configParser";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { Settings } from "../../types/Settings";
@@ -14,19 +16,19 @@ export const useSettingsInternal = () => {
 	 *
 	 * @param fields fields to update
 	 */
-	const updateSettings = (fields: object) => {
+	const updateSettings = useCallback((fields: Settings) => {
 		if (!fields || Object.keys(fields).length === 0) {
 			return;
 		}
 		setSettings(deepClone(getCombinedConfig(fields, settings) as Settings));
-	}
+	}, [settings])
 
 	/**
 	 * Replaces (overwrites entirely) the current settings with the new settings.
 	 */
-	const replaceSettings = (newSettings: Settings) => {
+	const replaceSettings = useCallback((newSettings: Settings) => {
 		setSettings(newSettings);
-	}
+	}, [])
 
 	return {
 		settings,

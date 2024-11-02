@@ -77,9 +77,9 @@ export const usePathsInternal = () => {
 	/**
 	 * Replaces (overwrites entirely) the current paths with the new paths.
 	 */
-	const replacePaths = (newPaths: Array<string>) => {
+	const replacePaths = useCallback((newPaths: Array<string>) => {
 		setPaths(newPaths);
-	}
+	}, [])
 
 	return {
 		getCurrPath,

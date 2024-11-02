@@ -283,14 +283,6 @@ export const useMessagesInternal = () => {
 	}, [callRcbEvent, messages, settings.event?.rcbStopStreamMessage, streamMessageMap])
 
 	/**
-	 * Replaces (overwrites entirely) the current messages with the new messages.
-	 */
-	const replaceMessages = (newMessages: Array<Message>) => {
-		handlePostMessagesUpdate(newMessages);
-		setMessages(newMessages);
-	}
-
-	/**
 	 * Handles post messages updates such as saving chat history, scrolling to bottom
 	 * and playing notification sound.
 	 */
@@ -333,6 +325,14 @@ export const useMessagesInternal = () => {
 			}, 1)
 		}
 	}
+
+	/**
+	 * Replaces (overwrites entirely) the current messages with the new messages.
+	 */
+	const replaceMessages = useCallback((newMessages: Array<Message>) => {
+		handlePostMessagesUpdate(newMessages);
+		setMessages(newMessages);
+	}, [handlePostMessagesUpdate])
 
 	return {
 		endStreamMessage,

@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { deepClone, getCombinedConfig } from "../../utils/configParser";
 import { useStylesContext } from "../../context/StylesContext";
 import { Styles } from "../../types/Styles";
@@ -14,19 +16,19 @@ export const useStylesInternal = () => {
 	 *
 	 * @param fields fields to update
 	 */
-	const updateStyles = (fields: object) => {
+	const updateStyles = useCallback((fields: Styles) => {
 		if (!fields || Object.keys(fields).length === 0) {
 			return;
 		}
 		setStyles(deepClone(getCombinedConfig(fields, styles) as Styles));
-	}
+	}, [styles])
 
 	/**
 	 * Replaces (overwrites entirely) the current styles with the new styles.
 	 */
-	const replaceStyles = (newStyles: Styles) => {
+	const replaceStyles = useCallback((newStyles: Styles) => {
 		setStyles(newStyles);
-	}
+	}, [])
 
 	return {
 		styles,

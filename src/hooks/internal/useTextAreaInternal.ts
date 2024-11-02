@@ -35,7 +35,7 @@ export const useTextAreaInternal = () => {
 	 *
 	 * @param value value to set
 	 */
-	const setTextAreaValue = (value: string) => {
+	const setTextAreaValue = useCallback((value: string) => {
 		if (textAreaDisabled && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
@@ -70,7 +70,7 @@ export const useTextAreaInternal = () => {
 			}
 			prevInputRef.current = inputRef.current.value;
 		}
-	}
+	}, [textAreaDisabled, inputRef, prevInputRef, settings, callRcbEvent])
 
 	/**
 	 * Updates text area focus based on current block's text area.
@@ -117,16 +117,16 @@ export const useTextAreaInternal = () => {
 	/**
 	 * Toggles text area disabled.
 	 */
-	const toggleTextAreaDisabled = () => {
+	const toggleTextAreaDisabled = useCallback(() => {
 		setTextAreaDisabled(prev => !prev);
-	}
+	}, [])
 
 	/**
 	 * Toggles text area sensitive mode.
 	 */
-	const toggleTextAreaSensitiveMode = () => {
+	const toggleTextAreaSensitiveMode = useCallback(() => {
 		setTextAreaSensitiveMode(prev => !prev);
-	}
+	}, [])
 
 	// todo: we can just standardize to export and use toggles, clean up in future
 	return {

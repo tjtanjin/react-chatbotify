@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { useMessagesInternal } from "./useMessagesInternal";
 import { usePathsInternal } from "./usePathsInternal";
 import { useToastsInternal } from "./useToastsInternal";
@@ -26,18 +28,19 @@ export const useFlowInternal = () => {
 	/**
 	 * Restarts the conversation flow for the chatbot.
 	 */
-	const restartFlow = () => {
+	const restartFlow = useCallback(() => {
 		replaceMessages([]);
 		replaceToasts([]);
 		replacePaths(["start"]);
-	}
+	}, [replaceMessages, replaceToasts, replacePaths]);
 	
 	/**
 	 * Retrieves the conversation flow for the chatbot.
 	 */
-	const getFlow = () => {
+	const getFlow = useCallback(() => {
 		return flowRef.current ?? {};
-	}
+	}, [flowRef]);
+	
 	
 	return {
 		hasFlowStarted,

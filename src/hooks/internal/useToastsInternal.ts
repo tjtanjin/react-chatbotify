@@ -101,9 +101,9 @@ export const useToastsInternal = () => {
 	/**
 	 * Replaces (overwrites entirely) the current toasts with the new toasts.
 	 */
-	const replaceToasts = (newToasts: Array<Toast>) => {
+	const replaceToasts = useCallback((newToasts: Array<Toast>) => {
 		setToasts(newToasts);
-	}
+	}, [])
 
 	return {
 		showToast,
