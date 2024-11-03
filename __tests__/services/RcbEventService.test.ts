@@ -24,7 +24,7 @@ describe('emitRcbEvent', () => {
     });
 
     // Test for emitting a cancellable event
-    it('should emit a cancellable event and return the event', () => {
+    it('should emit a cancellable event and return the event', async () => {
         const eventName = RcbEvent.TOGGLE_AUDIO;
         const eventDetail: EventDetail = { 
             botId: 'testBotId', 
@@ -34,7 +34,7 @@ describe('emitRcbEvent', () => {
         const data = { someData: 'testData' };
 
         // Call emitRcbEvent and capture the result
-        const result = emitRcbEvent(eventName, eventDetail, data);
+        const result = await emitRcbEvent(eventName, eventDetail, data);
 
         // Verify that the event was dispatched correctly
         if (dispatchedEvent) {
@@ -49,7 +49,7 @@ describe('emitRcbEvent', () => {
     });
 
     // Test for emitting a non-cancellable event
-    it('should emit a non-cancellable event and return the event', () => {
+    it('should emit a non-cancellable event and return the event', async () => {
         const eventName = RcbEvent.POST_INJECT_MESSAGE;
         const eventDetail: EventDetail = { 
             botId: 'testBotId', 
@@ -58,7 +58,7 @@ describe('emitRcbEvent', () => {
         };
         const data = { someData: 'testData' };
 
-        const result = emitRcbEvent(eventName, eventDetail, data);
+        const result = await emitRcbEvent(eventName, eventDetail, data);
 
         // Verify that the event was dispatched as non-cancellable
         if (dispatchedEvent) {
@@ -73,7 +73,7 @@ describe('emitRcbEvent', () => {
     });
 
     // Test for handling an event with empty data
-    it('should handle an event with empty data', () => {
+    it('should handle an event with empty data', async () => {
         const eventName = RcbEvent.TOGGLE_VOICE;
         const eventDetail: EventDetail = { 
             botId: 'testBotId', 
@@ -81,7 +81,7 @@ describe('emitRcbEvent', () => {
             prevPath: 'testPreviousPath' 
         };
 
-        const result = emitRcbEvent(eventName, eventDetail, {});
+        const result = await emitRcbEvent(eventName, eventDetail, {});
 
         // Verify the event was dispatched with empty data
         if (dispatchedEvent) {
@@ -95,10 +95,10 @@ describe('emitRcbEvent', () => {
     });
 
     // Test for handling an event with no detail and empty data
-    it('should handle an event with no detail and data', () => {
+    it('should handle an event with no detail and data', async () => {
         const eventName = RcbEvent.CHANGE_PATH;
 
-        const result = emitRcbEvent(eventName, { 
+        const result = await emitRcbEvent(eventName, { 
             botId: null, 
             currPath: null, 
             prevPath: null 

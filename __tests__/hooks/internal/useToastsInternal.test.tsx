@@ -63,14 +63,14 @@ describe('useToastsInternal', () => {
 		jest.clearAllMocks();
 	});
 
-	it('should add a new toast when not exceeding maxCount', () => {
+	it('should add a new toast when not exceeding maxCount', async () => {
 		// Test adding a toast when maxCount is not reached
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false, 
 			data: { toast: { id: 'mocked-uuid', content: 'New toast content', timeout: undefined } 
 			} });
 		const { result } = renderHook(() => useToastsInternal());
-		act(() => {
-			result.current.showToast('New toast content');
+		await act(async () => {
+			await result.current.showToast('New toast content');
 		});
 		expect(generateSecureUUID).toHaveBeenCalled();
 		expect(mockToastsContext.setToasts).toHaveBeenCalledWith(expect.any(Function));
@@ -81,16 +81,16 @@ describe('useToastsInternal', () => {
 		expect(newToasts).toEqual([{ id: 'mocked-uuid', content: 'New toast content', timeout: undefined }]);
 	});
 
-	it('should not add a new toast if maxCount is reached and forbidOnMax is true', () => {
+	it('should not add a new toast if maxCount is reached and forbidOnMax is true', async () => {
 		// Test forbidding new toast if maxCount is reached
 		mockToastsContext.toasts = [{ id: '1' }, { id: '2' }, { id: '3' }];
 		const { result } = renderHook(() => useToastsInternal());
-		const toastId = result.current.showToast('Toast content');
+		const toastId = await result.current.showToast('Toast content');
 		expect(toastId).toBeNull();
 		expect(mockToastsContext.setToasts).not.toHaveBeenCalled();
 	});
 
-	it('should remove the oldest toast and add a new one if maxCount is reached but forbidOnMax is false', () => {
+	it('should remove the oldest toast and add a new one if maxCount is reached but forbidOnMax is false', async () => {
 		// Test replacing oldest toast if maxCount reached and forbidOnMax is false
 		mockSettingsContext.settings.toast.forbidOnMax = false;
 		mockToastsContext.toasts = [{ id: '1' }, { id: '2' }, { id: '3' }];
@@ -99,8 +99,8 @@ describe('useToastsInternal', () => {
 				content: 'New toast content', timeout: undefined } 
 			} });
 		const { result } = renderHook(() => useToastsInternal());
-		act(() => {
-			result.current.showToast('New toast content');
+		await act(async () => {
+			await result.current.showToast('New toast content');
 		});
 		expect(mockToastsContext.setToasts).toHaveBeenCalledWith(expect.any(Function));
         
@@ -114,14 +114,14 @@ describe('useToastsInternal', () => {
 		]);
 	});
 
-	it('should dismiss a toast by id', () => {
+	it('should dismiss a toast by id', async () => {
 		// Test dismissing a toast by ID
 		const toast = { id: 'toast-1', content: 'Toast to dismiss' };
 		mockToastsContext.toasts = [toast];
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false });
 		const { result } = renderHook(() => useToastsInternal());
-		act(() => {
-			result.current.dismissToast('toast-1');
+		await act(async () => {
+			await result.current.dismissToast('toast-1');
 		});
 		expect(mockToastsContext.setToasts).toHaveBeenCalledWith(expect.any(Function));
         
@@ -131,32 +131,32 @@ describe('useToastsInternal', () => {
 		expect(updatedToasts).toEqual([]);
 	});
 
-	it('should not dismiss a toast if the id is not found', () => {
+	it('should not dismiss a toast if the id is not found', async () => {
 		// Test no dismissal if ID not found
 		mockToastsContext.toasts = [{ id: 'toast-2', content: 'Another toast' }];
 		const { result } = renderHook(() => useToastsInternal());
-		const resultId = result.current.dismissToast('invalid-id');
+		const resultId = await result.current.dismissToast('invalid-id');
 		expect(resultId).toBeNull();
 		expect(mockToastsContext.setToasts).not.toHaveBeenCalled();
 	});
 
-	it('should not show toast if rcbShowToast event is prevented', () => {
+	it('should not show toast if rcbShowToast event is prevented', async () => {
 		// Test prevention of toast display by event
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: true });
 		const { result } = renderHook(() => useToastsInternal());
-		const resultId = result.current.showToast('Prevented toast');
+		const resultId = await result.current.showToast('Prevented toast');
 		expect(resultId).toBeNull();
 		expect(mockToastsContext.setToasts).not.toHaveBeenCalled();
 	});
 
-	it('should call rcbDismissToast event when dismissing a toast', () => {
+	it('should call rcbDismissToast event when dismissing a toast', async () => {
 		// Test triggering of dismiss event upon toast removal
 		const toast = { id: 'toast-1', content: 'Toast to dismiss' };
 		mockToastsContext.toasts = [toast];
 		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false });
 		const { result } = renderHook(() => useToastsInternal());
-		act(() => {
-			result.current.dismissToast('toast-1');
+		await act(async () => {
+			await result.current.dismissToast('toast-1');
 		});
 		expect(mockRcbEventInternal.callRcbEvent).toHaveBeenCalledWith(RcbEvent.DISMISS_TOAST, { toast });
 	});

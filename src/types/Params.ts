@@ -7,6 +7,7 @@ export type Params = {
 	userInput: string;
 	currPath: keyof Flow | null;
 	prevPath: keyof Flow | null;
+	files?: FileList;
 	goToPath: (pathToGo: keyof Flow) => Promise<boolean>;
 	setTextAreaValue: (value: string) => Promise<void>;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<string | null>;
@@ -15,6 +16,5 @@ export type Params = {
 	endStreamMessage: (sender: string) => Promise<boolean>;
 	showToast: (content: string | JSX.Element, timeout?: number) => Promise<string | null>;
 	dismissToast: (id: string) => Promise<string | null>;
-	openChat: (isOpen: boolean) => void;
-	files?: FileList;
+	openChat: (isOpen: boolean) => Promise<void>;
 }

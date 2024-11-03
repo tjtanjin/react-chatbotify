@@ -53,7 +53,7 @@ describe("useNotificationsInternal Hook", () => {
 		expect(result.current.notificationsToggledOn).toBe(!initialNotificationsToggledOn);
 	});
 
-	it("should prevent toggling when event is defaultPrevented", () => {
+	it("should prevent toggling when event is defaultPrevented", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -69,8 +69,8 @@ describe("useNotificationsInternal Hook", () => {
 		expect(result.current.notificationsToggledOn).toBe(initialNotificationsToggledOn);
 
 		// simulates clicking the toggle action
-		act(() => {
-			result.current.toggleNotifications();
+		await act(async () => {
+			await result.current.toggleNotifications();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-notifications and correct arguments

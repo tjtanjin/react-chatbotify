@@ -124,7 +124,7 @@ describe("useTextAreaInternal Hook", () => {
     expect(result.current.getTextAreaValue().length).toBe(1000);
   });
 
-  it("should prevent setting value if event is defaultPrevented", () => {
+  it("should prevent setting value if event is defaultPrevented", async () => {
     const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
     mockUseRcbEventInternal.mockReturnValue({
       callRcbEvent: callRcbEventMock,
@@ -136,8 +136,8 @@ describe("useTextAreaInternal Hook", () => {
 
     const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.setTextAreaValue("Test value");
+    await act(async () => {
+      await result.current.setTextAreaValue("Test value");
     });
 
     expect(result.current.getTextAreaValue()).toBe("");

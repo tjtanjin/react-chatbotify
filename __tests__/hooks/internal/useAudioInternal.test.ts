@@ -53,7 +53,7 @@ describe("useAudioInternal Hook", () => {
 		expect(result.current.audioToggledOn).toBe(!initialAudioToggledOn);
 	});
 
-	it("should prevent toggling when event is defaultPrevented", () => {
+	it("should prevent toggling when event is defaultPrevented", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -69,8 +69,8 @@ describe("useAudioInternal Hook", () => {
 		expect(result.current.audioToggledOn).toBe(initialAudioToggledOn);
 
 		// simulates clicking the toggle action
-		act(() => {
-			result.current.toggleAudio();
+		await act(async () => {
+			await result.current.toggleAudio();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments

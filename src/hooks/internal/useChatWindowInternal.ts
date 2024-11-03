@@ -57,11 +57,11 @@ export const useChatWindowInternal = () => {
 	 *
 	 * @param isOpen boolean indicating whether to open/close the chat window
 	 */
-	const openChat = useCallback((isOpen: boolean) => {
+	const openChat = useCallback(async (isOpen: boolean) => {
 		if (isChatWindowOpen === isOpen) {
 			return;
 		}
-		toggleChatWindow();
+		await toggleChatWindow();
 	}, [isChatWindowOpen]);
 
 	return {
