@@ -53,13 +53,15 @@ export const useMessagesInternal = () => {
 		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
-		// set an initial empty message to be used for streaming
-		setMessages(prevMessages => {
-			const updatedMessages = [...prevMessages, message];
-			handlePostMessagesUpdate(updatedMessages);
-			return updatedMessages;
-		});
-		streamMessageMap.current.set("bot", message.id);
+		if (!streamMessageMap.current.has(message.sender)) {
+			// set an initial empty message to be used for streaming
+			setMessages(prevMessages => {
+				const updatedMessages = [...prevMessages, createMessage("", message.sender)];
+				handlePostMessagesUpdate(updatedMessages);
+				return updatedMessages;
+			});
+			streamMessageMap.current.set(message.sender, message.id);
+		}
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
@@ -100,7 +102,7 @@ export const useMessagesInternal = () => {
 		});
 
 		await simStreamDoneTask;
-		streamMessageMap.current.delete("bot");
+		streamMessageMap.current.delete(message.sender);
 		saveChatHistory(messages);
 	}, [messages, streamMessageMap]);
 
