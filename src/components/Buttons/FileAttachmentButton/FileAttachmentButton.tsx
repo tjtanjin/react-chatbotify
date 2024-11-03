@@ -87,7 +87,7 @@ const FileAttachmentButton = () => {
 
 		// handles user file upload event
 		if (settings.event?.rcbUserUploadFile) {
-			const event = callRcbEvent(RcbEvent.USER_UPLOAD_FILE, {files});
+			const event = await callRcbEvent(RcbEvent.USER_UPLOAD_FILE, {files});
 			if (event.defaultPrevented) {
 				return;
 			}

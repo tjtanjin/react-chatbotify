@@ -23,7 +23,7 @@ describe("useNotificationsInternal Hook", () => {
 	// initial values
 	const initialNotificationsToggledOn = MockDefaultSettings.notification?.defaultToggledOn;
 
-	it("should toggle notifications correctly, change state and emit rcb-toggle-notifications event", () => {
+	it("should toggle notifications correctly, change state and emit rcb-toggle-notifications event", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -39,8 +39,8 @@ describe("useNotificationsInternal Hook", () => {
 		expect(result.current.notificationsToggledOn).toBe(initialNotificationsToggledOn);
 
 		// simulates clicking the toggle action
-		act(() => {
-			result.current.toggleNotifications();
+		await act(async () => {
+			await result.current.toggleNotifications();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-notifications and correct arguments

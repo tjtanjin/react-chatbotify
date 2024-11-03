@@ -13,7 +13,7 @@ import { Params } from "../../types/Params";
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
 export const processTransition = async (flow: Flow, path: keyof Flow, params: Params,
-	goToPath: (pathToGo: string) => boolean, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
+	goToPath: (pathToGo: string) => Promise<boolean>, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
 

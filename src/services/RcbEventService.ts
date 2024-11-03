@@ -30,8 +30,8 @@ const cancellableMap = {
  * @param eventName name of the event to emit
  * @param eventDetail additional data to include with the event.
  */
-export const emitRcbEvent = (eventName: typeof RcbEvent[keyof typeof RcbEvent],
-	eventDetail: EventDetail, data: object): RcbBaseEvent => {
+export const emitRcbEvent = async (eventName: typeof RcbEvent[keyof typeof RcbEvent],
+	eventDetail: EventDetail, data: object): Promise<RcbBaseEvent> => {
 
 	// Create a custom event with the provided name and detail
 	const event: RcbBaseEvent = new CustomEvent(eventName, {
@@ -40,7 +40,11 @@ export const emitRcbEvent = (eventName: typeof RcbEvent[keyof typeof RcbEvent],
 	}) as RcbBaseEvent<typeof data, EventDetail>;
 
 	event.data = data;
+	event.promises = [];
 
 	window.dispatchEvent(event);
+
+	await Promise.all(event.promises);
+
 	return event;
 }

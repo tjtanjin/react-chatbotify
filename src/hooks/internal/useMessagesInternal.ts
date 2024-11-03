@@ -119,7 +119,7 @@ export const useMessagesInternal = () => {
 
 		// handles pre-message inject event
 		if (settings.event?.rcbPreInjectMessage) {
-			const event = callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
+			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -142,7 +142,7 @@ export const useMessagesInternal = () => {
 		// handles post-message inject event
 		setUnreadCount(prev => prev + 1);
 		if (settings.event?.rcbPostInjectMessage) {
-			callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
+			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
 		}
 
 		if (isBotStream) {
@@ -175,7 +175,7 @@ export const useMessagesInternal = () => {
 	
 		// handles remove message event
 		if (settings.event?.rcbRemoveMessage) {
-			const event = callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
+			const event = await callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -203,7 +203,7 @@ export const useMessagesInternal = () => {
 			const message = createMessage(content, sender);
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
-				const event = callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
+				const event = await callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
 				if (event.defaultPrevented) {
 					return null;
 				}
@@ -223,7 +223,7 @@ export const useMessagesInternal = () => {
 		const message = {...createMessage(content, sender), id: streamMessageMap.current.get(sender) as string};
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
-			const event = callRcbEvent(
+			const event = await callRcbEvent(
 				RcbEvent.CHUNK_STREAM_MESSAGE,
 				{...message, id: streamMessageMap.current.get(sender)}
 			);
@@ -272,7 +272,7 @@ export const useMessagesInternal = () => {
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
-			const event = callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {messageToEndStreamFor});
+			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {messageToEndStreamFor});
 			if (event.defaultPrevented) {
 				return false;
 			}

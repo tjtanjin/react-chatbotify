@@ -8,7 +8,7 @@ import { Params } from "../../types/Params";
  * @param params contains parameters that can be used/passed into attributes
  * @param goToPath: function to go to specified path
  */
-export const processPath = async (block: Block, params: Params, goToPath: (pathToGo: string) => boolean) => {
+export const processPath = async (block: Block, params: Params, goToPath: (pathToGo: string) => Promise<boolean>) => {
 	const nextPath = block.path;
 	if (!nextPath) {
 		return false;

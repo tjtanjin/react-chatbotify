@@ -35,7 +35,7 @@ export const useTextAreaInternal = () => {
 	 *
 	 * @param value value to set
 	 */
-	const setTextAreaValue = useCallback((value: string) => {
+	const setTextAreaValue = useCallback(async (value: string): Promise<void> => {
 		if (textAreaDisabled && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
@@ -59,7 +59,7 @@ export const useTextAreaInternal = () => {
 
 			// handles text area change value event
 			if (settings.event?.rcbTextAreaChangeValue) {
-				const event = callRcbEvent(
+				const event = await callRcbEvent(
 					RcbEvent.TEXT_AREA_CHANGE_VALUE,
 					{currValue: inputRef.current.value, prevValue: prevInputRef.current}
 				);

@@ -61,7 +61,9 @@ const ChatBotLoader = ({
 	const runLoadConfig = async () => {
 		// handles pre load chatbot event
 		if (settings.event?.rcbPreLoadChatBot) {
-			const event = emitRcbEvent(RcbEvent.PRE_LOAD_CHATBOT, {botId: memoizedId, currPath: null, prevPath: null}, 
+			const event = await emitRcbEvent(
+				RcbEvent.PRE_LOAD_CHATBOT,
+				{botId: memoizedId, currPath: null, prevPath: null}, 
 				{
 					flow,
 					settings,

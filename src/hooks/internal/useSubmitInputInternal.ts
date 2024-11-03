@@ -180,7 +180,7 @@ export const useSubmitInputInternal = () => {
 
 		// handles user send text event
 		if (settings.event?.rcbUserSubmitText) {
-			const event = callRcbEvent(RcbEvent.USER_SUBMIT_TEXT, {inputText, sendInChat});
+			const event = await callRcbEvent(RcbEvent.USER_SUBMIT_TEXT, {inputText, sendInChat});
 			if (event.defaultPrevented) {
 				return;
 			}

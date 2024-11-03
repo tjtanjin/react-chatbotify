@@ -43,7 +43,7 @@ export const useChatHistoryInternal = () => {
 	 * 
 	 * @param chatHistory chat history content to show
 	 */
-	const showChatHistory = useCallback(() => {
+	const showChatHistory = useCallback(async () => {
 		const chatHistory = getHistoryMessages();
 		if (!chatHistory) {
 			return;
@@ -51,7 +51,7 @@ export const useChatHistoryInternal = () => {
 
 		// handles load chat history event
 		if (settings.event?.rcbLoadChatHistory) {
-			const event = callRcbEvent(RcbEvent.LOAD_CHAT_HISTORY, {});
+			const event = await callRcbEvent(RcbEvent.LOAD_CHAT_HISTORY, {});
 			if (event.defaultPrevented) {
 				return;
 			}
