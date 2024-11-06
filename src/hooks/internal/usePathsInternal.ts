@@ -49,14 +49,14 @@ export const usePathsInternal = () => {
 	 *
 	 * @param pathToGo The path to go to in the conversation flow.
 	 */
-	const goToPath = useCallback((pathToGo: keyof Flow): boolean => {
+	const goToPath = useCallback(async (pathToGo: keyof Flow): Promise<boolean> => {
 		// handles path change event
 		// note that this doesn't use callRcbEvent to avoid circular imports
 		if (settings.event?.rcbChangePath) {
 			const currPath = getCurrPath();
 			const prevPath = getPrevPath();
 			const details = {botId: botIdRef.current, currPath, prevPath}
-			event = emitRcbEvent(RcbEvent.CHANGE_PATH, details, {currPath, prevPath, nextPath: pathToGo});
+			event = await emitRcbEvent(RcbEvent.CHANGE_PATH, details, {currPath, prevPath, nextPath: pathToGo});
 			if (event.defaultPrevented) {
 				return false;
 			}

@@ -26,7 +26,7 @@ describe("useVoiceInternal Hook", () => {
 	// initial values
 	const initialVoiceToggledOn = MockDefaultSettings.voice?.defaultToggledOn;
 
-	it("should toggle voice correctly, change state and emit rcb-toggle-voice event", () => {
+	it("should toggle voice correctly, change state and emit rcb-toggle-voice event", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -42,8 +42,8 @@ describe("useVoiceInternal Hook", () => {
 		expect(result.current.voiceToggledOn).toBe(initialVoiceToggledOn);
 
 		// simulates clicking the toggle action
-		act(() => {
-			result.current.toggleVoice();
+		await act(async () => {
+			await result.current.toggleVoice();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-voice and correct arguments

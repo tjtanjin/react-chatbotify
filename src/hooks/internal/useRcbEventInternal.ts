@@ -21,9 +21,9 @@ export const useRcbEventInternal = () => {
 	 * @param eventName name of the event to prepare and call
 	 * @param data additional data to include with the event
 	 */
-	const callRcbEvent = useCallback((eventName: typeof RcbEvent[keyof typeof RcbEvent], data: object) => {
+	const callRcbEvent = useCallback(async (eventName: typeof RcbEvent[keyof typeof RcbEvent], data: object) => {
 		const details = {botId: botIdRef.current, currPath: getCurrPath(), prevPath: getPrevPath()}
-		return emitRcbEvent(eventName, details, data);
+		return await emitRcbEvent(eventName, details, data);
 	}, [paths])
 
 	return { callRcbEvent };

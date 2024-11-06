@@ -56,7 +56,7 @@ describe("usePathsInternal Hook", () => {
   const { result } = renderHook(() => usePathsInternal());
 
   await act(async () => {
-    const success = result.current.goToPath("newPath");
+    const success = await result.current.goToPath("newPath");
     expect(success).toBe(true);
   });
 
@@ -88,7 +88,7 @@ describe("usePathsInternal Hook", () => {
     const { result } = renderHook(() => usePathsInternal());
 
     await act(async () => {
-      const success = result.current.goToPath("blockedPath");
+      const success = await result.current.goToPath("blockedPath");
       expect(success).toBe(false);
     });
 

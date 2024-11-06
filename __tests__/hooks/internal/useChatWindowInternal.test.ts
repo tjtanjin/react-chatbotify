@@ -23,7 +23,7 @@ describe("useChatWindowInternal Hook", () => {
 	// initial values
 	const initialChatWindowOpen = MockDefaultSettings.chatWindow?.defaultOpen;
 
-	it("should toggle chat window correctly, change state and emit rcb-toggle-chat-window event", () => {
+	it("should toggle chat window correctly, change state and emit rcb-toggle-chat-window event", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -39,8 +39,8 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(initialChatWindowOpen);
 
 		// simulates clicking the toggle action
-		act(() => {
-			result.current.toggleChatWindow();
+		await act(async () => {
+			await result.current.toggleChatWindow();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -53,7 +53,7 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(!initialChatWindowOpen);
 	});
 
-	it("should prevent toggling when event is defaultPrevented", () => {
+	it("should prevent toggling when event is defaultPrevented", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -69,8 +69,8 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(initialChatWindowOpen);
 
 		// simulates clicking the toggle action
-		act(() => {
-			result.current.toggleChatWindow();
+		await act(async () => {
+			await result.current.toggleChatWindow();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -83,7 +83,7 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(initialChatWindowOpen);
 	});
 
-	it("should call openChat with correct parameters to open and close the chat window", () => {
+	it("should call openChat with correct parameters to open and close the chat window", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -99,8 +99,8 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(initialChatWindowOpen);
 
 		// opens the chat window
-		act(() => {
-			result.current.openChat(true);
+		await act(async () => {
+			await result.current.openChat(true);
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -113,8 +113,8 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(!initialChatWindowOpen);
 
 		// closes the chat window
-		act(() => {
-			result.current.openChat(false);
+		await act(async () => {
+			await result.current.openChat(false);
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments

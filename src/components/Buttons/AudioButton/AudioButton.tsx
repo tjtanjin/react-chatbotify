@@ -63,9 +63,9 @@ const AudioButton = () => {
 		<div
 			aria-label={settings.ariaLabel?.audioButton ?? "toggle audio"}
 			role="button" 
-			onMouseDown={(event: MouseEvent) => {
+			onMouseDown={async (event: MouseEvent) => {
 				event.preventDefault();
-				toggleAudio();
+				await toggleAudio();
 			}}
 			style={audioToggledOn
 				? styles.audioButtonStyle

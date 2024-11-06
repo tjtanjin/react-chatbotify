@@ -78,10 +78,10 @@ const Toast = ({
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
 				style={isHovered ? toastPromptHoveredStyle : localizedStyles.toastPromptStyle}
-				onMouseDown={(event: MouseEvent) => {
+				onMouseDown={async (event: MouseEvent) => {
 					if (settings.toast?.dismissOnClick) {
 						event.preventDefault();
-						dismissToast(id);
+						await dismissToast(id);
 					}
 				}}
 				className="rcb-toast-prompt"

@@ -24,7 +24,8 @@ import { Flow } from "../../types/Flow";
  */
 export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
-	goToPath: (pathToGo: string) => boolean, setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
+	goToPath: (pathToGo: string) => Promise<boolean>,
+	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
 
@@ -74,7 +75,7 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
  * @param goToPath: function to go to specified path
  */
 export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
-	goToPath: (pathToGo: string) => boolean) => {
+	goToPath: (pathToGo: string) => Promise<boolean>) => {
 
 	const block = flow[path];
 
