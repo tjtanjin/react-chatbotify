@@ -33,6 +33,7 @@
     "start": "vite serve",
     "prepare": "husky install",
     "unit:test": "jest __tests__/",
+    "unit:test:single": "jest --findRelatedTests",
     "unit:test:watch": "jest --watch __tests__/",
     "unit:test:coverage": "jest --coverage __tests__/",
     "int:test:open": "cypress open",
