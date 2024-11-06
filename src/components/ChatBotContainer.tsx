@@ -6,6 +6,7 @@ import ChatBotInput from "./ChatBotInput/ChatBotInput";
 import ChatBotFooter from "./ChatBotFooter/ChatBotFooter";
 import ChatBotButton from "./ChatBotButton/ChatBotButton";
 import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
+import ToastContainer from "./ChatBotToast/ToastContainer/ToastContainer";
 import { useButtonInternal } from "../hooks/internal/useButtonsInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
 import { useBotEffectsInternal } from "../hooks/internal/useBotEffectsInternal";
@@ -147,6 +148,7 @@ const ChatBotContainer = ({
 					<div style={getChatWindowStyle()} className="rcb-chat-window">
 						{settings.general?.showHeader && <ChatBotHeader buttons={headerButtons}/>}
 						<ChatBotBody setChatScrollHeight={setChatScrollHeight}/>
+						<ToastContainer/>
 						{settings.general?.showInputRow && <ChatBotInput buttons={chatInputButtons}/>}
 						{settings.general?.showFooter && <ChatBotFooter buttons={footerButtons}/>}
 					</div>

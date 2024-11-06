@@ -1,14 +1,12 @@
 import { Dispatch, SetStateAction, CSSProperties, MouseEvent, useEffect } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
-import ToastPrompt from "./ToastPrompt/ToastPrompt";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
-import { useToastsContext } from "../../context/ToastsContext";
 import { Message } from "../../types/Message";
 
 import "./ChatBotBody.css";
@@ -31,9 +29,6 @@ const ChatBotBody = ({
 
 	// handles messages
 	const { messages } = useMessagesContext();
-
-	// handles toasts
-	const { toasts } = useToastsContext();
 
 	// handles chat window
 	const { isChatWindowOpen } = useChatWindowInternal();
@@ -73,15 +68,6 @@ const ChatBotBody = ({
 	};
 	const botBubbleEntryStyle = settings.botBubble?.animate ? "rcb-bot-message-entry" : "";
 
-	// styles for toast prompt container
-	const toastPromptContainerStyle: CSSProperties = {
-		bottom: 20,
-		width: 300,
-		minWidth: (styles.chatWindowStyle?.width as number ?? 375) / 2,
-		maxWidth: (styles.chatWindowStyle?.width as number ?? 375)  - 50,
-		...styles.toastPromptContainerStyle
-	};
-
 	// shifts scroll position when scroll height changes and determines if a user is scrolling in chat window.
 	useEffect(() => {
 		if (!chatBodyRef.current) {
@@ -118,7 +104,7 @@ const ChatBotBody = ({
 				chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
 			}
 
-			if (isChatWindowOpen) {
+			if (isChatWindowOpen || settings.general?.embedded) {
 				setUnreadCount(0);
 			}
 		}
@@ -261,16 +247,6 @@ const ChatBotBody = ({
 				</div>
 			)}
 			<ChatMessagePrompt/>
-			<div className="rcb-toast-prompt-container" style={toastPromptContainerStyle}>
-				{toasts.map((toast) => (
-					<ToastPrompt
-						key={toast.id}
-						id={toast.id}
-						content={toast.content}
-						timeout={toast.timeout}
-					/>
-				))}
-			</div>
 		</div>
 	);
 };
