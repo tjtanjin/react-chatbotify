@@ -118,7 +118,7 @@ const ChatBotBody = ({
 				chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
 			}
 
-			if (isChatWindowOpen) {
+			if (isChatWindowOpen || settings.general?.embedded) {
 				setUnreadCount(0);
 			}
 		}
