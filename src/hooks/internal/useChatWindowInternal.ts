@@ -50,7 +50,7 @@ export const useChatWindowInternal = () => {
 			}
 			return !prev;
 		});
-	}, []);
+	}, [isChatWindowOpen]);
 
 	/**
 	 * Handles opening/closing of the chat window.

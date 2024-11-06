@@ -51,6 +51,20 @@ describe("useChatWindowInternal Hook", () => {
 
 		// check if chat window state was updated
 		expect(result.current.isChatWindowOpen).toBe(!initialChatWindowOpen);
+
+		// simulates clicking the toggle action
+		await act(async () => {
+			await result.current.toggleChatWindow();
+		});
+
+		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
+		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
+			currState: !initialChatWindowOpen,
+			newState: initialChatWindowOpen,
+		});
+
+		// check if chat window state was updated
+		expect(result.current.isChatWindowOpen).toBe(initialChatWindowOpen);
 	});
 
 	it("should prevent toggling when event is defaultPrevented", async () => {
