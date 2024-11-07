@@ -33,7 +33,7 @@ export const useVoiceInternal = () => {
 			}
 		}
 		setVoiceToggledOn(prev => !prev);
-	}, []);
+	}, [voiceToggledOn]);
 
 	/**
 	 * Sync voice with chat input based on whether voice should be kept toggled on.

@@ -51,6 +51,20 @@ describe("useAudioInternal Hook", () => {
 
 		// checks if audio state was updated
 		expect(result.current.audioToggledOn).toBe(!initialAudioToggledOn);
+
+		// simulates clicking the toggle action
+		await act(async () => {
+			await result.current.toggleAudio();
+		});
+
+		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments
+		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
+			currState: !initialAudioToggledOn,
+			newState: initialAudioToggledOn,
+		});
+
+		// check if voice state was updated
+		expect(result.current.audioToggledOn).toBe(initialAudioToggledOn);
 	});
 
 	it("should prevent toggling when event is defaultPrevented", async () => {

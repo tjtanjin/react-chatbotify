@@ -31,7 +31,7 @@ export const useAudioInternal = () => {
 			}
 		}
 		setAudioToggledOn(prev => !prev);
-	}, []);
+	}, [audioToggledOn]);
 
 	return {
 		audioToggledOn,

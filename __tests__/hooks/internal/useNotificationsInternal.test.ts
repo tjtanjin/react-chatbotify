@@ -51,6 +51,20 @@ describe("useNotificationsInternal Hook", () => {
 
 		// checks if notifications state was updated
 		expect(result.current.notificationsToggledOn).toBe(!initialNotificationsToggledOn);
+
+		// simulates clicking the toggle action
+		await act(async () => {
+			await result.current.toggleNotifications();
+		});
+
+		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments
+		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
+			currState: !initialNotificationsToggledOn,
+			newState: initialNotificationsToggledOn,
+		});
+
+		// check if voice state was updated
+		expect(result.current.notificationsToggledOn).toBe(initialNotificationsToggledOn);
 	});
 
 	it("should prevent toggling when event is defaultPrevented", async () => {

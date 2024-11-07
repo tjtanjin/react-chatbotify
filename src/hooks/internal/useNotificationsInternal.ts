@@ -89,7 +89,7 @@ export const useNotificationInternal = () => {
 			}
 		}
 		setNotificationsToggledOn(prev => !prev);
-	}, []);
+	}, [notificationsToggledOn]);
 
 	return {
 		unreadCount,
