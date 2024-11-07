@@ -1,5 +1,36 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.23 (07-11-2024)
+
+**Minor Breaking Change:**
+- All functions in `params` are now async, with the addition of these functions in this version:
+  - params.showToast
+  - params.dismissToast
+  - params.goToPath
+  - params.setTextAreaValue
+  - params.openChat
+- The following functions from hooks are now async:
+  - showToast
+  - dismissToast
+  - toggleAudio
+  - toggleNotifications
+  - toggleVoice
+  - toggleChatWindow
+  - goToPath
+  - setTextAreaValue
+
+**Fixed:**
+- Fixed stale values in toggle events
+- Fixed an issue with toasts not being positioned properly
+- Fixed an issue where new message prompts are not dismissed in embedded chatbots
+- Fixed an issue with the chatbot potentially crashing in react native webview
+- Fixed warning messages when loading chat history
+
+**Added:**
+- Added support for async event handlers (push promises into `event.promises` for them to be awaited till resolved)
+- Added `Plugin` type as an export
+- Improved logic for simulating stream messages
+
 ## v2.0.0-beta.22 (31-10-2024)
 
 **Fixed:**
