@@ -37,7 +37,7 @@ React ChatBotify is currently compatible with **React versions 16, 17, 18, and 1
 
 `npm install react-chatbotify --save`
 
-Note that this repository contains the code for the library. If you're looking for the repository for the React ChatBotify user guide, you may look [here](https://github.com/tjtanjin/react-chatbotify-docs).
+Note that this repository contains the code for the **core library**. If you're looking for the repositories of other React ChatBotify projects, you may look [**here**](#other-relevant-repositories).
 
 ### Features
 
@@ -82,6 +82,7 @@ Typescript
 - https://github.com/tjtanjin/react-chatbotify
 
 #### Other Relevant Repositories
+- https://github.com/React-ChatBotify-Plugins/react-chatbotify-plugin-template
 - https://github.com/tjtanjin/react-chatbotify-docs
 - https://github.com/tjtanjin/react-chatbotify-themes
 - https://github.com/tjtanjin/react-chatbotify-gallery-website
