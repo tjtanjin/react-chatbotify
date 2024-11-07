@@ -4,20 +4,20 @@
 
 **Minor Breaking Change:**
 - All functions in `params` are now async, with the addition of these functions in this version:
-  - params.showToast
-  - params.dismissToast
-  - params.goToPath
-  - params.setTextAreaValue
-  - params.openChat
+  - `params.showToast`
+  - `params.dismissToast`
+  - `params.goToPath`
+  - `params.setTextAreaValue`
+  - `params.openChat`
 - The following functions from hooks are now async:
-  - showToast
-  - dismissToast
-  - toggleAudio
-  - toggleNotifications
-  - toggleVoice
-  - toggleChatWindow
-  - goToPath
-  - setTextAreaValue
+  - `showToast`
+  - `dismissToast`
+  - `toggleAudio`
+  - `toggleNotifications`
+  - `toggleVoice`
+  - `toggleChatWindow`
+  - `goToPath`
+  - `setTextAreaValue`
 
 **Fixed:**
 - Fixed stale values in toggle events
