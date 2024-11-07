@@ -57,13 +57,13 @@ describe("useNotificationsInternal Hook", () => {
 			await result.current.toggleNotifications();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments
+		// checks if callRcbEvent was called with rcb-toggle-notifications and correct arguments
 		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
 			currState: !initialNotificationsToggledOn,
 			newState: initialNotificationsToggledOn,
 		});
 
-		// check if voice state was updated
+		// check if notifications state was updated
 		expect(result.current.notificationsToggledOn).toBe(initialNotificationsToggledOn);
 	});
 

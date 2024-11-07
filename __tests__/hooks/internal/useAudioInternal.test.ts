@@ -63,7 +63,7 @@ describe("useAudioInternal Hook", () => {
 			newState: initialAudioToggledOn,
 		});
 
-		// check if voice state was updated
+		// check if audio state was updated
 		expect(result.current.audioToggledOn).toBe(initialAudioToggledOn);
 	});
 
