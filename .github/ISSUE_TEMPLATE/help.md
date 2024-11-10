@@ -7,8 +7,11 @@ assignees: tjtanjin
 
 ---
 
-**Help Description**
+**Help Description:**
 Provide a clear and concise description on the help you need (include screenshots if relevant).
 
-**Additional context**
-Add any other context about the problem here.
+**Library version:**
+Specify the version of the library (e.g. `1.7.0`).
+
+**Additional context:**
+Add any other context about the problem here (e.g. plugins used, if any)
