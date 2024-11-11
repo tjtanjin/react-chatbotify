@@ -12,7 +12,12 @@ import { Settings } from "../types/Settings";
  * @param volume play volume
  */
 const speak = (message: string, language: string, voiceNames: string[], rate: number, volume: number) => {
-	const utterance = new SpeechSynthesisUtterance();
+	if (!window.SpeechSynthesisUtterance) {
+		console.info("Speech Synthesis API is not supported in this environment.");
+		return;
+	}
+
+	const utterance = new window.SpeechSynthesisUtterance();
 	utterance.text = message;
 	utterance.lang = language;
 	utterance.rate = rate;

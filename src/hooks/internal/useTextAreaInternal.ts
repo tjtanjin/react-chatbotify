@@ -35,7 +35,7 @@ export const useTextAreaInternal = () => {
 	 *
 	 * @param value value to set
 	 */
-	const setTextAreaValue = (value: string) => {
+	const setTextAreaValue = useCallback(async (value: string): Promise<void> => {
 		if (textAreaDisabled && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
@@ -59,7 +59,7 @@ export const useTextAreaInternal = () => {
 
 			// handles text area change value event
 			if (settings.event?.rcbTextAreaChangeValue) {
-				const event = callRcbEvent(
+				const event = await callRcbEvent(
 					RcbEvent.TEXT_AREA_CHANGE_VALUE,
 					{currValue: inputRef.current.value, prevValue: prevInputRef.current}
 				);
@@ -70,7 +70,7 @@ export const useTextAreaInternal = () => {
 			}
 			prevInputRef.current = inputRef.current.value;
 		}
-	}
+	}, [textAreaDisabled, inputRef, prevInputRef, settings, callRcbEvent])
 
 	/**
 	 * Updates text area focus based on current block's text area.
@@ -117,16 +117,16 @@ export const useTextAreaInternal = () => {
 	/**
 	 * Toggles text area disabled.
 	 */
-	const toggleTextAreaDisabled = () => {
+	const toggleTextAreaDisabled = useCallback(() => {
 		setTextAreaDisabled(prev => !prev);
-	}
+	}, [])
 
 	/**
 	 * Toggles text area sensitive mode.
 	 */
-	const toggleTextAreaSensitiveMode = () => {
+	const toggleTextAreaSensitiveMode = useCallback(() => {
 		setTextAreaSensitiveMode(prev => !prev);
-	}
+	}, [])
 
 	// todo: we can just standardize to export and use toggles, clean up in future
 	return {

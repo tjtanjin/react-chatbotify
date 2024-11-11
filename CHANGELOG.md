@@ -1,5 +1,74 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.23 (07-11-2024)
+
+**Minor Breaking Change:**
+- All functions in `params` are now async, with the addition of these functions in this version:
+  - `params.showToast`
+  - `params.dismissToast`
+  - `params.goToPath`
+  - `params.setTextAreaValue`
+  - `params.openChat`
+- The following functions from hooks are now async:
+  - `showToast`
+  - `dismissToast`
+  - `toggleAudio`
+  - `toggleNotifications`
+  - `toggleVoice`
+  - `toggleChatWindow`
+  - `goToPath`
+  - `setTextAreaValue`
+
+**Fixed:**
+- Fixed stale values in toggle events
+- Fixed an issue with toasts not being positioned properly
+- Fixed an issue where new message prompts are not dismissed in embedded chatbots
+- Fixed an issue with the chatbot potentially crashing in react native webview
+- Fixed warning messages when loading chat history
+
+**Added:**
+- Added support for async event handlers (push promises into `event.promises` for them to be awaited till resolved)
+- Added `Plugin` type as an export
+- Improved logic for simulating stream messages
+
+## v2.0.0-beta.22 (31-10-2024)
+
+**Fixed:**
+- Fixed a rare issue where the latest message sent may not be saved into chat history
+- Fixed error messages in console when chat history loads options or checkboxes
+
+**Added:**
+- Added a new `storageType` property to `settings.chatHistory` that allows users to specify `LOCAL_STORAGE` or `SESSION_STORAGE` for storing chat messages
+- Improved plugin experience by allowing plugin developers to include auto-setups
+- Toasts styles are now handled independently, allowing different toasts to show up concurrently
+
+## v2.0.0-beta.21 (22-10-2024)
+
+**Minor Breaking Change:**
+- The `desktopEnabled` and `mobileEnabled` properties previously found under `settings.general` have been moved to a new `settings.device` section
+
+**Fixed:**
+- Fixed an issue with notification sound spams when streaming messages
+
+**Added:**
+- Added a new `sendIconHoveredStyle` to allow users to define send icon styles on hover
+- Added a new `device` section (which the `desktopEnabled` and `mobileEnabled` properties are moved to)
+- Added a new `applyMobileOptimizations` property to the newly added `settings.device` section
+
+## v2.0.0-beta.20 (21-10-2024)
+
+**Fixed:**
+- Fixed an issue with the default chatbot footer icon
+- Improved checks for desktop/mobile devices
+- Reduced unnecessary re-renders (minor optimizations)
+- Properly fixed chatbot svg icon on mobile
+
+**Added:**
+- Added new `replaceSettings`, `replaceStyles`, `replaceMessages`, `replacePaths` and `replaceToasts` utility functions to their respective hooks (replaces their respective state setters)
+
+**Note:**
+Hooks no longer directly expose state setters (not a great practice, and hinders optimizations that can be done within the library itself). The new functions serve as a drop-in replacement for the state setters.
+
 ## v2.0.0-beta.19 (18-10-2024)
 
 **Fixed:**

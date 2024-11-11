@@ -3,15 +3,15 @@ import { expect } from "@jest/globals";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/jest-globals";
 
-import ToastPrompt from "../../../src/components/ChatBotBody/ToastPrompt/ToastPrompt";
-import { useSettingsContext } from "../../../src/context/SettingsContext";
-import { useStylesContext } from "../../../src/context/StylesContext";
-import { useToastsInternal } from "../../../src/hooks/internal/useToastsInternal";
+import ToastPrompt from "../../../../src/components/ChatBotToast/ToastPrompt/ToastPrompt";
+import { useSettingsContext } from "../../../../src/context/SettingsContext";
+import { useStylesContext } from "../../../../src/context/StylesContext";
+import { useToastsInternal } from "../../../../src/hooks/internal/useToastsInternal";
 
 // Mock the contexts
-jest.mock("../../../src/context/SettingsContext");
-jest.mock("../../../src/context/StylesContext");
-jest.mock("../../../src/hooks/internal/useToastsInternal");
+jest.mock("../../../../src/context/SettingsContext");
+jest.mock("../../../../src/context/StylesContext");
+jest.mock("../../../../src/hooks/internal/useToastsInternal");
 
 /**
  * Helper function to render Toast with different props.

@@ -1,12 +1,19 @@
+// chatbot import
 import ChatBot from "./components/ChatBot";
+
+// provider import
 import ChatBotProvider from "./context/ChatBotContext";
 
+// util imports
 import { getDefaultSettings } from "./utils/configParser";
 import { getDefaultStyles } from "./utils/configParser";
+
+// type imports
 import { Block } from "./types/Block";
 import { Params } from "./types/Params";
 import { Flow } from "./types/Flow";
 import { Message } from "./types/Message";
+import { Plugin } from "./types/Plugin";
 import { Settings } from "./types/Settings";
 import { Styles } from "./types/Styles";
 import { Toast } from "./types/Toast";
@@ -62,6 +69,7 @@ export type {
 	Params,
 	Flow,
 	Message,
+	Plugin,
 	Settings,
 	Styles,
 	Toast,

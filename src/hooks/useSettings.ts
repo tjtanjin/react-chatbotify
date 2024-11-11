@@ -5,11 +5,11 @@ import { useSettingsInternal } from "./internal/useSettingsInternal";
  */
 export const useSettings = () => {
 	// handles settings
-	const { settings, setSettings, updateSettings } = useSettingsInternal();
+	const { settings, replaceSettings, updateSettings } = useSettingsInternal();
 
 	return {
 		settings,
-		setSettings,
+		replaceSettings,
 		updateSettings
 	};
 };

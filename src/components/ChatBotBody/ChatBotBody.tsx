@@ -1,14 +1,12 @@
-import { Dispatch, SetStateAction, useEffect, CSSProperties, MouseEvent } from "react";
+import { Dispatch, SetStateAction, CSSProperties, MouseEvent, useEffect } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
-import ToastPrompt from "./ToastPrompt/ToastPrompt";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
-import { useToastsContext } from "../../context/ToastsContext";
 import { Message } from "../../types/Message";
 
 import "./ChatBotBody.css";
@@ -16,17 +14,13 @@ import "./ChatBotBody.css";
 /**
  * Contains chat messages between the user and bot.
  * 
- * @param chatScrollHeight number representing chat window scroll height
  * @param setChatScrollHeight setter for tracking chat window scroll height
  */
 const ChatBotBody = ({
-	chatScrollHeight,
 	setChatScrollHeight,
 }: {
-	chatScrollHeight: number;
 	setChatScrollHeight: Dispatch<SetStateAction<number>>;
 }) => {
-
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -36,20 +30,15 @@ const ChatBotBody = ({
 	// handles messages
 	const { messages } = useMessagesContext();
 
-	// handles toasts
-	const { toasts } = useToastsContext();
-
 	// handles chat window
 	const { isChatWindowOpen } = useChatWindowInternal();
 
 	// handles bot states
 	const {
 		isBotTyping,
-		isLoadingChatHistory,
-		setIsLoadingChatHistory,
 		isScrolling,
 		setIsScrolling,
-		setUnreadCount
+		setUnreadCount,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -79,46 +68,7 @@ const ChatBotBody = ({
 	};
 	const botBubbleEntryStyle = settings.botBubble?.animate ? "rcb-bot-message-entry" : "";
 
-	// styles for toast prompt container
-	const toastPromptContainerStyle: CSSProperties = {
-		bottom: 20,
-		width: 300,
-		minWidth: (styles.chatWindowStyle?.width as number ?? 375) / 2,
-		maxWidth: (styles.chatWindowStyle?.width as number ?? 375)  - 50,
-		...styles.toastPromptContainerStyle
-	};
-
-	// shifts scroll position when messages are updated and when bot is typing
-	useEffect(() => {
-		if (isLoadingChatHistory) {
-			if (!chatBodyRef.current) {
-				return;
-			}
-
-			const { scrollHeight } = chatBodyRef.current;
-			const scrollDifference = scrollHeight - chatScrollHeight;
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
-			setIsLoadingChatHistory(false);
-			return;
-		}
-
-		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
-			// defer update to next event loop, handles edge case where messages are sent too fast
-			// and the scrolling does not properly reach the bottom
-			setTimeout(() => {
-				if (!chatBodyRef.current) {
-					return;
-				}
-
-				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-				if (isChatWindowOpen) {
-					setUnreadCount(0);
-				}
-			})
-		}
-	}, [messages.length, isBotTyping]);
-
-	// shifts scroll position when scroll height changes
+	// shifts scroll position when scroll height changes and determines if a user is scrolling in chat window.
 	useEffect(() => {
 		if (!chatBodyRef.current) {
 			return;
@@ -129,18 +79,8 @@ const ChatBotBody = ({
 
 		if (!isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			if (isChatWindowOpen) {
-				setUnreadCount(0);
-			}
 		}
 	}, [chatBodyRef.current?.scrollHeight]);
-
-	// sets unread count to 0 if not scrolling
-	useEffect(() => {
-		if (!isScrolling) {
-			setUnreadCount(0);
-		}
-	}, [isScrolling]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.
@@ -149,15 +89,24 @@ const ChatBotBody = ({
 		if (!chatBodyRef.current) {
 			return;
 		}
+
+		// used to return chat history to correct height
+		setChatScrollHeight(chatBodyRef.current.scrollHeight);
+
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
-		setIsScrolling(
-			scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30)
-		);
+		const isScrolling = scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30);
+		setIsScrolling(isScrolling);
 
 		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
 		// this is necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom
-		if (!isScrolling && scrollTop + clientHeight >= scrollHeight - 1) {
-			chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+		if (!isScrolling) {
+			if (scrollTop + clientHeight >= scrollHeight - 1) {
+				chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+			}
+
+			if (isChatWindowOpen || settings.general?.embedded) {
+				setUnreadCount(0);
+			}
 		}
 	};
 
@@ -298,16 +247,6 @@ const ChatBotBody = ({
 				</div>
 			)}
 			<ChatMessagePrompt/>
-			<div className="rcb-toast-prompt-container" style={toastPromptContainerStyle}>
-				{toasts.map((toast) => (
-					<ToastPrompt
-						key={toast.id}
-						id={toast.id}
-						content={toast.content}
-						timeout={toast.timeout}
-					/>
-				))}
-			</div>
 		</div>
 	);
 };

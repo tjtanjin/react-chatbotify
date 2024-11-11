@@ -4,6 +4,8 @@ import { processAudio } from "../../services/AudioService";
 import { saveChatHistory } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
 import { parseMarkupMessage } from "../../utils/markupParser";
+import { isChatBotVisible } from "../../utils/displayChecker";
+import { useNotificationInternal } from "./useNotificationsInternal";
 import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
@@ -23,13 +25,22 @@ export const useMessagesInternal = () => {
 	const { messages, setMessages } = useMessagesContext();
 
 	// handles bot states
-	const { audioToggledOn, isChatWindowOpen, setIsBotTyping, setUnreadCount } = useBotStatesContext();
+	const {
+		audioToggledOn,
+		isChatWindowOpen,
+		isScrolling,
+		setIsBotTyping,
+		setUnreadCount
+	} = useBotStatesContext();
 
 	// handles bot refs
-	const { streamMessageMap } = useBotRefsContext();
+	const { streamMessageMap, chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
+	
+	// handles notification
+	const { playNotificationSound } = useNotificationInternal();
 
 	/**
 	 * Simulates the streaming of a message from the bot.
@@ -42,9 +53,15 @@ export const useMessagesInternal = () => {
 		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
-		// set an initial empty message to be used for streaming
-		setMessages(prevMessages => [...prevMessages, message]);
-		streamMessageMap.current.set("bot", message.id);
+		if (!streamMessageMap.current.has(message.sender)) {
+			// set an initial empty message to be used for streaming
+			setMessages(prevMessages => {
+				const updatedMessages = [...prevMessages, createMessage("", message.sender)];
+				handlePostMessagesUpdate(updatedMessages);
+				return updatedMessages;
+			});
+			streamMessageMap.current.set(message.sender, message.id);
+		}
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
@@ -85,7 +102,7 @@ export const useMessagesInternal = () => {
 		});
 
 		await simStreamDoneTask;
-		streamMessageMap.current.delete("bot");
+		streamMessageMap.current.delete(message.sender);
 		saveChatHistory(messages);
 	}, [messages, streamMessageMap]);
 
@@ -102,7 +119,7 @@ export const useMessagesInternal = () => {
 
 		// handles pre-message inject event
 		if (settings.event?.rcbPreInjectMessage) {
-			const event = callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
+			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -122,6 +139,12 @@ export const useMessagesInternal = () => {
 		const isUserStream = typeof message.content === "string"
 			&& message.sender === "user" && settings?.userBubble?.simStream;
 
+		// handles post-message inject event
+		setUnreadCount(prev => prev + 1);
+		if (settings.event?.rcbPostInjectMessage) {
+			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
+		}
+
 		if (isBotStream) {
 			const streamSpeed = settings.botBubble?.streamSpeed as number;
 			await simulateStream(message, streamSpeed, useMarkup);
@@ -129,13 +152,11 @@ export const useMessagesInternal = () => {
 			const streamSpeed = settings.userBubble?.streamSpeed as number;
 			await simulateStream(message, streamSpeed, useMarkup);
 		} else {
-			setMessages((prevMessages) => [...prevMessages, message]);
-		}
-
-		// handles post-message inject event
-		setUnreadCount(prev => prev + 1);
-		if (settings.event?.rcbPostInjectMessage) {
-			callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
+			setMessages((prevMessages) => {
+				const updatedMessages = [...prevMessages, message];
+				handlePostMessagesUpdate(updatedMessages);
+				return updatedMessages;
+			});
 		}
 
 		return message.id;
@@ -154,13 +175,17 @@ export const useMessagesInternal = () => {
 	
 		// handles remove message event
 		if (settings.event?.rcbRemoveMessage) {
-			const event = callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
+			const event = await callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
 		}
 
-		setMessages((prevMessages) => prevMessages.filter(message => message.id !== messageId));
+		setMessages((prevMessages) => {
+			const updatedMessages = prevMessages.filter(message => message.id !== messageId);
+			handlePostMessagesUpdate(updatedMessages);
+			return updatedMessages;
+		});
 		setUnreadCount((prevCount) => Math.max(prevCount - 1, 0));
 		return messageId;
 	}, [callRcbEvent, messages, settings.event?.rcbRemoveMessage]);
@@ -178,14 +203,18 @@ export const useMessagesInternal = () => {
 			const message = createMessage(content, sender);
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
-				const event = callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
+				const event = await callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
 				if (event.defaultPrevented) {
 					return null;
 				}
 			}
 
 			setIsBotTyping(false);
-			setMessages((prevMessages) => [...prevMessages, message]);
+			setMessages((prevMessages) => {
+				const updatedMessages = [...prevMessages, message];
+				handlePostMessagesUpdate(updatedMessages);
+				return [...prevMessages, message];
+			});
 			setUnreadCount(prev => prev + 1);
 			streamMessageMap.current.set(sender, message.id);
 			return message.id;
@@ -194,7 +223,7 @@ export const useMessagesInternal = () => {
 		const message = {...createMessage(content, sender), id: streamMessageMap.current.get(sender) as string};
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
-			const event = callRcbEvent(
+			const event = await callRcbEvent(
 				RcbEvent.CHUNK_STREAM_MESSAGE,
 				{...message, id: streamMessageMap.current.get(sender)}
 			);
@@ -212,7 +241,7 @@ export const useMessagesInternal = () => {
 					break;
 				}
 			}
-		
+			handlePostMessagesUpdate(updatedMessages)
 			return updatedMessages;
 		});
 		return streamMessageMap.current.get(sender) ?? null;
@@ -243,7 +272,7 @@ export const useMessagesInternal = () => {
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
-			const event = callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {messageToEndStreamFor});
+			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {messageToEndStreamFor});
 			if (event.defaultPrevented) {
 				return false;
 			}
@@ -255,12 +284,64 @@ export const useMessagesInternal = () => {
 		return true;
 	}, [callRcbEvent, messages, settings.event?.rcbStopStreamMessage, streamMessageMap])
 
+	/**
+	 * Handles post messages updates such as saving chat history, scrolling to bottom
+	 * and playing notification sound.
+	 */
+	const handlePostMessagesUpdate = (updatedMessages: Array<Message>) => {
+		saveChatHistory(updatedMessages);
+
+		// tracks if notification should be played
+		let shouldNotify = true;
+
+		// if messages are empty or chatbot is open and user is not scrolling, no need to notify
+		if (updatedMessages.length === 0 || isChatWindowOpen && !isScrolling) {
+			shouldNotify = false;
+		}
+
+		// if chatbot is embedded and visible, no need to notify
+		if (settings.general?.embedded && isChatBotVisible(chatBodyRef.current as HTMLDivElement)) {
+			shouldNotify = false;
+		}
+
+		const lastMessage = updatedMessages[updatedMessages.length - 1];
+		// if message is sent by user or is bot typing or bot is embedded, return
+		if (!lastMessage || lastMessage.sender === "user") {
+			shouldNotify = false;
+		}
+
+		if (shouldNotify) {
+			playNotificationSound();
+		}
+
+		// if auto scroll enabled or is not scrolling, then scroll to bottom
+		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
+			// defer update to next event loop, handles edge case where messages are sent too fast
+			// and the scrolling does not properly reach the bottom
+			setTimeout(() => {
+				if (!chatBodyRef.current) {
+					return;
+				}
+
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+			}, 1)
+		}
+	}
+
+	/**
+	 * Replaces (overwrites entirely) the current messages with the new messages.
+	 */
+	const replaceMessages = useCallback((newMessages: Array<Message>) => {
+		handlePostMessagesUpdate(newMessages);
+		setMessages(newMessages);
+	}, [handlePostMessagesUpdate])
+
 	return {
 		endStreamMessage,
 		injectMessage,
 		removeMessage,
 		streamMessage,
 		messages,
-		setMessages
+		replaceMessages
 	};
 };

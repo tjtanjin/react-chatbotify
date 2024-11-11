@@ -1,0 +1,17 @@
+/* Toast Container */
+
+.rcb-toast-prompt-container {
+    position: absolute;
+	left: 50%;
+    transform: translateX(-50%); 
+    bottom: 0px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+	flex-direction: column;
+    opacity: 1;
+    animation: popIn 0.3s ease-in-out;
+    pointer-events: auto;
+	margin-top: 200;
+}

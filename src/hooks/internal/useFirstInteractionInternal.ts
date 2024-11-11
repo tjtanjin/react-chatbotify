@@ -22,8 +22,13 @@ export const useFirstInteractionInternal = () => {
 			setHasFlowStarted(true);
 		}
 
+		if (!window.SpeechSynthesisUtterance) {
+			console.info("Speech Synthesis API is not supported in this environment.");
+			return;
+		}
+
 		// workaround for getting audio to play on mobile
-		const utterance = new SpeechSynthesisUtterance();
+		const utterance = new window.SpeechSynthesisUtterance();
 		utterance.text = "";
 		utterance.onend = () => {
 			window.removeEventListener("click", handleFirstInteraction);

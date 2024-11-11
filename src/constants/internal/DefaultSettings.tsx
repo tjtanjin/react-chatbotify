@@ -30,8 +30,6 @@ export const DefaultSettings: Settings = {
 		showInputRow: true,
 		actionDisabledIcon: actionDisabledIcon,
 		embedded: false,
-		desktopEnabled: true,
-		mobileEnabled: true,
 		flowStartTrigger: "ON_LOAD",
 	},
 	tooltip: {
@@ -77,6 +75,7 @@ export const DefaultSettings: Settings = {
 		disabled: false,
 		maxEntries: 30,
 		storageKey: "rcb-history",
+		storageType: "LOCAL_STORAGE",
 		viewChatHistoryButtonText: "Load Chat History ⟳",
 		chatHistoryLineBreakText: "----- Previous Chat History -----",
 		autoLoad: false,
@@ -154,7 +153,7 @@ export const DefaultSettings: Settings = {
 						background: "linear-gradient(to right, #42b0c5, #491d8d)",
 					}}
 				>
-					<ChatIcon style={{ width: "80%", height: "80%" }} />
+					<ChatIcon style={{ width: "80%", height: "80%", fill: "#fff" }} />
 				</div>
 				<span key={2} style={{fontWeight: "bold"}}> React ChatBotify</span>
 			</div>
@@ -212,5 +211,10 @@ export const DefaultSettings: Settings = {
 		sendButton: "send message",
 		voiceButton: "toggle voice",
 		inputTextArea: "input text area",
+	},
+	device: {
+		desktopEnabled: true,
+		mobileEnabled: true,
+		applyMobileOptimizations: true,
 	}
 }

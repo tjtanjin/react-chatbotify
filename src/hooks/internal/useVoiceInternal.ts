@@ -22,16 +22,18 @@ export const useVoiceInternal = () => {
 	/**
 	 * Toggles voice feature.
 	 */
-	const toggleVoice = useCallback(() => {
+	const toggleVoice = useCallback(async () => {
 		// handles toggle voice event
 		if (settings.event?.rcbToggleVoice) {
-			const event = callRcbEvent(RcbEvent.TOGGLE_VOICE, {currState: voiceToggledOn, newState: !voiceToggledOn});
+			const event = await callRcbEvent(
+				RcbEvent.TOGGLE_VOICE, {currState: voiceToggledOn, newState: !voiceToggledOn}
+			);
 			if (event.defaultPrevented) {
 				return;
 			}
 		}
 		setVoiceToggledOn(prev => !prev);
-	}, []);
+	}, [voiceToggledOn]);
 
 	/**
 	 * Sync voice with chat input based on whether voice should be kept toggled on.

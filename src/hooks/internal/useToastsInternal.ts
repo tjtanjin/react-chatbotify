@@ -32,7 +32,7 @@ export const useToastsInternal = () => {
 	 * @param content message to show in toast
 	 * @param timeout optional timeout in milliseconds before toast is removed
 	 */
-	const showToast = useCallback((content: string | JSX.Element, timeout?: number): string | null => {
+	const showToast = useCallback(async (content: string | JSX.Element, timeout?: number): Promise<string | null> => {
 		let id = null;
 		const currentToasts = toastsRef.current;
 		const numToast = currentToasts.length;
@@ -46,7 +46,7 @@ export const useToastsInternal = () => {
 
 			// handles show toast event
 			if (settings.event?.rcbShowToast) {
-				const event = callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
+				const event = await callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
 				if (event.defaultPrevented) {
 					return null;
 				}
@@ -60,7 +60,7 @@ export const useToastsInternal = () => {
 
 		// handles show toast event
 		if (settings.event?.rcbShowToast) {
-			const event = callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
+			const event = await callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -76,7 +76,7 @@ export const useToastsInternal = () => {
 	 *
 	 * @param id id of toast to remove
 	 */
-	const dismissToast = useCallback((id: string): string | null => {
+	const dismissToast = useCallback(async (id: string): Promise<string | null> => {
 		const toastToRemove = toasts.find((toast) => toast.id === id);
 
 		// if cannot find toast, nothing to remove
@@ -86,7 +86,7 @@ export const useToastsInternal = () => {
 
 		// handles dismiss toast event
 		if (settings.event?.rcbDismissToast) {
-			const event = callRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
+			const event = await callRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
 			// if prevented, don't dismiss
 			if (event.defaultPrevented) {
 				return null;
@@ -98,10 +98,17 @@ export const useToastsInternal = () => {
 		return id;
 	}, [callRcbEvent, setToasts]);
 
+	/**
+	 * Replaces (overwrites entirely) the current toasts with the new toasts.
+	 */
+	const replaceToasts = useCallback((newToasts: Array<Toast>) => {
+		setToasts(newToasts);
+	}, [])
+
 	return {
 		showToast,
 		dismissToast,
 		toasts,
-		setToasts
+		replaceToasts
 	};
 };

@@ -34,7 +34,7 @@ const getSpeechRecognition = () => {
  */
 export const startVoiceRecording = (
 	settings: Settings,
-	toggleVoice: () => void,
+	toggleVoice: () => Promise<void>,
 	triggerSendVoiceInput: () => void,
 	setTextAreaValue: (value: string) => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
@@ -63,7 +63,7 @@ export const startVoiceRecording = (
  */
 const startSpeechRecognition = (
 	settings: Settings,
-	toggleVoice: () => void,
+	toggleVoice: () => Promise<void>,
 	triggerSendVoiceInput: () => void,
 	setTextAreaValue: (value: string) => void,
 	setInputLength: Dispatch<SetStateAction<number>>,
@@ -106,7 +106,7 @@ const startSpeechRecognition = (
 			setInputLength(inputRef.current.value.length);
 		}
 
-		inactivityTimer = setTimeout(() => handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+		inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 		if (!settings.voice?.autoSendDisabled) {
 			autoSendTimer = setTimeout(triggerSendVoiceInput, autoSendPeriod);
 		}
@@ -116,7 +116,7 @@ const startSpeechRecognition = (
 		if (toggleOn) {
 			recognition.start();
 			if (!inactivityTimer) {
-				inactivityTimer = setTimeout(() => handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+				inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 			}
 		} else {
 			clearTimeout(inactivityTimer as ReturnType<typeof setTimeout>);
@@ -125,7 +125,7 @@ const startSpeechRecognition = (
 		}
 	};
 
-	inactivityTimer = setTimeout(() => handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+	inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 }
 
 /**
@@ -222,9 +222,11 @@ export const syncVoiceWithChatInput = (keepVoiceOn: boolean, settings: Settings)
  * 
  * @param handleToggleVoice handles toggling of voice
  */
-const handleTimeout = (toggleVoice: () => void, inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement | null>) => {
+const handleTimeout = async (toggleVoice: () => Promise<void>,
+	inputRef: RefObject<HTMLTextAreaElement | HTMLInputElement | null>) => {
+
 	if (!inputRef.current?.disabled) {
-		toggleVoice();
+		await toggleVoice();
 	}
 	stopVoiceRecording();
 }

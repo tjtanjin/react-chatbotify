@@ -9,6 +9,7 @@
 	cursor: pointer;
 	font-size: 20px;
 	transition: transform 0.3s ease;
+	z-index: 9999;
 }
 
 .rcb-chat-tooltip-tail {

@@ -65,9 +65,9 @@ function App() {
 		},
 		ask_height: {
 			message: "What is your height (cm)?",
-			path: (params: Params) => {
+			path: async (params: Params) => {
 				if (isNaN(Number(params.userInput))) {
-					params.injectMessage("Height needs to be a number!");
+					await params.injectMessage("Height needs to be a number!");
 					return;
 				}
 				return "ask_weather";
@@ -95,11 +95,11 @@ function App() {
 					</button>
 				</div>
 			),
-			path: (params: Params) => {
+			path: async (params: Params) => {
 				if (params.userInput.toLowerCase() != "black") {
 					return "incorrect_answer"
 				} else {
-					params.openChat(false);
+					await params.openChat(false);
 					return "close_chat";
 				}
 			},
@@ -121,8 +121,8 @@ function App() {
 		loop: {
 			message: (params: Params) => {
 				// sends the message half a second later to facilitate testing of new message prompt
-				setTimeout(() => {
-					params.injectMessage("You have reached the end of the conversation!");
+				setTimeout(async () => {
+					await params.injectMessage("You have reached the end of the conversation!");
 				}, 500)
 			},
 			path: "loop"

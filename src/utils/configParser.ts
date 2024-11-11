@@ -98,6 +98,9 @@ export const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig
 				source[keyAsObjectType] !== null && 
 				!Array.isArray(source[keyAsObjectType])
 			) {
+				if (typeof target[keyAsObjectType] !== "object" || target[keyAsObjectType] === null) {
+					(target as Record<string, object>)[keyAsObjectType] = {};
+				}
 				stack.push({ source: source[keyAsObjectType], target: target[keyAsObjectType] });
 			} else {
 				try {

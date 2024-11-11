@@ -71,8 +71,8 @@ describe("useChatHistoryInternal Hook", () => {
 		expect(result.current.isLoadingChatHistory).toBe(initialIsLoadingChatHistory);
 
 		// simulates clicking on load chat history button
-		act(() => {
-			result.current.showChatHistory();
+		await act(async () => {
+			await result.current.showChatHistory();
 		});
 
 		// checks if loading state is true
@@ -89,6 +89,9 @@ describe("useChatHistoryInternal Hook", () => {
 			MockDefaultSettings,
 			expect.any(Object),
 			initialChatHistory,
+			expect.any(Function),
+			expect.any(Object),
+			expect.any(Number),
 			expect.any(Function),
 		);
 

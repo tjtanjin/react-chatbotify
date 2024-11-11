@@ -10,7 +10,7 @@ export const usePaths = () => {
 		getPrevPath,
 		goToPath,
 		paths,
-		setPaths
+		replacePaths,
 	} = usePathsInternal();
 
 	return {
@@ -18,6 +18,6 @@ export const usePaths = () => {
 		getPrevPath,
 		goToPath,
 		paths,
-		setPaths
+		replacePaths,
 	};
 };

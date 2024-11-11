@@ -9,6 +9,7 @@ import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
 
 // variables used to track history, updated when settings.chatHistory value changes
+let storage: Storage;
 let historyLoaded = false;
 let historyStorageKey = "rcb-history";
 let historyMaxEntries = 30;
@@ -21,7 +22,7 @@ let historyMessages: Message[] = [];
  * @param messages messages containing current conversation with the bot
  */
 const saveChatHistory = async (messages: Message[]) => {
-	if (historyDisabled) {
+	if (historyDisabled || !storage) {
 		return;
 	}
 	
@@ -82,7 +83,20 @@ const getHistoryMessages = () => {
  * @param messages chat history messages to set
  */
 const setHistoryMessages = (messages: Message[]) => {
-	localStorage.setItem(historyStorageKey, JSON.stringify(messages));
+	if (!storage) {
+		return;
+	}
+	storage.setItem(historyStorageKey, JSON.stringify(messages));
+}
+
+/**
+ * Clears existing history messages.
+ */
+const clearHistoryMessages = () => {
+	if (!storage) {
+		return;
+	}
+	storage.removeItem(historyStorageKey);
 }
 
 /**
@@ -91,10 +105,15 @@ const setHistoryMessages = (messages: Message[]) => {
  * @param settings options provided to the bot
  */
 const setHistoryStorageValues = (settings: Settings) => {
+	if (settings.chatHistory?.storageType?.toUpperCase() === "SESSION_STORAGE") {
+		storage = sessionStorage;
+	} else {
+		storage = localStorage;
+	}
 	historyStorageKey = settings.chatHistory?.storageKey as string;
 	historyMaxEntries = settings.chatHistory?.maxEntries as number;
 	historyDisabled = settings.chatHistory?.disabled as boolean;
-	historyMessages = parseHistoryMessages(localStorage.getItem(historyStorageKey) as string);
+	historyMessages = parseHistoryMessages(storage.getItem(historyStorageKey) as string);
 }
 
 /**
@@ -124,11 +143,13 @@ const parseMessageToString = (message: Message) => {
  * @param styles styles provided to the bot
  * @param chatHistory chat history to show
  * @param setMessages setter for updating messages
- * @param prevTextAreaDisabled boolean indicating if text area was previously disabled
- * @param setTextAreaDisabled setter for enabling/disabling user text area
+ * @param chatBodyRef reference to the chat body
+ * @param chatScrollHeight current chat scroll height
+ * @param setIsLoadingChatHistory setter for whether chat history is loading
  */
 const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
-	setMessages: Dispatch<SetStateAction<Message[]>>) => {
+	setMessages: Dispatch<SetStateAction<Message[]>>, chatBodyRef: React.RefObject<HTMLDivElement | null>,
+	chatScrollHeight: number, setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
 	if (chatHistory != null) {
@@ -160,9 +181,20 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
 			}, 500)
+
+			// slight delay afterwards to maintain scroll position
+			setTimeout(() => {
+				if (!chatBodyRef.current) {
+					return;
+				}
+				const { scrollHeight } = chatBodyRef.current;
+				const scrollDifference = scrollHeight - chatScrollHeight;
+				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
+				setIsLoadingChatHistory(false);
+			}, 510)
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
-			localStorage.removeItem(settings.chatHistory?.storageKey as string);
+			storage.removeItem(settings.chatHistory?.storageKey as string);
 		}
 	}
 }
@@ -203,14 +235,19 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
 				return acc;
 			}, {} as { [key: string]: string | CSSProperties });
 
-			const classList = (node as Element).classList;
-			if (settings.botBubble?.showAvatar) {
-				attributes = addStyleToContainers(classList, attributes);
+			// if have class property, repopulate styles and rename to className instead
+			if (Object.prototype.hasOwnProperty.call(attributes, "class")) {
+				const classList = (node as Element).classList;
+				attributes["className"] = classList.toString();
+				delete attributes["class"];
+				if (settings.botBubble?.showAvatar) {
+					attributes = addStyleToContainers(classList, attributes);
+				}
+				attributes = addStyleToOptions(classList, attributes, settings, styles);
+				attributes = addStyleToCheckboxRows(classList, attributes, settings, styles);
+				attributes = addStyleToCheckboxNextButton(classList, attributes, settings, styles);
+				attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, styles);
 			}
-			attributes = addStyleToOptions(classList, attributes, settings, styles);
-			attributes = addStyleToCheckboxRows(classList, attributes, settings, styles);
-			attributes = addStyleToCheckboxNextButton(classList, attributes, settings, styles);
-			attributes = addStyleToMediaDisplayContainer(classList, attributes, settings, styles);
 
 			const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link",
 				"meta", "source", "track", "wbr"];
@@ -236,11 +273,7 @@ const renderHTML = (html: string, settings: Settings, styles: Styles): ReactNode
  */
 const addStyleToContainers = (classList: DOMTokenList, attributes: {[key: string]: string | CSSProperties}) => {
 	if (classList.contains("rcb-options-container") || classList.contains("rcb-checkbox-container")) {
-		if (Object.prototype.hasOwnProperty.call(attributes, "class")) {
-			attributes["class"] = `${classList.toString()} rcb-options-offset`;
-		} else {
-			attributes["class"] = "rcb-options-offset"
-		}
+		attributes["className"] = `${classList.toString()} rcb-options-offset`;
 	}
 	return attributes;
 }
@@ -334,5 +367,6 @@ export {
 	loadChatHistory,
 	getHistoryMessages,
 	setHistoryMessages,
+	clearHistoryMessages,
 	setHistoryStorageValues
 }
