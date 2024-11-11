@@ -30,7 +30,7 @@ jest.mock("../../src/viteconfig", () => ({
 	},
 }));
 
-describe.skip("ChatBotContainer Component", () => {
+describe("ChatBotContainer Component", () => {
 	beforeEach(() => {
 		(useButtonInternal as jest.Mock).mockReturnValue({
 			headerButtons: [<button key="header-btn">Header Button</button>],
@@ -81,13 +81,12 @@ describe.skip("ChatBotContainer Component", () => {
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: {
-					showHeader: true,
-					showFooter: true,
+					showHeader: true, 
 					showInputRow: true,
+					showFooter: true,
 					flowStartTrigger: "ON_CHATBOT_INTERACT",
-					desktopEnabled: true,
-					mobileEnabled: true,
 				},
+				device: { desktopEnabled: true, mobileEnabled: true },
 			},
 		});
 		render(<ChatBotContainer />);
@@ -105,13 +104,12 @@ describe.skip("ChatBotContainer Component", () => {
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: {
-					showHeader: true,
-					showFooter: false,
+					showHeader: true, 
 					showInputRow: false,
+					showFooter: false,
 					flowStartTrigger: "ON_CHATBOT_INTERACT",
-					desktopEnabled: true,
-					mobileEnabled: true,
 				},
+				device: { desktopEnabled: true, mobileEnabled: true },
 			},
 		});
 		render(<ChatBotContainer />);
@@ -125,13 +123,12 @@ describe.skip("ChatBotContainer Component", () => {
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: {
-					showHeader: false,
-					showFooter: false,
+					showHeader: false, 
 					showInputRow: true,
+					showFooter: false,
 					flowStartTrigger: "ON_CHATBOT_INTERACT",
-					desktopEnabled: true,
-					mobileEnabled: true,
 				},
+				device: { desktopEnabled: true, mobileEnabled: true },
 			},
 		});
 		
@@ -146,13 +143,12 @@ describe.skip("ChatBotContainer Component", () => {
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: {
-					showHeader: false,
-					showFooter: true,
+					showHeader: false, 
 					showInputRow: false,
+					showFooter: true,
 					flowStartTrigger: "ON_CHATBOT_INTERACT",
-					desktopEnabled: true,
-					mobileEnabled: true,
 				},
+				device: { desktopEnabled: true, mobileEnabled: true },
 			},
 		});
 		
@@ -173,13 +169,12 @@ describe.skip("ChatBotContainer Component", () => {
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: {
-					showHeader: true,
-					showFooter: true,
+					showHeader: true, 
 					showInputRow: true,
+					showFooter: true,
 					flowStartTrigger: "ON_CHATBOT_INTERACT",
-					desktopEnabled: true,
-					mobileEnabled: true,
 				},
+				device: { desktopEnabled: true, mobileEnabled: true },
 			},
 		});
 
@@ -208,12 +203,12 @@ describe.skip("ChatBotContainer Component", () => {
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				general: {
-					showHeader: false,
-					showFooter: false,
+					showHeader: false, 
 					showInputRow: false,
-					embedded: false,
-					mobileEnabled: false, // Setting this to false
+					showFooter: false,
+					flowStartTrigger: "ON_CHATBOT_INTERACT",
 				},
+				device: { desktopEnabled: true, mobileEnabled: true },
 			},
 		});
 		render(<ChatBotContainer />);
