@@ -38,7 +38,7 @@ export const useFlowInternal = () => {
 	 * Retrieves the conversation flow for the chatbot.
 	 */
 	const getFlow = useCallback(() => {
-		return flowRef.current ?? {};
+		return flowRef?.current ?? {};
 	}, [flowRef]);
 	
 	
