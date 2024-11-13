@@ -33,7 +33,7 @@ Welcome to React ChatBotify, an intuitive and versatile library that allows you 
 
 Designed with developers in mind, React ChatBotify simplifies the chatbot development process without compromising on functionality. Its intuitive API and comprehensive customization options allow you to tailor your chatbot to meet specific project requirements seamlessly. From handling basic interactions to managing complex and advanced conversational flows, our library empowers you to deliver engaging user experiences. Head over to our [**community showcases**](https://github.com/tjtanjin/react-chatbotify/blob/main/SHOWCASES.md) or join [**our discord**](https://discord.gg/6R4DK4G5Zh) to get inspired and start crafting your chatbot today!
 
-React ChatBotify is currently compatible with **React versions 16, 17, 18, and 19**. Get started today by installing the library with the following command:
+React ChatBotify is currently compatible with **React versions 16, 17, 18, and 19**. Get started by installing the library with the following command:
 
 `npm install react-chatbotify --save`
 

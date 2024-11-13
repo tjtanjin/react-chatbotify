@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.24 (13-11-2024)
+
+**Fixed:**
+- Fixed an issue where toasts showed up incorrectly positioned in embedded chatbots
+
 ## v2.0.0-beta.23 (07-11-2024)
 
 **Minor Breaking Change:**
