@@ -29,7 +29,6 @@ jest.mock("../../../src/context/BotRefsContext", () => ({
 	useBotRefsContext: jest.fn(() => ({
 		botIdRef: { current: "testBotId" },
 		flowRef: { current: { currentPath: { file: jest.fn() } } },
-		// ...other mocked values
 	})),
 }));
 
@@ -41,7 +40,7 @@ jest.mock("../../../src/context/BotRefsContext", () => ({
 const renderFileAttachmentButton = (blockAllowsAttachment: boolean, showMediaDisplay: boolean) => {
 	const initialSettings = {
 		fileAttachment: {
-			sendFileName: true, // Ensure this is truthy
+			sendFileName: true,
 			multiple: true,
 			accept: ".jpg,.png",
 			showMediaDisplay: showMediaDisplay,
@@ -151,10 +150,9 @@ describe("FileAttachmentButton Component", () => {
 	});
 
 	it("does not proceed when getCurrPath returns null", () => {
-		// Mock getCurrPath to return null
 		(usePathsInternal as jest.Mock).mockReturnValueOnce({
 			blockAllowsAttachment: true,
-			getCurrPath: jest.fn().mockReturnValue(null), // Simulate null return value
+			getCurrPath: jest.fn().mockReturnValue(null),
 			getPrevPath: jest.fn(),
 			goToPath: jest.fn(),
 		});
@@ -166,7 +164,6 @@ describe("FileAttachmentButton Component", () => {
       
 		fireEvent.change(input, { target: { files: [file] } });
       
-		// Expect no calls to mockHandleSubmitText or mockInjectMessage
 		expect(mockHandleSubmitText).not.toHaveBeenCalled();
 		expect(mockInjectMessage).not.toHaveBeenCalled();
 	});
