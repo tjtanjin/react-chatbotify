@@ -116,17 +116,12 @@ describe("UserCheckboxes Component", () => {
 		const checkbox1 = screen.getByText("Checkbox 1");
 		fireEvent.mouseDown(checkbox1);
 
-		screen.debug();
-
-		//const nextButton = screen.getByClassName("rcb-checkbox-next-button");
 		const nextButton = container.getElementsByClassName("rcb-checkbox-next-button")[0];
 		expect(nextButton).toBeDefined();
 
 		// Click next button
 		fireEvent.mouseDown(nextButton);
 
-		// expect(mockHandleSubmitText).toHaveBeenCalledWith("Checkbox 1", true);
-        
 		expect(mockHandleSubmitText).toHaveBeenCalledTimes(1);
 	});
 
@@ -142,8 +137,5 @@ describe("UserCheckboxes Component", () => {
 		fireEvent.mouseDown(checkbox1);
 		expect(mockHandleSubmitText).not.toHaveBeenCalled();
 	});
-
-	
-
 	
 });
