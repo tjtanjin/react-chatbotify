@@ -91,6 +91,15 @@ const ChatBotContainer = ({
 				height: `${viewportHeight}px`,
 			}
 		}
+
+		// if not embedded, add z-index
+		if (!settings.general?.embedded) {
+			return {
+				...styles.chatWindowStyle,
+				zIndex: 10000,
+			};
+		}
+
 		return styles.chatWindowStyle;
 	}
 

@@ -22,7 +22,6 @@
 	flex-direction: column;
 	width: 375px;
 	height: 550px;
-	z-index: 10000;
 }
 
 .rcb-window-embedded .rcb-chat-window {
