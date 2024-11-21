@@ -167,6 +167,7 @@ const FileAttachmentButton = () => {
 		>
 			<input
 				className="rcb-attach-input"
+				role="file"
 				type="file"
 				onChange={handleUpload}
 				multiple={settings.fileAttachment?.multiple}
