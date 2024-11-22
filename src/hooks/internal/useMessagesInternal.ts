@@ -56,15 +56,13 @@ export const useMessagesInternal = () => {
 		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
-		if (!streamMessageMap.current.has(message.sender)) {
-			// set an initial empty message to be used for streaming
-			setMessages(prevMessages => {
-				const updatedMessages = [...prevMessages, createMessage("", message.sender)];
-				handlePostMessagesUpdate(updatedMessages);
-				return updatedMessages;
-			});
-			streamMessageMap.current.set(message.sender, message.id);
-		}
+		// set an initial empty message to be used for simulating streaming
+		const placeholderMessage = createMessage("", message.sender);
+		setMessages(prevMessages => {
+			const updatedMessages = [...prevMessages, placeholderMessage];
+			handlePostMessagesUpdate(updatedMessages);
+			return updatedMessages;
+		});
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
@@ -88,8 +86,7 @@ export const useMessagesInternal = () => {
 				setMessages((prevMessages) => {
 					const updatedMessages = [...prevMessages];
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
-						if (updatedMessages[i].sender === message.sender
-						&& typeof updatedMessages[i].content === "string") {
+						if (updatedMessages[i].id === placeholderMessage.id) {
 							const character = streamMessage[streamIndex];
 							if (character) {
 								message.content += character;
@@ -105,9 +102,8 @@ export const useMessagesInternal = () => {
 		});
 
 		await simStreamDoneTask;
-		streamMessageMap.current.delete(message.sender);
 		saveChatHistory(messages);
-	}, [messages, streamMessageMap]);
+	}, [messages]);
 
 	/**
 	 * Injects a message at the end of the messages array.
