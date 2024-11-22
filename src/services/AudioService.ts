@@ -57,7 +57,7 @@ export const processAudio = (settings: Settings, voiceToggledOn: boolean,
 	isChatWindowOpen: boolean, message: Message, useMarkup: boolean) => {
 
 	// Add check for empty message content
-	if (settings.audio?.disabled || message.sender === "user" || typeof message.content !== "string"
+	if (settings.audio?.disabled || message.sender.toUpperCase() === "USER" || typeof message.content !== "string"
 		|| (!isChatWindowOpen && !settings.general?.embedded) || !voiceToggledOn
 		|| message.content.trim() === "") { // Check for empty message content
 		return;

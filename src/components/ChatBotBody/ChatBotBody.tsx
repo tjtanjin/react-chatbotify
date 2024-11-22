@@ -212,13 +212,13 @@ const ChatBotBody = ({
 			onScroll={updateIsScrolling}
 		>
 			{messages.map((message, index) => {
-				if (message.sender === "system") {
+				if (message.sender.toUpperCase() === "SYSTEM") {
 					return <div key={index}>{message.content}</div>
 				}
 
 				return (
 					<div key={index}>
-						{message.sender === "user"
+						{message.sender.toUpperCase() === "USER"
 							? renderUserMessage(message, index)
 							: renderBotMessage(message, index)}
 					</div>

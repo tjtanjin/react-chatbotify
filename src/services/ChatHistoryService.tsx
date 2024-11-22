@@ -32,7 +32,7 @@ const saveChatHistory = async (messages: Message[]) => {
 	for (let i = messages.length - 1; i >= offset; i--) {
 		const message = messages[i];
 
-		if (message.sender === "system") {
+		if (message.sender.toUpperCase() === "SYSTEM") {
 			break;
 		}
 
@@ -127,7 +127,7 @@ const parseMessageToString = (message: Message) => {
 			id: message.id,
 			content: ReactDOMServer.renderToString(message.content),
 			type: message.type,
-			sender: message.sender,
+			sender: message.sender.toUpperCase(),
 			timestamp: message.timestamp
 		});
 		return clonedMessage;

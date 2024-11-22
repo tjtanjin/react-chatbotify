@@ -15,7 +15,7 @@ describe("ChatHistoryService", () => {
 
 	const mockMessage: Message = {
 		id: "1",
-		sender: "user",
+		sender: "USER",
 		content: "Hello good sir!",
 		type: "text",
 		timestamp: "2021-01-01T00:00:00Z",

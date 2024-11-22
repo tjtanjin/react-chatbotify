@@ -67,7 +67,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "user",
+			sender: "USER",
 			content: "Hello, how can I assist you today?",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -93,7 +93,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// defines message to be from user
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "user",
+			sender: "USER",
 			content: "I need help with my account.",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -121,7 +121,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// defines message content as an object
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: React.createElement("div"),
 			type: "object",
 			timestamp: Date.now().toString(),
@@ -152,7 +152,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "Welcome back! How can I help you today?",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -178,7 +178,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio, but voice is toggled off
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "Let me know if you need any assistance.",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -204,7 +204,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "Hello! How can I assist you today?",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -237,7 +237,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 		// calls process audio
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "This is a test message without a specified voice.",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -268,7 +268,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "<b>Hello!</b> How can I assist you today?",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -294,7 +294,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "<b>Hello!</b> How can I assist you today?",
 			type: "string",
 			timestamp: Date.now().toString(),
@@ -320,7 +320,7 @@ describe("AudioService.processAudio (Inline Mocks)", () => {
 
 		const message: Message = {
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "",
 			type: "string",
 			timestamp: Date.now().toString(),

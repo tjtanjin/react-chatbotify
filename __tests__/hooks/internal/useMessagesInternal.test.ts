@@ -66,7 +66,7 @@ describe("useMessagesInternal", () => {
     const { result } = renderHook(() => useMessagesInternal());
 
     await act(async () => {
-      const messageId = await result.current.injectMessage("Test message", "bot");
+      const messageId = await result.current.injectMessage("Test message", "BOT");
       expect(messageId).toBeTruthy();
     });
 
@@ -76,7 +76,7 @@ describe("useMessagesInternal", () => {
 
   it("should remove a message correctly", async () => {
     const mockMessageId = "test-id";
-    const mockMessage: Message = { id: mockMessageId, content: "Test", sender: "bot", type: "text",
+    const mockMessage: Message = { id: mockMessageId, content: "Test", sender: "BOT", type: "text",
         timestamp: String(Date.now()) };
     (useMessagesContext as jest.Mock).mockReturnValue({
       messages: [mockMessage],
@@ -98,25 +98,25 @@ describe("useMessagesInternal", () => {
     const { result } = renderHook(() => useMessagesInternal());
 
     await act(async () => {
-      const messageId = await result.current.streamMessage("Test stream", "bot");
+      const messageId = await result.current.streamMessage("Test stream", "BOT");
       expect(messageId).toBeTruthy();
     });
 
     expect(mockSetMessages).toHaveBeenCalled();
     expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
-    expect(mockStreamMessageMap.current.has("bot")).toBeTruthy();
+    expect(mockStreamMessageMap.current.has("BOT")).toBeTruthy();
   });
 
   it("should end stream message correctly", async () => {
-    mockStreamMessageMap.current.set("bot", "test-id");
+    mockStreamMessageMap.current.set("BOT", "test-id");
     const { result } = renderHook(() => useMessagesInternal());
 
     await act(async () => {
-      const success = await result.current.endStreamMessage("bot");
+      const success = await result.current.endStreamMessage("BOT");
       expect(success).toBeTruthy();
     });
 
-    expect(mockStreamMessageMap.current.has("bot")).toBeFalsy();
+    expect(mockStreamMessageMap.current.has("BOT")).toBeFalsy();
   });
 
 });

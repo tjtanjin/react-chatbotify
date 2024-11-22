@@ -119,7 +119,7 @@ const FileAttachmentButton = () => {
 
 				// sends media display if file details are valid
 				await injectMessage(<MediaDisplay file={files[i]} fileType={fileDetails.fileType}
-					fileUrl={fileDetails.fileUrl}/>, "user");
+					fileUrl={fileDetails.fileUrl}/>, "USER");
 			}
 			await handleSubmitText("📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),

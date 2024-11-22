@@ -30,14 +30,14 @@ describe("useChatHistoryInternal Hook", () => {
 	const initialChatHistory = [
 		{
 			id: generateSecureUUID(),
-			sender: "user",
+			sender: "USER",
 			content: "Hello",
 			type: "string",
 			timestamp: new Date().toUTCString()
 		},
 		{
 			id: generateSecureUUID(),
-			sender: "bot",
+			sender: "BOT",
 			content: "Hi there!",
 			type: "string",
 			timestamp: new Date().toUTCString()

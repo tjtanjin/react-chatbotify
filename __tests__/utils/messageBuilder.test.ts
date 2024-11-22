@@ -21,7 +21,7 @@ describe("createMessage", () => {
 		const mockId = "mocked-uuid";
 		mockedGenerateSecureUUID.mockReturnValue(mockId);
 		const content = "This is a test message";
-		const sender = "bot";
+		const sender = "BOT";
 
 		// creates message
 		const message = createMessage(content, sender);
@@ -46,7 +46,7 @@ describe("createMessage", () => {
 		const mockId = "mocked-uuid";
 		mockedGenerateSecureUUID.mockReturnValue(mockId);
 		const content = React.createElement("div");
-		const sender = "user";
+		const sender = "USER";
 
 		// creates message
 		const message = createMessage(content, sender);
@@ -71,7 +71,7 @@ describe("createMessage", () => {
 		const mockId = "mocked-uuid";
 		mockedGenerateSecureUUID.mockReturnValue(mockId);
 		const content = "";
-		const sender = "bot";
+		const sender = "BOT";
 
 		// creates message
 		const message = createMessage(content, sender);
@@ -96,7 +96,7 @@ describe("createMessage", () => {
 		const mockId = "mocked-uuid";
 		mockedGenerateSecureUUID.mockReturnValue(mockId);
 		const content = 'Special characters! @#$%^&*()_+-=[]{}|;\':",.<>/?`~';
-		const sender = "user";
+		const sender = "USER";
 
 		// creates message
 		const message = createMessage(content, sender);
@@ -139,7 +139,7 @@ describe("createMessage", () => {
 				React.createElement('li', null, 'Item 3')
 			)
 		);
-		const sender = "bot";
+		const sender = "BOT";
 
 		// creates message
 		const message = createMessage(content, sender);

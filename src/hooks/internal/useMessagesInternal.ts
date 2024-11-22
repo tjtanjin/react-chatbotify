@@ -50,6 +50,9 @@ export const useMessagesInternal = () => {
 	 * @param useMarkup boolean indicating whether markup is used
 	 */
 	const simulateStream = useCallback(async (message: Message, streamSpeed: number, useMarkup: boolean) => {
+		// always convert to uppercase for checks
+		message.sender = message.sender.toUpperCase();
+		
 		// stop bot typing when simulating stream
 		setIsBotTyping(false);
 
@@ -113,7 +116,10 @@ export const useMessagesInternal = () => {
 	 * @param sender sender of the message, defaults to bot
 	 */
 	const injectMessage = useCallback(async (content: string | JSX.Element,
-		sender = "bot"): Promise<string | null> => {
+		sender = "BOT"): Promise<string | null> => {
+
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
 
 		let message = createMessage(content, sender);
 
@@ -127,17 +133,17 @@ export const useMessagesInternal = () => {
 		}
 
 		let useMarkup = false;
-		if (sender === "bot") {
+		if (sender === "BOT") {
 			useMarkup = settings.botBubble?.dangerouslySetInnerHtml as boolean;
-		} else if (sender === "user") {
+		} else if (sender === "USER") {
 			useMarkup = settings.userBubble?.dangerouslySetInnerHtml as boolean;
 		}
 
 		processAudio(settings, audioToggledOn, isChatWindowOpen, message, useMarkup);
 		const isBotStream = typeof message.content === "string"
-			&& message.sender === "bot" && settings?.botBubble?.simStream;
+			&& message.sender === "BOT" && settings?.botBubble?.simStream;
 		const isUserStream = typeof message.content === "string"
-			&& message.sender === "user" && settings?.userBubble?.simStream;
+			&& message.sender === "USER" && settings?.userBubble?.simStream;
 
 		// handles post-message inject event
 		setUnreadCount(prev => prev + 1);
@@ -197,7 +203,10 @@ export const useMessagesInternal = () => {
 	 * @param sender sender of the message, defaults to bot
 	 */
 	const streamMessage = useCallback(async (content: string | JSX.Element,
-		sender = "bot"): Promise<string | null> => {
+		sender = "BOT"): Promise<string | null> => {
+
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
 
 		if (!streamMessageMap.current.has(sender)) {
 			const message = createMessage(content, sender);
@@ -261,7 +270,10 @@ export const useMessagesInternal = () => {
 	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
 	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
 	 */
-	const endStreamMessage = useCallback(async (sender = "bot"): Promise<boolean> => {
+	const endStreamMessage = useCallback(async (sender = "BOT"): Promise<boolean> => {
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
+
 		// nothing to end if not streaming
 		if (!streamMessageMap.current.has(sender)) {
 			return true;
@@ -306,7 +318,7 @@ export const useMessagesInternal = () => {
 
 		const lastMessage = updatedMessages[updatedMessages.length - 1];
 		// if message is sent by user or is bot typing or bot is embedded, return
-		if (!lastMessage || lastMessage.sender === "user") {
+		if (!lastMessage || lastMessage.sender === "USER") {
 			shouldNotify = false;
 		}
 

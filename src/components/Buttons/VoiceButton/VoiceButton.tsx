@@ -98,7 +98,7 @@ const VoiceButton = () => {
 
 		// sends media display if file details are valid
 		await injectMessage(<MediaDisplay file={audioFile} fileType={fileDetails.fileType}
-			fileUrl={fileDetails.fileUrl}/>, "user");
+			fileUrl={fileDetails.fileUrl}/>, "USER");
 	}
 
 	/**

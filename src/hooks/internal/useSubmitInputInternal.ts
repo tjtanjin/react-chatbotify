@@ -78,12 +78,12 @@ export const useSubmitInputInternal = () => {
 			if (settings?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (settings?.sensitiveInput?.maskInUserBubble) {
-				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "user");
+				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "USER");
 				return;
 			}
 		}
 
-		await injectMessage(userInput, "user");
+		await injectMessage(userInput, "USER");
 	}, [flowRef, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
 
 	/**
