@@ -232,10 +232,7 @@ export const useMessagesInternal = () => {
 		const message = {...createMessage(content, sender), id: streamMessageMap.current.get(sender) as string};
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
-			const event = await callRcbEvent(
-				RcbEvent.CHUNK_STREAM_MESSAGE,
-				{...message, id: streamMessageMap.current.get(sender)}
-			);
+			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, message);
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -245,7 +242,7 @@ export const useMessagesInternal = () => {
 			const updatedMessages = [...prevMessages];
 
 			for (let i = updatedMessages.length - 1; i >= 0; i--) {
-				if (updatedMessages[i].sender === sender && typeof updatedMessages[i].content === typeof content) {
+				if (updatedMessages[i].id === message.id) {
 					updatedMessages[i] = message;
 					break;
 				}
