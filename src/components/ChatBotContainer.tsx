@@ -88,8 +88,8 @@ const ChatBotContainer = ({
 				top: "0px",
 				bottom: "auto",
 				width: `${viewportWidth}px`,
-			 height: `${viewportHeight}px`,
-    zIndex: 10000,
+				height: `${viewportHeight}px`,
+				zIndex: 10000,
 			}
 		}
 
