@@ -133,7 +133,7 @@ export const useBotEffectsInternal = () => {
 			const historyMessages = getHistoryMessages();
 			if (historyMessages.length > 0) {
 				// note: must always render this button even if autoload (chat history logic relies on system message)
-				const messageContent = createMessage(<ChatHistoryButton/>, "system");
+				const messageContent = createMessage(<ChatHistoryButton/>, "SYSTEM");
 				replaceMessages([messageContent]);
 				if (settings.chatHistory?.autoLoad) {
 					showChatHistory();

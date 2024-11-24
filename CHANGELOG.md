@@ -1,5 +1,14 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.25 (25-11-2024)
+
+**Fixed:**
+- Fixed an issue with z-index causing display issues in embedded chatbots
+- Fixed and improved stream logic for messages
+
+**Note:**
+The message `sender` field now defaults to being fully capitalized (i.e. `bot` -> `BOT`). However, it is also no longer case sensitive so **no action is required**.
+
 ## v2.0.0-beta.24 (13-11-2024)
 
 **Fixed:**

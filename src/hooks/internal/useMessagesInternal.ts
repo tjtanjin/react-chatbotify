@@ -311,7 +311,7 @@ export const useMessagesInternal = () => {
 
 		const lastMessage = updatedMessages[updatedMessages.length - 1];
 		// if message is sent by user or is bot typing or bot is embedded, return
-		if (!lastMessage || lastMessage.sender === "USER") {
+		if (!lastMessage || lastMessage.sender.toUpperCase() === "USER") {
 			shouldNotify = false;
 		}
 

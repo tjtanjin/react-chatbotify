@@ -155,7 +155,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 	if (chatHistory != null) {
 		try {
 			setMessages((prevMessages) => {
-				const loaderMessage = createMessage(<LoadingSpinner/>, "system");
+				const loaderMessage = createMessage(<LoadingSpinner/>, "SYSTEM");
 				prevMessages.shift();
 				return [loaderMessage, ...prevMessages];
 			});
@@ -174,9 +174,9 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					// if autoload, line break is invisible
 					let lineBreakMessage;
 					if (settings.chatHistory?.autoLoad) {
-						lineBreakMessage = createMessage(<></>, "system")
+						lineBreakMessage = createMessage(<></>, "SYSTEM")
 					} else {
-						lineBreakMessage = createMessage(<ChatHistoryLineBreak/>, "system")
+						lineBreakMessage = createMessage(<ChatHistoryLineBreak/>, "SYSTEM")
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
