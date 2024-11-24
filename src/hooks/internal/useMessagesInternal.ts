@@ -71,7 +71,6 @@ export const useMessagesInternal = () => {
 		}
 		let streamIndex = 0;
 		const endStreamIndex = streamMessage.length;
-		message.content = "";
 
 		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
 			const intervalId = setInterval(() => {
@@ -89,8 +88,8 @@ export const useMessagesInternal = () => {
 						if (updatedMessages[i].id === placeholderMessage.id) {
 							const character = streamMessage[streamIndex];
 							if (character) {
-								message.content += character;
-								updatedMessages[i] = message;
+								placeholderMessage.content += character;
+								updatedMessages[i] = placeholderMessage;
 							}
 							streamIndex++;
 							break;
