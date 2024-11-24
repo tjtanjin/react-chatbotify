@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.26 (25-11-2024)
+
+**Fixed:**
+- Fixed a bug introduced in v2.0.0-beta.25 that caused simulate streaming of messages to fail
+
 ## v2.0.0-beta.25 (25-11-2024)
 
 **Fixed:**
