@@ -63,7 +63,7 @@ describe("UserCheckboxes Component", () => {
 		jest.clearAllMocks();
 	});
 
-	test("renders checkboxes correctly", () => {
+	it("renders checkboxes correctly", () => {
 		const checkboxes = { items: ["Checkbox 1", "Checkbox 2"], min: 1, max: 2 };
 		render(<UserCheckboxes checkboxes={checkboxes} checkedItems={new Set()} path="path1" />);
 
@@ -71,7 +71,7 @@ describe("UserCheckboxes Component", () => {
 		expect(screen.getByText("Checkbox 2")).toBeInTheDocument();
 	});
 
-	test("allows selecting and unselecting checkboxes", () => {
+	it("allows selecting and unselecting checkboxes", () => {
 		const checkboxes = { items: ["Checkbox 1", "Checkbox 2"], max: 2 };
 		const checkedItems = new Set<string>();
 		render(<UserCheckboxes checkboxes={checkboxes} checkedItems={checkedItems} path="path1" />);
@@ -89,7 +89,7 @@ describe("UserCheckboxes Component", () => {
 		expect(checkedItems.has("Checkbox 1")).toBeFalsy();
 	});
 
-	test("prevents selecting more checkboxes than max limit", () => {
+	it("prevents selecting more checkboxes than max limit", () => {
 		const checkboxes = { items: ["Checkbox 1", "Checkbox 2", "Checkbox 3"], max: 2 };
 		const checkedItems = new Set<string>();
 		render(<UserCheckboxes checkboxes={checkboxes} checkedItems={checkedItems} path="path1" />);
@@ -108,7 +108,7 @@ describe("UserCheckboxes Component", () => {
 		expect(checkedItems.has("Checkbox 3")).toBeFalsy();
 	});
 
-	test("submits selected checkboxes on next button click", () => {
+	it("submits selected checkboxes on next button click", () => {
 		const checkboxes = { items: ["Checkbox 1", "Checkbox 2"], sendOutput: true };
 		const checkedItems = new Set<string>();
 		const {container} = render(<UserCheckboxes checkboxes={checkboxes} checkedItems={checkedItems} path="path1" />);
@@ -125,7 +125,7 @@ describe("UserCheckboxes Component", () => {
 		expect(mockHandleSubmitText).toHaveBeenCalledTimes(1);
 	});
 
-	test("disables checkboxes based on path transition and reusability", () => {
+	it("disables checkboxes based on path transition and reusability", () => {
 		const checkboxes = { items: ["Checkbox 1"], reusable: false };
 		const mockPaths = { paths: ["path1", "path2"] };
 		(usePathsContext as jest.Mock).mockReturnValue(mockPaths);
