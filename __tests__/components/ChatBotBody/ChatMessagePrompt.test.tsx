@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ChatMessagePrompt from "../../../src/components/ChatBotBody/ChatMessagePrompt/ChatMessagePrompt";
+import { useBotStatesContext } from "../../../src/context/BotStatesContext";
 
 // Mock contexts
 jest.mock("../../../src/context/BotRefsContext", () => ({
@@ -16,16 +17,8 @@ jest.mock("../../../src/context/BotRefsContext", () => ({
   })),
 }));
 
-const mockSetIsScrolling = jest.fn();
-let unreadCountMock = 0;
-let isScrollingMock = false;
-
 jest.mock("../../../src/context/BotStatesContext", () => ({
-  useBotStatesContext: jest.fn(() => ({
-    unreadCount: unreadCountMock,
-    isScrolling: isScrollingMock,
-    setIsScrolling: mockSetIsScrolling,
-  })),
+  useBotStatesContext: jest.fn(),
 }));
 
 jest.mock("../../../src/context/SettingsContext", () => ({
@@ -50,26 +43,38 @@ jest.mock("../../../src/context/StylesContext", () => ({
 }));
 
 describe("ChatMessagePrompt Component", () => {
+  const mockSetIsScrolling = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
   });
 
   afterEach(() => {
+    jest.runOnlyPendingTimers();
     jest.useRealTimers();
   });
 
   const renderComponent = () => render(<ChatMessagePrompt />);
 
   it("renders with the correct message prompt text", () => {
+    (useBotStatesContext as jest.Mock).mockReturnValue({
+      unreadCount: 0,
+      isScrolling: false,
+      setIsScrolling: mockSetIsScrolling,
+    });
+
     renderComponent();
     const messagePrompt = screen.getByText("Scroll to new messages");
     expect(messagePrompt).toBeInTheDocument();
   });
 
   it("applies visible class when conditions are met", () => {
-    unreadCountMock = 2;
-    isScrollingMock = true;
+    (useBotStatesContext as jest.Mock).mockReturnValue({
+      unreadCount: 2,
+      isScrolling: true,
+      setIsScrolling: mockSetIsScrolling,
+    });
 
     renderComponent();
     const messagePrompt = screen.getByText("Scroll to new messages");
@@ -77,8 +82,11 @@ describe("ChatMessagePrompt Component", () => {
   });
 
   it("applies hidden class when conditions are not met", () => {
-    unreadCountMock = 0;
-    isScrollingMock = false;
+    (useBotStatesContext as jest.Mock).mockReturnValue({
+      unreadCount: 0,
+      isScrolling: false,
+      setIsScrolling: mockSetIsScrolling,
+    });
 
     renderComponent();
     const messagePromptContainer = screen.queryByText("Scroll to new messages")?.parentElement;
@@ -86,6 +94,12 @@ describe("ChatMessagePrompt Component", () => {
   });
 
   it("applies hover styles when hovered", () => {
+    (useBotStatesContext as jest.Mock).mockReturnValue({
+      unreadCount: 2,
+      isScrolling: true,
+      setIsScrolling: mockSetIsScrolling,
+    });
+
     renderComponent();
     const messagePrompt = screen.getByText("Scroll to new messages");
 
@@ -102,6 +116,12 @@ describe("ChatMessagePrompt Component", () => {
   });
 
   it("scrolls to the bottom when clicked", () => {
+    (useBotStatesContext as jest.Mock).mockReturnValue({
+      unreadCount: 2,
+      isScrolling: true,
+      setIsScrolling: mockSetIsScrolling,
+    });
+
     renderComponent();
     const messagePrompt = screen.getByText("Scroll to new messages");
 
