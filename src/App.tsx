@@ -109,11 +109,14 @@ function App() {
 				"<b class='bold'>what's your favourite food?</b>",
 			path: "ask_image"
 		},
-		ask_image: {
-			message: (params: Params) => `${params.userInput}? Interesting. Could you share an image of that?`,
-			file: (params: Params) => console.log(params.files),
-			path: "end"
-		},
+    ask_image: {
+      message: (params: Params) =>
+        `${params.userInput}? Interesting. Could you share an image of that?`,
+      file: (params: Params) => console.log(params.files),
+      function: (params: Params) =>
+        params.showToast("Image is uploaded successfully!"),
+      path: "end",
+    },
 		end: {
 			message: "Thank you for sharing! See you again!",
 			path: "loop"

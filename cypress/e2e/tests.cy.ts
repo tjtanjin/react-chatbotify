@@ -123,13 +123,17 @@ describe("Chat Bot Test Suite", () => {
 		cy.get(".rcb-bot-message").contains("pasta? Interesting.").should("be.visible");
 	});
 
-	it("Send image and verifies bot reply", () => {
+	it("Sends image and verifies bot reply, checks the toast message and clicks on it", () => {
 		const filePath = path.resolve("./assets/logo.png");
 		cy.get(".rcb-attach-input").should("exist").attachFile(filePath);
 		cy.get(".rcb-bot-message").should(
 			"contain.text",
 			"Thank you for sharing! See you again!"
 		);
+
+		cy.get(".rcb-toast-prompt").should("be.visible");
+		cy.get(".rcb-toast-prompt").click();
+		cy.get(".rcb-toast-prompt").should("not.exist");
 	});
 
 	it("Sends goodbye, scrolls away, and verifies new message prompt", () => {
