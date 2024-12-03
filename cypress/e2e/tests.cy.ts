@@ -11,7 +11,7 @@ describe("Chat Bot Test Suite", () => {
 
 	it("Opens the chat window", () => {
 		cy.get(".rcb-toggle-button").click();
-    	cy.get(".rcb-window-open").should("exist");
+    cy.get(".rcb-window-open").should("exist");
 	});
 
 	it("Sends name and verifies bot reply", () => {
