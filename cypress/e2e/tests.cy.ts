@@ -11,7 +11,7 @@ describe("Chat Bot Test Suite", () => {
 
 	it("Opens the chat window", () => {
 		cy.get(".rcb-toggle-button").click();
-    cy.get(".rcb-window-open").should("exist");
+		cy.get(".rcb-window-open").should("exist");
 	});
 
 	it("Sends name and verifies bot reply", () => {
@@ -116,7 +116,7 @@ describe("Chat Bot Test Suite", () => {
 
 	it("Send food and verifies bot reply", () => {
 		cy.get(".bold").should('have.css', 'font-weight')
-		.then((fontWeight) => +fontWeight).and('be.gte', 700)
+			.then((fontWeight) => +fontWeight).and('be.gte', 700)
 		cy.get(".rcb-chat-input-textarea")
 			.should("be.visible")
 			.type("pasta{enter}");
