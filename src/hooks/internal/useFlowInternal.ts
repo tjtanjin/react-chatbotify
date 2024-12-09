@@ -13,7 +13,7 @@ import {useSettingsContext} from "../../context/SettingsContext";
  */
 export const useFlowInternal = () => {
 	// handles messages
-	const { replaceMessages, messages } = useMessagesInternal();
+	const { replaceMessages } = useMessagesInternal();
 	
 	// handles paths
 	const { replacePaths } = usePathsInternal();
@@ -40,8 +40,6 @@ export const useFlowInternal = () => {
 
 		//reload the chat history from storage
 		setHistoryStorageValues(settings)
-		console.log("Flow restarted");
-		console.log("Messages", messages);
 	}, [replaceMessages, replaceToasts, replacePaths, setHistoryStorageValues]);
 	
 	/**
