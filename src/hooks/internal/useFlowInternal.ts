@@ -34,12 +34,12 @@ export const useFlowInternal = () => {
 	 * Restarts the conversation flow for the chatbot.
 	 */
 	const restartFlow = useCallback(() => {
+		//reload the chat history from storage
+		setHistoryStorageValues(settings)
+
 		replaceMessages([]);
 		replaceToasts([]);
 		replacePaths(["start"]);
-
-		//reload the chat history from storage
-		setHistoryStorageValues(settings)
 	}, [replaceMessages, replaceToasts, replacePaths, setHistoryStorageValues]);
 	
 	/**
