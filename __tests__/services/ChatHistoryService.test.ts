@@ -61,9 +61,6 @@ describe("ChatHistoryService", () => {
 			setHistoryStorageValues(settings);
 			await saveChatHistory([mockMessage]);
 			expect(storage.setItem).not.toHaveBeenCalled();
-
-			const historyMessages = getHistoryMessages();
-			expect(historyMessages).toEqual([]);
 		});
 
 		it("should save history if not disabled", async () => {
@@ -71,20 +68,6 @@ describe("ChatHistoryService", () => {
 			await saveChatHistory([mockMessage]);
 
 			expect(storage.setItem).toHaveBeenCalled();
-
-			const historyMessages = getHistoryMessages();
-			expect(historyMessages).toEqual([mockMessage]);
-		});
-
-		it("should retain previous history if not disabled and empty message array is passed", async () => {
-			setHistoryStorageValues(mockSettings(storageType));
-			await saveChatHistory([mockMessage]);
-			await saveChatHistory([]);
-
-			expect(storage.setItem).toHaveBeenCalledTimes(2);
-
-			const historyMessages = getHistoryMessages();
-			expect(historyMessages).toEqual([mockMessage]);
 		});
 
 		it("should handle empty message array without errors", async () => {

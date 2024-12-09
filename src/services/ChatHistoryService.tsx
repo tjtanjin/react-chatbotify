@@ -51,7 +51,6 @@ const saveChatHistory = async (messages: Message[]) => {
 		parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
 	}
 
-	historyMessages = parsedMessages;
 	setHistoryMessages(parsedMessages);
 }
 
