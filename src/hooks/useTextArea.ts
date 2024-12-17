@@ -18,7 +18,7 @@ export const useTextArea = () => {
 		getTextAreaValue,
 		setTextAreaValue,
 		focusTextArea,
-		unFocusTextArea
+		blurTextArea
 	} = useTextAreaInternal();
 
 	return {
@@ -29,6 +29,6 @@ export const useTextArea = () => {
 		getTextAreaValue,
 		setTextAreaValue,
 		focusTextArea,
-		unFocusTextArea
+		blurTextArea
 	};
 };

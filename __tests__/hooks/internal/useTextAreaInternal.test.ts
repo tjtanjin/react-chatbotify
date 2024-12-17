@@ -158,7 +158,7 @@ describe("useTextAreaInternal Hook", () => {
     expect(result.current.textAreaDisabled).toBe(false);
   });
 
-  it("should unfocus on text area when unFocusTextArea is called", () => {
+  it("should blur on text area when blurTextArea is called", () => {
     const callRcbEventMock = jest.fn();
     mockUseRcbEventInternal.mockReturnValue({
       callRcbEvent: callRcbEventMock,
@@ -167,7 +167,7 @@ describe("useTextAreaInternal Hook", () => {
     const { result } = renderHook(() => useTextAreaInternal());
 
     act(() => {
-      result.current.unFocusTextArea();
+      result.current.blurTextArea();
     });
 
     expect(mockInputRef.current.blur).toHaveBeenCalled();

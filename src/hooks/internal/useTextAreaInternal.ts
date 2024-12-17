@@ -105,9 +105,9 @@ export const useTextAreaInternal = () => {
 	}, [textAreaDisabled]);
 
 	/**
-	 * Focuses on text area.
+	 * Blurs on text area.
 	 */
-		const unFocusTextArea = useCallback(() => {
+		const blurTextArea = useCallback(() => {
 			if (inputRef.current) {
 				inputRef.current.blur();
 			}
@@ -149,6 +149,7 @@ export const useTextAreaInternal = () => {
 		setTextAreaValue,
 		updateTextAreaFocus,
 		focusTextArea,
+		blurTextArea,
 		toggleTextAreaDisabled,
 		toggleTextAreaSensitiveMode
 	};
