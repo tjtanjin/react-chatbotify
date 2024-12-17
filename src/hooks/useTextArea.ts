@@ -17,7 +17,8 @@ export const useTextArea = () => {
 		toggleTextAreaSensitiveMode,
 		getTextAreaValue,
 		setTextAreaValue,
-		focusTextArea
+		focusTextArea,
+		unFocusTextArea
 	} = useTextAreaInternal();
 
 	return {
@@ -27,6 +28,7 @@ export const useTextArea = () => {
 		toggleTextAreaSensitiveMode,
 		getTextAreaValue,
 		setTextAreaValue,
-		focusTextArea
+		focusTextArea,
+		unFocusTextArea
 	};
 };

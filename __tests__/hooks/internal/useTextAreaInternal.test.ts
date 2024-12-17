@@ -158,6 +158,21 @@ describe("useTextAreaInternal Hook", () => {
     expect(result.current.textAreaDisabled).toBe(false);
   });
 
+  it("should unfocus on text area when unFocusTextArea is called", () => {
+    const callRcbEventMock = jest.fn();
+    mockUseRcbEventInternal.mockReturnValue({
+      callRcbEvent: callRcbEventMock,
+    });
+
+    const { result } = renderHook(() => useTextAreaInternal());
+
+    act(() => {
+      result.current.unFocusTextArea();
+    });
+
+    expect(mockInputRef.current.blur).toHaveBeenCalled();
+  });
+
  // let initialTextAreaDisabled = false;
 
  /* it("should toggle textAreaDisabled state", () => {
