@@ -107,11 +107,11 @@ export const useTextAreaInternal = () => {
 	/**
 	 * Blurs on text area.
 	 */
-		const blurTextArea = useCallback(() => {
-			if (inputRef.current) {
-				inputRef.current.blur();
-			}
-		}, []);
+	const blurTextArea = useCallback(() => {
+		if (inputRef.current) {
+			inputRef.current.blur();
+		}
+	}, []);
 	/**
 	
 	* Retrieves text area value.
