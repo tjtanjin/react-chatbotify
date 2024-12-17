@@ -23,7 +23,7 @@ describe("useTextAreaInternal Hook", () => {
   let mocksettingsPreventDefault: any;
   beforeEach(() => {
     
-    mockInputRef = { current: { value: "", focus: jest.fn() } }; 
+    mockInputRef = { current: { value: "", focus: jest.fn(), blur: jest.fn() } }; 
     mockPrevInputRef = { current: "" }; 
     mocksettingsRefT = { chatInput: { allowNewline: true } };
     mocksettingsRefF = { chatInput: { allowNewline: false } };
