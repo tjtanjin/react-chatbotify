@@ -105,7 +105,16 @@ export const useTextAreaInternal = () => {
 	}, [textAreaDisabled]);
 
 	/**
-	 * Retrieves text area value.
+	 * Blurs on text area.
+	 */
+		const blurTextArea = useCallback(() => {
+			if (inputRef.current) {
+				inputRef.current.blur();
+			}
+		}, []);
+	/**
+	
+	* Retrieves text area value.
 	 */
 	const getTextAreaValue = useCallback(() => {
 		if (inputRef && inputRef.current) {
@@ -140,6 +149,7 @@ export const useTextAreaInternal = () => {
 		setTextAreaValue,
 		updateTextAreaFocus,
 		focusTextArea,
+		blurTextArea,
 		toggleTextAreaDisabled,
 		toggleTextAreaSensitiveMode
 	};
