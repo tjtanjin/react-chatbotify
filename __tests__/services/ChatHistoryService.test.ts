@@ -66,7 +66,7 @@ describe("ChatHistoryService", () => {
 		it("should save history if not disabled", async () => {
 			setHistoryStorageValues(mockSettings(storageType));
 			await saveChatHistory([mockMessage]);
-			
+
 			expect(storage.setItem).toHaveBeenCalled();
 		});
 

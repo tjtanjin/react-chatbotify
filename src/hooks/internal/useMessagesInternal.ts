@@ -323,7 +323,7 @@ export const useMessagesInternal = () => {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
 			setTimeout(() => {
-				if (!chatBodyRef.current) {
+				if (!chatBodyRef?.current) {
 					return;
 				}
 
