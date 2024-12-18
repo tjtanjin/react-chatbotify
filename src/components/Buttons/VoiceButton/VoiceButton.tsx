@@ -110,6 +110,7 @@ const VoiceButton = () => {
 			return (
 				<span
 					className={`rcb-voice-icon${voiceToggledOn && !textAreaDisabled ? "-on" : ""}`}
+					data-testid="rcb-voice-icon"
 					style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}
 				/>
 			)
