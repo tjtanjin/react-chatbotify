@@ -17,7 +17,7 @@ const ChatHistoryLineBreak = () => {
 	return (
 		<div className="rcb-line-break-container">
 			<div
-				style={styles.chatHistoryLineBreakStyle}
+				style={{...styles.chatHistoryLineBreakStyle}}
 				className="rcb-line-break-text"
 				data-testid="chat-history-line-break-text"
 			>

@@ -157,7 +157,7 @@ const EmojiButton = () => {
 				role="button" 
 				ref={iconContainerRef}
 				className={`${textAreaDisabled ? "rcb-emoji-button-disabled" : "rcb-emoji-button-enabled"}`}
-				style={textAreaDisabled ? emojiButtonDisabledStyle : styles.emojiButtonStyle}
+				style={textAreaDisabled ? emojiButtonDisabledStyle : {...styles.emojiButtonStyle}}
 				onMouseDown={togglePopup}
 			>
 				{renderButton()}

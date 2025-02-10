@@ -175,7 +175,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 					setHasFlowStarted(true);
 				}
 			}}
-			style={styles.chatInputContainerStyle} 
+			style={{...styles.chatInputContainerStyle}}
 			className="rcb-chat-input"
 		>
 			{/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}

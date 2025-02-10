@@ -49,7 +49,7 @@ const ChatHistoryButton = () => {
 			<div
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? chatHistoryButtonHoveredStyle : styles.chatHistoryButtonStyle}
+				style={isHovered ? chatHistoryButtonHoveredStyle : {...styles.chatHistoryButtonStyle}}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					showChatHistory();

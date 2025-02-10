@@ -105,7 +105,7 @@ const ChatMessagePrompt = () => {
 			<div
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave} 
-				style={isHovered ? chatMessagePromptHoveredStyle : styles.chatMessagePromptStyle}
+				style={isHovered ? chatMessagePromptHoveredStyle : {...styles.chatMessagePromptStyle}}
 				onMouseDown={(event: MouseEvent) => {
 					event.preventDefault();
 					scrollToBottom(600);

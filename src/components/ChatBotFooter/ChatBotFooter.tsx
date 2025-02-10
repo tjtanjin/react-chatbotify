@@ -19,7 +19,11 @@ const ChatBotFooter = ({ buttons }: { buttons: JSX.Element[] }) => {
 	const { styles } = useStylesContext();
 
 	return (
-		<div data-testid="chatbot-footer-container" style={styles.footerStyle} className="rcb-chat-footer-container">
+		<div
+			data-testid="chatbot-footer-container"
+			style={{...styles.footerStyle}}
+			className="rcb-chat-footer-container"
+		>
 			<div className="rcb-chat-footer">
 				{buttons?.map((button: JSX.Element, index: number) =>
 					<Fragment key={index}>{button}</Fragment>

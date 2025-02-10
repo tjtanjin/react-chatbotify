@@ -135,7 +135,7 @@ const VoiceButton = () => {
 				await toggleVoice();
 			}}
 			style={voiceToggledOn && !textAreaDisabled
-				? styles.voiceButtonStyle
+				? {...styles.voiceButtonStyle}
 				: {...styles.voiceButtonStyle, ...styles.voiceButtonDisabledStyle}
 			}
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}

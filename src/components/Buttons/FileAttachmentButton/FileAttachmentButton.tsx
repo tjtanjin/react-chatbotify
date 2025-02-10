@@ -161,7 +161,7 @@ const FileAttachmentButton = () => {
 			role="button" 
 			className={blockAllowsAttachment? "rcb-attach-button-enabled" : "rcb-attach-button-disabled"}
 			style={blockAllowsAttachment
-				? styles.fileAttachmentButtonStyle
+				? {...styles.fileAttachmentButtonStyle}
 				: fileAttachmentButtonDisabledStyle
 			}
 		>

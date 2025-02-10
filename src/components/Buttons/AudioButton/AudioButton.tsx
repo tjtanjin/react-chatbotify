@@ -68,7 +68,7 @@ const AudioButton = () => {
 				await toggleAudio();
 			}}
 			style={audioToggledOn
-				? styles.audioButtonStyle
+				? {...styles.audioButtonStyle}
 				: {...styles.audioButtonStyle, ...styles.audioButtonDisabledStyle}
 			}
 		>

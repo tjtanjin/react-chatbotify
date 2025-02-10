@@ -70,7 +70,7 @@ const ChatBotButton = () => {
 				>
 					{renderButton()}
 					{!settings.notification?.disabled && settings.notification?.showCount &&
-						<span style={styles.notificationBadgeStyle} className="rcb-badge">
+						<span style={{...styles.notificationBadgeStyle}} className="rcb-badge">
 							{unreadCount}
 						</span>
 					}

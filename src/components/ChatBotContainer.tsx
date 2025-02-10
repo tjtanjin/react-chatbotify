@@ -101,7 +101,7 @@ const ChatBotContainer = ({
 			};
 		}
 
-		return styles.chatWindowStyle;
+		return {...styles.chatWindowStyle};
 	}
 
 	/**

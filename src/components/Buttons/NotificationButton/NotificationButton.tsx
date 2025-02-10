@@ -70,7 +70,7 @@ const NotificationButton = () => {
 				await toggleNotifications();
 			}}
 			style={notificationsToggledOn
-				? styles.notificationButtonStyle
+				? {...styles.notificationButtonStyle}
 				: {...styles.notificationButtonStyle, ...styles.notificationButtonDisabledStyle}
 			}
 		>

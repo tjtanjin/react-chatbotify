@@ -57,7 +57,7 @@ const CloseChatButton = () => {
 				event.stopPropagation();
 				openChat(false);
 			}}
-			style={styles.closeChatButtonStyle}
+			style={{...styles.closeChatButtonStyle}}
 		>
 			{renderButton()}
 		</div>
