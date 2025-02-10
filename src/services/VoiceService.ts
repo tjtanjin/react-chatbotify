@@ -106,7 +106,10 @@ const startSpeechRecognition = (
 			setInputLength(inputRef.current.value.length);
 		}
 
-		inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+		// only have timer for timeout if inactivityPeriod is > 0
+		if (inactivityPeriod) {
+			inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+		}
 		if (!settings.voice?.autoSendDisabled) {
 			autoSendTimer = setTimeout(triggerSendVoiceInput, autoSendPeriod);
 		}
@@ -115,7 +118,8 @@ const startSpeechRecognition = (
 	recognition.onend = () => {
 		if (toggleOn) {
 			recognition.start();
-			if (!inactivityTimer) {
+			// only have timer for timeout if inactivityPeriod is > 0
+			if (!inactivityTimer && inactivityPeriod) {
 				inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
 			}
 		} else {
@@ -125,7 +129,10 @@ const startSpeechRecognition = (
 		}
 	};
 
-	inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+	// only have timer for timeout if inactivityPeriod is > 0
+	if (inactivityPeriod) {
+		inactivityTimer = setTimeout(async () => await handleTimeout(toggleVoice, inputRef), inactivityPeriod);
+	}
 }
 
 /**
