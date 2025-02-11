@@ -69,7 +69,7 @@ describe("MessageProcessor", () => {
 	});
 
 	// Function returning a promise with invalid content
-	it("should not inject message if block message is a function returning a promise with invalid content", async () => {
+	it("should not inject message if message attr is a function returning a promise with invalid content", async () => {
 		mockBlock.message = jest.fn().mockResolvedValue(null);
 
 		await processMessage(mockBlock, mockParams);

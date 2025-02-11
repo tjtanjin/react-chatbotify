@@ -14,168 +14,168 @@ jest.mock("../../../src/context/SettingsContext");
 jest.mock("../../../src/context/BotStatesContext");
 
 describe("useTextAreaInternal Hook", () => {
-  let mockInputRef: any;
-  let mockPrevInputRef: any;
-  let mocksettingsRefT: any;
-  let mocksettingsRefF: any;
-  let mocksettingsChatLimit: any;
-  let mocksettingsChatUnLimit: any;
-  let mocksettingsPreventDefault: any;
-  beforeEach(() => {
+	let mockInputRef: any;
+	let mockPrevInputRef: any;
+	let mocksettingsRefT: any;
+	let mocksettingsRefF: any;
+	let mocksettingsChatLimit: any;
+	let mocksettingsChatUnLimit: any;
+	let mocksettingsPreventDefault: any;
+	beforeEach(() => {
     
-    mockInputRef = { current: { value: "", focus: jest.fn(), blur: jest.fn() } }; 
-    mockPrevInputRef = { current: "" }; 
-    mocksettingsRefT = { chatInput: { allowNewline: true } };
-    mocksettingsRefF = { chatInput: { allowNewline: false } };
-    mocksettingsChatLimit = { chatInput: { characterLimit: 50 } };
-    mocksettingsChatUnLimit = { chatInput: { characterLimit: -1 } };
-    mocksettingsPreventDefault = { event: { rcbTextAreaChangeValue: true } };
-    (require("../../../src/context/BotStatesContext").useBotStatesContext as jest.Mock).mockReturnValue({
-      textAreaDisabled: false,
-      setTextAreaDisabled: jest.fn(),
-    });
+		mockInputRef = { current: { value: "", focus: jest.fn(), blur: jest.fn() } }; 
+		mockPrevInputRef = { current: "" }; 
+		mocksettingsRefT = { chatInput: { allowNewline: true } };
+		mocksettingsRefF = { chatInput: { allowNewline: false } };
+		mocksettingsChatLimit = { chatInput: { characterLimit: 50 } };
+		mocksettingsChatUnLimit = { chatInput: { characterLimit: -1 } };
+		mocksettingsPreventDefault = { event: { rcbTextAreaChangeValue: true } };
+		(require("../../../src/context/BotStatesContext").useBotStatesContext as jest.Mock).mockReturnValue({
+			textAreaDisabled: false,
+			setTextAreaDisabled: jest.fn(),
+		});
 
     
-    (useBotRefsContext as jest.Mock).mockReturnValue({
-      inputRef: mockInputRef,
-      prevInputRef: mockPrevInputRef,
-    });
-    jest.clearAllMocks();
-  });
+		(useBotRefsContext as jest.Mock).mockReturnValue({
+			inputRef: mockInputRef,
+			prevInputRef: mockPrevInputRef,
+		});
+		jest.clearAllMocks();
+	});
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
 
-  it("should set text area value with newline allowed", () => {
-    const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should set text area value with newline allowed", () => {
+		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    (useSettingsContext as jest.Mock).mockReturnValue({
-      settings: mocksettingsRefT
-    });
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: mocksettingsRefT
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.setTextAreaValue("Hello\nWorld");
-    });
+		act(() => {
+			result.current.setTextAreaValue("Hello\nWorld");
+		});
 
-    expect(result.current.getTextAreaValue()).toBe("Hello\nWorld");
-  });
+		expect(result.current.getTextAreaValue()).toBe("Hello\nWorld");
+	});
 
-  it("should remove newlines when not allowed", () => {
-    const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should remove newlines when not allowed", () => {
+		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    (useSettingsContext as jest.Mock).mockReturnValue({
-      settings: mocksettingsRefF
-    });
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: mocksettingsRefF
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.setTextAreaValue("Hello\nWorld");
-    });
+		act(() => {
+			result.current.setTextAreaValue("Hello\nWorld");
+		});
 
-    expect(result.current.getTextAreaValue()).toBe("Hello World");
-  });
+		expect(result.current.getTextAreaValue()).toBe("Hello World");
+	});
 
-  it("should respect character limit if set", () => {
-    const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should respect character limit if set", () => {
+		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    (useSettingsContext as jest.Mock).mockReturnValue({
-      settings: mocksettingsChatLimit
-    });
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: mocksettingsChatLimit
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.setTextAreaValue("a".repeat(60));
-    });
+		act(() => {
+			result.current.setTextAreaValue("a".repeat(60));
+		});
 
-    expect(result.current.getTextAreaValue().length).toBe(50);
-  });
+		expect(result.current.getTextAreaValue().length).toBe(50);
+	});
 
-  it("should handle unlimited character input when characterLimit is -1", () => {
-    const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should handle unlimited character input when characterLimit is -1", () => {
+		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    (useSettingsContext as jest.Mock).mockReturnValue({
-      settings: mocksettingsChatUnLimit
-    });
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: mocksettingsChatUnLimit
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
   
-    act(() => {
-      result.current.setTextAreaValue("a".repeat(1000));
-    });
+		act(() => {
+			result.current.setTextAreaValue("a".repeat(1000));
+		});
 
-    expect(result.current.getTextAreaValue().length).toBe(1000);
-  });
+		expect(result.current.getTextAreaValue().length).toBe(1000);
+	});
 
-  it("should prevent setting value if event is defaultPrevented", async () => {
-    const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should prevent setting value if event is defaultPrevented", async () => {
+		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    (useSettingsContext as jest.Mock).mockReturnValue({
-      settings: mocksettingsPreventDefault
-    });
+		(useSettingsContext as jest.Mock).mockReturnValue({
+			settings: mocksettingsPreventDefault
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    await act(async () => {
-      await result.current.setTextAreaValue("Test value");
-    });
+		await act(async () => {
+			await result.current.setTextAreaValue("Test value");
+		});
 
-    expect(result.current.getTextAreaValue()).toBe("");
-  });
+		expect(result.current.getTextAreaValue()).toBe("");
+	});
 
-  it("should focus on text area when focusTextArea is called", () => {
-    const callRcbEventMock = jest.fn();
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should focus on text area when focusTextArea is called", () => {
+		const callRcbEventMock = jest.fn();
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.focusTextArea();
-    });
+		act(() => {
+			result.current.focusTextArea();
+		});
 
-    expect(result.current.textAreaDisabled).toBe(false);
-  });
+		expect(result.current.textAreaDisabled).toBe(false);
+	});
 
-  it("should blur on text area when blurTextArea is called", () => {
-    const callRcbEventMock = jest.fn();
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should blur on text area when blurTextArea is called", () => {
+		const callRcbEventMock = jest.fn();
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.blurTextArea();
-    });
+		act(() => {
+			result.current.blurTextArea();
+		});
 
-    expect(mockInputRef.current.blur).toHaveBeenCalled();
-  });
+		expect(mockInputRef.current.blur).toHaveBeenCalled();
+	});
 
- // let initialTextAreaDisabled = false;
+	// let initialTextAreaDisabled = false;
 
- /* it("should toggle textAreaDisabled state", () => {
+	/* it("should toggle textAreaDisabled state", () => {
     // mocks rcb event handler
     const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
     mockUseRcbEventInternal.mockReturnValue({
@@ -201,7 +201,7 @@ describe("useTextAreaInternal Hook", () => {
   }); 
   */
 
-  /*
+	/*
   it("should toggle textAreaSensitiveMode state", () => {
     const callRcbEventMock = jest.fn();
     mockUseRcbEventInternal.mockReturnValue({
@@ -222,19 +222,19 @@ describe("useTextAreaInternal Hook", () => {
   });
 */
 
-  it("should update focus based on visibility", () => {
-    const callRcbEventMock = jest.fn();
-    mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
-    });
+	it("should update focus based on visibility", () => {
+		const callRcbEventMock = jest.fn();
+		mockUseRcbEventInternal.mockReturnValue({
+			callRcbEvent: callRcbEventMock,
+		});
 
-    const { result } = renderHook(() => useTextAreaInternal());
+		const { result } = renderHook(() => useTextAreaInternal());
 
-    act(() => {
-      result.current.updateTextAreaFocus("some_path");
-    });
+		act(() => {
+			result.current.updateTextAreaFocus("some_path");
+		});
 
-    // Assume focus happens correctly, verify it updated focus (mocks internal behavior)
-    expect(callRcbEventMock).not.toHaveBeenCalledWith(RcbEvent.TEXT_AREA_CHANGE_VALUE);
-  });
+		// Assume focus happens correctly, verify it updated focus (mocks internal behavior)
+		expect(callRcbEventMock).not.toHaveBeenCalledWith(RcbEvent.TEXT_AREA_CHANGE_VALUE);
+	});
 });

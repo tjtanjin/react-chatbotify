@@ -24,6 +24,7 @@ export const getMediaFileDetails = async (file: File): Promise<{ fileType: strin
 
 		return { fileType, fileUrl };
 	} catch (error) {
+		console.error(error);
 		return { fileType: null, fileUrl: null };
 	}
 };

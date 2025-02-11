@@ -10,7 +10,7 @@ export const useChatHistory = () => {
 
 	return {
 		showChatHistory,
-        getHistoryMessages,
-        setHistoryMessages
+		getHistoryMessages,
+		setHistoryMessages
 	};
 };

@@ -15,8 +15,12 @@ export type Block = {
 	checkboxes?: Array<string> | ((params: Params) => Array<string>) |
 		((params: Params) => Promise<Array<string>>) |
 		{items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean} |
-		((params: Params) => {items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean}) |
-		((params: Params) => Promise<{items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean}>);
+		((params: Params) => {
+			items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean
+		}) |
+		((params: Params) => Promise<{
+			items: Array<string>, max?: number, min?: number, sendOutput?: boolean, reusable?: boolean
+		}>);
 	component?: JSX.Element | void | ((params: Params) => JSX.Element | void) |
 	((params: Params) => Promise<JSX.Element | void>);
 	chatDisabled?: boolean | ((params: Params) => boolean) | ((params: Params) => Promise<boolean>);

@@ -1,6 +1,5 @@
 import { Settings } from "./Settings";
 import { Styles } from "./Styles";
-import { Theme } from "./Theme";
 
 /**
  * Defines a plugin type.

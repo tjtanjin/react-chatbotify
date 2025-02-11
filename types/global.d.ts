@@ -17,10 +17,10 @@ import { RcbShowToastEvent } from "../src/types/events/RcbShowToastEvent";
 import { RcbDismissToastEvent } from "../src/types/events/RcbDismissToastEvent";
 import { RcbUserSubmitTextEvent } from "../src/types/events/RcbUserSubmitTextEvent";
 import { RcbUserUploadFileEvent } from "../src/types/events/RcbUserUploadFileEvent";
-import { RcbEvent } from "../src/constants/RcbEvent";
 import { RcbTextAreaChangeValueEvent } from "../src/types/events/RcbTextAreaChangeValue";
 
 declare global {
+	// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 	interface Navigator {
 		virtualKeyboard?: VirtualKeyboard;
 	}
@@ -32,7 +32,7 @@ declare global {
 	 * provided here is based on the proposed specification available at 
 	 * {@link https://w3c.github.io/virtual-keyboard/#dom-navigator-virtualkeyboard}.
 	 */
-	interface VirtualKeyboard extends EventTarget {
+	type VirtualKeyboard = EventTarget & {
 		hide(): void
 		show(): void;
 		boundingRect: DOMRect;
@@ -41,7 +41,7 @@ declare global {
 	}
 
 	// for custom rcb events
-	interface WindowEventMap {
+	type WindowEventMap = {
 		// audio
 		"rcb-toggle-audio": RcbToggleAudioEvent;
 

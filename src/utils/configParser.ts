@@ -120,7 +120,7 @@ export const getCombinedConfig = (preferredConfig: Settings | Styles, baseConfig
  * 
  * @param obj object to clone
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 export const deepClone = (obj: { [key: string]: any }): { [key: string]: any } => {
 	if (obj === null || typeof obj !== "object") {
 		return obj;

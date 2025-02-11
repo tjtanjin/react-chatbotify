@@ -18,6 +18,7 @@ export const generateSecureUUID = () => {
 				return v.toString(16);
 			});
 		} else {
+			console.error(error);
 			throw new Error("crypto.getRandomValues is also not available");
 		}
 	}
