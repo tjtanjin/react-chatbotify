@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-svgr/client" />
 
 type ImportMetaEnv = {
   readonly VITE_THEME_BASE_CDN_URL: string;

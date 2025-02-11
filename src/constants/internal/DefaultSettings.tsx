@@ -4,17 +4,17 @@ import { Button } from "../Button";
 import actionDisabledIcon from "../../assets/action_disabled_icon.svg";
 import botAvatar from "../../assets/bot_avatar.svg";
 import userAvatar from "../../assets/user_avatar.svg";
-import { ReactComponent as ChatIcon } from "../../assets/chat_icon.svg";
-import { ReactComponent as FileAttachmentIcon } from '../../assets/file_attachment_icon.svg';
-import { ReactComponent as NotificationIcon } from '../../assets/notification_icon.svg';
-import { ReactComponent as NotificationIconDisabled } from '../../assets/notification_icon_disabled.svg';
-import { ReactComponent as CloseChatIcon } from '../../assets/close_chat_icon.svg';
-import { ReactComponent as SendButtonIcon } from '../../assets/send_icon.svg';
-import { ReactComponent as VoiceIcon } from '../../assets/voice_icon.svg';
-import { ReactComponent as VoiceIconDisabled } from '../../assets/voice_icon_disabled.svg';
-import { ReactComponent as EmojiIcon } from '../../assets/emoji_icon.svg';
-import { ReactComponent as AudioIcon } from '../../assets/audio_icon.svg';
-import { ReactComponent as AudioIconDisabled } from '../../assets/audio_icon_disabled.svg';
+import ChatIcon from "../../assets/chat_icon.svg?react";
+import FileAttachmentIcon from '../../assets/file_attachment_icon.svg?react';
+import NotificationIcon from '../../assets/notification_icon.svg?react';
+import NotificationIconDisabled from '../../assets/notification_icon_disabled.svg?react';
+import CloseChatIcon from '../../assets/close_chat_icon.svg?react';
+import SendButtonIcon from '../../assets/send_icon.svg?react';
+import VoiceIcon from '../../assets/voice_icon.svg?react';
+import VoiceIconDisabled from '../../assets/voice_icon_disabled.svg?react';
+import EmojiIcon from '../../assets/emoji_icon.svg?react';
+import AudioIcon from '../../assets/audio_icon.svg?react';
+import AudioIconDisabled from '../../assets/audio_icon_disabled.svg?react';
 import notificationSound from "../../assets/notification_sound.wav";
 
 // default settings provided to the bot
