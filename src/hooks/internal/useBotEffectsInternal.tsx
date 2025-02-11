@@ -249,6 +249,9 @@ export const useBotEffectsInternal = () => {
 			if (!("chatDisabled" in block)) {
 				setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 			}
+			if (!("isSensitive" in block)) {
+				setTextAreaSensitiveMode(false);
+			}
 			setBlockAllowsAttachment(typeof block.file === "function");
 			updateTextAreaFocus(currPath);
 			syncVoice(keepVoiceOnRef.current && !block.chatDisabled);
