@@ -72,6 +72,7 @@ export type Settings = {
 	},
 	chatWindow?: {
 		showScrollbar?: boolean;
+		showTypingIndicator?: boolean;
 		autoJumpToBottom?: boolean;
 		showMessagePrompt?: boolean;
 		messagePromptText?: string;

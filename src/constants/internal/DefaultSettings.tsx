@@ -96,6 +96,7 @@ export const DefaultSettings: Settings = {
 	},
 	chatWindow: {
 		showScrollbar: false,
+		showTypingIndicator: true,
 		autoJumpToBottom: false,
 		showMessagePrompt: true,
 		messagePromptText: "New Messages ↓",

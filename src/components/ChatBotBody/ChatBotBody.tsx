@@ -224,7 +224,7 @@ const ChatBotBody = ({
 					</div>
 				);
 			})}
-			{isBotTyping && (
+			{isBotTyping && settings.chatWindow?.showTypingIndicator && (
 				<div className="rcb-bot-message-container">
 					{settings.botBubble?.showAvatar &&
 						<div 
