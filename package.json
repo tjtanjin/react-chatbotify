@@ -59,7 +59,7 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "cypress": "^14.0.2",
+    "cypress": "^13.14.2",
     "cypress-file-upload": "^5.0.8",
     "eslint": "^9.20.0",
     "eslint-plugin-import": "^2.31.0",
