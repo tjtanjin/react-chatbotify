@@ -1,12 +1,12 @@
-import {useCallback} from "react";
+import { useCallback } from "react";
 
-import {useMessagesInternal} from "./useMessagesInternal";
-import {usePathsInternal} from "./usePathsInternal";
-import {useToastsInternal} from "./useToastsInternal";
-import {useBotRefsContext} from "../../context/BotRefsContext";
-import {useBotStatesContext} from "../../context/BotStatesContext";
-import {setHistoryStorageValues} from "../../services/ChatHistoryService";
-import {useSettingsContext} from "../../context/SettingsContext";
+import { useMessagesInternal } from "./useMessagesInternal";
+import { usePathsInternal } from "./usePathsInternal";
+import { useToastsInternal } from "./useToastsInternal";
+import { useBotRefsContext } from "../../context/BotRefsContext";
+import { useBotStatesContext } from "../../context/BotStatesContext";
+import { setHistoryStorageValues } from "../../services/ChatHistoryService";
+import { useSettingsContext } from "../../context/SettingsContext";
 
 /**
  * Internal custom hook for managing flow.
@@ -34,7 +34,7 @@ export const useFlowInternal = () => {
 	 * Restarts the conversation flow for the chatbot.
 	 */
 	const restartFlow = useCallback(() => {
-		//reload the chat history from storage
+		// reloads the chat history from storage
 		setHistoryStorageValues(settings)
 
 		replaceMessages([]);
