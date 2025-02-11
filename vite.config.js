@@ -17,6 +17,7 @@ export default ({mode}) => {
         name: "react-chatbotify",
         fileName: "index",
         formats: ["es", "cjs"],
+        cssFileName: "style",
       },
       rollupOptions: {
         external: [
