@@ -139,6 +139,7 @@ describe("Chat Bot Test Suite", () => {
 	it("Sends goodbye, scrolls away, and verifies new message prompt", () => {
 		cy.get(".rcb-chat-input-textarea").type("Goodbye!{enter}");
 		cy.get(".rcb-chat-body-container").scrollTo("top");
+		cy.wait(1000);
 		cy.get(".rcb-message-prompt-container").should("be.visible");
 	});
 
