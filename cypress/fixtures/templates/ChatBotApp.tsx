@@ -16,6 +16,7 @@ function App() {
 		show_name : {
 			message: (params: Params) => `Hey ${params.userInput}! Nice to meet you.`,
 			function: (params: Params) => setName(params.userInput),
+			chatDisabled: true,
 			transition: {duration: 1000},
 			path: "ask_token",
 		},
