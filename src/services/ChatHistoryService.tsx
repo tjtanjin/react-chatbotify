@@ -51,7 +51,7 @@ const saveChatHistory = async (messages: Message[]) => {
 		parsedMessages = [...historyMessages.slice(-difference), ...parsedMessages]
 	}
 
-	setHistoryMessages(parsedMessages);
+	updateHistoryMessages(parsedMessages);
 }
 
 /**
@@ -83,6 +83,16 @@ const getHistoryMessages = () => {
  * @param messages chat history messages to set
  */
 const setHistoryMessages = (messages: Message[]) => {
+	updateHistoryMessages(messages);
+	historyMessages = messages;
+}
+
+/**
+ * Updates history messages.
+ * 
+ * @param messages chat history messages to update
+ */
+const updateHistoryMessages = (messages: Message[]) => {
 	if (!storage) {
 		return;
 	}
