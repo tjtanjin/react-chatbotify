@@ -123,10 +123,10 @@ function App() {
 		},
 		loop: {
 			message: (params: Params) => {
-				// sends the message half a second later to facilitate testing of new message prompt
+				// sends the message a second later to facilitate testing of new message prompt
 				setTimeout(async () => {
 					await params.injectMessage("You have reached the end of the conversation!");
-				}, 500)
+				}, 1000)
 			},
 			path: "loop"
 		},
