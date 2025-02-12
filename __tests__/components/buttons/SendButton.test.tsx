@@ -143,7 +143,7 @@ describe("SendButton Component", () => {
 		expect(button).toHaveStyle(`backgroundColor: ${DefaultStyles.sendButtonDisabledStyle?.backgroundColor}`);
 
 		// Check cursor style when button is disabled
-		expect(button).toHaveStyle(`cursor: url(undefined), auto`);
+		expect(button).toHaveStyle(`cursor: url("undefined"), auto`);
 
 		// Simulate hover (should not change color when textArea is disabled)
 		fireEvent.mouseEnter(button);
@@ -172,7 +172,7 @@ describe("SendButton Component", () => {
 		expect(button).toHaveStyle(`backgroundColor: ${DefaultSettings.general?.primaryColor}`);
 
 		// Check cursor style when button is disabled
-		expect(button).toHaveStyle(`cursor: url(undefined), auto`);
+		expect(button).toHaveStyle(`cursor: url("undefined"), auto`);
 
 		// Simulate hover (should not change color when textArea is disabled)
 		fireEvent.mouseEnter(button);
