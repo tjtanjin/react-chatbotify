@@ -47,8 +47,6 @@
 	border-radius: 22px;
 	min-height: 20px;
 	height: fit-content;
-	display: flex;
-	flex-direction: row;
 	width: fit-content;
 	font-size: 15px;
  	overflow-wrap: anywhere;

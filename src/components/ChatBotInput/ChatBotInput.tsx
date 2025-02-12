@@ -212,7 +212,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 					onCompositionEnd={handleCompositionEnd}
 				/>
 			}
-			<div className="rcb-chat-input-button-container">
+			<>
 				{buttons?.map((button: JSX.Element, index: number) => 
 					<Fragment key={index}>{button}</Fragment>
 				)}
@@ -230,7 +230,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 						{inputLength}/{settings.chatInput?.characterLimit}
 					</div>
 				}
-			</div>
+			</>
 		</div>
 	);
 };
