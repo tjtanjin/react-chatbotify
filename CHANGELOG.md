@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.28 (13-02-2025)
+
+**Fixed:**
+- Fixed an issue with redundant styles being applied
+- Fixed an issue where specific static svg imports are missing in the final build
+
 ## v2.0.0-beta.27 (12-02-2025)
 
 **Fixed:**
@@ -11,8 +17,6 @@
 - Added a new `blurTextArea` utility function to the `useTextArea` hook
 - Added a new `chatWindow.showTypingIndicator` setting to allow configuration for whether bot typing indicator is shown (defaults to `true`)
 - Extended the `voice.timeoutPeriod` setting which can now be disabled with a value of 0 (i.e. voice stays on until user turns it off manually)
-
-**Added:**
 
 ## v2.0.0-beta.26 (25-11-2024)
 
