@@ -75,7 +75,7 @@ const ChatBotInput = ({ buttons }: { buttons: JSX.Element[] }) => {
 
 	// styles for disabled text area
 	const textAreaDisabledStyle: React.CSSProperties = {
-		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		cursor: `url("${settings.general?.actionDisabledIcon}"), auto`,
 		caretColor: "transparent",
 		boxSizing: isDesktop ? "content-box" : "border-box",
 		...styles.chatInputAreaStyle, // by default inherit the base style for input area

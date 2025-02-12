@@ -54,7 +54,7 @@ const FileAttachmentButton = () => {
 
 	// styles for file attachment disabled button
 	const fileAttachmentButtonDisabledStyle = {
-		cursor: `url(${settings.general?.actionDisabledIcon}), auto`,
+		cursor: `url("${settings.general?.actionDisabledIcon}"), auto`,
 		...styles.fileAttachmentButtonStyle, // by default inherit the base style
 		...styles.fileAttachmentButtonDisabledStyle
 	}

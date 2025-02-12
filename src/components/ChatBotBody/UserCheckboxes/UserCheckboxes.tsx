@@ -46,7 +46,7 @@ const UserCheckboxes = ({
 
 	// styles for bot checkbox row items
 	const botCheckboxRowStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		cursor: disabled ? `url("${settings.general?.actionDisabledIcon}"), auto` : "pointer",
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
 		...styles.botCheckboxRowStyle
@@ -55,7 +55,7 @@ const UserCheckboxes = ({
 	// styles for bot checkbox next button
 	const botCheckboxNextStyle: React.CSSProperties = {
 		cursor: disabled || checkedBoxes.size < (checkboxes.min as number) 
-			? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+			? `url("${settings.general?.actionDisabledIcon}"), auto` : "pointer",
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
 		...styles.botCheckboxNextStyle
@@ -63,14 +63,14 @@ const UserCheckboxes = ({
 
 	// styles for bot checkmark
 	const botCheckMarkStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		cursor: disabled ? `url("${settings.general?.actionDisabledIcon}"), auto` : "pointer",
 		color: "transparent",
 		...styles.botCheckMarkStyle
 	};
 
 	// styles for bot selected checkmark
 	const botCheckMarkSelectedStyle: React.CSSProperties = {
-		cursor: disabled ? `url(${settings.general?.actionDisabledIcon}), auto` : "pointer",
+		cursor: disabled ? `url("${settings.general?.actionDisabledIcon}"), auto` : "pointer",
 		color: "#fff",
 		borderColor: settings.general?.primaryColor,
 		backgroundColor: settings.general?.primaryColor,

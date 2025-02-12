@@ -29,7 +29,7 @@ const ChatBotHeader = ({ buttons }: { buttons: JSX.Element[] }) => {
 			<div className="rcb-chat-header">
 				{settings.header?.showAvatar &&
 					<div 
-						style={{backgroundImage: `url(${settings.header?.avatar})`}} 
+						style={{backgroundImage: `url("${settings.header?.avatar}")`}}
 						className="rcb-bot-avatar"
 					/>
 				}
