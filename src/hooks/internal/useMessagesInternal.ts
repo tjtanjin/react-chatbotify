@@ -228,7 +228,7 @@ export const useMessagesInternal = () => {
 		const message = {...createMessage(content, sender), id: streamMessageMap.current.get(sender) as string};
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, message);
+			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
