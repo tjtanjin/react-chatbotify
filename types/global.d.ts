@@ -41,7 +41,8 @@ declare global {
 	}
 
 	// for custom rcb events
-	type WindowEventMap = {
+	// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+	interface WindowEventMap {
 		// audio
 		"rcb-toggle-audio": RcbToggleAudioEvent;
 
