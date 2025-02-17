@@ -205,7 +205,6 @@ export const useMessagesInternal = () => {
 
 		if (!streamMessageMap.current.has(sender)) {
 			const message = createMessage(content, sender);
-			streamMessageMap.current.set(sender, message.id);
 
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
@@ -221,6 +220,7 @@ export const useMessagesInternal = () => {
 				handlePostMessagesUpdate(updatedMessages);
 				return [...prevMessages, message];
 			});
+			streamMessageMap.current.set(sender, message.id);
 			setUnreadCount(prev => prev + 1);
 			return message.id;
 		}
