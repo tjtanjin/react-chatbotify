@@ -57,7 +57,7 @@ export const useMessagesInternal = () => {
 		setIsBotTyping(false);
 
 		// set an initial empty message to be used for simulating streaming
-		const placeholderMessage = createMessage("", message.sender);
+		const placeholderMessage = {...message, content: ""};
 		setMessages(prevMessages => {
 			const updatedMessages = [...prevMessages, placeholderMessage];
 			handlePostMessagesUpdate(updatedMessages);

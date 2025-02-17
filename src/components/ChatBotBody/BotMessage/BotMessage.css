@@ -1,0 +1,45 @@
+/* Bot Messages */
+
+.rcb-bot-message-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.rcb-bot-message {
+	margin-top: 8px;
+	padding: 12px 16px;
+	border-radius: 22px;
+	min-height: 20px;
+	height: fit-content;
+	width: fit-content;
+	font-size: 15px;
+ 	overflow-wrap: anywhere;
+	overflow: hidden;
+	white-space: pre-wrap;
+}
+
+.rcb-bot-message {
+	text-align: left;
+	margin-left: 16px;
+}
+
+.rcb-bot-message-offset {
+	margin-left: 50px;
+}
+
+.rcb-bot-message-entry {
+	animation: rcb-animation-bot-message-entry 0.3s ease-in backwards;
+}
+
+.rcb-message-bot-avatar {
+	background-size: cover;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-top: 9px;
+}
+
+.rcb-message-bot-avatar {
+	margin-left: 6px;
+	margin-right: -10px;
+}

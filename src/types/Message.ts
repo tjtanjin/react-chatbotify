@@ -7,4 +7,5 @@ export type Message = {
 	sender: string;
 	type: string;
 	timestamp: string; // new Date().toUTCString()
+	contentWrapper?: React.ComponentType<{ children: React.ReactNode }>;
 }
