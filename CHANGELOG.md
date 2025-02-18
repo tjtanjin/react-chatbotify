@@ -9,7 +9,7 @@
 - Added a new optional `contentWrapper` property to [`Message`](https://react-chatbotify.com/docs/concepts/conversations#message) component, targeting niche use cases where additional parsing/rendering of strings for a message are required before it is wrapped in a chat message bubble
 
 **Note:**
-The addition of the niche property `contentWrapper` is not typical - in general, we avoid niche implementations in the core library. In this case however, it provides an elegant solution for supporting plugins that need to render messages in specific formats (e.g. markdown).
+The addition of the niche property `contentWrapper` is not typical - in general, we avoid niche implementations in the core library. In this case however, it provides an elegant solution for supporting plugins that need to render messages in specific formats. For example, the newly published [**Markdown Renderer**](https://www.npmjs.com/package/@rcb-plugins/markdown-renderer) uses this new property.
 
 ## v2.0.0-beta.28 (13-02-2025)
 
