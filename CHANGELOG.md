@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.30 (19-02-2025)
+
+**Fixed:**
+- Fixed an issue introduced in the previous version where custom components are wrapped in chat bubbles
+
 ## v2.0.0-beta.29 (18-02-2025)
 
 **Fixed:**
