@@ -25,8 +25,9 @@ const BotMessage = ({
 	const { styles } = useStylesContext();
 
 	// checks if content should be rendered as html
+	const isStringContent = typeof message.content === "string";
 	let baseContent: React.ReactNode = message.content;
-	if (typeof message.content === "string" && settings?.botBubble?.dangerouslySetInnerHtml) {
+	if (isStringContent && settings?.botBubble?.dangerouslySetInnerHtml) {
 		baseContent = (
 			<div
 				style={{ display: "inline" }}
@@ -36,7 +37,7 @@ const BotMessage = ({
 	}
 
 	// checks if content wrapper is defined to wrap around content
-	const bubbleContent = message.contentWrapper ? (
+	const finalContent = message.contentWrapper ? (
 		<message.contentWrapper>
 			{baseContent}
 		</message.contentWrapper>
@@ -68,9 +69,15 @@ const BotMessage = ({
 					className="rcb-message-bot-avatar"
 				/>
 			)}
-			<div style={botBubbleStyle} className={`${offsetStyle} ${botBubbleEntryStyle}`}>
-				{bubbleContent}
-			</div>
+			{ isStringContent ? (
+				<div style={botBubbleStyle} className={`${offsetStyle} ${botBubbleEntryStyle}`}>
+					{finalContent}
+				</div>
+			) : (
+				<>
+					{finalContent}
+				</>
+			)}
 		</div>
 	);
 };

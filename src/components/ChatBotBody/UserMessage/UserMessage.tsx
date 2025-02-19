@@ -25,8 +25,9 @@ const UserMessage = ({
 	const { styles } = useStylesContext();
 
 	// checks if content should be rendered as html
+	const isStringContent = typeof message.content === "string";
 	let baseContent: React.ReactNode = message.content;
-	if (typeof message.content === "string" && settings?.userBubble?.dangerouslySetInnerHtml) {
+	if (isStringContent && settings?.userBubble?.dangerouslySetInnerHtml) {
 		baseContent = (
 			<div
 				style={{ display: "inline" }}
@@ -36,7 +37,7 @@ const UserMessage = ({
 	}
 
 	// checks if content wrapper is defined to wrap around content
-	const bubbleContent = message.contentWrapper ? (
+	const finalContent = message.contentWrapper ? (
 		<message.contentWrapper>
 			{baseContent}
 		</message.contentWrapper>
@@ -62,9 +63,15 @@ const UserMessage = ({
 
 	return (
 		<div className="rcb-user-message-container">
-			<div style={userBubbleStyle} className={`${offsetStyle} ${userBubbleEntryStyle}`}>
-				{bubbleContent}
-			</div>
+			{ isStringContent ? (
+				<div style={userBubbleStyle} className={`${offsetStyle} ${userBubbleEntryStyle}`}>
+					{finalContent}
+				</div>
+			) : (
+				<>
+					{finalContent}
+				</>
+			)}
 			{showAvatar && (
 				<div
 					style={{ backgroundImage: `url("${settings.userBubble?.avatar}")` }}
