@@ -11,7 +11,6 @@ function App() {
 	const flow: Flow = {
 		start: {
 			message: "Hello! What is your name?",
-			component: <button>hi</button>,
 			path: "show_name",
 		},
 		show_name : {
