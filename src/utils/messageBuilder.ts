@@ -12,6 +12,7 @@ export const createMessage = (content: string | JSX.Element, sender: string, ) =
 		content,
 		sender,
 		type: typeof content === "string" ? "string" : "object",
-		timestamp: new Date().toUTCString()
+		timestamp: new Date().toUTCString(),
+		tags: [],
 	};
 }

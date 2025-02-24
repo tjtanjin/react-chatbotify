@@ -138,7 +138,8 @@ const parseMessageToString = (message: Message) => {
 			content: ReactDOMServer.renderToString(message.content),
 			type: message.type,
 			sender: message.sender.toUpperCase(),
-			timestamp: message.timestamp
+			timestamp: message.timestamp,
+			tags: message.tags,
 		});
 		return clonedMessage;
 	}

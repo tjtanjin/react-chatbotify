@@ -6,6 +6,7 @@ export type Message = {
 	content: string | JSX.Element;
 	sender: string;
 	type: string;
-	timestamp: string; // new Date().toUTCString()
+	timestamp: string;
+	tags: Array<string>;
 	contentWrapper?: React.ComponentType<{ children: React.ReactNode }>;
 }
