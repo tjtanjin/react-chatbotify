@@ -157,10 +157,12 @@ const parseMessageToString = (message: Message) => {
  * @param chatBodyRef reference to the chat body
  * @param chatScrollHeight current chat scroll height
  * @param setIsLoadingChatHistory setter for whether chat history is loading
+ * @param setHasChatHistoryLoaded setter for indicating if chat history is loaded
  */
 const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
 	setMessages: Dispatch<SetStateAction<Message[]>>, chatBodyRef: React.RefObject<HTMLDivElement | null>,
-	chatScrollHeight: number, setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>) => {
+	chatScrollHeight: number, setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>,
+	setHasChatHistoryLoaded: Dispatch<SetStateAction<boolean>>) => {
 
 	historyLoaded = true;
 	if (chatHistory != null) {
@@ -191,6 +193,7 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					}
 					return [...parsedMessages, lineBreakMessage, ...prevMessages];
 				});
+				setHasChatHistoryLoaded(true);
 			}, 500)
 
 			// slight delay afterwards to maintain scroll position

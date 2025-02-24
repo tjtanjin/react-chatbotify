@@ -19,6 +19,7 @@ describe("ChatHistoryService", () => {
 		content: "Hello good sir!",
 		type: "text",
 		timestamp: "2021-01-01T00:00:00Z",
+		tags: [],
 	};
 
 	const mockSettings = (storageType: string): Settings => ({
@@ -102,6 +103,7 @@ describe("ChatHistoryService", () => {
 		it("should load history and display messages", () => {
 			const setMessages = jest.fn();
 			const setIsLoadingChatHistory = jest.fn();
+			const setHasChatHistoryLoaded = jest.fn();
 			
 			// Mock the div element for chatBodyRef
 			const divElement = document.createElement("div");
@@ -119,7 +121,8 @@ describe("ChatHistoryService", () => {
 				setMessages,
 				chatBodyRef,
 				1000,
-				setIsLoadingChatHistory
+				setIsLoadingChatHistory,
+				setHasChatHistoryLoaded
 			);
 		
 			// Fast-forward until all timers have been executed
@@ -127,6 +130,7 @@ describe("ChatHistoryService", () => {
 		
 			expect(setMessages).toHaveBeenCalled();
 			expect(setIsLoadingChatHistory).toHaveBeenCalledWith(false);
+			expect(setHasChatHistoryLoaded).toHaveBeenCalledWith(true);
 		});
 
 		it("should handle corrupted data by clearing it from storage", () => {
@@ -134,6 +138,7 @@ describe("ChatHistoryService", () => {
 	
 			const setMessages = jest.fn();
 			const setIsLoadingChatHistory = jest.fn();
+			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
 	
 			// verify it doesn't throw
@@ -145,7 +150,8 @@ describe("ChatHistoryService", () => {
 					setMessages,
 					chatBodyRef,
 					1000,
-					setIsLoadingChatHistory
+					setIsLoadingChatHistory,
+					setHasChatHistoryLoaded
 				)
 			).not.toThrow();
 		});
@@ -153,6 +159,7 @@ describe("ChatHistoryService", () => {
 		it("does not do anything if chat history is null", () => {
 			const setMessages = jest.fn();
 			const setIsLoadingChatHistory = jest.fn();
+			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
 	
 			loadChatHistory(
@@ -162,7 +169,8 @@ describe("ChatHistoryService", () => {
 				setMessages,
 				chatBodyRef,
 				1000,
-				setIsLoadingChatHistory
+				setIsLoadingChatHistory,
+				setHasChatHistoryLoaded
 			);
 	
 			expect(setMessages).not.toHaveBeenCalled();
@@ -171,6 +179,7 @@ describe("ChatHistoryService", () => {
 		it("handles errors gracefully and removes chat history on error", () => {
 			const setMessages = () => { throw new Error("Error setting messages"); };
 			const setIsLoadingChatHistory = jest.fn();
+			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
 	
 			loadChatHistory(
@@ -180,7 +189,8 @@ describe("ChatHistoryService", () => {
 				setMessages,
 				chatBodyRef,
 				1000,
-				setIsLoadingChatHistory
+				setIsLoadingChatHistory,
+				setHasChatHistoryLoaded,
 			);
 	
 			expect(storage.removeItem).toHaveBeenCalledWith(mockSettings(storageType).chatHistory?.storageKey);

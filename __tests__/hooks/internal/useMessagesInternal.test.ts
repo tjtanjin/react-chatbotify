@@ -77,7 +77,7 @@ describe("useMessagesInternal", () => {
 	it("should remove a message correctly", async () => {
 		const mockMessageId = "test-id";
 		const mockMessage: Message = { id: mockMessageId, content: "Test", sender: "BOT", type: "text",
-			timestamp: String(Date.now()) };
+			timestamp: String(Date.now()), tags: [] };
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: [mockMessage],
 			setMessages: mockSetMessages,

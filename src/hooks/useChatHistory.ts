@@ -6,11 +6,12 @@ import { useChatHistoryInternal } from "./internal/useChatHistoryInternal";
  */
 export const useChatHistory = () => {
 	// handles chat history
-	const { showChatHistory } = useChatHistoryInternal();
+	const { showChatHistory, hasChatHistoryLoaded } = useChatHistoryInternal();
 
 	return {
 		showChatHistory,
 		getHistoryMessages,
-		setHistoryMessages
+		setHistoryMessages,
+		hasChatHistoryLoaded,
 	};
 };

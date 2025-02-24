@@ -33,14 +33,16 @@ describe("useChatHistoryInternal Hook", () => {
 			sender: "USER",
 			content: "Hello",
 			type: "string",
-			timestamp: new Date().toUTCString()
+			timestamp: new Date().toUTCString(),
+			tags: [],
 		},
 		{
 			id: generateSecureUUID(),
 			sender: "BOT",
 			content: "Hi there!",
 			type: "string",
-			timestamp: new Date().toUTCString()
+			timestamp: new Date().toUTCString(),
+			tags: [],
 		},
 	];
 
@@ -92,6 +94,7 @@ describe("useChatHistoryInternal Hook", () => {
 			expect.any(Function),
 			expect.any(Object),
 			expect.any(Number),
+			expect.any(Function),
 			expect.any(Function),
 		);
 

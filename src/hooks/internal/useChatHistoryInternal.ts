@@ -27,6 +27,8 @@ export const useChatHistoryInternal = () => {
 	const {
 		isLoadingChatHistory,
 		setIsLoadingChatHistory,
+		hasChatHistoryLoaded,
+		setHasChatHistoryLoaded,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -58,9 +60,9 @@ export const useChatHistoryInternal = () => {
 		}
 		setIsLoadingChatHistory(true);
 		loadChatHistory(settings, styles, chatHistory, setMessages,
-			chatBodyRef, chatScrollHeight, setIsLoadingChatHistory
+			chatBodyRef, chatScrollHeight, setIsLoadingChatHistory, setHasChatHistoryLoaded,
 		);
 	}, [settings, styles, setMessages]);
 
-	return { isLoadingChatHistory, setIsLoadingChatHistory, showChatHistory };
+	return { isLoadingChatHistory, setIsLoadingChatHistory, hasChatHistoryLoaded, showChatHistory };
 };

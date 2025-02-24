@@ -21,6 +21,7 @@ const TestComponent = () => {
 				sender: 'user1',
 				type: 'message',
 				timestamp: new Date().toUTCString(),
+				tags: [],
 			},
 		])
 	}

@@ -34,6 +34,7 @@ describe("createMessage", () => {
 			sender,
 			type: "string",
 			timestamp: expect.any(String),
+			tags: [],
 		});
 
 		// checks timestamp format
@@ -59,6 +60,7 @@ describe("createMessage", () => {
 			sender,
 			type: "object",
 			timestamp: expect.any(String), // We"ll validate the format separately
+			tags: [],
 		});
 
 		// checks timestamp format
@@ -84,6 +86,7 @@ describe("createMessage", () => {
 			sender,
 			type: "string",
 			timestamp: expect.any(String),
+			tags: [],
 		});
 
 		// checks timestamp format
@@ -109,6 +112,7 @@ describe("createMessage", () => {
 			sender,
 			type: "string",
 			timestamp: expect.any(String),
+			tags: [],
 		});
 
 		// checks timestamp format
@@ -152,6 +156,7 @@ describe("createMessage", () => {
 			sender,
 			type: "object",
 			timestamp: expect.any(String),
+			tags: [],
 		});
 
 		// checks timestamp format

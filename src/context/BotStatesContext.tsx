@@ -24,6 +24,9 @@ export type BotStatesContextType = {
 	isLoadingChatHistory: boolean;
 	setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>;
 
+	hasChatHistoryLoaded: boolean;
+	setHasChatHistoryLoaded: Dispatch<SetStateAction<boolean>>;
+
 	isScrolling: boolean;
 	setIsScrolling: Dispatch<SetStateAction<boolean>>;
 
@@ -79,6 +82,7 @@ const BotStatesProvider = ({
 		settings?.notification?.defaultToggledOn ?? true
 	);
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
+	const [hasChatHistoryLoaded, setHasChatHistoryLoaded] = useState<boolean>(false);
 	const [isScrolling, setIsScrolling] = useState<boolean>(false);
 	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(true);
 	const [textAreaSensitiveMode, setTextAreaSensitiveMode] = useState<boolean>(false);
@@ -109,6 +113,8 @@ const BotStatesProvider = ({
 			setNotificationsToggledOn,
 			isLoadingChatHistory,
 			setIsLoadingChatHistory,
+			hasChatHistoryLoaded,
+			setHasChatHistoryLoaded,
 			isScrolling,
 			setIsScrolling,
 			textAreaDisabled,
