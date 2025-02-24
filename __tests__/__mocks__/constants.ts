@@ -14,6 +14,7 @@ export const MockDefaultSettings = {
 		rcbRemoveMessage: true,
 		rcbLoadChatHistory: true,
 		rcbToggleChatWindow: true,
+		rcbStartSpeakAudio: true,
 		rcbToggleAudio: true,
 		rcbToggleNotifications: true,
 		rcbToggleVoice: true,

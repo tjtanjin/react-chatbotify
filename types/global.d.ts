@@ -5,6 +5,7 @@ import { RcbPreLoadChatBotEvent } from "../src/types/events/RcbPreLoadChatBotEve
 import { RcbPostLoadChatBotEvent } from "../src/types/events/RcbPostLoadChatBotEvent";
 import { RcbLoadChatHistoryEvent } from "../src/types/events/RcbLoadChatHistoryEvent";
 import { RcbToggleChatWindowEvent } from "../src/types/events/RcbToggleChatWindowEvent";
+import { RcbStartSpeakAudioEvent } from "../src/types/events/RcbStartSpeakAudioEvent";
 import { RcbToggleAudioEvent } from "../src/types/events/RcbToggleAudioEvent";
 import { RcbToggleVoiceEvent } from "../src/types/events/RcbToggleVoiceEvent";
 import { RcbToggleNotificationsEvent } from "../src/types/events/RcbToggleNotificationsEvent";
@@ -44,6 +45,7 @@ declare global {
 	// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 	interface WindowEventMap {
 		// audio
+		"rcb-start-speak-audio": RcbStartSpeakAudioEvent;
 		"rcb-toggle-audio": RcbToggleAudioEvent;
 
 		// notifications:

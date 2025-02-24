@@ -96,4 +96,6 @@ describe("useAudioInternal Hook", () => {
     	// checks if audio state stayed the same
    		expect(result.current.audioToggledOn).toBe(initialAudioToggledOn);
   	});
+
+	// todo: add test case to test speakAudio as well
 });

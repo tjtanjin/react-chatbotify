@@ -23,6 +23,7 @@ import { Button } from "./constants/Button";
 // event imports
 import { RcbLoadChatHistoryEvent } from "./types/events/RcbLoadChatHistoryEvent";
 import { RcbToggleChatWindowEvent } from "./types/events/RcbToggleChatWindowEvent";
+import { RcbStartSpeakAudioEvent } from "./types/events/RcbStartSpeakAudioEvent";
 import { RcbToggleAudioEvent } from "./types/events/RcbToggleAudioEvent";
 import { RcbPreInjectMessageEvent } from "./types/events/RcbPreInjectMessageEvent";
 import { RcbPreLoadChatBotEvent } from "./types/events/RcbPreLoadChatBotEvent";
@@ -88,6 +89,7 @@ export type {
 	RcbRemoveMessageEvent,
 	RcbLoadChatHistoryEvent,
 	RcbToggleChatWindowEvent,
+	RcbStartSpeakAudioEvent,
 	RcbToggleAudioEvent,
 	RcbToggleNotificationsEvent,
 	RcbToggleVoiceEvent,

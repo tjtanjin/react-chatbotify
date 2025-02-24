@@ -1,5 +1,3 @@
-import { stripHtml } from "../utils/markupParser";
-import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
 
 /**
@@ -11,7 +9,7 @@ import { Settings } from "../types/Settings";
  * @param rate speech rate
  * @param volume play volume
  */
-const speak = (message: string, language: string, voiceNames: string[], rate: number, volume: number) => {
+export const speak = (message: string, language: string, voiceNames: string[], rate: number, volume: number) => {
 	if (!window.SpeechSynthesisUtterance) {
 		console.info("Speech Synthesis API is not supported in this environment.");
 		return;
@@ -45,29 +43,12 @@ const speak = (message: string, language: string, voiceNames: string[], rate: nu
 }
 
 /**
- * Handles logic for whether a bot message should be read out.
+ * Handles logic for reading out a bot message.
  * 
- * @param settings options provided to the bot
- * @param voiceToggledOn boolean indicating if voice is toggled on
- * @param isChatWindowOpen boolean indicating if chat window is open
- * @param message message to read out
- * @param useMarkup boolean indicating if markup is used
+ * @param settings settings provided to the bot
+ * @param textToRead text to read out
  */
-export const processAudio = (settings: Settings, voiceToggledOn: boolean,
-	isChatWindowOpen: boolean, message: Message, useMarkup: boolean) => {
-
-	// Add check for empty message content
-	if (settings.audio?.disabled || message.sender.toUpperCase() === "USER" || typeof message.content !== "string"
-		|| (!isChatWindowOpen && !settings.general?.embedded) || !voiceToggledOn
-		|| message.content.trim() === "") { // Check for empty message content
-		return;
-	}
-
-	let textToRead = message.content;
-	if (useMarkup) {
-		textToRead = stripHtml(message.content);
-	}
-
+export const processAudio = (settings: Settings, textToRead: string) => {
 	speak(textToRead, settings.audio?.language as string, settings.audio?.voiceNames as string[],
 		settings.audio?.rate as number, settings.audio?.volume as number);
 }

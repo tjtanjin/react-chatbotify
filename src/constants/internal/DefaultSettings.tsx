@@ -115,7 +115,6 @@ export const DefaultSettings: Settings = {
 		avatar: userAvatar,
 		simStream: false,
 		streamSpeed: 30,
-		dangerouslySetInnerHtml: false,
 	},
 	botBubble: {
 		animate: true,
@@ -123,7 +122,6 @@ export const DefaultSettings: Settings = {
 		avatar: botAvatar,
 		simStream: false,
 		streamSpeed: 30,
-		dangerouslySetInnerHtml: false,
 	},
 	voice: {
 		disabled: true,
@@ -190,6 +188,7 @@ export const DefaultSettings: Settings = {
 		rcbRemoveMessage: false,
 		rcbLoadChatHistory: false,
 		rcbToggleChatWindow: false,
+		rcbStartSpeakAudio: false,
 		rcbToggleAudio: false,
 		rcbToggleNotifications: false,
 		rcbToggleVoice: false,

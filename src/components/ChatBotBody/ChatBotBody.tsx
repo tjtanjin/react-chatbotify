@@ -112,17 +112,17 @@ const ChatBotBody = ({
 			onScroll={updateIsScrolling}
 		>
 			{messages.map((message, index) => {
-				if (message.sender.toUpperCase() === "SYSTEM") {
-					return <div key={index}>{message.content}</div>;
-				}
-
 				const isNewSender = isFirstInSeries(index);
 
-				return message.sender.toUpperCase() === "USER" ? (
-					<UserMessage key={index} message={message} isNewSender={isNewSender} />
-				) : (
-					<BotMessage key={index} message={message} isNewSender={isNewSender} />
-				);
+				if (message.sender.toUpperCase() === "USER") {
+					return <UserMessage key={index} message={message} isNewSender={isNewSender} />;
+				}
+
+				if (message.sender.toUpperCase() === "BOT") {
+					return <BotMessage key={index} message={message} isNewSender={isNewSender} />;
+				}
+
+				return <div key={index}>{message.content}</div>;
 			})}
 			{isBotTyping && settings.chatWindow?.showTypingIndicator && (
 				<BotTypingIndicator />

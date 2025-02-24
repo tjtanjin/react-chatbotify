@@ -1,23 +1,8 @@
-import React from "react";
-
-import { expect } from "@jest/globals";
-
-import { processAudio } from "../../src/services/AudioService";
-import { generateSecureUUID } from "../../src/utils/idGenerator";
+import { processAudio, speak } from "../../src/services/AudioService";
 import { Settings } from "../../src/types/Settings";
-import { Message } from "../../src/types/Message";
 
-// mocks SpeechSynthesisUtterance
-class MockSpeechSynthesisUtterance {
-	text: string = "";
-	lang: string = "";
-	rate: number = 1;
-	volume: number = 1;
-	voice: SpeechSynthesisVoice | null = null;
-}
-  
 // sample voices
-const availableVoices: SpeechSynthesisVoice[] = [
+const availableVoices = [
 	{
 		name: "Google US English",
 		lang: "en-US",
@@ -34,303 +19,94 @@ const availableVoices: SpeechSynthesisVoice[] = [
 	},
 ];
 
-// mocks speechSynthesis methods
+// mock speechsynthesis
+class MockSpeechSynthesisUtterance {
+	text = "";
+	lang = "";
+	rate = 1;
+	volume = 1;
+	voice: SpeechSynthesisVoice | undefined = undefined;
+}
 const mockSpeak = jest.fn();
 const mockGetVoices = jest.fn().mockReturnValue(availableVoices);
 
-/**
- * Test for AudioService.
- */
-describe("AudioService.processAudio (Inline Mocks)", () => {
-	beforeAll(() => {
-		(global as any).SpeechSynthesisUtterance = MockSpeechSynthesisUtterance;
-		(global as any).speechSynthesis = {
-			speak: mockSpeak,
-			getVoices: mockGetVoices,
-		};
-	});
+beforeAll(() => {
+	(global as any).SpeechSynthesisUtterance = MockSpeechSynthesisUtterance;
+	(global as any).speechSynthesis = {
+		speak: mockSpeak,
+		getVoices: mockGetVoices,
+	};
+});
 
-	beforeEach(() => {
-		jest.clearAllMocks();
-		mockGetVoices.mockReturnValue(availableVoices);
-	});
-  
-	it("does not call speak when audio is disabled", () => {
-		// settings for audio
-		const settings: Settings = {
-			audio: {
-				disabled: true,
-				voiceNames: ["Google US English"]
-			}
-		};
+beforeEach(() => {
+	jest.clearAllMocks();
+	mockGetVoices.mockReturnValue(availableVoices);
+});
 
-		// calls process audio
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "USER",
-			content: "Hello, how can I assist you today?",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
+describe("AudioService", () => {
+	it("should log info and not speak if SpeechSynthesisUtterance is not supported", () => {
+		const originalUtterance = (global as any).SpeechSynthesisUtterance;
+		(global as any).SpeechSynthesisUtterance = undefined;
 
-		// checks that speak is not called
+		const consoleInfoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
+		speak("Test message", "en-US", ["Google US English"], 1, 1);
+		expect(consoleInfoSpy).toHaveBeenCalledWith(
+			"Speech Synthesis API is not supported in this environment."
+		);
 		expect(mockSpeak).not.toHaveBeenCalled();
+
+		// restore original SpeechSynthesisUtterance
+		(global as any).SpeechSynthesisUtterance = originalUtterance;
+		consoleInfoSpy.mockRestore();
 	});
 
-	it("does not call speak when message is from the user", () => {
-		// settings for audio
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"]
-			}
-		};
-
-		// defines message to be from user
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "USER",
-			content: "I need help with my account.",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-
-		// calls process audio
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		// checks that speak is not called
-		expect(mockSpeak).not.toHaveBeenCalled();
-	});
-
-	it("does not call speak when message content is not a string", () => {
-		// settings for audio
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"]
-			}
-		};
-
-		// defines message content as an object
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: React.createElement("div"),
-			type: "object",
-			timestamp: Date.now().toString(),
-		};
-
-		// calls process audio
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		// checks that speak is not called
-		expect(mockSpeak).not.toHaveBeenCalled();
-	});
-
-	it("does not call speak when chat window is closed and not embedded", () => {
-		// settings for audio and general
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"]
-			}, 
-			general: {
-				embedded: false
-			}
-		};
-
-		// calls process audio
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "Welcome back! How can I help you today?",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-		const voiceToggledOn = true;
-		const isChatWindowOpen = false;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		// checks that speak is not called
-		expect(mockSpeak).not.toHaveBeenCalled();
-	});
-
-	it("does not call speak when voice is toggled off", () => {
-		// settings for audio
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"]
-			}
-		};
-
-		// calls process audio, but voice is toggled off
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "Let me know if you need any assistance.",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-		const voiceToggledOn = false;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		// checks that speak is not called
-		expect(mockSpeak).not.toHaveBeenCalled();
-	});
-
-	it("calls speak with the specified voice when all conditions are met and voice is found", () => {
-		// settings for audio
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"]
-			}
-		};
-
-		// calls process audio
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "Hello! How can I assist you today?",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		// checks that speak is called correctly
+	it("should call speak with matched voice if found", () => {
+		speak("Hello", "en-US", ["Google US English"], 1, 1);
 		expect(mockSpeak).toHaveBeenCalledTimes(1);
-		expect(mockSpeak).toHaveBeenCalledWith(expect.any(SpeechSynthesisUtterance));
-		const utterance = mockSpeak.mock.calls[0][0] as SpeechSynthesisUtterance;
-		expect(utterance.text).toBe(message.content);
-		expect(utterance.lang).toBe(settings.audio?.language);
-		expect(utterance.rate).toBe(settings.audio?.rate);
-		expect(utterance.volume).toBe(settings.audio?.volume);
-		expect(utterance.voice?.name).toEqual(availableVoices[0].name);
+
+		const utterance = mockSpeak.mock.calls[0][0] as MockSpeechSynthesisUtterance;
+		expect(utterance.text).toBe("Hello");
+		expect(utterance.lang).toBe("en-US");
+		expect(utterance.rate).toBe(1);
+		expect(utterance.volume).toBe(1);
+		// since "Google US English" is available, the matched voice should be assigned.
+		expect(utterance.voice).toEqual(availableVoices[0]);
 	});
 
-	it("calls speak without a specified voice when all conditions are met but voice is not found", () => {
-		// settings for audio
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Non-Existent Voice"],
-			}
-		};
-
-		// calls process audio
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "This is a test message without a specified voice.",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		// checks that speak is called correctly
+	it("should call speak with default voice if no matching voice is found", () => {
+		speak("Hello", "en-US", ["Non-Existent Voice"], 1, 1);
 		expect(mockSpeak).toHaveBeenCalledTimes(1);
-		expect(mockSpeak).toHaveBeenCalledWith(expect.any(SpeechSynthesisUtterance));
-		const utterance = mockSpeak.mock.calls[0][0] as SpeechSynthesisUtterance;
-		expect(utterance.text).toBe(message.content);
-		expect(utterance.lang).toBe(settings.audio?.language);
-		expect(utterance.rate).toBe(settings.audio?.rate);
-		expect(utterance.volume).toBe(settings.audio?.volume);
-		expect(utterance.voice).toBeNull();
+
+		const utterance = mockSpeak.mock.calls[0][0] as MockSpeechSynthesisUtterance;
+		expect(utterance.text).toBe("Hello");
+		expect(utterance.lang).toBe("en-US");
+		expect(utterance.rate).toBe(1);
+		expect(utterance.volume).toBe(1);
+		// no matching voice so utterance.voice should remain undefined.
+		expect(utterance.voice).toBeUndefined();
 	});
 
-	it("processes audio with markup when useMarkup is true", () => {
+	it("should call speak with correct parameters", () => {
 		const settings: Settings = {
 			audio: {
 				disabled: false,
 				voiceNames: ["Google US English"],
+				language: "en-US",
+				rate: 1.2,
+				volume: 0.8,
 			},
-		};
+		} as Settings;
 
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "<b>Hello!</b> How can I assist you today?",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
+		processAudio(settings, "Hello World");
 
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
+		// processAudio internally calls speak
 		expect(mockSpeak).toHaveBeenCalledTimes(1);
-		const utterance = mockSpeak.mock.calls[0][0] as SpeechSynthesisUtterance;
-		expect(utterance.text).toBe("Hello! How can I assist you today?");  // Assuming markup is stripped
-	});
-
-	it("processes audio without markup when useMarkup is false", () => {
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"],
-			},
-		};
-
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "<b>Hello!</b> How can I assist you today?",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = false;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		expect(mockSpeak).toHaveBeenCalledTimes(1);
-		const utterance = mockSpeak.mock.calls[0][0] as SpeechSynthesisUtterance;
-		expect(utterance.text).toBe("<b>Hello!</b> How can I assist you today?");  // Markup is preserved
-	});
-
-	it("handles empty message when useMarkup is true", () => {
-		const settings: Settings = {
-			audio: {
-				disabled: false,
-				voiceNames: ["Google US English"],
-			},
-		};
-
-		const message: Message = {
-			id: generateSecureUUID(),
-			sender: "BOT",
-			content: "",
-			type: "string",
-			timestamp: Date.now().toString(),
-		};
-
-		const voiceToggledOn = true;
-		const isChatWindowOpen = true;
-		const useMarkup = true;
-		processAudio(settings, voiceToggledOn, isChatWindowOpen, message, useMarkup);
-
-		expect(mockSpeak).not.toHaveBeenCalled();
+		const utterance = mockSpeak.mock.calls[0][0] as MockSpeechSynthesisUtterance;
+		expect(utterance.text).toBe("Hello World");
+		expect(utterance.lang).toBe("en-US");
+		expect(utterance.rate).toBe(1.2);
+		expect(utterance.volume).toBe(0.8);
+		// since "Google US English" is available, the matched voice should be assigned.
+		expect(utterance.voice).toEqual(availableVoices[0]);
 	});
 });

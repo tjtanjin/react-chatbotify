@@ -26,15 +26,7 @@ const BotMessage = ({
 
 	// checks if content should be rendered as html
 	const isStringContent = typeof message.content === "string";
-	let baseContent: React.ReactNode = message.content;
-	if (isStringContent && settings?.botBubble?.dangerouslySetInnerHtml) {
-		baseContent = (
-			<div
-				style={{ display: "inline" }}
-				dangerouslySetInnerHTML={{ __html: message.content }}
-			/>
-		);
-	}
+	const baseContent: React.ReactNode = message.content;
 
 	// checks if content wrapper is defined to wrap around content
 	const finalContent = message.contentWrapper ? (

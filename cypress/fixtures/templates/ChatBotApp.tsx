@@ -106,8 +106,7 @@ function App() {
 			},
 		},
 		close_chat: {
-			message: "I went into hiding but you found me! Ok tell me, "+
-				"<b class='bold'>what's your favourite food?</b>",
+			message: "I went into hiding but you found me! Ok tell me, what's your favourite food?",
 			path: "ask_image"
 		},
 		ask_image: {
@@ -148,8 +147,8 @@ function App() {
 						settings={{
 							audio: {disabled: false},
 							chatInput: {botDelay: 1000},
-							userBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
-							botBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
+							userBubble: {showAvatar: true},
+							botBubble: {showAvatar: true},
 							voice: {disabled: false},
 							sensitiveInput: {asterisksCount: 6},
 						}}

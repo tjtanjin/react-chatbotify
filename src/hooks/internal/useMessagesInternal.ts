@@ -1,9 +1,7 @@
 import { useCallback } from "react";
 
-import { processAudio } from "../../services/AudioService";
 import { saveChatHistory } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
-import { parseMarkupMessage } from "../../utils/markupParser";
 import { isChatBotVisible } from "../../utils/displayChecker";
 import { useNotificationInternal } from "./useNotificationsInternal";
 import { useRcbEventInternal } from "./useRcbEventInternal";
@@ -13,6 +11,7 @@ import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { Message } from "../../types/Message";
 import { RcbEvent } from "../../constants/RcbEvent";
+import { useAudioInternal } from "./useAudioInternal";
 
 /**
  * Internal custom hook for managing sending of messages.
@@ -38,7 +37,10 @@ export const useMessagesInternal = () => {
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
-	
+
+	// handles audio
+	const { speakAudio } = useAudioInternal();
+
 	// handles notification
 	const { playNotificationSound } = useNotificationInternal();
 
@@ -47,9 +49,12 @@ export const useMessagesInternal = () => {
 	 * 
 	 * @param message message to stream
 	 * @param streamSpeed speed to stream the message
-	 * @param useMarkup boolean indicating whether markup is used
 	 */
-	const simulateStream = useCallback(async (message: Message, streamSpeed: number, useMarkup: boolean) => {
+	const simulateStream = useCallback(async (
+		message: Message, 
+		streamSpeed: number, 
+		simStreamChunker: ((content: string) => Array<string>) | null = null
+	) => {
 		// always convert to uppercase for checks
 		message.sender = message.sender.toUpperCase();
 		
@@ -66,8 +71,8 @@ export const useMessagesInternal = () => {
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
-		if (useMarkup) {
-			streamMessage = parseMarkupMessage(streamMessage as string);
+		if (simStreamChunker) {
+			streamMessage = simStreamChunker(streamMessage as string);
 		}
 		let streamIndex = 0;
 		const endStreamIndex = streamMessage.length;
@@ -119,22 +124,20 @@ export const useMessagesInternal = () => {
 		let message = createMessage(content, sender);
 
 		// handles pre-message inject event
+		let simStreamChunker = null;
 		if (settings.event?.rcbPreInjectMessage) {
 			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
+			simStreamChunker = event.data.simStreamChunker ? event.data.simStreamChunker : simStreamChunker;
 			message = event.data.message;
 		}
 
-		let useMarkup = false;
-		if (sender === "BOT") {
-			useMarkup = settings.botBubble?.dangerouslySetInnerHtml as boolean;
-		} else if (sender === "USER") {
-			useMarkup = settings.userBubble?.dangerouslySetInnerHtml as boolean;
+		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
+			speakAudio(message);
 		}
 
-		processAudio(settings, audioToggledOn, isChatWindowOpen, message, useMarkup);
 		const isBotStream = typeof message.content === "string"
 			&& message.sender === "BOT" && settings?.botBubble?.simStream;
 		const isUserStream = typeof message.content === "string"
@@ -148,10 +151,10 @@ export const useMessagesInternal = () => {
 
 		if (isBotStream) {
 			const streamSpeed = settings.botBubble?.streamSpeed as number;
-			await simulateStream(message, streamSpeed, useMarkup);
+			await simulateStream(message, streamSpeed, simStreamChunker);
 		} else if (isUserStream) {
 			const streamSpeed = settings.userBubble?.streamSpeed as number;
-			await simulateStream(message, streamSpeed, useMarkup);
+			await simulateStream(message, streamSpeed, simStreamChunker);
 		} else {
 			setMessages((prevMessages) => {
 				const updatedMessages = [...prevMessages, message];

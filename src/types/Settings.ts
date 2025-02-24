@@ -91,7 +91,6 @@ export type Settings = {
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
-		dangerouslySetInnerHtml?: boolean;
 	},
 	botBubble?: {
 		animate?: boolean;
@@ -99,7 +98,6 @@ export type Settings = {
 		avatar?: string;
 		simStream?: boolean;
 		streamSpeed? :number;
-		dangerouslySetInnerHtml?: boolean;
 	},
 	voice?: {
 		disabled?: boolean;
@@ -145,6 +143,7 @@ export type Settings = {
 		rcbRemoveMessage?: boolean;
 		rcbLoadChatHistory?: boolean;
 		rcbToggleChatWindow?: boolean;
+		rcbStartSpeakAudio?: boolean;
 		rcbToggleAudio?: boolean;
 		rcbToggleNotifications?: boolean;
 		rcbToggleVoice?: boolean;

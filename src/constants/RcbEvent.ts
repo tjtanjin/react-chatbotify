@@ -1,6 +1,7 @@
 // identifiers for rcb events provided by the chatbot
 const RcbEvent = {
 	// audio
+	START_SPEAK_AUDIO: "rcb-start-speak-audio",
 	TOGGLE_AUDIO: "rcb-toggle-audio",
 
 	// notifications:

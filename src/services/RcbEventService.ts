@@ -4,6 +4,7 @@ import { RcbEvent } from "../constants/RcbEvent";
 
 // tracks if an event is cancellable
 const cancellableMap = {
+	[RcbEvent.START_SPEAK_AUDIO]: true,
 	[RcbEvent.TOGGLE_AUDIO]: true,
 	[RcbEvent.TOGGLE_VOICE]: true,
 	[RcbEvent.TOGGLE_NOTIFICATIONS]: true,
