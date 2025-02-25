@@ -7,6 +7,6 @@ export type Message = {
 	sender: string;
 	type: string;
 	timestamp: string;
-	tags: Array<string>;
+	tags?: Array<string>;
 	contentWrapper?: React.ComponentType<{ children: React.ReactNode }>;
 }
