@@ -1,5 +1,16 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.31 (25-02-2025)
+
+**Deprecated:**
+- Removed `botBubble.dangerouslySetInnerHtml` and `userBubble.dangerouslySetInnerHtml` properties, whose logic has now been shifted to the newly published [**HTML Renderer**](https://www.npmjs.com/package/@rcb-plugins/html-renderer) plugin
+
+**Added:**
+- Added a new `rcb-start-audio-speak` event
+- Added a new optional `tags` property to [`Message`](https://react-chatbotify.com/docs/concepts/conversations#message) component, targeted at plugins looking to add identifiers to messages (for example, to know when a message was processed by a plugin)
+- Added a new `simStreamChunker` data field to `rcb-pre-inject-message` event, which allows custom parsing of simulated stream
+- Added a new `hasChatHistoryLoaded` state to the `useChatHistory` hook to determine if chat history has been loaded
+
 ## v2.0.0-beta.30 (19-02-2025)
 
 **Fixed:**
