@@ -104,9 +104,8 @@ export const useBotEffectsInternal = () => {
 		};
 	}, []);
 
-	// default setup for notifications, text area, chat window, audio and voice
+	// default setup for text area, chat window, audio and voice
 	useEffect(() => {
-		setUpNotifications();
 		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 		setIsChatWindowOpen(settings.chatWindow?.defaultOpen as boolean);
 		setAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
@@ -116,6 +115,14 @@ export const useBotEffectsInternal = () => {
 			setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
 		}, 1)
 	}, [])
+
+	// default setup for notifications
+	useEffect(() => {
+		if (settings.notification?.disabled) {
+			return;
+		}
+		setUpNotifications();
+	}, [settings.notification?.disabled])
 
 	// scrolls to bottom if bot is typing and user is not scrolling
 	useEffect(() => {
