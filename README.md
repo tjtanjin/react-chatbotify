@@ -29,7 +29,7 @@
   <img height="400px" src="https://github.com/user-attachments/assets/6153cd2e-dc21-4c8a-8d91-388fc01d974b" />
 </p>
 
-Welcome to React ChatBotify, an intuitive and versatile library that allows you to build responsive chatbots with ease. Whether you're aiming to create a simple FAQ bot or a sophisticated conversational interface integrated with Large Language Models (LLMs), React ChatBotify provides the tools and flexibility you need to bring your vision to life.
+Welcome to [**React ChatBotify**](https://react-chatbotify.com), an intuitive and versatile library that allows you to build responsive chatbots with ease. Whether you're aiming to create a [**simple FAQ bot**](https://tjtanjin.medium.com/building-a-faq-bot-a-react-chatbotify-guide-part-3-7ce13d09933e) or a sophisticated conversational interface [**integrated with Large Language Models (LLMs)**](https://tjtanjin.medium.com/how-to-build-and-integrate-a-react-chatbot-with-llms-a-react-chatbotify-guide-part-4-b40cd59fd6e6), React ChatBotify provides the tools and flexibility you need to bring your vision to life.
 
 Designed with developers in mind, React ChatBotify simplifies the chatbot development process without compromising on functionality. Its intuitive API and comprehensive customization options allow you to tailor your chatbot to meet specific project requirements seamlessly. From handling basic interactions to managing complex and advanced conversational flows, our library empowers you to deliver engaging user experiences. Head over to our [**community showcases**](https://github.com/tjtanjin/react-chatbotify/blob/main/SHOWCASES.md) or join [**our discord**](https://discord.gg/6R4DK4G5Zh) to get inspired and start crafting your chatbot today!
 
@@ -81,12 +81,12 @@ Typescript
 #### Project Repository
 - https://github.com/tjtanjin/react-chatbotify
 
-#### Other Relevant Repositories
-- https://github.com/React-ChatBotify-Plugins/react-chatbotify-plugin-template
-- https://github.com/tjtanjin/react-chatbotify-docs
-- https://github.com/tjtanjin/react-chatbotify-themes
-- https://github.com/tjtanjin/react-chatbotify-gallery-website
-- https://github.com/tjtanjin/react-chatbotify-gallery-api
+#### Other Associated Projects
+- [**Official Plugins**](https://github.com/React-ChatBotify-Plugins)
+- [**Documentation Website**](https://github.com/tjtanjin/react-chatbotify-docs)
+- [**Hosted Themes**](https://github.com/tjtanjin/react-chatbotify-themes)
+- [**Gallery Website**](https://github.com/React-ChatBotify/gallery-website)
+- [**Gallery API**](https://github.com/React-ChatBotify/gallery-api)
 
 ### Quickstart
 For a thorough walkthrough on getting started, you may refer to the [**Quickstart Guide**](https://react-chatbotify.com/docs/introduction/quickstart/) on the [**Documentation Website**](https://react-chatbotify.com/).
