@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.32 (14-03-2025)
+
+**Fixed:**
+- Fixed an occasional issue where loading plugins can cause infinite re-renders
+- Fixed an issue where stale messages may be used within the `useMessages` hook
+
 ## v2.0.0-beta.31 (25-02-2025)
 
 **Deprecated:**
