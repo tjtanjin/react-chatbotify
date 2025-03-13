@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { saveChatHistory } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
@@ -22,6 +22,10 @@ export const useMessagesInternal = () => {
 
 	// handles messages
 	const { messages, setMessages } = useMessagesContext();
+	const messagesRef = useRef<Array<Message>>(messages);
+	useEffect(() => {
+		messagesRef.current = messages;
+	}, [messages])
 
 	// handles bot states
 	const {
@@ -170,7 +174,7 @@ export const useMessagesInternal = () => {
 	 * Removes a message with the given id.
 	 */
 	const removeMessage = useCallback(async (messageId: string): Promise<string | null> => {
-		const message = messages.find(msg => msg.id === messageId);
+		const message = messagesRef.current.find(msg => msg.id === messageId);
 
 		// nothing to remove if no such message
 		if (!message) {
@@ -192,7 +196,7 @@ export const useMessagesInternal = () => {
 		});
 		setUnreadCount((prevCount) => Math.max(prevCount - 1, 0));
 		return messageId;
-	}, [callRcbEvent, messages, settings.event?.rcbRemoveMessage]);
+	}, [callRcbEvent, settings.event?.rcbRemoveMessage]);
 
 	/**
 	 * Streams data into the last message at the end of the messages array with given type.
@@ -276,7 +280,7 @@ export const useMessagesInternal = () => {
 		}
 
 		const messageId = streamMessageMap.current.get(sender);
-		const messageToEndStreamFor = messages.find((message) => message.id === messageId);
+		const messageToEndStreamFor = messagesRef.current.find((message) => message.id === messageId);
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
@@ -288,9 +292,9 @@ export const useMessagesInternal = () => {
 
 		// remove sender from streaming list and save messages
 		streamMessageMap.current.delete(sender);
-		saveChatHistory(messages);
+		saveChatHistory(messagesRef.current);
 		return true;
-	}, [callRcbEvent, messages, settings.event?.rcbStopStreamMessage, streamMessageMap])
+	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap])
 
 	/**
 	 * Handles post messages updates such as saving chat history, scrolling to bottom
