@@ -31,5 +31,5 @@ export const usePluginsInternal = (plugins: Array<Plugin> | undefined) => {
 
 		updateSettings(pluginSettings);
 		updateStyles(pluginStyles);
-	}, [plugins])
+	}, [])
 };
