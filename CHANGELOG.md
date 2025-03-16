@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## v2.0.0-beta.32 (14-03-2025)
+## v2.0.0-beta.32 (16-03-2025)
 
 **Fixed:**
 - Fixed an occasional issue where loading plugins can cause infinite re-renders
