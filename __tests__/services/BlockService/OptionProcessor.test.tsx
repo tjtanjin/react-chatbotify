@@ -5,7 +5,6 @@ import { expect } from "@jest/globals";
 import { processOptions } from "../../../src/services/BlockService/OptionProcessor";
 import { Params } from "../../../src/types/Params";
 import { Block } from "../../../src/types/Block";
-import { Flow } from "../../../src/types/Flow";
 import UserOptions from "../../../src/components/ChatBotBody/UserOptions/UserOptions";
 
 describe("processOptions", () => {
@@ -21,8 +20,6 @@ describe("processOptions", () => {
 		mockBlock = {
 			options: undefined,
 		} as Block;
-
-		mockFlow = {} as Flow;
 	});
 
 	it("should not call injectMessage if block has no options", async () => {

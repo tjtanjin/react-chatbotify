@@ -2,7 +2,6 @@ import { expect } from "@jest/globals";
 
 import { processCheckboxes } from "../../../src/services/BlockService/CheckboxProcessor";
 import { Block } from "../../../src/types/Block";
-import { Flow } from "../../../src/types/Flow";
 import { Params } from "../../../src/types/Params";
 
 describe("processCheckboxes", () => {
@@ -10,7 +9,6 @@ describe("processCheckboxes", () => {
 	let mockParams: Params;
 
 	beforeEach(() => {
-		mockFlow = {} as Flow;
 		mockBlock = {} as Block;
 		mockParams = {
 			injectMessage: jest.fn(),
