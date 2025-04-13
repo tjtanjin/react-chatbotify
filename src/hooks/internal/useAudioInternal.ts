@@ -5,7 +5,6 @@ import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { RcbEvent } from "../../constants/RcbEvent";
 import { processAudio } from "../../services/AudioService";
-import { Message } from "../../types/Message";
 
 /**
  * Internal custom hook for managing audio.
@@ -40,16 +39,12 @@ export const useAudioInternal = () => {
 	 * 
 	 * @param message message to read out
 	 */
-	const speakAudio = useCallback(async (message: Message) => {
+	const speakAudio = useCallback(async (text: string) => {
 		if (settings.audio?.disabled || !audioToggledOn) {
 			return;
 		}
 
-		if (typeof message.content !== "string" || message.content.trim() === "") {
-			return;
-		}
-
-		let textToRead = message.content;
+		let textToRead = text;
 		if (settings.event?.rcbStartSpeakAudio) {
 			const event = await callRcbEvent(RcbEvent.START_SPEAK_AUDIO, {textToRead});
 			if (event.defaultPrevented) {

@@ -265,7 +265,9 @@ export const useBotEffectsInternal = () => {
 
 			// auto cleanup streaming and save messages on path change (not ideal)
 			// todo: remove this in v3, users should call `params.endStreamMessage()`
-			streamMessageMap.current.clear();
+			if (params.currPath !== params.prevPath) {
+				streamMessageMap.current.clear();
+			}
 		}
 		callNewBlock(currPath, block, params);
 	}, [paths]);

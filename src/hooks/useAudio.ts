@@ -5,10 +5,11 @@ import { useAudioInternal } from "./internal/useAudioInternal";
  */
 export const useAudio = () => {
 	// handles audio
-	const { audioToggledOn, toggleAudio } = useAudioInternal();
+	const { audioToggledOn, speakAudio, toggleAudio } = useAudioInternal();
 
 	return {
 		audioToggledOn,
+		speakAudio,
 		toggleAudio
 	};
 };

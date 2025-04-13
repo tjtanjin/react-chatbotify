@@ -139,7 +139,9 @@ export const useMessagesInternal = () => {
 		}
 
 		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
-			speakAudio(message);
+			if (typeof message.content === "string" && message.content.trim() !== "") {
+				speakAudio(message.content);
+			}
 		}
 
 		const isBotStream = typeof message.content === "string"
