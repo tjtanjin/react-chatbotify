@@ -240,14 +240,14 @@ export const useBotEffectsInternal = () => {
 			return;
 		}
 
-		const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue,
+		const params = {prevPath: getPrevPath(), currPath, goToPath, setTextAreaValue,
 			userInput: paramsInputRef.current, endStreamMessage, injectMessage, removeMessage, streamMessage,
 			openChat, showToast, dismissToast
 		};
 
 		// calls the new block for preprocessing upon change to path.
-		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
-			await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setTextAreaSensitiveMode,
+		const callNewBlock = async (block: Block, params: Params) => {
+			await preProcessBlock(flow, params, setTextAreaDisabled, setTextAreaSensitiveMode,
 				setTimeoutId
 			);
 
@@ -269,7 +269,7 @@ export const useBotEffectsInternal = () => {
 				streamMessageMap.current.clear();
 			}
 		}
-		callNewBlock(currPath, block, params);
+		callNewBlock(block, params);
 	}, [paths]);
 
 	// adds start path when folow is started

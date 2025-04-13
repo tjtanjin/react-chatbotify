@@ -75,9 +75,9 @@ describe("BlockService", () => {
 
 	describe("preProcessBlock", () => {
 		it("should call all pre-processing functions for valid attributes", async () => {
+			mockParams.currPath = "start";
 			await preProcessBlock(
 				mockFlow,
-				"start",
 				mockParams,
 				mockSetTextAreaDisabled,
 				mockSetTextAreaSensitiveMode,
@@ -94,10 +94,10 @@ describe("BlockService", () => {
 		});
 
 		it("should throw an error for invalid block", async () => {
+			mockParams.currPath = "invalid";
 			await expect(
 				preProcessBlock(
 					mockFlow,
-					"invalid",
 					mockParams,
 					mockSetTextAreaDisabled,
 					mockSetTextAreaSensitiveMode,
@@ -109,15 +109,17 @@ describe("BlockService", () => {
 
 	describe("postProcessBlock", () => {
 		it("should call processFunction and processPath for valid attributes", async () => {
-			await postProcessBlock(mockFlow, "start", mockParams);
+			mockParams.currPath = "start";
+			await postProcessBlock(mockFlow, mockParams);
 
 			expect(processFunction).toHaveBeenCalled();
 			expect(processPath).toHaveBeenCalled();
 		});
 
 		it("should throw an error for invalid block", async () => {
+			mockParams.currPath = "invalid";
 			await expect(
-				postProcessBlock(mockFlow, "invalid", mockParams)
+				postProcessBlock(mockFlow, mockParams)
 			).rejects.toThrow("Block is not valid.");
 		});
 	});

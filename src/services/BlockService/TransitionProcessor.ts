@@ -4,16 +4,15 @@ import { Params } from "../../types/Params";
 
 /**
  * Handles processing of transition in current block.
- * 
- * @param messages messages containing current conversation with the bot
+ *
  * @param flow conversation flow for the bot
- * @param path path associated with the current block
  * @param params contains parameters that can be used/passed into attributes
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const processTransition = async (flow: Flow, path: keyof Flow, params: Params,
+export const processTransition = async (flow: Flow, params: Params,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
+	const path = params.currPath as string;
 	const block = flow[path];
 
 	if (!block) {
@@ -53,7 +52,7 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 	}
 	
 	const timeoutId = setTimeout(async () => {
-		await postProcessBlock(flow, path, params);
+		await postProcessBlock(flow, params);
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
 		setTimeoutId(timeoutId);

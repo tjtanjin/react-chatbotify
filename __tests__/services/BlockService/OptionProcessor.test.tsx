@@ -11,7 +11,6 @@ import UserOptions from "../../../src/components/ChatBotBody/UserOptions/UserOpt
 describe("processOptions", () => {
 	let mockParams: Params;
 	let mockBlock: Block;
-	let mockFlow: Flow;
 
 	// Mock Params with injectMessage function
 	beforeEach(() => {
@@ -27,15 +26,17 @@ describe("processOptions", () => {
 	});
 
 	it("should not call injectMessage if block has no options", async () => {
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		mockParams.currPath = "somePath";
+		await processOptions(mockBlock, mockParams);
 		expect(mockParams.injectMessage).not.toHaveBeenCalled();
 	});
 
 	it("should process static options and call injectMessage", async () => {
 		const staticOptions = ["Option1", "Option2"];
 		mockBlock.options = staticOptions;
+		mockParams.currPath = "somePath";
 
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		await processOptions(mockBlock, mockParams);
 		expect(mockParams.injectMessage).toHaveBeenCalledWith(
 			<UserOptions options={{ items: staticOptions, reusable: false }} path={"somePath"} />
 		);
@@ -44,8 +45,9 @@ describe("processOptions", () => {
 	it("should process dynamic options (function) and call injectMessage", async () => {
 		const dynamicOptions = ["DynamicOption1", "DynamicOption2"];
 		mockBlock.options = jest.fn().mockReturnValue(dynamicOptions);
+		mockParams.currPath = "somePath";
 
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		await processOptions(mockBlock, mockParams);
     
 		expect(mockBlock.options).toHaveBeenCalledWith(mockParams);
 		expect(mockParams.injectMessage).toHaveBeenCalledWith(
@@ -56,8 +58,9 @@ describe("processOptions", () => {
 	it("should await async function options and call injectMessage with resolved value", async () => {
 		const asyncOptions = ["AsyncOption1", "AsyncOption2"];
 		mockBlock.options = jest.fn().mockResolvedValue(asyncOptions);
+		mockParams.currPath = "somePath";
 
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		await processOptions(mockBlock, mockParams);
 		expect(mockBlock.options).toHaveBeenCalledWith(mockParams);
 		expect(mockParams.injectMessage).toHaveBeenCalledWith(
 			<UserOptions options={{ items: asyncOptions, reusable: false }} path={"somePath"} />
@@ -67,8 +70,9 @@ describe("processOptions", () => {
 	it("should set reusable to false by default if not provided", async () => {
 		const staticOptions = ["Option1", "Option2"];
 		mockBlock.options = staticOptions;
+		mockParams.currPath = "somePath";
 
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		await processOptions(mockBlock, mockParams);
 		expect(mockParams.injectMessage).toHaveBeenCalledWith(
 			<UserOptions options={{ items: staticOptions, reusable: false }} path={"somePath"} />
 		);
@@ -76,15 +80,17 @@ describe("processOptions", () => {
 
 	it("should not inject message if options is empty array", async () => {
 		mockBlock.options = [];
+		mockParams.currPath = "somePath";
 
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		await processOptions(mockBlock, mockParams);
 		expect(mockParams.injectMessage).not.toHaveBeenCalled();
 	});
 
 	it("should not inject message if options has no 'items'", async () => {
 		mockBlock.options = [];
+		mockParams.currPath = "somePath";
 
-		await processOptions(mockFlow, mockBlock, "somePath", mockParams);
+		await processOptions(mockBlock, mockParams);
 		expect(mockParams.injectMessage).not.toHaveBeenCalled();
 	});
 });

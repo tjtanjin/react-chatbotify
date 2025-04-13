@@ -145,7 +145,7 @@ export const useSubmitInputInternal = () => {
 			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue, userInput, 
 				injectMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast, dismissToast
 			};
-			const hasNextPath = await postProcessBlock(flowRef.current as Flow, path, params);
+			const hasNextPath = await postProcessBlock(flowRef.current as Flow, params);
 			if (!hasNextPath) {
 				const currPath = getCurrPath();
 				if (!currPath) {
@@ -159,7 +159,7 @@ export const useSubmitInputInternal = () => {
 				if (!block.chatDisabled) {
 					setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 				}
-				processIsSensitive(block, setTextAreaSensitiveMode, params);
+				processIsSensitive(block, params, setTextAreaSensitiveMode);
 				setBlockAllowsAttachment(typeof block.file === "function");
 				syncVoice(keepVoiceOnRef.current);
 				setIsBotTyping(false);

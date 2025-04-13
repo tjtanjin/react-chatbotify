@@ -21,8 +21,8 @@ describe("processIsSensitive", () => {
 		mockBlock.isSensitive = undefined;
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
 	});
@@ -30,8 +30,8 @@ describe("processIsSensitive", () => {
 	it("should disable sensitive mode if block.isSensitive is false", async () => {
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
 	});
@@ -40,8 +40,8 @@ describe("processIsSensitive", () => {
 		mockBlock.isSensitive = true;
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(true);
 	});
@@ -50,8 +50,8 @@ describe("processIsSensitive", () => {
 		mockBlock.isSensitive = jest.fn().mockReturnValue(true);
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(true);
 		expect(mockBlock.isSensitive).toHaveBeenCalledWith(mockParams);
@@ -61,8 +61,8 @@ describe("processIsSensitive", () => {
 		mockBlock.isSensitive = jest.fn().mockReturnValue(false);
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
 		expect(mockBlock.isSensitive).toHaveBeenCalledWith(mockParams);
@@ -72,8 +72,8 @@ describe("processIsSensitive", () => {
 		mockBlock.isSensitive = jest.fn().mockResolvedValue(true);
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(true);
 		expect(mockBlock.isSensitive).toHaveBeenCalledWith(mockParams);
@@ -83,8 +83,8 @@ describe("processIsSensitive", () => {
 		mockBlock.isSensitive = jest.fn().mockResolvedValue(false);
 		await processIsSensitive(
 			mockBlock,
+			mockParams,
 			mockSetTextAreaSensitiveMode,
-			mockParams
 		);
 		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
 		expect(mockBlock.isSensitive).toHaveBeenCalledWith(mockParams);

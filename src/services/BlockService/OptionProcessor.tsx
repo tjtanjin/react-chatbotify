@@ -1,17 +1,14 @@
 import UserOptions from "../../components/ChatBotBody/UserOptions/UserOptions";
 import { Block } from "../../types/Block";
 import { Params } from "../../types/Params";
-import { Flow } from "../../types/Flow";
 
 /**
  * Handles processing of options in current block.
  *
- * @param flow conversation flow for the bot
  * @param block current block being processed
- * @param path path associated with the current block
  * @param params contains parameters that can be used/passed into attributes
  */
-export const processOptions = async (flow: Flow, block: Block, path: keyof Flow, params: Params) => {
+export const processOptions = async (block: Block, params: Params) => {
 
 	const options = block.options;
 	if (!options) {
@@ -48,7 +45,7 @@ export const processOptions = async (flow: Flow, block: Block, path: keyof Flow,
 
 	// note that sendOutput has no default here, as it fallback to the global
 	// settings.chatInput.sendOptionOutput inside user options component if not specified
-
+	const path = params.currPath as string;
 	const content = <UserOptions options={parsedOptions} path={path} />
 	await params.injectMessage(content);
 }

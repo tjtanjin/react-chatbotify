@@ -15,16 +15,16 @@ import { Flow } from "../../types/Flow";
  * Handles the preprocessing within a block.
  * 
  * @param flow conversation flow for the bot
- * @param path path associated with the current block
  * @param params contains parameters that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
  * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Params,
+export const preProcessBlock = async (flow: Flow, params: Params,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
+	const path = params.currPath as string;
 	const block = flow[path];
 
 	if (!block) {
@@ -39,11 +39,11 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
 			break;
 		
 		case "options":
-			await processOptions(flow, block, path, params);
+			await processOptions(block, params);
 			break;
 		
 		case "checkboxes":
-			await processCheckboxes(flow, block, path, params);
+			await processCheckboxes(block, params);
 			break;
 		
 		case "component":
@@ -51,15 +51,15 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
 			break;
 		
 		case "chatDisabled":
-			await processChatDisabled(block, setTextAreaDisabled, params);
+			await processChatDisabled(block, params, setTextAreaDisabled);
 			break;
 
 		case "isSensitive":
-			await processIsSensitive(block, setTextAreaSensitiveMode, params);
+			await processIsSensitive(block, params, setTextAreaSensitiveMode);
 			break;
 
 		case "transition":
-			await processTransition(flow, path, params, setTimeoutId);
+			await processTransition(flow, params, setTimeoutId);
 		}
 	}
 }
@@ -68,10 +68,10 @@ export const preProcessBlock = async (flow: Flow, path: keyof Flow, params: Para
  * Handles the postprocessing within a block.
  * 
  * @param flow conversation flow for the bot
- * @param path path associated with the current block
  * @param params contains utilities that can be used/passed into attributes
  */
-export const postProcessBlock = async (flow: Flow, path: keyof Flow, params: Params) => {
+export const postProcessBlock = async (flow: Flow, params: Params) => {
+	const path = params.currPath as string;
 	const block = flow[path];
 
 	if (!block) {

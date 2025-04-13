@@ -18,7 +18,7 @@ describe('processChatDisabled', () => {
 	it('should not change textarea state if chatDisabled is null', async () => {
 		const block= { chatDisabled: null } as unknown as Block;
 
-		await processChatDisabled(block, mockSetTextAreaDisabled, params);
+		await processChatDisabled(block, params, mockSetTextAreaDisabled);
 
 		expect(mockSetTextAreaDisabled).not.toHaveBeenCalled();
 	});
@@ -26,7 +26,7 @@ describe('processChatDisabled', () => {
 	it('should not change textarea state if chatDisabled is undefined', async () => {
 		const block: Block = { chatDisabled: undefined };
 
-		await processChatDisabled(block, mockSetTextAreaDisabled, params);
+		await processChatDisabled(block, params, mockSetTextAreaDisabled);
 
 		expect(mockSetTextAreaDisabled).not.toHaveBeenCalled();
 	});
@@ -34,7 +34,7 @@ describe('processChatDisabled', () => {
 	it('should set textarea disabled state to true if chatDisabled is true', async () => {
 		const block: Block = { chatDisabled: true };
 
-		await processChatDisabled(block, mockSetTextAreaDisabled, params);
+		await processChatDisabled(block, params, mockSetTextAreaDisabled);
 
 		expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(true);
 	});
@@ -42,7 +42,7 @@ describe('processChatDisabled', () => {
 	it('should set textarea disabled state to false if chatDisabled is false', async () => {
 		const block: Block = { chatDisabled: false };
 
-		await processChatDisabled(block, mockSetTextAreaDisabled, params);
+		await processChatDisabled(block, params, mockSetTextAreaDisabled);
 
 		expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(false);
 	});
@@ -50,7 +50,7 @@ describe('processChatDisabled', () => {
 	it('should call chatDisabled function and set textarea state accordingly', async () => {
 		const block: Block = { chatDisabled: jest.fn(() => false) };
 
-		await processChatDisabled(block, mockSetTextAreaDisabled, params);
+		await processChatDisabled(block, params, mockSetTextAreaDisabled);
 
 		expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(false);
 	});
@@ -58,7 +58,7 @@ describe('processChatDisabled', () => {
 	it('should handle async chatDisabled function correctly', async () => {
 		const block: Block = { chatDisabled: jest.fn(async () => true) };
 
-		await processChatDisabled(block, mockSetTextAreaDisabled, params);
+		await processChatDisabled(block, params, mockSetTextAreaDisabled);
 
 		expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(true);
 	});
