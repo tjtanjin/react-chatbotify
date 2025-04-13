@@ -67,7 +67,6 @@ describe("BlockService", () => {
 
 	const mockSetTextAreaDisabled = jest.fn();
 	const mockSetTextAreaSensitiveMode = jest.fn();
-	const mockGoToPath = jest.fn();
 	const mockSetTimeoutId = jest.fn();
 
 	beforeEach(() => {
@@ -82,7 +81,6 @@ describe("BlockService", () => {
 				mockParams,
 				mockSetTextAreaDisabled,
 				mockSetTextAreaSensitiveMode,
-				mockGoToPath,
 				mockSetTimeoutId
 			);
 
@@ -103,7 +101,6 @@ describe("BlockService", () => {
 					mockParams,
 					mockSetTextAreaDisabled,
 					mockSetTextAreaSensitiveMode,
-					mockGoToPath,
 					mockSetTimeoutId
 				)
 			).rejects.toThrow("Block is not valid.");
@@ -112,7 +109,7 @@ describe("BlockService", () => {
 
 	describe("postProcessBlock", () => {
 		it("should call processFunction and processPath for valid attributes", async () => {
-			await postProcessBlock(mockFlow, "start", mockParams, mockGoToPath);
+			await postProcessBlock(mockFlow, "start", mockParams);
 
 			expect(processFunction).toHaveBeenCalled();
 			expect(processPath).toHaveBeenCalled();
@@ -120,7 +117,7 @@ describe("BlockService", () => {
 
 		it("should throw an error for invalid block", async () => {
 			await expect(
-				postProcessBlock(mockFlow, "invalid", mockParams, mockGoToPath)
+				postProcessBlock(mockFlow, "invalid", mockParams)
 			).rejects.toThrow("Block is not valid.");
 		});
 	});

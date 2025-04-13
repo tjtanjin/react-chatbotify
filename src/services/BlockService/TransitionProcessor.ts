@@ -9,11 +9,9 @@ import { Params } from "../../types/Params";
  * @param flow conversation flow for the bot
  * @param path path associated with the current block
  * @param params contains parameters that can be used/passed into attributes
- * @param goToPath: function to go to specified path
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
 export const processTransition = async (flow: Flow, path: keyof Flow, params: Params,
-	goToPath: (pathToGo: string) => Promise<boolean>,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
 	const block = flow[path];
@@ -55,7 +53,7 @@ export const processTransition = async (flow: Flow, path: keyof Flow, params: Pa
 	}
 	
 	const timeoutId = setTimeout(async () => {
-		await postProcessBlock(flow, path, params, goToPath);
+		await postProcessBlock(flow, path, params);
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
 		setTimeoutId(timeoutId);

@@ -248,7 +248,7 @@ export const useBotEffectsInternal = () => {
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (currPath: keyof Flow, block: Block, params: Params) => {
 			await preProcessBlock(flow, currPath, params, setTextAreaDisabled, setTextAreaSensitiveMode,
-				goToPath, setTimeoutId
+				setTimeoutId
 			);
 
 			// cleanup logic after preprocessing of a block

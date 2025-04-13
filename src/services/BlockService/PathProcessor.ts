@@ -6,16 +6,16 @@ import { Params } from "../../types/Params";
  * 
  * @param block current block being processed
  * @param params contains parameters that can be used/passed into attributes
- * @param goToPath: function to go to specified path
  */
-export const processPath = async (block: Block, params: Params, goToPath: (pathToGo: string) => Promise<boolean>) => {
+export const processPath = async (block: Block, params: Params) => {
 	const nextPath = block.path;
 	if (!nextPath) {
 		return false;
 	}
 
 	if (typeof nextPath === "string") {
-		return goToPath(nextPath);
+		await params.goToPath(nextPath);
+		return true;
 	}
 
 	let parsedPath = nextPath(params);
@@ -27,5 +27,6 @@ export const processPath = async (block: Block, params: Params, goToPath: (pathT
 		return false;
 	}
 	const path = parsedPath;
-	return goToPath(path);
+	await params.goToPath(path);
+	return true;
 }
