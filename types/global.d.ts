@@ -9,6 +9,8 @@ import { RcbStartSpeakAudioEvent } from "../src/types/events/RcbStartSpeakAudioE
 import { RcbToggleAudioEvent } from "../src/types/events/RcbToggleAudioEvent";
 import { RcbToggleVoiceEvent } from "../src/types/events/RcbToggleVoiceEvent";
 import { RcbToggleNotificationsEvent } from "../src/types/events/RcbToggleNotificationsEvent";
+import { RcbStartSimStreamMessageEvent } from "../src/types/events/RcbStartSimStreamMessageEvent";
+import { RcbStopSimStreamMessageEvent } from "../src/types/events/RcbStopSimStreamMessageEvent";
 import { RcbStartStreamMessageEvent } from "../src/types/events/RcbStartStreamMessageEvent";
 import { RcbChunkStreamMessageEvent } from "../src/types/events/RcbChunkStreamMessageEvent";
 import { RcbStopStreamMessageEvent } from "../src/types/events/RcbStopStreamMessageEvent";
@@ -60,6 +62,8 @@ declare global {
 		// messages
 		"rcb-pre-inject-message": RcbPreInjectMessageEvent;
 		"rcb-post-inject-message": RcbPostInjectMessageEvent;
+		"rcb-start-sim-stream-message": RcbStartSimStreamMessageEvent;
+		"rcb-stop-sim-stream-message": RcbStopSimStreamMessageEvent;
 		"rcb-start-stream-message": RcbStartStreamMessageEvent;
 		"rcb-chunk-stream-message": RcbChunkStreamMessageEvent;
 		"rcb-stop-stream-message": RcbStopStreamMessageEvent;

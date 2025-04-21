@@ -182,6 +182,8 @@ export const DefaultSettings: Settings = {
 	event: {
 		rcbPreInjectMessage: false,
 		rcbPostInjectMessage: false,
+		rcbStartSimStreamMessage: true,
+		rcbStopSimStreamMessage: true,
 		rcbStartStreamMessage: false,
 		rcbChunkStreamMessage: false,
 		rcbStopStreamMessage: false,

@@ -40,6 +40,7 @@ export const useBotEffectsInternal = () => {
 		endStreamMessage,
 		injectMessage,
 		removeMessage,
+		simStreamMessage,
 		streamMessage,
 		replaceMessages,
 	} = useMessagesInternal();
@@ -241,14 +242,14 @@ export const useBotEffectsInternal = () => {
 		}
 
 		const params = {prevPath: getPrevPath(), currPath, goToPath, setTextAreaValue,
-			userInput: paramsInputRef.current, endStreamMessage, injectMessage, removeMessage, streamMessage,
-			openChat, showToast, dismissToast
+			userInput: paramsInputRef.current, endStreamMessage, injectMessage, removeMessage, simStreamMessage,
+			streamMessage, openChat, showToast, dismissToast
 		};
 
 		// calls the new block for preprocessing upon change to path.
 		const callNewBlock = async (block: Block, params: Params) => {
-			await preProcessBlock(flow, params, setTextAreaDisabled, setTextAreaSensitiveMode,
-				setTimeoutId
+			await preProcessBlock(flow, params, settings.botBubble?.simStream ?? false, setTextAreaDisabled,
+				setTextAreaSensitiveMode, setTimeoutId
 			);
 
 			// cleanup logic after preprocessing of a block

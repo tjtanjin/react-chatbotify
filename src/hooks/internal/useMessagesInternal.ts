@@ -54,16 +54,37 @@ export const useMessagesInternal = () => {
 	 * @param message message to stream
 	 * @param streamSpeed speed to stream the message
 	 */
-	const simulateStream = useCallback(async (
-		message: Message, 
-		streamSpeed: number, 
-		simStreamChunker: ((content: string) => Array<string>) | null = null
-	) => {
+	const simStreamMessage = useCallback(async (content: string,
+		sender = "BOT", simStreamChunker: ((content: string) => Array<string>) | null = null
+	): Promise<string | null> => {
+		// only string type can go through simulated stream message
+		if (typeof content !== "string") {
+			throw new Error("Content must be of type string to simulate stream.");
+		}
+
 		// always convert to uppercase for checks
-		message.sender = message.sender.toUpperCase();
+		sender = sender.toUpperCase();
+
+		let message = createMessage(content, sender);
+
+		if (settings.event?.rcbStartSimStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.START_SIM_STREAM_MESSAGE, {message});
+			if (event.defaultPrevented) {
+				return null;
+			}
+			simStreamChunker = event.data.simStreamChunker ? event.data.simStreamChunker : simStreamChunker;
+			message = event.data.message;
+		}
 		
 		// stop bot typing when simulating stream
 		setIsBotTyping(false);
+
+		let streamSpeed = 30;
+		if (settings.botBubble?.streamSpeed) {
+			streamSpeed = settings.botBubble?.streamSpeed as number;
+		} else {
+			streamSpeed = settings.userBubble?.streamSpeed as number;
+		}
 
 		// set an initial empty message to be used for simulating streaming
 		const placeholderMessage = {...message, content: ""};
@@ -109,9 +130,20 @@ export const useMessagesInternal = () => {
 			}, streamSpeed);
 		});
 
+		setUnreadCount(prev => prev + 1);
 		await simStreamDoneTask;
 		saveChatHistory(messages);
-	}, [messages]);
+
+		// handles stop stream message event
+		if (settings.event?.rcbStopSimStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.STOP_SIM_STREAM_MESSAGE, {message});
+			if (event.defaultPrevented) {
+				return message.id;
+			}
+		}
+
+		return message.id;
+	}, [settings, messages]);
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -128,13 +160,11 @@ export const useMessagesInternal = () => {
 		let message = createMessage(content, sender);
 
 		// handles pre-message inject event
-		let simStreamChunker = null;
 		if (settings.event?.rcbPreInjectMessage) {
 			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
-			simStreamChunker = event.data.simStreamChunker ? event.data.simStreamChunker : simStreamChunker;
 			message = event.data.message;
 		}
 
@@ -144,33 +174,19 @@ export const useMessagesInternal = () => {
 			}
 		}
 
-		const isBotStream = typeof message.content === "string"
-			&& message.sender === "BOT" && settings?.botBubble?.simStream;
-		const isUserStream = typeof message.content === "string"
-			&& message.sender === "USER" && settings?.userBubble?.simStream;
-
 		// handles post-message inject event
 		setUnreadCount(prev => prev + 1);
 		if (settings.event?.rcbPostInjectMessage) {
 			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
 		}
-
-		if (isBotStream) {
-			const streamSpeed = settings.botBubble?.streamSpeed as number;
-			await simulateStream(message, streamSpeed, simStreamChunker);
-		} else if (isUserStream) {
-			const streamSpeed = settings.userBubble?.streamSpeed as number;
-			await simulateStream(message, streamSpeed, simStreamChunker);
-		} else {
-			setMessages((prevMessages) => {
-				const updatedMessages = [...prevMessages, message];
-				handlePostMessagesUpdate(updatedMessages);
-				return updatedMessages;
-			});
-		}
+		setMessages((prevMessages) => {
+			const updatedMessages = [...prevMessages, message];
+			handlePostMessagesUpdate(updatedMessages);
+			return updatedMessages;
+		});
 
 		return message.id;
-	}, [settings, audioToggledOn, isChatWindowOpen, callRcbEvent, simulateStream]);
+	}, [settings, audioToggledOn, isChatWindowOpen, callRcbEvent]);
 
 	/**
 	 * Removes a message with the given id.
@@ -354,6 +370,7 @@ export const useMessagesInternal = () => {
 		endStreamMessage,
 		injectMessage,
 		removeMessage,
+		simStreamMessage,
 		streamMessage,
 		messages,
 		replaceMessages

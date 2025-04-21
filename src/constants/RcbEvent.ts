@@ -16,6 +16,8 @@ const RcbEvent = {
 	// messages:
 	PRE_INJECT_MESSAGE: "rcb-pre-inject-message",
 	POST_INJECT_MESSAGE: "rcb-post-inject-message",
+	START_SIM_STREAM_MESSAGE: "rcb-start-sim-stream-message",
+	STOP_SIM_STREAM_MESSAGE: "rcb-stop-sim-stream-message",
 	START_STREAM_MESSAGE: "rcb-start-stream-message",
 	CHUNK_STREAM_MESSAGE: "rcb-chunk-stream-message",
 	STOP_STREAM_MESSAGE: "rcb-stop-stream-message",

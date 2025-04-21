@@ -57,6 +57,7 @@ describe("BlockService", () => {
 		prevPath: "/previous/path",
 		goToPath: jest.fn(),
 		setTextAreaValue: jest.fn(),
+		simStreamMessage: jest.fn(),
 		streamMessage: jest.fn(),
 		removeMessage: jest.fn(),
 		endStreamMessage: jest.fn(),
@@ -79,6 +80,7 @@ describe("BlockService", () => {
 			await preProcessBlock(
 				mockFlow,
 				mockParams,
+				false,
 				mockSetTextAreaDisabled,
 				mockSetTextAreaSensitiveMode,
 				mockSetTimeoutId
@@ -99,6 +101,7 @@ describe("BlockService", () => {
 				preProcessBlock(
 					mockFlow,
 					mockParams,
+					false,
 					mockSetTextAreaDisabled,
 					mockSetTextAreaSensitiveMode,
 					mockSetTimeoutId

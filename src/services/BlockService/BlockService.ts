@@ -20,7 +20,7 @@ import { Flow } from "../../types/Flow";
  * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  */
-export const preProcessBlock = async (flow: Flow, params: Params,
+export const preProcessBlock = async (flow: Flow, params: Params, isBotSimStreamEnabled: boolean,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
 
@@ -35,7 +35,7 @@ export const preProcessBlock = async (flow: Flow, params: Params,
 		const attributeAsFlowKeyType = attribute as keyof Block;
 		switch (attributeAsFlowKeyType) {
 		case "message":
-			await processMessage(block, params);
+			await processMessage(block, params, isBotSimStreamEnabled);
 			break;
 		
 		case "options":

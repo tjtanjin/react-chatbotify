@@ -8,6 +8,8 @@ export const MockDefaultSettings = {
 		rcbPostInjectMessage: true,
 		rcbPreLoadChatBot: true,
 		rcbPostLoadChatBot: true,
+		rcbStartSimStreamMessage: true,
+		rcbStopSimStreamMessage: true,
 		rcbStartStreamMessage: true,
 		rcbChunkStreamMessage: true,
 		rcbStopStreamMessage: true,

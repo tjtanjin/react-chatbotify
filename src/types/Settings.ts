@@ -137,6 +137,8 @@ export type Settings = {
 	event?: {
 		rcbPreInjectMessage?: boolean;
 		rcbPostInjectMessage?: boolean;
+		rcbStartSimStreamMessage?: boolean;
+		rcbStopSimStreamMessage?: boolean;
 		rcbStartStreamMessage?: boolean;
 		rcbChunkStreamMessage?: boolean;
 		rcbStopStreamMessage?: boolean;

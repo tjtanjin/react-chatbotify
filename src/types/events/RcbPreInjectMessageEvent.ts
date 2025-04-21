@@ -6,5 +6,4 @@ import { Message } from "../Message";
  */
 export type RcbPreInjectMessageEvent = RcbBaseEvent<{
 	message: Message;
-	simStreamChunker?: (content: string) => Array<string>;
 }>;
