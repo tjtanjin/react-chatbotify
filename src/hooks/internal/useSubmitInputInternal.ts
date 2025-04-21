@@ -78,12 +78,20 @@ export const useSubmitInputInternal = () => {
 			if (settings?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (settings?.sensitiveInput?.maskInUserBubble) {
-				await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "USER");
+				if (settings.userBubble?.simStream) {
+					await simStreamMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "USER");
+				} else {
+					await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "USER");
+				}
 				return;
 			}
 		}
 
-		await injectMessage(userInput, "USER");
+		if (settings.userBubble?.simStream) {
+			await injectMessage(userInput, "USER");
+		} else {
+			await simStreamMessage(userInput, "USER");
+		}
 	}, [flowRef, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
 
 	/**

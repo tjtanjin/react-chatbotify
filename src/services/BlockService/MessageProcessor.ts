@@ -17,7 +17,11 @@ export const processMessage = async (block: Block, params: Params, isBotSimStrea
 	
 	if (typeof replyMessage === "string") {
 		if (replyMessage.trim() !== "") {
-			await params.injectMessage(replyMessage);
+			if (isBotSimStreamEnabled) {
+				await params.simStreamMessage(replyMessage);
+			} else {
+				await params.injectMessage(replyMessage);
+			}
 		}
 		return;
 	}
