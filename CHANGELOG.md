@@ -1,5 +1,21 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.33 (23-04-2025)
+
+**Breaking Change:**
+- The `botBubble.simStream` and `userBubble.simStream` settings have been renamed to `botBubble.simulateStream` and `userBubble.simulateStream` for greater clarity
+- The `botBubble.simulateStream` and `userBubble.simulateStream` settings are no longer applied to `params.injectMessage`, and are only applied to the `message` attribute within a block (you should now defer to the newly added `params.simulateStreamMessage` for simulating streaming via utility function)
+- The `simStreamChunker` data field has been renamed to `simulateStreamChunker` **and** moved from `rcb-pre-inject-message` event to the newly added `rcb-start-simulate-stream-message` event 
+
+**Added:**
+- Added a new `speakAudio` utility function to the `useAudio` hook
+- Added a new `params.simulateStreamMessage` for users to simulate stream message
+- Added new `rcb-start-simulate-stream-message` and `rcb-stop-simulate-stream-message` events
+
+**Note:**
+
+A couple of breaking changes have been introduced this patch to be more consistent with how messages are handled. This consistency is aimed at simplifying future development work both on the core library and for plugins. If you are using the [**Markdown Renderer Plugin**](https://www.npmjs.com/package/@rcb-plugins/markdown-renderer) or [**HTML Renderer Plugin**](https://www.npmjs.com/package/@rcb-plugins/html-renderer), **you should update both plugins to version 0.2.0 or higher** which adds support for listening to the new simulate stream message events.
+
 ## v2.0.0-beta.32 (16-03-2025)
 
 **Fixed:**
