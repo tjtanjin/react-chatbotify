@@ -54,7 +54,7 @@ export const useMessagesInternal = () => {
 	 * @param message message to stream
 	 * @param streamSpeed speed to stream the message
 	 */
-	const simStreamMessage = useCallback(async (content: string,
+	const simulateStreamMessage = useCallback(async (content: string,
 		sender = "BOT", simStreamChunker: ((content: string) => Array<string>) | null = null
 	): Promise<string | null> => {
 		// only string type can go through simulated stream message
@@ -370,7 +370,7 @@ export const useMessagesInternal = () => {
 		endStreamMessage,
 		injectMessage,
 		removeMessage,
-		simStreamMessage,
+		simulateStreamMessage,
 		streamMessage,
 		messages,
 		replaceMessages

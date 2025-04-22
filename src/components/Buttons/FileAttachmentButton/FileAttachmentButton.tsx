@@ -28,7 +28,13 @@ const FileAttachmentButton = () => {
 	const { styles } = useStylesContext();
 
 	// handles messages
-	const { injectMessage, simStreamMessage, streamMessage, removeMessage, endStreamMessage } = useMessagesInternal();
+	const {
+		injectMessage,
+		simulateStreamMessage,
+		streamMessage,
+		removeMessage,
+		endStreamMessage
+	} = useMessagesInternal();
 
 	// handles paths and blocks
 	const { getCurrPath, getPrevPath, goToPath, blockAllowsAttachment } = usePathsInternal();
@@ -123,7 +129,7 @@ const FileAttachmentButton = () => {
 			}
 			await handleSubmitText("📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
-				currPath: getCurrPath(), goToPath, setTextAreaValue, injectMessage, simStreamMessage,
+				currPath: getCurrPath(), goToPath, setTextAreaValue, injectMessage, simulateStreamMessage,
 				streamMessage, removeMessage, endStreamMessage, openChat, showToast, dismissToast, files
 			});
 		}

@@ -28,8 +28,8 @@ describe("useMessagesInternal", () => {
 		jest.clearAllMocks();
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
-				botBubble: { dangerouslySetInnerHtml: false, simStream: false },
-				userBubble: { dangerouslySetInnerHtml: false, simStream: false },
+				botBubble: { dangerouslySetInnerHtml: false, simulateStream: false },
+				userBubble: { dangerouslySetInnerHtml: false, simulateStream: false },
 				event: {},
 			},
 		});

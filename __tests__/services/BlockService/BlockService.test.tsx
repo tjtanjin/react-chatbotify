@@ -57,7 +57,7 @@ describe("BlockService", () => {
 		prevPath: "/previous/path",
 		goToPath: jest.fn(),
 		setTextAreaValue: jest.fn(),
-		simStreamMessage: jest.fn(),
+		simulateStreamMessage: jest.fn(),
 		streamMessage: jest.fn(),
 		removeMessage: jest.fn(),
 		endStreamMessage: jest.fn(),

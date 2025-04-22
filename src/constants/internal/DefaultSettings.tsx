@@ -113,14 +113,14 @@ export const DefaultSettings: Settings = {
 		animate: true,
 		showAvatar: false,
 		avatar: userAvatar,
-		simStream: false,
+		simulateStream: false,
 		streamSpeed: 30,
 	},
 	botBubble: {
 		animate: true,
 		showAvatar: false,
 		avatar: botAvatar,
-		simStream: false,
+		simulateStream: false,
 		streamSpeed: 30,
 	},
 	voice: {
@@ -182,8 +182,8 @@ export const DefaultSettings: Settings = {
 	event: {
 		rcbPreInjectMessage: false,
 		rcbPostInjectMessage: false,
-		rcbStartSimStreamMessage: true,
-		rcbStopSimStreamMessage: true,
+		rcbStartSimStreamMessage: false,
+		rcbStopSimStreamMessage: false,
 		rcbStartStreamMessage: false,
 		rcbChunkStreamMessage: false,
 		rcbStopStreamMessage: false,

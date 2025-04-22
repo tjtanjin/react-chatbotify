@@ -89,14 +89,14 @@ export type Settings = {
 		animate?: boolean;
 		showAvatar?: boolean;
 		avatar?: string;
-		simStream?: boolean;
+		simulateStream?: boolean;
 		streamSpeed? :number;
 	},
 	botBubble?: {
 		animate?: boolean;
 		showAvatar?: boolean;
 		avatar?: string;
-		simStream?: boolean;
+		simulateStream?: boolean;
 		streamSpeed? :number;
 	},
 	voice?: {

@@ -6,5 +6,5 @@ import { Message } from "../Message";
  */
 export type RcbStartSimStreamMessageEvent = RcbBaseEvent<{
     message: Message;
-    simStreamChunker?: (content: string) => Array<string>;
+    simulateStreamChunker?: (content: string) => Array<string>;
 }>;

@@ -10,7 +10,7 @@ const params: Params = {
 	goToPath: jest.fn(),
 	setTextAreaValue: jest.fn(),
 	injectMessage: jest.fn(),
-	simStreamMessage: jest.fn(),
+	simulateStreamMessage: jest.fn(),
 	streamMessage: jest.fn(),
 	removeMessage: jest.fn(),
 	endStreamMessage: jest.fn(),

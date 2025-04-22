@@ -23,7 +23,13 @@ export const useSubmitInputInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles messages
-	const { endStreamMessage, injectMessage, removeMessage, simStreamMessage, streamMessage } = useMessagesInternal();
+	const {
+		endStreamMessage,
+		injectMessage,
+		removeMessage,
+		simulateStreamMessage,
+		streamMessage
+	} = useMessagesInternal();
 
 	// handles paths
 	const { getCurrPath, getPrevPath, goToPath } = usePathsInternal();
@@ -78,8 +84,11 @@ export const useSubmitInputInternal = () => {
 			if (settings?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (settings?.sensitiveInput?.maskInUserBubble) {
-				if (settings.userBubble?.simStream) {
-					await simStreamMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "USER");
+				if (settings.userBubble?.simulateStream) {
+					await simulateStreamMessage(
+						"*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10),
+						"USER"
+					);
 				} else {
 					await injectMessage("*".repeat(settings.sensitiveInput?.asterisksCount as number ?? 10), "USER");
 				}
@@ -87,10 +96,10 @@ export const useSubmitInputInternal = () => {
 			}
 		}
 
-		if (settings.userBubble?.simStream) {
+		if (settings.userBubble?.simulateStream) {
 			await injectMessage(userInput, "USER");
 		} else {
-			await simStreamMessage(userInput, "USER");
+			await simulateStreamMessage(userInput, "USER");
 		}
 	}, [flowRef, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
 
@@ -151,8 +160,8 @@ export const useSubmitInputInternal = () => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue, userInput, 
-				injectMessage, simStreamMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast,
-				dismissToast
+				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, openChat,
+				showToast, dismissToast
 			};
 			const hasNextPath = await postProcessBlock(flowRef.current as Flow, params);
 			if (!hasNextPath) {
