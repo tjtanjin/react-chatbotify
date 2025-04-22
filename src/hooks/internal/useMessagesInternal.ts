@@ -145,7 +145,7 @@ export const useMessagesInternal = () => {
 		}
 
 		return message.id;
-	}, [settings, messages]);
+	}, [settings, messages, callRcbEvent]);
 
 	/**
 	 * Injects a message at the end of the messages array.
