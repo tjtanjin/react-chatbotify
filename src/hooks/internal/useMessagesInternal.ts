@@ -55,7 +55,7 @@ export const useMessagesInternal = () => {
 	 * @param streamSpeed speed to stream the message
 	 */
 	const simulateStreamMessage = useCallback(async (content: string,
-		sender = "BOT", simStreamChunker: ((content: string) => Array<string>) | null = null
+		sender = "BOT", simulateStreamChunker: ((content: string) => Array<string>) | null = null
 	): Promise<string | null> => {
 		// only string type can go through simulated stream message
 		if (typeof content !== "string") {
@@ -67,12 +67,14 @@ export const useMessagesInternal = () => {
 
 		let message = createMessage(content, sender);
 
-		if (settings.event?.rcbStartSimStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.START_SIM_STREAM_MESSAGE, {message});
+		if (settings.event?.rcbStartSimulateStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.START_SIMULATE_STREAM_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return null;
 			}
-			simStreamChunker = event.data.simStreamChunker ? event.data.simStreamChunker : simStreamChunker;
+			simulateStreamChunker = event.data.simulateStreamChunker
+				? event.data.simulateStreamChunker
+				: simulateStreamChunker;
 			message = event.data.message;
 		}
 		
@@ -96,13 +98,13 @@ export const useMessagesInternal = () => {
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage = message.content as string | string[];
-		if (simStreamChunker) {
-			streamMessage = simStreamChunker(streamMessage as string);
+		if (simulateStreamChunker) {
+			streamMessage = simulateStreamChunker(streamMessage as string);
 		}
 		let streamIndex = 0;
 		const endStreamIndex = streamMessage.length;
 
-		const simStreamDoneTask: Promise<void> = new Promise(resolve => {
+		const simulateStreamDoneTask: Promise<void> = new Promise(resolve => {
 			const intervalId = setInterval(() => {
 			// consider streaming done once end index is reached or exceeded
 			// when streaming is done, remove task and resolve the promise
@@ -131,12 +133,12 @@ export const useMessagesInternal = () => {
 		});
 
 		setUnreadCount(prev => prev + 1);
-		await simStreamDoneTask;
+		await simulateStreamDoneTask;
 		saveChatHistory(messages);
 
 		// handles stop stream message event
-		if (settings.event?.rcbStopSimStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.STOP_SIM_STREAM_MESSAGE, {message});
+		if (settings.event?.rcbStopSimulateStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return message.id;
 			}

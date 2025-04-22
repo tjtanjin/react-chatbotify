@@ -6,9 +6,9 @@ import { Params } from "../../types/Params";
  * 
  * @param block current block being processed
  * @param params contains parameters that can be used/passed into attributes
- * @param isBotSimStreamEnabled boolean indicating whether to simulate stream message for bot
+ * @param botSimulateStreamEnabled boolean indicating whether to simulate stream message for bot
  */
-export const processMessage = async (block: Block, params: Params, isBotSimStreamEnabled: boolean) => {
+export const processMessage = async (block: Block, params: Params, botSimulateStreamEnabled: boolean) => {
 
 	const replyMessage = block.message;
 	if (!replyMessage) {
@@ -17,7 +17,7 @@ export const processMessage = async (block: Block, params: Params, isBotSimStrea
 	
 	if (typeof replyMessage === "string") {
 		if (replyMessage.trim() !== "") {
-			if (isBotSimStreamEnabled) {
+			if (botSimulateStreamEnabled) {
 				await params.simulateStreamMessage(replyMessage);
 			} else {
 				await params.injectMessage(replyMessage);
@@ -36,7 +36,7 @@ export const processMessage = async (block: Block, params: Params, isBotSimStrea
 	}
 
 	if (parsedMessage.trim() !== "") {
-		if (isBotSimStreamEnabled) {
+		if (botSimulateStreamEnabled) {
 			await params.simulateStreamMessage(parsedMessage);
 		} else {
 			await params.injectMessage(parsedMessage);
