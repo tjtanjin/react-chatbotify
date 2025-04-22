@@ -97,9 +97,9 @@ export const useSubmitInputInternal = () => {
 		}
 
 		if (settings.userBubble?.simulateStream) {
-			await injectMessage(userInput, "USER");
-		} else {
 			await simulateStreamMessage(userInput, "USER");
+		} else {
+			await injectMessage(userInput, "USER");
 		}
 	}, [flowRef, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
 
