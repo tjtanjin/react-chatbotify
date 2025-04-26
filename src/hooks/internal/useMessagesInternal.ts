@@ -245,7 +245,7 @@ export const useMessagesInternal = () => {
 			setMessages((prevMessages) => {
 				const updatedMessages = [...prevMessages, message];
 				handlePostMessagesUpdate(updatedMessages);
-				return [...prevMessages, message];
+				return updatedMessages;
 			});
 			streamMessageMap.current.set(sender, message.id);
 			setUnreadCount(prev => prev + 1);
@@ -344,19 +344,6 @@ export const useMessagesInternal = () => {
 
 		if (shouldNotify) {
 			playNotificationSound();
-		}
-
-		// if auto scroll enabled or is not scrolling, then scroll to bottom
-		if (settings.chatWindow?.autoJumpToBottom || !isScrolling) {
-			// defer update to next event loop, handles edge case where messages are sent too fast
-			// and the scrolling does not properly reach the bottom
-			setTimeout(() => {
-				if (!chatBodyRef?.current) {
-					return;
-				}
-
-				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-			}, 1)
 		}
 	}
 
