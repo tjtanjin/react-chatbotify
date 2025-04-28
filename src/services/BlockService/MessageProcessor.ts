@@ -31,7 +31,7 @@ export const processMessage = async (block: Block, params: Params, botSimulateSt
 		parsedMessage = await parsedMessage;
 	}
 
-	if (!parsedMessage) {
+	if (typeof parsedMessage !== "string") {
 		return;
 	}
 
