@@ -14,11 +14,8 @@
 	width: fit-content;
 	font-size: 15px;
  	overflow-wrap: anywhere;
-	overflow: hidden;
+	overflow: auto;
 	white-space: pre-wrap;
-}
-
-.rcb-bot-message {
 	text-align: left;
 	margin-left: 16px;
 }
