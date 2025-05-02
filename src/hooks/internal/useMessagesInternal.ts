@@ -192,6 +192,8 @@ export const useMessagesInternal = () => {
 
 	/**
 	 * Removes a message with the given id.
+	 * 
+	 * @param messageId id of message to remove
 	 */
 	const removeMessage = useCallback(async (messageId: string): Promise<string | null> => {
 		const message = messagesRef.current.find(msg => msg.id === messageId);
@@ -299,12 +301,21 @@ export const useMessagesInternal = () => {
 			return true;
 		}
 
+		// retrieves the message that the stream is ending on
+		// retries 3 times, handles edge case where messages are streamed and ended instantaneously
 		const messageId = streamMessageMap.current.get(sender);
-		const messageToEndStreamFor = messagesRef.current.find((message) => message.id === messageId);
+		let message;
+		for (let i = 0; i < 3; i++) {
+			const msg = messagesRef.current.find(msg => msg.id === messageId);
+			if (msg) {
+				message = msg;
+			}
+			await new Promise((res) => setTimeout(res, 10));
+		}
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {messageToEndStreamFor});
+			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {message});
 			if (event.defaultPrevented) {
 				return false;
 			}
