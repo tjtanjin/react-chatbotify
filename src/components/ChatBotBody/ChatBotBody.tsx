@@ -16,11 +16,14 @@ import "./ChatBotBody.css";
 /**
  * Contains chat messages between the user and bot.
  * 
+ * @param chatScrollHeight scroll height in the chat window
  * @param setChatScrollHeight setter for tracking chat window scroll height
  */
 const ChatBotBody = ({
+	chatScrollHeight,
 	setChatScrollHeight,
 }: {
+	chatScrollHeight: number;
 	setChatScrollHeight: Dispatch<SetStateAction<number>>;
 }) => {
 	// handles settings
@@ -64,7 +67,7 @@ const ChatBotBody = ({
 		if (!isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
-	}, [chatBodyRef.current?.scrollHeight]);
+	}, [chatScrollHeight]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.
