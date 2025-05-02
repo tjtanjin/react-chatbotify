@@ -104,6 +104,13 @@ export const useMessagesInternal = () => {
 		let streamIndex = 0;
 		const endStreamIndex = streamMessage.length;
 
+		// speak audio if conditions are met
+		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
+			if (typeof message.content === "string" && message.content.trim() !== "") {
+				speakAudio(message.content);
+			}
+		}
+
 		const simulateStreamDoneTask: Promise<void> = new Promise(resolve => {
 			const intervalId = setInterval(() => {
 			// consider streaming done once end index is reached or exceeded
@@ -170,6 +177,7 @@ export const useMessagesInternal = () => {
 			message = event.data.message;
 		}
 
+		// speak audio if conditions are met
 		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
 			if (typeof message.content === "string" && message.content.trim() !== "") {
 				speakAudio(message.content);
