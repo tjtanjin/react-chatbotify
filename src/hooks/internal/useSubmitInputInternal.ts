@@ -47,7 +47,7 @@ export const useSubmitInputInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, chatBodyRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
+	const { flowRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
 
 	// handles toasts
 	const { showToast, dismissToast } = useToastsInternal();
@@ -128,11 +128,6 @@ export const useSubmitInputInternal = () => {
 
 		// keeps a reference to current input for use in attribute params
 		paramsInputRef.current = userInput;
-
-		// scrolls to the bottom when a new message is sent by the user
-		if (chatBodyRef.current) {
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-		}
 
 		// clears input field
 		if (inputRef.current) {

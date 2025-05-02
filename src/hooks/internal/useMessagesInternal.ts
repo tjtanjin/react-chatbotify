@@ -280,7 +280,7 @@ export const useMessagesInternal = () => {
 					break;
 				}
 			}
-			handlePostMessagesUpdate(updatedMessages)
+			handlePostMessagesUpdate(updatedMessages, true);
 			return updatedMessages;
 		});
 		return streamMessageMap.current.get(sender) ?? null;
@@ -338,8 +338,16 @@ export const useMessagesInternal = () => {
 	/**
 	 * Handles post messages updates such as saving chat history, scrolling to bottom
 	 * and playing notification sound.
+	 * 
+	 * Note: The isRepeatedStreamMessage variable is added specifically for repeated calls within streamMessage.
+	 * This happens because streamMessage is oftentimes called in a loop to update messages quickly. Special handling
+	 * needs to be done in this case to avoid issues such as users being unable to scroll away or notification sound
+	 * spams. For other message inputs (e.g. injectMessage), handlePostMessageUpdate is only called once.
+	 * 
+	 * @param updatedMessages messages after update
+	 * @param isRepeatedStreamMessage boolean indicating whether to update scroll position
 	 */
-	const handlePostMessagesUpdate = (updatedMessages: Array<Message>) => {
+	const handlePostMessagesUpdate = (updatedMessages: Array<Message>, isRepeatedStreamMessage: boolean = false) => {
 		saveChatHistory(updatedMessages);
 
 		// tracks if notification should be played
@@ -356,13 +364,23 @@ export const useMessagesInternal = () => {
 		}
 
 		const lastMessage = updatedMessages[updatedMessages.length - 1];
-		// if message is sent by user or is bot typing or bot is embedded, return
-		if (!lastMessage || lastMessage.sender.toUpperCase() === "USER") {
+		// if message is sent by user or is repeated stream message, no need to notify
+		if (lastMessage.sender.toUpperCase() === "USER" || isRepeatedStreamMessage) {
 			shouldNotify = false;
 		}
 
 		if (shouldNotify) {
 			playNotificationSound();
+		}
+
+		if (!isRepeatedStreamMessage) {
+			// defer update to next event loop, handles edge case where messages are sent too fast
+			// and the scrolling does not properly reach the bottom
+			setTimeout(() => {
+				if (chatBodyRef.current) {
+					chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+				}
+			}, 1)
 		}
 	}
 
