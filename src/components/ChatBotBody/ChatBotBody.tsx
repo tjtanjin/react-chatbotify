@@ -67,7 +67,7 @@ const ChatBotBody = ({
 		if (!isScrolling) {
 			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
 		}
-	}, [chatScrollHeight]);
+	}, [chatBodyRef.current?.scrollHeight, chatScrollHeight]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.
