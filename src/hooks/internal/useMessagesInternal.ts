@@ -344,17 +344,17 @@ export const useMessagesInternal = () => {
 	 * needs to be done in this case to avoid issues such as users being unable to scroll away or notification sound
 	 * spams. For other message inputs (e.g. injectMessage), handlePostMessageUpdate is only called once.
 	 * 
-	 * @param updatedMessages messages after update
+	 * @param messages messages after update
 	 * @param isRepeatedStreamMessage boolean indicating whether to update scroll position
 	 */
-	const handlePostMessagesUpdate = (updatedMessages: Array<Message>, isRepeatedStreamMessage: boolean = false) => {
-		saveChatHistory(updatedMessages);
+	const handlePostMessagesUpdate = (messages: Array<Message>, isRepeatedStreamMessage: boolean = false) => {
+		saveChatHistory(messages);
 
 		// tracks if notification should be played
 		let shouldNotify = true;
 
-		// if messages are empty or chatbot is open and user is not scrolling, no need to notify
-		if (updatedMessages.length === 0 || isChatWindowOpen && !isScrolling) {
+		// if messages are empty or latest message is sent by user, no need to notify
+		if (messages.length === 0 || messages[messages.length - 1].sender.toUpperCase() === "USER") {
 			shouldNotify = false;
 		}
 
@@ -363,9 +363,8 @@ export const useMessagesInternal = () => {
 			shouldNotify = false;
 		}
 
-		const lastMessage = updatedMessages[updatedMessages.length - 1];
-		// if message is sent by user or is repeated stream message, no need to notify
-		if (lastMessage.sender.toUpperCase() === "USER" || isRepeatedStreamMessage) {
+		// if chatbot is open and user is not scrolling or is repeated stream message, no need to notify
+		if (isChatWindowOpen && !isScrolling || isRepeatedStreamMessage) {
 			shouldNotify = false;
 		}
 
