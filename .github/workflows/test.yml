@@ -1,6 +1,11 @@
 name: Tests
 run-name: Tests
 
+permissions:
+  contents: read
+  actions: read
+  artifacts: write
+
 on:
   workflow_call:
     inputs:
@@ -8,12 +13,6 @@ on:
         description: "Node.js version to use"
         required: true
         type: string
-
-permissions:
-  contents: read
-  actions: read
-  artifacts: write
-  artifacts: read
 
 jobs:
   unit-test:

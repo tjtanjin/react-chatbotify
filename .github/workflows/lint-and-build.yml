@@ -1,6 +1,10 @@
 name: Lint & Build
 run-name: Lint & Build
 
+permissions:
+  contents: read
+  actions: read
+
 on:
   workflow_call:
     inputs:
@@ -8,10 +12,6 @@ on:
         description: "Node.js version to use"
         required: true
         type: string
-
-permissions:
-  contents: read
-  actions: read
 
 jobs:
   lint:
