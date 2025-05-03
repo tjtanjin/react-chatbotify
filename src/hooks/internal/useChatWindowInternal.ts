@@ -20,7 +20,8 @@ export const useChatWindowInternal = () => {
 		setViewportHeight,
 		viewportWidth,
 		setViewportWidth,
-		setUnreadCount
+		setUnreadCount,
+		setIsBotTyping,
 	} = useBotStatesContext();
 
 	// handles rcb events
@@ -64,6 +65,15 @@ export const useChatWindowInternal = () => {
 		await toggleChatWindow();
 	}, [isChatWindowOpen]);
 
+	/**
+	 * Forces state for showing typing indicator.
+	 * 
+	 * @param showTyping boolean indicating whether to have typing indicator shown
+	 */
+	const setTypingIndicator = (showTyping: boolean) => {
+		setIsBotTyping(showTyping);
+	}
+
 	return {
 		isChatWindowOpen,
 		setIsChatWindowOpen,
@@ -75,5 +85,6 @@ export const useChatWindowInternal = () => {
 		setViewportHeight,
 		viewportWidth,
 		setViewportWidth,
+		setTypingIndicator,
 	};
 };
