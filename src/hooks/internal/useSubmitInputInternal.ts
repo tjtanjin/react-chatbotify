@@ -106,11 +106,10 @@ export const useSubmitInputInternal = () => {
 	/**
 	 * Handles action input from the user which includes text, files and emoji.
 	 * 
-	 * @param path path to process input with
 	 * @param userInput input provided by the user
 	 * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
 	 */
-	const handleActionInput = useCallback(async (path: keyof Flow, userInput: string, sendUserInput = true) => {
+	const handleActionInput = useCallback(async (userInput: string, sendUserInput = true) => {
 		userInput = userInput.trim();
 		if (userInput === "") {
 			return;
@@ -203,7 +202,7 @@ export const useSubmitInputInternal = () => {
 		if (!currPath) {
 			return;
 		}
-		handleActionInput(currPath, inputText, sendInChat);
+		handleActionInput(inputText, sendInChat);
 	}, [callRcbEvent, getCurrPath, handleActionInput, inputRef, settings.event?.rcbUserSubmitText])
 
 	return { handleSubmitText }
