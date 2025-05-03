@@ -353,8 +353,15 @@ export const useMessagesInternal = () => {
 		// tracks if notification should be played
 		let shouldNotify = true;
 
-		// if messages are empty or latest message is sent by user, no need to notify
-		if (messages.length === 0 || messages[messages.length - 1].sender.toUpperCase() === "USER") {
+		// if messages are empty (i.e. fully cleared), nothing to do
+		const lastMessage = messages[messages.length - 1];
+		if (!lastMessage) {
+			return;
+		}
+
+		// if latest message is sent by user, no need to notify
+		const sender = lastMessage.sender.toUpperCase();
+		if (sender === "USER") {
 			shouldNotify = false;
 		}
 
@@ -372,7 +379,10 @@ export const useMessagesInternal = () => {
 			playNotificationSound();
 		}
 
-		if (!isRepeatedStreamMessage) {
+		if (
+			!isRepeatedStreamMessage &&
+			((sender !== "USER" && settings.chatWindow?.autoJumpToBottom) || sender === "USER")
+		) {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
 			setTimeout(() => {
