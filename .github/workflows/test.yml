@@ -4,7 +4,6 @@ run-name: Tests
 permissions:
   contents: read
   actions: read
-  artifacts: write
 
 on:
   workflow_call:
