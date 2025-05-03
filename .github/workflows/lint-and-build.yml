@@ -9,6 +9,11 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+  actions: read
+  workflow: read
+
 jobs:
   lint:
     name: Run Lint

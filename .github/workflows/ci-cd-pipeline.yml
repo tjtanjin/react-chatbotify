@@ -1,6 +1,10 @@
 name: CI/CD Status
 run-name: Full CI/CD Pipeline
 
+permissions:
+  contents: read
+  actions: read 
+
 on:
   push:
     branches: ["main"]

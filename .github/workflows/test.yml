@@ -1,6 +1,13 @@
 name: Tests
 run-name: Tests
 
+permissions:
+  contents: read
+  actions: read
+  workflow: read
+  artifacts: write
+  artifacts: read
+
 on:
   workflow_call:
     inputs:
