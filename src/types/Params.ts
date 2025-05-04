@@ -12,7 +12,7 @@ export type Params = {
 	setTextAreaValue: (value: string) => Promise<void>;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<string | null>;
 	simulateStreamMessage: (content: string, sender?: string,
-		simulateStreamChunker?: ((content: string) => Array<string>)) => Promise<string | null>;
+	simulateStreamChunker?: ((content: string) => Array<string>)) => Promise<string | null>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<string | null>;
 	removeMessage: (id: string) => Promise<string | null>;
 	endStreamMessage: (sender: string) => Promise<boolean>;

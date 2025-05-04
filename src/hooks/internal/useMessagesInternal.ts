@@ -51,8 +51,8 @@ export const useMessagesInternal = () => {
 	/**
 	 * Simulates the streaming of a message from the bot.
 	 * 
-	 * @param message message to stream
-	 * @param streamSpeed speed to stream the message
+	 * @param content message string to simulate stream for
+	 * @param simulateStreamChunker function to override chunking of string for streaming simulation
 	 */
 	const simulateStreamMessage = useCallback(async (content: string,
 		sender = "BOT", simulateStreamChunker: ((content: string) => Array<string>) | null = null
