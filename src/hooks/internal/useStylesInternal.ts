@@ -25,6 +25,8 @@ export const useStylesInternal = () => {
 
 	/**
 	 * Replaces (overwrites entirely) the current styles with the new styles.
+	 * 
+	 * @param newStyles new styles to set/replace
 	 */
 	const replaceStyles = useCallback((newStyles: Styles) => {
 		setStyles(newStyles);

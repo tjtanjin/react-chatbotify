@@ -21,6 +21,8 @@ describe("usePathsInternal Hook", () => {
 	const mockSetTextAreaSensitiveMode = jest.fn();
 	const mockSetBlockAllowsAttachment = jest.fn();
 	const mockBotIdRef = { current: "bot-1" };
+	const mockFlowRef = { current: { id: "test-flow" } };
+	const mockPathsRef = { current: ["path1", "path2"] };
 	const mockPaths = ["path1", "path2"];
 
 	beforeEach(() => {
@@ -44,6 +46,8 @@ describe("usePathsInternal Hook", () => {
 		});
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			botIdRef: mockBotIdRef,
+			flowRef: mockFlowRef,
+			pathsRef: mockPathsRef,
 		});
 
 		// Mock emitRcbEvent to return an object with defaultPrevented

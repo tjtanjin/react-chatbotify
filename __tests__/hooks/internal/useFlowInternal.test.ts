@@ -23,6 +23,7 @@ describe("useFlowInternal Hook", () => {
 	const setPathsMock = jest.fn();
 	const setToastsMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
+	const pathsRefMock = { current: ["start"] };
 	const hasFlowStartedMock = true;
 	const mockSettings = {
 		chatHistory: {
@@ -37,7 +38,7 @@ describe("useFlowInternal Hook", () => {
 		(useMessagesContext as jest.Mock).mockReturnValue({ setMessages: setMessagesMock });
 		(usePathsContext as jest.Mock).mockReturnValue({ setPaths: setPathsMock });
 		(useToastsContext as jest.Mock).mockReturnValue({ setToasts: setToastsMock });
-		(useBotRefsContext as jest.Mock).mockReturnValue({ flowRef: flowRefMock });
+		(useBotRefsContext as jest.Mock).mockReturnValue({ flowRef: flowRefMock, pathsRef: pathsRefMock });
 		(useBotStatesContext as jest.Mock).mockReturnValue({ hasFlowStarted: hasFlowStartedMock });
 		(useSettingsContext as jest.Mock).mockReturnValue({ settings: mockSettings });
 	});

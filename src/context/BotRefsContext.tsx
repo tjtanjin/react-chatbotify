@@ -8,6 +8,7 @@ import { Flow } from "../types/Flow";
 type BotRefsContextType = {
 	botIdRef: React.RefObject<string>;
 	flowRef: React.MutableRefObject<Flow>;
+	pathsRef: React.MutableRefObject<string[]>;
 	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement | null>;
 	prevInputRef: React.MutableRefObject<string>;
 	streamMessageMap: React.MutableRefObject<Map<string, string>>;
@@ -33,6 +34,7 @@ const BotRefsProvider = ({
 	botIdRef: RefObject<string>;
 	flowRef: MutableRefObject<Flow>;
 }) => {
+	const pathsRef = useRef<string[]>([]);
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
 	const prevInputRef = useRef<string>("");
 	const streamMessageMap = useRef<Map<string, string>>(new Map());
@@ -47,6 +49,7 @@ const BotRefsProvider = ({
 		<BotRefsContext.Provider value={{
 			botIdRef,
 			flowRef,
+			pathsRef,
 			inputRef,
 			streamMessageMap,
 			chatBodyRef,

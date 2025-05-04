@@ -395,6 +395,8 @@ export const useMessagesInternal = () => {
 
 	/**
 	 * Replaces (overwrites entirely) the current messages with the new messages.
+	 * 
+	 * @param newMessages new messages to set/replace
 	 */
 	const replaceMessages = useCallback((newMessages: Array<Message>) => {
 		handlePostMessagesUpdate(newMessages);

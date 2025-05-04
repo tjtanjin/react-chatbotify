@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 
 import ChatHistoryButton from "../../components/ChatHistoryButton/ChatHistoryButton";
-import { preProcessBlock } from "../../services/BlockService/BlockService";
 import {
 	clearHistoryMessages,
 	getHistoryMessages,
@@ -14,16 +13,10 @@ import { useNotificationInternal } from "./useNotificationsInternal";
 import { useFirstInteractionInternal } from "./useFirstInteractionInternal";
 import { useChatHistoryInternal } from "./useChatHistoryInternal";
 import { usePathsInternal } from "./usePathsInternal";
-import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useMessagesInternal } from "./useMessagesInternal";
-import { useToastsInternal } from "./useToastsInternal";
-import { useVoiceInternal } from "./useVoiceInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
-import { Block } from "../../types/Block";
-import { Flow } from "../../types/Flow";
-import { Params } from "../../types/Params";
 
 /**
  * Internal custom hook for common use effects.
@@ -37,19 +30,11 @@ export const useBotEffectsInternal = () => {
 
 	// handles messages
 	const {
-		endStreamMessage,
-		injectMessage,
-		removeMessage,
-		simulateStreamMessage,
-		streamMessage,
 		replaceMessages,
 	} = useMessagesInternal();
 
 	// handles paths
-	const { getCurrPath, getPrevPath, goToPath, paths } = usePathsInternal();
-
-	// handles toast
-	const { showToast, dismissToast } = useToastsInternal();
+	const { paths, goToPath } = usePathsInternal();
 
 	// handles bot states
 	const {
@@ -61,18 +46,13 @@ export const useBotEffectsInternal = () => {
 		setTextAreaDisabled,
 		setAudioToggledOn,
 		setVoiceToggledOn,
-		setIsBotTyping,
-		setTextAreaSensitiveMode,
-		setBlockAllowsAttachment,
-		setTimeoutId
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef, flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
-	const flow = flowRef.current as Flow;
+	const { chatBodyRef, pathsRef } = useBotRefsContext();
 
 	// handles chat window
-	const { viewportHeight, setViewportHeight, setViewportWidth, openChat } = useChatWindowInternal();
+	const { viewportHeight, setViewportHeight, setViewportWidth } = useChatWindowInternal();
 
 	// handles notifications
 	const { setUpNotifications } = useNotificationInternal();
@@ -82,12 +62,6 @@ export const useBotEffectsInternal = () => {
 
 	// handles chat history
 	const { showChatHistory } = useChatHistoryInternal();
-
-	// handles input text area
-	const { updateTextAreaFocus, setTextAreaValue } = useTextAreaInternal();
-
-	// handles voice
-	const { syncVoice } = useVoiceInternal();
 
 	// tracks scroll position
 	const scrollPositionRef = useRef<number>(0);
@@ -104,6 +78,11 @@ export const useBotEffectsInternal = () => {
 			window.removeEventListener("touchstart", handleFirstInteraction);
 		};
 	}, []);
+
+	// default syncing of paths ref
+	useEffect(() => {
+		pathsRef.current = paths;
+	}, [paths]);
 
 	// default setup for text area, chat window, audio and voice
 	useEffect(() => {
@@ -226,52 +205,6 @@ export const useBotEffectsInternal = () => {
 
 		return cleanupScrollEventListeners;
 	}, [isChatWindowOpen, isDesktop]);
-
-	// performs pre-processing when paths change
-	useEffect(() => {
-		const currPath = getCurrPath();
-		if (!currPath) {
-			return;
-		}
-		const block = flow[currPath];
-
-		// if path is invalid, nothing to process (i.e. becomes dead end!)
-		if (!block) {
-			setIsBotTyping(false);
-			return;
-		}
-
-		const params = {prevPath: getPrevPath(), currPath, goToPath, setTextAreaValue,
-			userInput: paramsInputRef.current, endStreamMessage, injectMessage, removeMessage, simulateStreamMessage,
-			streamMessage, openChat, showToast, dismissToast
-		};
-
-		// calls the new block for preprocessing upon change to path.
-		const callNewBlock = async (block: Block, params: Params) => {
-			await preProcessBlock(flow, params, settings.botBubble?.simulateStream ?? false, setTextAreaDisabled,
-				setTextAreaSensitiveMode, setTimeoutId
-			);
-
-			// cleanup logic after preprocessing of a block
-			setIsBotTyping(false);
-			if (!("chatDisabled" in block)) {
-				setTextAreaDisabled(settings.chatInput?.disabled as boolean);
-			}
-			if (!("isSensitive" in block)) {
-				setTextAreaSensitiveMode(false);
-			}
-			setBlockAllowsAttachment(typeof block.file === "function");
-			updateTextAreaFocus(currPath);
-			syncVoice(keepVoiceOnRef.current && !block.chatDisabled);
-
-			// auto cleanup streaming and save messages on path change (not ideal)
-			// todo: remove this in v3, users should call `params.endStreamMessage()`
-			if (params.currPath !== params.prevPath) {
-				streamMessageMap.current.clear();
-			}
-		}
-		callNewBlock(block, params);
-	}, [paths]);
 
 	// adds start path when folow is started
 	useEffect(() => {

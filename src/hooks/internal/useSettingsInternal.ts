@@ -25,6 +25,8 @@ export const useSettingsInternal = () => {
 
 	/**
 	 * Replaces (overwrites entirely) the current settings with the new settings.
+	 * 
+	 * @param newSettings new settings to set/replace
 	 */
 	const replaceSettings = useCallback((newSettings: Settings) => {
 		setSettings(newSettings);

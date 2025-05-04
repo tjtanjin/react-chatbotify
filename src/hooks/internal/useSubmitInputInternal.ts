@@ -101,7 +101,7 @@ export const useSubmitInputInternal = () => {
 		} else {
 			await injectMessage(userInput, "USER");
 		}
-	}, [flowRef, getCurrPath, settings, injectMessage, textAreaSensitiveMode]);
+	}, [flowRef, getCurrPath, settings, injectMessage, simulateStreamMessage, textAreaSensitiveMode]);
 
 	/**
 	 * Handles action input from the user which includes text, files and emoji.
@@ -179,7 +179,9 @@ export const useSubmitInputInternal = () => {
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
 		keepVoiceOnRef, voiceToggledOn, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
-		injectMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast, dismissToast, flowRef]);
+		injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast,
+		dismissToast, flowRef
+	]);
 
 	/**
 	 * Handles submission of user input via enter key or send button.
