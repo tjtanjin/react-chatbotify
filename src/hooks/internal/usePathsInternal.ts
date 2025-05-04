@@ -169,16 +169,19 @@ export const usePathsInternal = () => {
 		const currPath = getCurrPath();
 		const prevPath = getPrevPath();
 
+		let processDefaultAttributes = true;
 		// handles path change event
 		if (settings.event?.rcbChangePath) {
 			const event = await callRcbEvent(RcbEvent.CHANGE_PATH, {
 				currPath,
 				prevPath,
-				nextPath: pathToGo
+				nextPath: pathToGo,
+				processDefaultAttributes,
 			});
 			if (event.defaultPrevented) {
 				return false;
 			}
+			processDefaultAttributes = event.data.processDefaultAttributes;
 		}
 
 		// mimics post-processing behavior
@@ -194,7 +197,12 @@ export const usePathsInternal = () => {
 			pathsRef.current = next;
 			return next;
 		});
-		await handlePathChange(pathToGo, currPath);
+
+		if (processDefaultAttributes) {
+			await handlePathChange(pathToGo, currPath);
+		} else {
+			setIsBotTyping(false);
+		}
 		return true;
 	}, [setPaths, settings.chatInput?.blockSpam, settings.event?.rcbChangePath, handlePathChange, callRcbEvent]);
 
