@@ -21,6 +21,8 @@ import { RcbDismissToastEvent } from "../src/types/events/RcbDismissToastEvent";
 import { RcbUserSubmitTextEvent } from "../src/types/events/RcbUserSubmitTextEvent";
 import { RcbUserUploadFileEvent } from "../src/types/events/RcbUserUploadFileEvent";
 import { RcbTextAreaChangeValueEvent } from "../src/types/events/RcbTextAreaChangeValue";
+import { RcbPreProcessBlockEvent } from "../src/types/events/RcbPreProcessBlockEvent";
+import { RcbPostProcessBlockEvent } from "../src/types/events/RcbPostProcessBlockEvent";
 
 declare global {
 	// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -89,5 +91,9 @@ declare global {
 		// chatbot loading
 		"rcb-pre-load-chatbot": RcbPreLoadChatBotEvent;
 		"rcb-post-load-chatbot": RcbPostLoadChatBotEvent;
+
+		// block processing
+		"rcb-pre-process-block": RcbPreProcessBlockEvent;
+		"rcb-post-process-block": RcbPostProcessBlockEvent;
 	}
 }

@@ -34,15 +34,15 @@ const MockComponent = () => <div>Mocked</div>
 
 describe("BlockService", () => {
 	const mockBlock: Block = {
-			message: "Hello",
-			options: ["Option 1", "Option 2"],
-			checkboxes: ["Checkbox 1", "Checkbox 2"],
-			component: MockComponent,
-			chatDisabled: true,
-			isSensitive: false,
-			transition: { duration: 1000 },
-			function: jest.fn(),
-			path: "next",
+		message: "Hello",
+		options: ["Option 1", "Option 2"],
+		checkboxes: ["Checkbox 1", "Checkbox 2"],
+		component: MockComponent,
+		chatDisabled: true,
+		isSensitive: false,
+		transition: { duration: 1000 },
+		function: jest.fn(),
+		path: "next",
 	};
 
 	const mockInvalidBlock = null as any;
