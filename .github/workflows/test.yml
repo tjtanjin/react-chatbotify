@@ -130,9 +130,11 @@ jobs:
         with:
           name: react-chatbotify-package
 
+      # pipeline fails from create-vite@6.5.0
+      # todo: explore what changed and find a fix: https://github.com/vitejs/vite/releases/tag/create-vite%406.5.0
       - name: Create Test Project
         run: |
-          npx create-vite@latest test-project --template react-ts
+          npx create-vite@6.4.1 test-project --template react-ts
 
       - name: Copy Template File
         run: |
