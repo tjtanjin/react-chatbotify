@@ -43,6 +43,10 @@ const RcbEvent = {
 	// chatbot loading
 	PRE_LOAD_CHATBOT: "rcb-pre-load-chatbot",
 	POST_LOAD_CHATBOT: "rcb-post-load-chatbot",
+
+	// block processing
+	PRE_PROCESS_BLOCK: "rcb-pre-process-block",
+	POST_PROCESS_BLOCK: "rcb-post-process-block",
 }
 
 export { RcbEvent };

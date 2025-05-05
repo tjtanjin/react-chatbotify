@@ -157,6 +157,8 @@ export type Settings = {
 		rcbTextAreaChangeValue?: boolean;
 		rcbPreLoadChatBot?: boolean;
 		rcbPostLoadChatBot?: boolean;
+		rcbPreProcessBlock?: boolean;
+		rcbPostProcessBlock?: boolean;
 	},
 	ariaLabel?: {
 		chatButton?: string;

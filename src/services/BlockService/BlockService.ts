@@ -9,23 +9,21 @@ import { Params } from "../../types/Params";
 import { Block } from "../../types/Block";
 import { processChatDisabled } from "./ChatDisabledProcessor";
 import { processIsSensitive } from "./IsSensitiveProcessor";
-import { Flow } from "../../types/Flow";
 
 /**
  * Handles the preprocessing within a block.
  * 
- * @param flow conversation flow for the bot
+ * @param block block to pre-process
  * @param params contains parameters that can be used/passed into attributes
  * @param setTextAreaDisabled sets the state of the textarea for user input
  * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
+ * @param firePostProcessBlockEvent handles post processing block for transition attribute
  */
-export const preProcessBlock = async (flow: Flow, params: Params, botSimulateStreamEnabled: boolean,
+export const preProcessBlock = async (block: Block, params: Params, botSimulateStreamEnabled: boolean,
 	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
-
-	const path = params.currPath as string;
-	const block = flow[path];
+	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void,
+	firePostProcessBlockEvent: (block: Block) => Promise<Block | null>) => {
 
 	if (!block) {
 		throw new Error("Block is not valid.");
@@ -59,7 +57,7 @@ export const preProcessBlock = async (flow: Flow, params: Params, botSimulateStr
 			break;
 
 		case "transition":
-			await processTransition(flow, params, setTimeoutId);
+			await processTransition(block, params, setTimeoutId, firePostProcessBlockEvent);
 		}
 	}
 }
@@ -67,13 +65,10 @@ export const preProcessBlock = async (flow: Flow, params: Params, botSimulateStr
 /**
  * Handles the postprocessing within a block.
  * 
- * @param flow conversation flow for the bot
+ * @param block block to post-process
  * @param params contains utilities that can be used/passed into attributes
  */
-export const postProcessBlock = async (flow: Flow, params: Params) => {
-	const path = params.currPath as string;
-	const block = flow[path];
-
+export const postProcessBlock = async (block: Block, params: Params) => {
 	if (!block) {
 		throw new Error("Block is not valid.");
 	}
@@ -87,7 +82,6 @@ export const postProcessBlock = async (flow: Flow, params: Params) => {
 
 	// path is always executed last in post-processing
 	if (attributes.includes("path")) {
-		return await processPath(block, params);
+		await processPath(block, params);
 	}
-	return false;
 }

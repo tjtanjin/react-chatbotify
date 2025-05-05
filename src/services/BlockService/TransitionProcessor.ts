@@ -1,23 +1,18 @@
-import { postProcessBlock} from "./BlockService";
-import { Flow } from "../../types/Flow";
 import { Params } from "../../types/Params";
+import { Block } from "../../types/Block";
+import { postProcessBlock } from "./BlockService";
 
 /**
  * Handles processing of transition in current block.
  *
- * @param flow conversation flow for the bot
+ * @param block current block to transition for
  * @param params contains parameters that can be used/passed into attributes
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
+ * @param firePostProcessBlockEvent handles post processing block for transition attribute
  */
-export const processTransition = async (flow: Flow, params: Params,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void) => {
-
-	const path = params.currPath as string;
-	const block = flow[path];
-
-	if (!block) {
-		throw new Error("block is not valid.");
-	}
+export const processTransition = async (block: Block, params: Params,
+	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void,
+	firePostProcessBlockEvent: (block: Block) => Promise<Block | null>) => {
 
 	const transitionAttr = block.transition;
 
@@ -52,7 +47,12 @@ export const processTransition = async (flow: Flow, params: Params,
 	}
 	
 	const timeoutId = setTimeout(async () => {
-		await postProcessBlock(flow, params);
+		// fire event and use final block (if applicable)
+		// finalBlock is used because it's possible users update the block in the event
+		const finalBlock = await firePostProcessBlockEvent(block);
+		if (finalBlock) {
+			await postProcessBlock(finalBlock, params);
+		}
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
 		setTimeoutId(timeoutId);

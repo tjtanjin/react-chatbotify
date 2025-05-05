@@ -13,6 +13,7 @@ import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useToastsInternal } from "./useToastsInternal";
 import { preProcessBlock } from "../../services/BlockService/BlockService";
 import { useRcbEventInternal } from "./useRcbEventInternal";
+import { Block } from "../../types/Block";
 
 /**
  * Internal custom hook to handle paths in the chatbot conversation flow.
@@ -62,6 +63,24 @@ export const usePathsInternal = () => {
 	const { syncVoice } = useVoiceInternal();
 
 	/**
+	 * Callback function for emitting post-process block event.
+	 * 
+	 * @param block block that is being post-processed
+	 */
+	const firePostProcessBlockEvent = useCallback(async (block: Block): Promise<Block | null> => {
+		if (settings.event?.rcbPostProcessBlock) {
+			const event = await callRcbEvent(RcbEvent.POST_PROCESS_BLOCK, {
+				block,
+			});
+			if (event.defaultPrevented) {
+				return null;
+			}
+			block = event.data.block;
+		}
+		return block;
+	}, [settings.event?.rcbPostProcessBlock, callRcbEvent])
+
+	/**
 	 * Handles processing of new block upon path change.
 	 *
 	 * @param currPath current path user is in
@@ -74,14 +93,24 @@ export const usePathsInternal = () => {
 		if (!currPath) {
 			return;
 		}
-		const block = (flowRef.current as Flow)[currPath];
-	
-		// if path is invalid, nothing to process (i.e. becomes dead end!)
+
+		// if block is invalid, nothing to process (i.e. becomes dead end!)
+		let block = (flowRef.current as Flow)[currPath];
 		if (!block) {
 			setIsBotTyping(false);
 			return;
 		}
 	
+		if (settings.event?.rcbPreProcessBlock) {
+			const event = await callRcbEvent(RcbEvent.PRE_PROCESS_BLOCK, {
+				block,
+			});
+			if (event.defaultPrevented) {
+				return;
+			}
+			block = event.data.block;
+		}
+
 		const params = {
 			prevPath,
 			currPath,
@@ -97,14 +126,14 @@ export const usePathsInternal = () => {
 			showToast,
 			dismissToast
 		};
-	
 		await preProcessBlock(
-			flowRef.current,
+			block,
 			params,
 			settings.botBubble?.simulateStream ?? false,
 			setTextAreaDisabled,
 			setTextAreaSensitiveMode,
-			setTimeoutId
+			setTimeoutId,
+			firePostProcessBlockEvent,
 		);
 	
 		// cleanup logic after preprocessing of a block
@@ -169,19 +198,16 @@ export const usePathsInternal = () => {
 		const currPath = getCurrPath();
 		const prevPath = getPrevPath();
 
-		let processDefaultAttributes = true;
 		// handles path change event
 		if (settings.event?.rcbChangePath) {
 			const event = await callRcbEvent(RcbEvent.CHANGE_PATH, {
 				currPath,
 				prevPath,
 				nextPath: pathToGo,
-				processDefaultAttributes,
 			});
 			if (event.defaultPrevented) {
 				return false;
 			}
-			processDefaultAttributes = event.data.processDefaultAttributes;
 		}
 
 		// mimics post-processing behavior
@@ -198,11 +224,7 @@ export const usePathsInternal = () => {
 			return next;
 		});
 
-		if (processDefaultAttributes) {
-			await handlePathChange(pathToGo, currPath);
-		} else {
-			setIsBotTyping(false);
-		}
+		await handlePathChange(pathToGo, currPath);
 		return true;
 	}, [setPaths, settings.chatInput?.blockSpam, settings.event?.rcbChangePath, handlePathChange, callRcbEvent]);
 
@@ -225,6 +247,7 @@ export const usePathsInternal = () => {
 		blockAllowsAttachment,
 		setBlockAllowsAttachment,
 		paths,
-		replacePaths
+		replacePaths,
+		firePostProcessBlockEvent,
 	};
 };

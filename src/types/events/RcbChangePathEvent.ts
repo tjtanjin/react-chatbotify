@@ -7,5 +7,4 @@ export type RcbChangePathEvent = RcbBaseEvent<{
     prevPath: string;
     currPath: string;
     nextPath: string;
-    processDefaultAttributes: boolean;
 }>;

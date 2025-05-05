@@ -43,6 +43,8 @@ import { RcbDismissToastEvent } from "./types/events/RcbDismissToastEvent";
 import { RcbUserSubmitTextEvent } from "./types/events/RcbUserSubmitTextEvent";
 import { RcbUserUploadFileEvent } from "./types/events/RcbUserUploadFileEvent";
 import { RcbTextAreaChangeValueEvent } from "./types/events/RcbTextAreaChangeValue";
+import { RcbPreProcessBlockEvent } from "./types/events/RcbPreProcessBlockEvent";
+import { RcbPostProcessBlockEvent } from "./types/events/RcbPostProcessBlockEvent";
 
 // hook imports
 import { useAudio } from "./hooks/useAudio";
@@ -103,6 +105,8 @@ export type {
 	RcbUserSubmitTextEvent,
 	RcbUserUploadFileEvent,
 	RcbTextAreaChangeValueEvent,
+	RcbPreProcessBlockEvent,
+	RcbPostProcessBlockEvent,
 }
 
 // constant exports

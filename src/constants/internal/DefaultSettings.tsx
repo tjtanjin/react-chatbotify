@@ -202,6 +202,8 @@ export const DefaultSettings: Settings = {
 		rcbTextAreaChangeValue: false,
 		rcbPreLoadChatBot: false,
 		rcbPostLoadChatBot: false,
+		rcbPreProcessBlock: false,
+		rcbPostProcessBlock: false,
 	},
 	ariaLabel: {
 		chatButton: "open chat",

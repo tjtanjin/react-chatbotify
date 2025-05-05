@@ -15,8 +15,8 @@ import { processComponent } from "../../../src/services/BlockService/ComponentPr
 import { processTransition } from "../../../src/services/BlockService/TransitionProcessor";
 import { processChatDisabled } from "../../../src/services/BlockService/ChatDisabledProcessor";
 import { processIsSensitive } from "../../../src/services/BlockService/IsSensitiveProcessor";
-import { Flow } from "../../../src/types/Flow";
 import { Params } from "../../../src/types/Params";
+import { Block } from '../../../src/types/Block';
 
 // Mock the imported functions
 jest.mock("../../../src/services/BlockService/CheckboxProcessor");
@@ -33,8 +33,7 @@ jest.mock("../../../src/services/BlockService/IsSensitiveProcessor");
 const MockComponent = () => <div>Mocked</div>
 
 describe("BlockService", () => {
-	const mockFlow: Flow = {
-		start: {
+	const mockBlock: Block = {
 			message: "Hello",
 			options: ["Option 1", "Option 2"],
 			checkboxes: ["Checkbox 1", "Checkbox 2"],
@@ -44,11 +43,9 @@ describe("BlockService", () => {
 			transition: { duration: 1000 },
 			function: jest.fn(),
 			path: "next",
-		},
-		next: {
-			message: "Next message",
-		},
 	};
+
+	const mockInvalidBlock = null as any;
 
 	const mockParams: Params = {
 		injectMessage: jest.fn(),
@@ -69,6 +66,7 @@ describe("BlockService", () => {
 	const mockSetTextAreaDisabled = jest.fn();
 	const mockSetTextAreaSensitiveMode = jest.fn();
 	const mockSetTimeoutId = jest.fn();
+	const mockFirePostProcessBlockEvent = jest.fn();
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -76,14 +74,14 @@ describe("BlockService", () => {
 
 	describe("preProcessBlock", () => {
 		it("should call all pre-processing functions for valid attributes", async () => {
-			mockParams.currPath = "start";
 			await preProcessBlock(
-				mockFlow,
+				mockBlock,
 				mockParams,
 				false,
 				mockSetTextAreaDisabled,
 				mockSetTextAreaSensitiveMode,
-				mockSetTimeoutId
+				mockSetTimeoutId,
+				mockFirePostProcessBlockEvent,
 			);
 
 			expect(processMessage).toHaveBeenCalled();
@@ -96,15 +94,15 @@ describe("BlockService", () => {
 		});
 
 		it("should throw an error for invalid block", async () => {
-			mockParams.currPath = "invalid";
 			await expect(
 				preProcessBlock(
-					mockFlow,
+					mockInvalidBlock,
 					mockParams,
 					false,
 					mockSetTextAreaDisabled,
 					mockSetTextAreaSensitiveMode,
-					mockSetTimeoutId
+					mockSetTimeoutId,
+					mockFirePostProcessBlockEvent,
 				)
 			).rejects.toThrow("Block is not valid.");
 		});
@@ -112,17 +110,15 @@ describe("BlockService", () => {
 
 	describe("postProcessBlock", () => {
 		it("should call processFunction and processPath for valid attributes", async () => {
-			mockParams.currPath = "start";
-			await postProcessBlock(mockFlow, mockParams);
+			await postProcessBlock(mockBlock, mockParams);
 
 			expect(processFunction).toHaveBeenCalled();
 			expect(processPath).toHaveBeenCalled();
 		});
 
 		it("should throw an error for invalid block", async () => {
-			mockParams.currPath = "invalid";
 			await expect(
-				postProcessBlock(mockFlow, mockParams)
+				postProcessBlock(mockInvalidBlock, mockParams)
 			).rejects.toThrow("Block is not valid.");
 		});
 	});

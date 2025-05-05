@@ -26,5 +26,7 @@ export const MockDefaultSettings = {
 		rcbUserSubmitText: true,
 		rcbUserUploadFile: true,
 		rcbTextAreaChangeValue: true,
+		rcbPreProcessBlock: true,
+		rcbPostProcessBlock: true,
 	}
 }

@@ -32,7 +32,7 @@ export const useSubmitInputInternal = () => {
 	} = useMessagesInternal();
 
 	// handles paths
-	const { getCurrPath, getPrevPath, goToPath } = usePathsInternal();
+	const { getCurrPath, getPrevPath, goToPath, firePostProcessBlockEvent } = usePathsInternal();
 
 	// handles bot states
 	const {
@@ -47,7 +47,7 @@ export const useSubmitInputInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
+	const { flowRef, pathsRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
 
 	// handles toasts
 	const { showToast, dismissToast } = useToastsInternal();
@@ -157,17 +157,22 @@ export const useSubmitInputInternal = () => {
 				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, openChat,
 				showToast, dismissToast
 			};
-			const hasNextPath = await postProcessBlock(flowRef.current as Flow, params);
-			if (!hasNextPath) {
-				const currPath = getCurrPath();
-				if (!currPath) {
-					return;
-				}
+			const currPath = getCurrPath();
+			if (!currPath) {
+				return;
+			}
 
-				const block = (flowRef.current as Flow)[currPath];
-				if (!block) {
-					return;
-				}
+			let block = (flowRef.current as Flow)[currPath];
+			// fire event and use final block (if applicable)
+			// finalBlock is used because it's possible users update the block in the event
+			const finalBlock = await firePostProcessBlockEvent(block);
+			const currNumPaths = pathsRef.current.length;
+			if (finalBlock) {
+				await postProcessBlock(finalBlock, params);
+			}
+
+			// if same length, means post-processing did not path to a block
+			if (pathsRef.current.length === currNumPaths) {
 				if (!block.chatDisabled) {
 					setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 				}
