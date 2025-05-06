@@ -50,30 +50,10 @@ const ChatBotBody = () => {
 
 	// shifts scroll position when scroll height changes and determines if a user is scrolling in chat window.
 	useEffect(() => {
-		if (!chatBodyRef.current) {
-			return;
-		}
-
 		if (!isScrollingRef.current) {
 			scrollToBottom();
 		}
 	}, [chatBodyRef.current?.scrollHeight]);
-
-	useEffect(() => {
-		if (!chatBodyRef.current) {
-			return;
-		}
-	
-		const observer = new ResizeObserver(() => {
-			scrollToBottom();
-		});
-	
-		observer.observe(chatBodyRef.current);
-	
-		return () => {
-		  observer.disconnect();
-		};
-	  }, [chatBodyRef, scrollToBottom]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window (throttles for performance).
