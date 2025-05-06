@@ -74,10 +74,14 @@ export const useChatWindowInternal = () => {
 	/**
 	 * Forces state for showing typing indicator.
 	 * 
-	 * @param showTyping boolean indicating whether to have typing indicator shown
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const setTypingIndicator = (showTyping: boolean) => {
-		setIsBotTyping(showTyping);
+	const toggleTypingIndicator = async (active?: boolean) => {
+		if (active !== undefined) {
+			setIsBotTyping(active);
+		} else {
+			setIsBotTyping(prev =>  !prev);
+		}
 	}
 
 	/**
@@ -138,7 +142,7 @@ export const useChatWindowInternal = () => {
 		setViewportHeight,
 		viewportWidth,
 		setViewportWidth,
-		setTypingIndicator,
+		toggleTypingIndicator,
 		scrollToBottom,
 	};
 };
