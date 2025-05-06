@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, useEffect, useRef } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
@@ -39,6 +39,9 @@ const ChatBotBody = () => {
 	// handles bot refs
 	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
 
+	// handles throttling for scroll event
+	const scrollThrottleRef = useRef(false);
+
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
 		...styles?.bodyStyle,
@@ -73,28 +76,38 @@ const ChatBotBody = () => {
 	  }, [chatBodyRef, scrollToBottom]);
 
 	/**
-	 * Checks and updates whether a user is scrolling in chat window.
+	 * Checks and updates whether a user is scrolling in chat window (throttles for performance).
 	 */
 	const updateIsScrolling = () => {
-		if (!chatBodyRef.current) {
+		if (scrollThrottleRef.current) {
 			return;
 		}
 
-		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
-		const isScrolling = scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30);
-		setIsScrolling(isScrolling);
-
-		// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
-		// this is necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom
-		if (!isScrolling) {
-			if (scrollTop + clientHeight >= scrollHeight - 1) {
-				chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+		scrollThrottleRef.current = true;
+		requestAnimationFrame(() => {
+			if (!chatBodyRef.current) {
+				return;
 			}
 
-			if (isChatWindowOpen || settings.general?.embedded) {
-				setUnreadCount(0);
+			const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
+			const isScrolling = scrollTop + clientHeight < scrollHeight - 
+				(settings.chatWindow?.messagePromptOffset ?? 30);
+			setIsScrolling(isScrolling);
+			isScrollingRef.current = isScrolling;
+
+			// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
+			// this is necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom
+			if (!isScrolling) {
+				if (scrollTop + clientHeight >= scrollHeight - 1) {
+					chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
+				}
+				if (isChatWindowOpen || settings.general?.embedded) {
+					setUnreadCount(0);
+				}
 			}
-		}
+
+			scrollThrottleRef.current = false;
+		});
 	};
 
 	/**
