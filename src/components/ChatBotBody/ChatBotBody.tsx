@@ -36,18 +36,17 @@ const ChatBotBody = ({
 	const { messages } = useMessagesContext();
 
 	// handles chat window
-	const { isChatWindowOpen } = useChatWindowInternal();
+	const { isChatWindowOpen, scrollToBottom } = useChatWindowInternal();
 
 	// handles bot states
 	const {
 		isBotTyping,
-		isScrolling,
 		setIsScrolling,
 		setUnreadCount,
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef } = useBotRefsContext();
+	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
 
 	// styles for chat body
 	const bodyStyle: CSSProperties = {
@@ -64,8 +63,8 @@ const ChatBotBody = ({
 		// used to return chat history to correct height
 		setChatScrollHeight(chatBodyRef.current.scrollHeight);
 
-		if (!isScrolling) {
-			chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+		if (!isScrollingRef.current) {
+			scrollToBottom(0);
 		}
 	}, [chatBodyRef.current?.scrollHeight, chatScrollHeight]);
 

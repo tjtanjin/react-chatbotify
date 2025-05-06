@@ -3,15 +3,16 @@ import { useCallback, useEffect, useRef } from "react";
 import { saveChatHistory } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
 import { isChatBotVisible } from "../../utils/displayChecker";
-import { useNotificationInternal } from "./useNotificationsInternal";
-import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
+import { useNotificationInternal } from "./useNotificationsInternal";
+import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useAudioInternal } from "./useAudioInternal";
+import { useChatWindowInternal } from "./useChatWindowInternal";
 import { Message } from "../../types/Message";
 import { RcbEvent } from "../../constants/RcbEvent";
-import { useAudioInternal } from "./useAudioInternal";
 
 /**
  * Internal custom hook for managing sending of messages.
@@ -31,13 +32,15 @@ export const useMessagesInternal = () => {
 	const {
 		audioToggledOn,
 		isChatWindowOpen,
-		isScrolling,
 		setIsBotTyping,
 		setUnreadCount
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { streamMessageMap, chatBodyRef } = useBotRefsContext();
+	const { streamMessageMap, isScrollingRef, chatBodyRef } = useBotRefsContext();
+
+	// handles chat window
+	const { scrollToBottom } = useChatWindowInternal();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -371,7 +374,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// if chatbot is open and user is not scrolling or is repeated stream message, no need to notify
-		if (isChatWindowOpen && !isScrolling || isRepeatedStreamMessage) {
+		if (isChatWindowOpen && !isScrollingRef.current || isRepeatedStreamMessage) {
 			shouldNotify = false;
 		}
 
@@ -381,14 +384,13 @@ export const useMessagesInternal = () => {
 
 		if (
 			!isRepeatedStreamMessage &&
-			((sender !== "USER" && settings.chatWindow?.autoJumpToBottom) || sender === "USER")
+			((sender !== "USER" && settings.chatWindow?.autoJumpToBottom) ||
+			sender === "USER" || !isScrollingRef.current)
 		) {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
 			setTimeout(() => {
-				if (chatBodyRef.current) {
-					chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
-				}
+				scrollToBottom(0);
 			}, 1)
 		}
 	}

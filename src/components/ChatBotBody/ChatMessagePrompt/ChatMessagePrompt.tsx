@@ -4,6 +4,7 @@ import { useBotRefsContext } from "../../../context/BotRefsContext";
 import { useBotStatesContext } from "../../../context/BotStatesContext";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
+import { useChatWindowInternal } from "../../../hooks/internal/useChatWindowInternal";
 
 import "./ChatMessagePrompt.css";
 
@@ -19,10 +20,13 @@ const ChatMessagePrompt = () => {
 	const { styles } = useStylesContext();
 
 	// handles bot states
-	const { unreadCount, isScrolling, setIsScrolling } = useBotStatesContext();
+	const { unreadCount, isScrolling } = useBotStatesContext();
 
 	// handles bot refs
 	const { chatBodyRef } = useBotRefsContext();
+
+	// handles chat window
+	const { scrollToBottom } = useChatWindowInternal();
 
 	// tracks if chat message prompt is hovered
 	const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -46,47 +50,6 @@ const ChatMessagePrompt = () => {
 	 */
 	const handleMouseLeave = () => {
 		setIsHovered(false);
-	};
-
-	/**
-     * Handles scrolling to the bottom of the chat window with specified duration.
-     */
-	function scrollToBottom(duration: number) {
-		if (!chatBodyRef.current) {
-			return;
-		}
-
-		const start = chatBodyRef.current.scrollTop;
-		const end = chatBodyRef.current.scrollHeight - chatBodyRef.current.clientHeight;
-		const change = end - start;
-		const increment = 20;
-		let currentTime = 0;
-	
-		function animateScroll() {
-			if (!chatBodyRef.current) {
-				return;
-			}
-			currentTime += increment;
-			const val = easeInOutQuad(currentTime, start, change, duration);
-			chatBodyRef.current.scrollTop = val;
-			if (currentTime < duration) {
-				requestAnimationFrame(animateScroll);
-			} else {
-				setIsScrolling(false);
-			}
-		}
-		
-		animateScroll();
-	}
-
-	/**
-	 * Helper function for custom scrolling.
-	 */
-	const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
-		t /= d / 2;
-		if (t < 1) return c / 2 * t * t + b;
-		t--;
-		return -c / 2 * (t * (t - 2) - 1) + b;
 	};
 
 	/**

@@ -1,7 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { RcbEvent } from "../../constants/RcbEvent";
 
@@ -15,6 +16,7 @@ export const useChatWindowInternal = () => {
 	// handles bot states
 	const {
 		isChatWindowOpen,
+		isScrolling,
 		setIsChatWindowOpen,
 		viewportHeight,
 		setViewportHeight,
@@ -22,13 +24,20 @@ export const useChatWindowInternal = () => {
 		setViewportWidth,
 		setUnreadCount,
 		setIsBotTyping,
+		setIsScrolling,
 	} = useBotStatesContext();
+
+	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
 
 	// tracks scroll height
 	const [chatScrollHeight, setChatScrollHeight] = useState<number>(0);
+
+	useEffect(() => {
+		isScrollingRef.current = isScrolling;
+	}, [isScrolling]);
 
 	/**
 	 * Toggles chat window.
@@ -74,6 +83,55 @@ export const useChatWindowInternal = () => {
 		setIsBotTyping(showTyping);
 	}
 
+	/**
+	 * Helper function for custom scrolling.
+	 */
+	const easeInOutQuad = useCallback((t: number, b: number, c: number, d: number) => {
+		t /= d / 2;
+		if (t < 1) return c / 2 * t * t + b;
+		t--;
+		return -c / 2 * (t * (t - 2) - 1) + b;
+	}, []);
+
+	/**
+     * Handles scrolling to the bottom of the chat window with specified duration.
+	 * 
+	 * @param duration time in milliseconds to get to bottom
+     */
+	const scrollToBottom = useCallback((duration: number) => {
+		if (!chatBodyRef.current) {
+			return;
+		}
+
+		const end = chatBodyRef.current.scrollHeight - chatBodyRef.current.clientHeight;
+		if (duration <= 0) {
+			chatBodyRef.current.scrollTop = end;
+			setIsScrolling(false);
+			return;
+		}
+
+		const start = chatBodyRef.current.scrollTop;
+		const change = end - start;
+		const increment = 20;
+		let currentTime = 0;
+	
+		const animateScroll = () => {
+			if (!chatBodyRef.current) {
+				return;
+			}
+			currentTime += increment;
+			const val = easeInOutQuad(currentTime, start, change, duration);
+			chatBodyRef.current.scrollTop = val;
+			if (currentTime < duration) {
+				requestAnimationFrame(animateScroll);
+			} else {
+				setIsScrolling(false);
+			}
+		}
+		
+		animateScroll();
+	}, [chatBodyRef])
+
 	return {
 		isChatWindowOpen,
 		setIsChatWindowOpen,
@@ -86,5 +144,6 @@ export const useChatWindowInternal = () => {
 		viewportWidth,
 		setViewportWidth,
 		setTypingIndicator,
+		scrollToBottom,
 	};
 };
