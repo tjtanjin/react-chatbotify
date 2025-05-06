@@ -20,8 +20,15 @@ export const useAudioInternal = () => {
 
 	/**
 	 * Toggles audio feature.
+	 * 
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleAudio = useCallback(async () => {
+	const toggleAudio = useCallback(async (active?: boolean) => {
+		// nothing to do if state is as desired
+		if (active === audioToggledOn) {
+			return;
+		}
+
 		// handles toggle audio event
 		if (settings.event?.rcbToggleAudio) {
 			const event = await callRcbEvent(

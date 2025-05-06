@@ -76,8 +76,15 @@ export const useNotificationInternal = () => {
 
 	/**
 	 * Handles toggling of notification feature.
+	 * 
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleNotifications = useCallback(async () => {
+	const toggleNotifications = useCallback(async (active?: boolean) => {
+		// nothing to do if state is as desired
+		if (active === notificationsToggledOn) {
+			return;
+		}
+
 		// handles toggle notifications event
 		if (settings.event?.rcbToggleNotifications) {
 			const event = await callRcbEvent(

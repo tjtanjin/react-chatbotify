@@ -62,7 +62,7 @@ export const useSubmitInputInternal = () => {
 	const { setTextAreaValue } = useTextAreaInternal();
 
 	// handles chat window
-	const { openChat } = useChatWindowInternal();
+	const { toggleChatWindow } = useChatWindowInternal();
 
 	/**
 	 * Handles sending of user input to check if should send as plain text or sensitive info.
@@ -154,7 +154,7 @@ export const useSubmitInputInternal = () => {
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue, userInput, 
-				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, openChat,
+				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
 				showToast, dismissToast
 			};
 			const currPath = getCurrPath();
@@ -184,8 +184,8 @@ export const useSubmitInputInternal = () => {
 		}, settings.chatInput?.botDelay);
 	}, [timeoutId, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
 		keepVoiceOnRef, voiceToggledOn, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
-		injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, openChat, showToast,
-		dismissToast, flowRef
+		injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
+		showToast, dismissToast, flowRef
 	]);
 
 	/**

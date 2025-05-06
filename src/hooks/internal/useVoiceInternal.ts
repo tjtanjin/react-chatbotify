@@ -21,8 +21,15 @@ export const useVoiceInternal = () => {
 
 	/**
 	 * Toggles voice feature.
+	 * 
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleVoice = useCallback(async () => {
+	const toggleVoice = useCallback(async (active?: boolean) => {
+		// nothing to do if state is as desired
+		if (active === voiceToggledOn) {
+			return;
+		}
+
 		// handles toggle voice event
 		if (settings.event?.rcbToggleVoice) {
 			const event = await callRcbEvent(

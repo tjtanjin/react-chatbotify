@@ -66,7 +66,7 @@ const ChatBotButton = () => {
 					role="button"
 					style={chatButtonStyle}
 					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
-					onClick={toggleChatWindow}
+					onClick={() => toggleChatWindow(true)}
 				>
 					{renderButton()}
 					{!settings.notification?.disabled && settings.notification?.showCount &&

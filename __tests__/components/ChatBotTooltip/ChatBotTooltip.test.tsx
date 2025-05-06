@@ -19,7 +19,7 @@ describe("ChatBotTooltip Component", () => {
 		(useIsDesktopInternal as jest.Mock).mockReturnValue(true); 
 		(useChatWindowInternal as jest.Mock).mockReturnValue({
 			isChatWindowOpen: false,
-			openChat: jest.fn(), 
+			toggleChatWindow: jest.fn(), 
 		});
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
@@ -103,16 +103,16 @@ describe("ChatBotTooltip Component", () => {
 		expect(tooltip).toBeInTheDocument();
 	});
 
-	// Test: Ensure clicking the tooltip calls the openChat function
-	it("calls openChat function when tooltip is clicked", () => {
+	// Test: Ensure clicking the tooltip calls the toggleChatWindow function
+	it("calls toggleChatWindow function when tooltip is clicked", () => {
 		// Mock the function that opens the chat
 		const mockOpenChat = jest.fn();
 		(useChatWindowInternal as jest.Mock).mockReturnValue({
 			isChatWindowOpen: false,
-			openChat: mockOpenChat,
+			toggleChatWindow: mockOpenChat,
 		});
 
-		// Render the component, simulate click event and verify that openChat is called
+		// Render the component, simulate click event and verify that toggleChatWindow is called
 		render(<ChatBotTooltip />);
 		const tooltip = screen.getByText("Chatbot Tooltip");
 		fireEvent.click(tooltip); 

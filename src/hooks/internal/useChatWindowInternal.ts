@@ -38,8 +38,15 @@ export const useChatWindowInternal = () => {
 
 	/**
 	 * Toggles chat window.
+	 * 
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleChatWindow = useCallback(async () => {
+	const toggleChatWindow = useCallback(async (active?: boolean) => {
+		// nothing to do if state is as desired
+		if (active === isChatWindowOpen) {
+			return;
+		}
+
 		// handles toggle chat window event
 		if (settings.event?.rcbToggleChatWindow) {
 			const event = await callRcbEvent(
@@ -60,30 +67,17 @@ export const useChatWindowInternal = () => {
 	}, [isChatWindowOpen]);
 
 	/**
-	 * Handles opening/closing of the chat window.
-	 *
-	 * @param isOpen boolean indicating whether to open/close the chat window
-	 */
-	const openChat = useCallback(async (isOpen: boolean) => {
-		if (isChatWindowOpen === isOpen) {
-			return;
-		}
-		await toggleChatWindow();
-	}, [isChatWindowOpen]);
-
-	/**
 	 * Forces state for showing typing indicator.
 	 * 
 	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleTypingIndicator = async (active?: boolean) => {
+	const toggleTypingIndicator = useCallback(async (active?: boolean) => {
 		if (active !== undefined) {
 			setIsBotTyping(active);
 		} else {
 			setIsBotTyping(prev =>  !prev);
 		}
-	}
-
+	}, [])
 	/**
 	 * Helper function for custom scrolling.
 	 */
@@ -137,7 +131,6 @@ export const useChatWindowInternal = () => {
 		isChatWindowOpen,
 		setIsChatWindowOpen,
 		toggleChatWindow,
-		openChat,
 		viewportHeight,
 		setViewportHeight,
 		viewportWidth,
