@@ -125,17 +125,31 @@ export const useTextAreaInternal = () => {
 
 	/**
 	 * Toggles text area disabled.
+	 * 
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleTextAreaDisabled = useCallback(() => {
+	const toggleTextAreaDisabled = useCallback((active?: boolean) => {
+		// nothing to do if state is as desired
+		if (active === textAreaDisabled) {
+			return;
+		}
+
 		setTextAreaDisabled(prev => !prev);
-	}, [])
+	}, [textAreaDisabled])
 
 	/**
 	 * Toggles text area sensitive mode.
+	 * 
+	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleTextAreaSensitiveMode = useCallback(() => {
+	const toggleTextAreaSensitiveMode = useCallback((active?: boolean) => {
+		// nothing to do if state is as desired
+		if (active === textAreaSensitiveMode) {
+			return;
+		}
+
 		setTextAreaSensitiveMode(prev => !prev);
-	}, [])
+	}, [textAreaSensitiveMode])
 
 	// todo: we can just standardize to export and use toggles, clean up in future
 	return {
