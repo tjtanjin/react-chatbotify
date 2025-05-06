@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, CSSProperties, useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 
 import ChatMessagePrompt from "./ChatMessagePrompt/ChatMessagePrompt";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
@@ -15,17 +15,8 @@ import "./ChatBotBody.css";
 
 /**
  * Contains chat messages between the user and bot.
- * 
- * @param chatScrollHeight scroll height in the chat window
- * @param setChatScrollHeight setter for tracking chat window scroll height
  */
-const ChatBotBody = ({
-	chatScrollHeight,
-	setChatScrollHeight,
-}: {
-	chatScrollHeight: number;
-	setChatScrollHeight: Dispatch<SetStateAction<number>>;
-}) => {
+const ChatBotBody = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
@@ -60,13 +51,26 @@ const ChatBotBody = ({
 			return;
 		}
 
-		// used to return chat history to correct height
-		setChatScrollHeight(chatBodyRef.current.scrollHeight);
-
 		if (!isScrollingRef.current) {
-			scrollToBottom(0);
+			scrollToBottom();
 		}
-	}, [chatBodyRef.current?.scrollHeight, chatScrollHeight]);
+	}, [chatBodyRef.current?.scrollHeight]);
+
+	useEffect(() => {
+		if (!chatBodyRef.current) {
+			return;
+		}
+	
+		const observer = new ResizeObserver(() => {
+			scrollToBottom();
+		});
+	
+		observer.observe(chatBodyRef.current);
+	
+		return () => {
+		  observer.disconnect();
+		};
+	  }, [chatBodyRef, scrollToBottom]);
 
 	/**
 	 * Checks and updates whether a user is scrolling in chat window.
@@ -75,9 +79,6 @@ const ChatBotBody = ({
 		if (!chatBodyRef.current) {
 			return;
 		}
-
-		// used to return chat history to correct height
-		setChatScrollHeight(chatBodyRef.current.scrollHeight);
 
 		const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
 		const isScrolling = scrollTop + clientHeight < scrollHeight - (settings.chatWindow?.messagePromptOffset ?? 30);

@@ -106,7 +106,7 @@ export const useBotEffectsInternal = () => {
 	// scrolls to bottom if bot is typing and user is not scrolling
 	useEffect(() => {
 		if (!isScrollingRef.current && chatBodyRef?.current) {
-			scrollToBottom(0);
+			scrollToBottom();
 		}
 	}, [isBotTyping])
 

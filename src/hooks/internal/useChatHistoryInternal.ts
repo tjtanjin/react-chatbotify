@@ -2,7 +2,6 @@ import { useCallback } from "react";
 
 import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
 import { useRcbEventInternal } from "./useRcbEventInternal";
-import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
@@ -37,9 +36,6 @@ export const useChatHistoryInternal = () => {
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
 
-	// handles chat window
-	const { chatScrollHeight } = useChatWindowInternal();
-
 	/**
 	 * Loads and shows chat history in the chat window.
 	 * 
@@ -59,6 +55,7 @@ export const useChatHistoryInternal = () => {
 			}
 		}
 		setIsLoadingChatHistory(true);
+		const chatScrollHeight = chatBodyRef.current?.scrollHeight ?? 0;
 		loadChatHistory(settings, styles, chatHistory, setMessages,
 			chatBodyRef, chatScrollHeight, setIsLoadingChatHistory, setHasChatHistoryLoaded,
 		);

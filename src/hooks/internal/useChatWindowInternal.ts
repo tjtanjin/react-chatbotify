@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -31,9 +31,6 @@ export const useChatWindowInternal = () => {
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
-
-	// tracks scroll height
-	const [chatScrollHeight, setChatScrollHeight] = useState<number>(0);
 
 	useEffect(() => {
 		isScrollingRef.current = isScrolling;
@@ -98,7 +95,7 @@ export const useChatWindowInternal = () => {
 	 * 
 	 * @param duration time in milliseconds to get to bottom
      */
-	const scrollToBottom = useCallback((duration: number) => {
+	const scrollToBottom = useCallback((duration: number = 0) => {
 		if (!chatBodyRef.current) {
 			return;
 		}
@@ -137,8 +134,6 @@ export const useChatWindowInternal = () => {
 		setIsChatWindowOpen,
 		toggleChatWindow,
 		openChat,
-		chatScrollHeight,
-		setChatScrollHeight,
 		viewportHeight,
 		setViewportHeight,
 		viewportWidth,
