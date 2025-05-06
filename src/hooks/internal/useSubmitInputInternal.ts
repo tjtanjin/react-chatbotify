@@ -166,14 +166,19 @@ export const useSubmitInputInternal = () => {
 			// fire event and use final block (if applicable)
 			// finalBlock is used because it's possible users update the block in the event
 			const finalBlock = await firePostProcessBlockEvent(block);
-			const currNumPaths = pathsRef.current.length;
-			if (finalBlock) {
-				await postProcessBlock(finalBlock, params);
+
+			// if no final block means event was blocked, so just return
+			if (!finalBlock) {
+				return;
 			}
 
-			// if same length, means post-processing did not path to a block
+			const currNumPaths = pathsRef.current.length;
+			await postProcessBlock(finalBlock, params);
+			// if same length, means post-processing did not path to a block and if so, reset to current block states
 			if (pathsRef.current.length === currNumPaths) {
-				if (!block.chatDisabled) {
+				if ("chatDisabled" in block && typeof block.chatDisabled === "boolean") {
+					setTextAreaDisabled(block.chatDisabled);
+				} else {
 					setTextAreaDisabled(settings.chatInput?.disabled as boolean);
 				}
 				processIsSensitive(block, params, setTextAreaSensitiveMode);

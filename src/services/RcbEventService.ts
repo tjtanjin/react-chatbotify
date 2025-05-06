@@ -24,7 +24,9 @@ const cancellableMap = {
 	[RcbEvent.DISMISS_TOAST]: true,
 	[RcbEvent.USER_SUBMIT_TEXT]: true,
 	[RcbEvent.USER_UPLOAD_FILE]: true,
-	[RcbEvent.TEXT_AREA_CHANGE_VALUE]: true
+	[RcbEvent.TEXT_AREA_CHANGE_VALUE]: true,
+	[RcbEvent.PRE_PROCESS_BLOCK]: true,
+	[RcbEvent.POST_PROCESS_BLOCK]: true,
 }
 
 /**
