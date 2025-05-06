@@ -40,9 +40,9 @@ describe("ChatBotContainer Component", () => {
 
 		(useChatWindowInternal as jest.Mock).mockReturnValue({
 			isChatWindowOpen: true,
-			chatScrollHeight: 100,
 			viewportHeight: 600,
 			viewportWidth: 300,
+			scrollToBottom: jest.fn(),
 			setChatScrollHeight: jest.fn(),
 		});
 
@@ -66,6 +66,7 @@ describe("ChatBotContainer Component", () => {
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: { current: {} },
 			pathsRef: { current: ["start"] },
+			isScrollingRef: { current: false },
 			chatBodyRef: { current: document.createElement('div') },
 			streamMessageMap: new Map(),
 			paramsInputRef: { current: null },

@@ -23,6 +23,7 @@ describe("useMessagesInternal", () => {
 	const mockCallRcbEvent = jest.fn();
 	const mockStreamMessageMap = { current: new Map() };
 	const mockMessages: Message[] = [];
+	const mockIsScrollingRef = { current: false };
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -45,6 +46,7 @@ describe("useMessagesInternal", () => {
 		});
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			streamMessageMap: mockStreamMessageMap,
+			isScrollingRef: mockIsScrollingRef,
 		});
 		(useRcbEventInternal as jest.Mock).mockReturnValue({
 			callRcbEvent: mockCallRcbEvent,

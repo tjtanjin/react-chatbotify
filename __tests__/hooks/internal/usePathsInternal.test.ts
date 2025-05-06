@@ -23,6 +23,7 @@ describe("usePathsInternal Hook", () => {
 	const mockBotIdRef = { current: "bot-1" };
 	const mockFlowRef = { current: { id: "test-flow" } };
 	const mockPathsRef = { current: ["path1", "path2"] };
+	const mockIsScrollingRef = { current: false };
 	const mockPaths = ["path1", "path2"];
 
 	beforeEach(() => {
@@ -48,6 +49,7 @@ describe("usePathsInternal Hook", () => {
 			botIdRef: mockBotIdRef,
 			flowRef: mockFlowRef,
 			pathsRef: mockPathsRef,
+			isScrollingRef: mockIsScrollingRef,
 		});
 
 		// Mock emitRcbEvent to return an object with defaultPrevented

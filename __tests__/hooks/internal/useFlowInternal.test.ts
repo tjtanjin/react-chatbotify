@@ -24,6 +24,7 @@ describe("useFlowInternal Hook", () => {
 	const setToastsMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
 	const pathsRefMock = { current: ["start"] };
+	const isScrollingRefMock = { current: false };
 	const hasFlowStartedMock = true;
 	const mockSettings = {
 		chatHistory: {
@@ -38,7 +39,11 @@ describe("useFlowInternal Hook", () => {
 		(useMessagesContext as jest.Mock).mockReturnValue({ setMessages: setMessagesMock });
 		(usePathsContext as jest.Mock).mockReturnValue({ setPaths: setPathsMock });
 		(useToastsContext as jest.Mock).mockReturnValue({ setToasts: setToastsMock });
-		(useBotRefsContext as jest.Mock).mockReturnValue({ flowRef: flowRefMock, pathsRef: pathsRefMock });
+		(useBotRefsContext as jest.Mock).mockReturnValue({
+			flowRef: flowRefMock,
+			isScrollingRef: isScrollingRefMock,
+			pathsRef: pathsRefMock
+		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({ hasFlowStarted: hasFlowStartedMock });
 		(useSettingsContext as jest.Mock).mockReturnValue({ settings: mockSettings });
 	});
@@ -116,7 +121,10 @@ describe("useFlowInternal Hook", () => {
 	// Test to check that getFlow returns different flowRef values correctly
 	it("should handle different flowRef values", () => {
 		const differentFlowRefMock = { current: { id: "different-flow" } };
-		(useBotRefsContext as jest.Mock).mockReturnValue({ flowRef: differentFlowRefMock });
+		(useBotRefsContext as jest.Mock).mockReturnValue({
+			flowRef: differentFlowRefMock,
+			isScrollingRef: isScrollingRefMock,
+		});
 		const { result } = renderHook(() => useFlowInternal());
 
 		const flow = result.current.getFlow();

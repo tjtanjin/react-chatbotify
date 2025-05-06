@@ -14,6 +14,7 @@ jest.mock("../../../src/context/BotRefsContext", () => ({
 				clientHeight: 400,
 			},
 		},
+		isScrollingRef: { current: false },
 	})),
 }));
 
