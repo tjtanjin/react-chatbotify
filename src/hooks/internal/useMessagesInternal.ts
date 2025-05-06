@@ -144,7 +144,7 @@ export const useMessagesInternal = () => {
 
 		setUnreadCount(prev => prev + 1);
 		await simulateStreamDoneTask;
-		saveChatHistory(messages);
+		saveChatHistory(messagesRef.current);
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopSimulateStreamMessage) {
@@ -155,7 +155,7 @@ export const useMessagesInternal = () => {
 		}
 
 		return message.id;
-	}, [settings, messages, callRcbEvent]);
+	}, [settings, callRcbEvent]);
 
 	/**
 	 * Injects a message at the end of the messages array.
@@ -347,17 +347,17 @@ export const useMessagesInternal = () => {
 	 * needs to be done in this case to avoid issues such as users being unable to scroll away or notification sound
 	 * spams. For other message inputs (e.g. injectMessage), handlePostMessageUpdate is only called once.
 	 * 
-	 * @param messages messages after update
+	 * @param updatedMessages messages after update
 	 * @param isRepeatedStreamMessage boolean indicating whether to update scroll position
 	 */
-	const handlePostMessagesUpdate = (messages: Array<Message>, isRepeatedStreamMessage: boolean = false) => {
-		saveChatHistory(messages);
+	const handlePostMessagesUpdate = (updatedMessages: Array<Message>, isRepeatedStreamMessage: boolean = false) => {
+		saveChatHistory(updatedMessages);
 
 		// tracks if notification should be played
 		let shouldNotify = true;
 
 		// if messages are empty (i.e. fully cleared), nothing to do
-		const lastMessage = messages[messages.length - 1];
+		const lastMessage = updatedMessages[updatedMessages.length - 1];
 		if (!lastMessage) {
 			return;
 		}
