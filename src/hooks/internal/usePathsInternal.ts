@@ -111,6 +111,14 @@ export const usePathsInternal = () => {
 			block = event.data.block;
 		}
 
+		// ***** start of preprocessing logic *****
+
+		setIsBotTyping(true);
+		if (settings.chatInput?.blockSpam) {
+			setTextAreaDisabled(true);
+		}
+		setTextAreaSensitiveMode(false);
+
 		const params = {
 			prevPath,
 			currPath,
@@ -156,6 +164,8 @@ export const usePathsInternal = () => {
 		if (currPath !== prevPath) {
 			streamMessageMap.current.clear();
 		}
+
+		// ***** end of preprocessing logic *****
 	}, [
 		flowRef,
 		updateTextAreaFocus,
@@ -209,13 +219,6 @@ export const usePathsInternal = () => {
 				return false;
 			}
 		}
-
-		// mimics post-processing behavior
-		setIsBotTyping(true);
-		if (settings.chatInput?.blockSpam) {
-			setTextAreaDisabled(true);
-		}
-		setTextAreaSensitiveMode(false);
 
 		// update paths and trigger path change handling
 		setPaths(prev => {

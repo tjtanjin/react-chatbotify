@@ -134,7 +134,24 @@ export const useSubmitInputInternal = () => {
 			setInputLength(0);
 		}
 
-		// disables text area is block spam is true
+		// ***** start of postprocessing logic *****
+
+		const currPath = getCurrPath();
+		if (!currPath) {
+			return;
+		}
+
+		let block = (flowRef.current as Flow)[currPath];
+		// fire event and use final block (if applicable)
+		// finalBlock is used because it's possible users update the block in the event
+		const finalBlock = await firePostProcessBlockEvent(block);
+
+		// if no final block means event was prevented, so just return
+		if (!finalBlock) {
+			return;
+		}
+
+		// disables text area if block spam is true
 		if (settings.chatInput?.blockSpam) {
 			setTextAreaDisabled(true);
 		}
@@ -157,29 +174,14 @@ export const useSubmitInputInternal = () => {
 				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
 				showToast, dismissToast
 			};
-			const currPath = getCurrPath();
-			if (!currPath) {
-				return;
-			}
-
-			let block = (flowRef.current as Flow)[currPath];
-			// fire event and use final block (if applicable)
-			// finalBlock is used because it's possible users update the block in the event
-			const finalBlock = await firePostProcessBlockEvent(block);
-
-			// if no final block means event was blocked, so just return
-			if (!finalBlock) {
-				return;
-			}
-
 			const currNumPaths = pathsRef.current.length;
 			await postProcessBlock(finalBlock, params);
 			// if same length, means post-processing did not path to a block and if so, reset to current block states
 			if (pathsRef.current.length === currNumPaths) {
-				if ("chatDisabled" in block && typeof block.chatDisabled === "boolean") {
-					setTextAreaDisabled(block.chatDisabled);
+				if ("chatDisabled" in block) {
+					setTextAreaDisabled(!!block.chatDisabled);
 				} else {
-					setTextAreaDisabled(settings.chatInput?.disabled as boolean);
+					setTextAreaDisabled(!!settings.chatInput?.disabled);
 				}
 				processIsSensitive(block, params, setTextAreaSensitiveMode);
 				setBlockAllowsAttachment(typeof block.file === "function");
@@ -187,6 +189,9 @@ export const useSubmitInputInternal = () => {
 				setIsBotTyping(false);
 			}
 		}, settings.chatInput?.botDelay);
+
+		// ***** end of postprocessing logic *****
+
 	}, [timeoutId, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
 		keepVoiceOnRef, voiceToggledOn, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
 		injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
