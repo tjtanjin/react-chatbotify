@@ -99,10 +99,10 @@ export const useTextAreaInternal = () => {
 	 * Focuses on text area.
 	 */
 	const focusTextArea = useCallback(() => {
-		if (!textAreaDisabled && inputRef.current) {
+		if (inputRef.current) {
 			inputRef.current.focus();
 		}
-	}, [textAreaDisabled]);
+	}, []);
 
 	/**
 	 * Blurs on text area.
