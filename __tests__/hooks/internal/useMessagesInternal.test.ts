@@ -77,8 +77,8 @@ describe("useMessagesInternal", () => {
 		const { result } = renderHook(() => useMessagesInternal());
 
 		await act(async () => {
-			const messageId = await result.current.injectMessage("Test message", "BOT");
-			expect(messageId).toBeTruthy();
+			const message = await result.current.injectMessage("Test message", "BOT");
+			expect(message).toBeTruthy();
 		});
 
 		expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({ type: "ADD" }));
@@ -117,8 +117,8 @@ describe("useMessagesInternal", () => {
 		const { result } = renderHook(() => useMessagesInternal());
 
 		await act(async () => {
-			const messageId = await result.current.streamMessage("Test stream", "BOT");
-			expect(messageId).toBeTruthy();
+			const message = await result.current.streamMessage("Test stream", "BOT");
+			expect(message).toBeTruthy();
 		});
 
 		expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({ type: "ADD" }));

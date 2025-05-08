@@ -110,7 +110,7 @@ export const useMessagesInternal = () => {
 	 */
 	const simulateStreamMessage = useCallback(async (content: string,
 		sender = "BOT", simulateStreamChunker: ((content: string) => Array<string>) | null = null
-	): Promise<string | null> => {
+	): Promise<Message | null> => {
 		if (typeof content !== "string") {
 			throw new Error("Content must be of type string to simulate stream.");
 		}
@@ -124,9 +124,10 @@ export const useMessagesInternal = () => {
 				RcbEvent.START_SIMULATE_STREAM_MESSAGE,
 				{ message }
 			);
-			if (event.defaultPrevented) return null;
-			simulateStreamChunker =
-				event.data.simulateStreamChunker || simulateStreamChunker;
+			if (event.defaultPrevented) {
+				return null;
+			}
+			simulateStreamChunker = event.data.simulateStreamChunker || simulateStreamChunker;
 			message = event.data.message;
 		}
 
@@ -188,12 +189,9 @@ export const useMessagesInternal = () => {
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopSimulateStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
-			if (event.defaultPrevented) {
-				return message.id;
-			}
+			await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
 		}
-		return message.id;
+		return message;
 	}, [settings, callRcbEvent, dispatch, handlePostMessagesUpdate, messagesRef,
 		setIsBotTyping, setUnreadCount, isChatWindowOpen, speakAudio
 	]);
@@ -205,7 +203,7 @@ export const useMessagesInternal = () => {
 	 * @param sender sender of the message, defaults to bot
 	 */
 	const injectMessage = useCallback(async (content: string | JSX.Element,
-		sender = "BOT"): Promise<string | null> => {
+		sender = "BOT"): Promise<Message | null> => {
 
 		// always convert to uppercase for checks
 		sender = sender.toUpperCase();
@@ -213,7 +211,9 @@ export const useMessagesInternal = () => {
 		let message = createMessage(content, sender);
 		if (settings.event?.rcbPreInjectMessage) {
 			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, { message });
-			if (event.defaultPrevented) return null;
+			if (event.defaultPrevented) {
+				return null;
+			}
 			message = event.data.message;
 		}
 
@@ -232,7 +232,7 @@ export const useMessagesInternal = () => {
 
 		dispatch({ type: "ADD", payload: message });
 		handlePostMessagesUpdate([...messagesRef.current, message]);
-		return message.id;
+		return message;
 	}, [settings, callRcbEvent, dispatch, handlePostMessagesUpdate,
 		messagesRef, isChatWindowOpen, speakAudio, setUnreadCount
 	]);
@@ -253,7 +253,9 @@ export const useMessagesInternal = () => {
 		// handles remove message event
 		if (settings.event?.rcbRemoveMessage) {
 			const event = await callRcbEvent(RcbEvent.REMOVE_MESSAGE, { message });
-			if (event.defaultPrevented) return null;
+			if (event.defaultPrevented) {
+				return null;
+			}
 		}
 
 		dispatch({ type: "REMOVE", payload: messageId });
@@ -271,7 +273,7 @@ export const useMessagesInternal = () => {
 	 * @param sender sender of the message, defaults to bot
 	 */
 	const streamMessage = useCallback(async (content: string | JSX.Element,
-		sender = "BOT"): Promise<string | null> => {
+		sender = "BOT"): Promise<Message | null> => {
 
 		// always convert to uppercase for checks
 		sender = sender.toUpperCase();
@@ -282,7 +284,9 @@ export const useMessagesInternal = () => {
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
 				const event = await callRcbEvent(RcbEvent.START_STREAM_MESSAGE, { message });
-				if (event.defaultPrevented) return null;
+				if (event.defaultPrevented) {
+					return null;
+				}
 			}
 
 			setIsBotTyping(false);
@@ -290,18 +294,20 @@ export const useMessagesInternal = () => {
 			handlePostMessagesUpdate([...messagesRef.current, message]);
 			streamMessageMap.current.set(sender, message.id);
 			setUnreadCount((prev) => prev + 1);
-			return message.id;
+			return message;
 		}
 
 		const message = { ...createMessage(content, sender), id: streamMessageMap.current.get(sender)! };
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
 			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, { message });
-			if (event.defaultPrevented) return null;
+			if (event.defaultPrevented) {
+				return null;
+			}
 		}
 		dispatch({ type: "UPDATE", payload: message });
 		handlePostMessagesUpdate(messagesRef.current, true);
-		return streamMessageMap.current.get(sender)!;
+		return message;
 	}, [callRcbEvent, settings.event, dispatch, handlePostMessagesUpdate,
 		messagesRef, setIsBotTyping, setUnreadCount, streamMessageMap
 	]);
@@ -342,7 +348,9 @@ export const useMessagesInternal = () => {
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
 			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, { message });
-			if (event.defaultPrevented) return false;
+			if (event.defaultPrevented) {
+				return false;
+			}
 		}
 
 		// remove sender from streaming list and save messages

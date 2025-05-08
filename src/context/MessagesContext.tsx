@@ -2,6 +2,8 @@ import React, {
 	createContext,
 	useContext,
 	useReducer,
+	useRef,
+	useEffect,
 	ReactNode,
 	Dispatch,
 } from "react";
@@ -22,44 +24,45 @@ const MessagesContext = createContext<MessagesContextType>({
 	dispatch: () => null,
 	messagesRef: { current: [] },
 });
-const useMessagesContext = (): MessagesContextType => useContext(MessagesContext);
+const useMessagesContext = (): MessagesContextType =>
+	useContext(MessagesContext);
 
-/**
- * Declares ref outside reducer so it can be synced inline with state.
- */
-const messagesRef = { current: [] as Message[] };
 
 /**
  * Creates a reducer for managing message state transitions.
  */
 const messagesReducer = (state: Message[], action: MessagesAction): Message[] => {
-	let newState = state;
 	switch (action.type) {
 	case "ADD":
-		newState = [...state, action.payload];
-		break;
+		return [...state, action.payload];
 	case "REMOVE":
-		newState = state.filter((m) => m.id !== action.payload);
-		break;
+		return state.filter((m) => m.id !== action.payload);
 	case "REPLACE":
-		newState = action.payload;
-		break;
+		return action.payload;
 	case "UPDATE":
-		newState = state.map((m) =>
+		return state.map((m) =>
 			m.id === action.payload.id ? action.payload : m
 		);
-		break;
+	default:
+		return state;
 	}
-	// Sync the ref immediately inside reducer
-	messagesRef.current = newState;
-	return newState;
 };
+
 
 /**
  * Creates provider to wrap the chatbot container.
  */
 const MessagesProvider = ({ children }: { children: ReactNode }) => {
+	// Use reducer for atomic message operations
 	const [messages, dispatch] = useReducer(messagesReducer, []);
+	// Ref tracks latest messages for non-render logic
+	const messagesRef = useRef<Message[]>(messages);
+
+	// Sync the ref whenever messages state changes
+	useEffect(() => {
+		messagesRef.current = messages;
+	}, [messages]);
+
 	return (
 		<MessagesContext.Provider value={{ messages, dispatch, messagesRef }}>
 			{children}
