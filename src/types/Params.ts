@@ -15,7 +15,7 @@ export type Params = {
 	simulateStreamMessage: (content: string, sender?: string,
 		simulateStreamChunker?: ((content: string) => Array<string>)) => Promise<Message | null>;
 	streamMessage: (content: string | JSX.Element, sender?: string) => Promise<Message | null>;
-	removeMessage: (id: string) => Promise<string | null>;
+	removeMessage: (id: string) => Promise<Message | null>;
 	endStreamMessage: (sender: string) => Promise<boolean>;
 	showToast: (content: string | JSX.Element, timeout?: number) => Promise<string | null>;
 	dismissToast: (id: string) => Promise<string | null>;

@@ -242,7 +242,7 @@ export const useMessagesInternal = () => {
 	 * 
 	 * @param messageId id of message to remove
 	 */
-	const removeMessage = useCallback(async (messageId: string): Promise<string | null> => {
+	const removeMessage = useCallback(async (messageId: string): Promise<Message | null> => {
 		const message = messagesRef.current.find((m) => m.id === messageId);
 
 		// nothing to remove if no such message
@@ -261,7 +261,7 @@ export const useMessagesInternal = () => {
 		dispatch({ type: "REMOVE", payload: messageId });
 		handlePostMessagesUpdate(messagesRef.current.filter((m) => m.id !== messageId));
 		setUnreadCount((prev) => Math.max(prev - 1, 0));
-		return messageId;
+		return message;
 	}, [callRcbEvent, settings.event?.rcbRemoveMessage, dispatch,
 		handlePostMessagesUpdate, messagesRef, setUnreadCount
 	]);

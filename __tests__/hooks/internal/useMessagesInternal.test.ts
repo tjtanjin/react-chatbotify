@@ -105,8 +105,8 @@ describe("useMessagesInternal", () => {
 		const { result } = renderHook(() => useMessagesInternal());
 
 		await act(async () => {
-			const removedId = await result.current.removeMessage(mockMessageId);
-			expect(removedId).toBe(mockMessageId);
+			const removed = await result.current.removeMessage(mockMessageId);
+			expect(removed).toBe(mockMessageId);
 		});
 
 		expect(dispatchMock).toHaveBeenCalledWith({ type: "REMOVE", payload: mockMessageId });
