@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback } from "react";
 
 import { saveChatHistory } from "../../services/ChatHistoryService";
 import { createMessage } from "../../utils/messageBuilder";
@@ -21,16 +21,11 @@ export const useMessagesInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
-	// handles messages
-	const { messages, setMessages } = useMessagesContext();
-	const messagesRef = useRef<Array<Message>>(messages);
-	useEffect(() => {
-		messagesRef.current = messages;
-	}, [messages])
+	// handles messages (now using reducer dispatch)
+	const { messages, dispatch, messagesRef } = useMessagesContext();
 
 	// handles bot states
 	const {
-		audioToggledOn,
 		isChatWindowOpen,
 		setIsBotTyping,
 		setUnreadCount
@@ -52,293 +47,6 @@ export const useMessagesInternal = () => {
 	const { playNotificationSound } = useNotificationInternal();
 
 	/**
-	 * Simulates the streaming of a message from the bot.
-	 * 
-	 * @param content message string to simulate stream for
-	 * @param simulateStreamChunker function to override chunking of string for streaming simulation
-	 */
-	const simulateStreamMessage = useCallback(async (content: string,
-		sender = "BOT", simulateStreamChunker: ((content: string) => Array<string>) | null = null
-	): Promise<string | null> => {
-		// only string type can go through simulated stream message
-		if (typeof content !== "string") {
-			throw new Error("Content must be of type string to simulate stream.");
-		}
-
-		// always convert to uppercase for checks
-		sender = sender.toUpperCase();
-
-		let message = createMessage(content, sender);
-
-		if (settings.event?.rcbStartSimulateStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.START_SIMULATE_STREAM_MESSAGE, {message});
-			if (event.defaultPrevented) {
-				return null;
-			}
-			simulateStreamChunker = event.data.simulateStreamChunker
-				? event.data.simulateStreamChunker
-				: simulateStreamChunker;
-			message = event.data.message;
-		}
-		
-		// stop bot typing when simulating stream
-		setIsBotTyping(false);
-
-		let streamSpeed = 30;
-		if (settings.botBubble?.streamSpeed) {
-			streamSpeed = settings.botBubble?.streamSpeed as number;
-		} else {
-			streamSpeed = settings.userBubble?.streamSpeed as number;
-		}
-
-		// set an initial empty message to be used for simulating streaming
-		const placeholderMessage = {...message, content: ""};
-		setMessages(prevMessages => {
-			const updatedMessages = [...prevMessages, placeholderMessage];
-			handlePostMessagesUpdate(updatedMessages);
-			return updatedMessages;
-		});
-
-		// initialize default message to empty with stream index position 0
-		let streamMessage = message.content as string | string[];
-		if (simulateStreamChunker) {
-			streamMessage = simulateStreamChunker(streamMessage as string);
-		}
-		let streamIndex = 0;
-		const endStreamIndex = streamMessage.length;
-
-		// speak audio if conditions are met
-		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
-			if (typeof message.content === "string" && message.content.trim() !== "") {
-				speakAudio(message.content);
-			}
-		}
-
-		const simulateStreamDoneTask: Promise<void> = new Promise(resolve => {
-			const intervalId = setInterval(() => {
-			// consider streaming done once end index is reached or exceeded
-			// when streaming is done, remove task and resolve the promise
-				if (streamIndex >= endStreamIndex) {
-					clearInterval(intervalId);
-					resolve();
-					return;
-				}
-
-				setMessages((prevMessages) => {
-					const updatedMessages = [...prevMessages];
-					for (let i = updatedMessages.length - 1; i >= 0; i--) {
-						if (updatedMessages[i].id === placeholderMessage.id) {
-							const character = streamMessage[streamIndex];
-							if (character) {
-								placeholderMessage.content += character;
-								updatedMessages[i] = placeholderMessage;
-							}
-							streamIndex++;
-							break;
-						}
-					}
-					return updatedMessages;
-				});
-			}, streamSpeed);
-		});
-
-		setUnreadCount(prev => prev + 1);
-		await simulateStreamDoneTask;
-		saveChatHistory(messagesRef.current);
-
-		// handles stop stream message event
-		if (settings.event?.rcbStopSimulateStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, {message});
-			if (event.defaultPrevented) {
-				return message.id;
-			}
-		}
-
-		return message.id;
-	}, [settings, callRcbEvent]);
-
-	/**
-	 * Injects a message at the end of the messages array.
-	 * 
-	 * @param content message content to inject
-	 * @param sender sender of the message, defaults to bot
-	 */
-	const injectMessage = useCallback(async (content: string | JSX.Element,
-		sender = "BOT"): Promise<string | null> => {
-
-		// always convert to uppercase for checks
-		sender = sender.toUpperCase();
-
-		let message = createMessage(content, sender);
-
-		// handles pre-message inject event
-		if (settings.event?.rcbPreInjectMessage) {
-			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {message});
-			if (event.defaultPrevented) {
-				return null;
-			}
-			message = event.data.message;
-		}
-
-		// speak audio if conditions are met
-		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
-			if (typeof message.content === "string" && message.content.trim() !== "") {
-				speakAudio(message.content);
-			}
-		}
-
-		// handles post-message inject event
-		setUnreadCount(prev => prev + 1);
-		if (settings.event?.rcbPostInjectMessage) {
-			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, {message});
-		}
-		setMessages((prevMessages) => {
-			const updatedMessages = [...prevMessages, message];
-			handlePostMessagesUpdate(updatedMessages);
-			return updatedMessages;
-		});
-
-		return message.id;
-	}, [settings, audioToggledOn, isChatWindowOpen, callRcbEvent]);
-
-	/**
-	 * Removes a message with the given id.
-	 * 
-	 * @param messageId id of message to remove
-	 */
-	const removeMessage = useCallback(async (messageId: string): Promise<string | null> => {
-		const message = messagesRef.current.find(msg => msg.id === messageId);
-
-		// nothing to remove if no such message
-		if (!message) {
-			return null;
-		}
-	
-		// handles remove message event
-		if (settings.event?.rcbRemoveMessage) {
-			const event = await callRcbEvent(RcbEvent.REMOVE_MESSAGE, {message});
-			if (event.defaultPrevented) {
-				return null;
-			}
-		}
-
-		setMessages((prevMessages) => {
-			const updatedMessages = prevMessages.filter(message => message.id !== messageId);
-			handlePostMessagesUpdate(updatedMessages);
-			return updatedMessages;
-		});
-		setUnreadCount((prevCount) => Math.max(prevCount - 1, 0));
-		return messageId;
-	}, [callRcbEvent, settings.event?.rcbRemoveMessage]);
-
-	/**
-	 * Streams data into the last message at the end of the messages array with given type.
-	 * 
-	 * @param content message content to inject
-	 * @param sender sender of the message, defaults to bot
-	 */
-	const streamMessage = useCallback(async (content: string | JSX.Element,
-		sender = "BOT"): Promise<string | null> => {
-
-		// always convert to uppercase for checks
-		sender = sender.toUpperCase();
-
-		if (!streamMessageMap.current.has(sender)) {
-			const message = createMessage(content, sender);
-
-			// handles start stream message event
-			if (settings.event?.rcbStartStreamMessage) {
-				const event = await callRcbEvent(RcbEvent.START_STREAM_MESSAGE, {message});
-				if (event.defaultPrevented) {
-					return null;
-				}
-			}
-
-			setIsBotTyping(false);
-			setMessages((prevMessages) => {
-				const updatedMessages = [...prevMessages, message];
-				handlePostMessagesUpdate(updatedMessages);
-				return updatedMessages;
-			});
-			streamMessageMap.current.set(sender, message.id);
-			setUnreadCount(prev => prev + 1);
-			return message.id;
-		}
-
-		const message = {...createMessage(content, sender), id: streamMessageMap.current.get(sender) as string};
-		// handles chunk stream message event
-		if (settings.event?.rcbChunkStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, {message});
-			if (event.defaultPrevented) {
-				return null;
-			}
-		}
-
-		setMessages((prevMessages) => {
-			const updatedMessages = [...prevMessages];
-
-			for (let i = updatedMessages.length - 1; i >= 0; i--) {
-				if (updatedMessages[i].id === message.id) {
-					updatedMessages[i] = message;
-					break;
-				}
-			}
-			handlePostMessagesUpdate(updatedMessages, true);
-			return updatedMessages;
-		});
-		return streamMessageMap.current.get(sender) ?? null;
-	},[callRcbEvent, settings.event?.rcbChunkStreamMessage, settings.event?.rcbStartStreamMessage, streamMessageMap]);
-
-	/**
-	 * Sets the streaming mode of the chatbot.
-	 * 
-	 * @param sender sender whose stream is being ended
-	 * 
-	 * Note: This is currently not critical to the functioning of `params.streamMessage` as the chatbot
-	 * automatically sets stream mode to true, and defaults to setting stream mode to false whenever a path
-	 * change is detected. This is however not ideal, because it results in lossy saving of chat history
-	 * for stream messages (cannot detect end stream accurately) and introduces unnecessary logic handling.
-	 * The matter of fact is that users know best when a stream ends so the ideal use case would be for users
-	 * to call `endStreamMessage()` when they're done with `params.streamMessage`. In v3, this behavior will
-	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
-	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
-	 */
-	const endStreamMessage = useCallback(async (sender = "BOT"): Promise<boolean> => {
-		// always convert to uppercase for checks
-		sender = sender.toUpperCase();
-
-		// nothing to end if not streaming
-		if (!streamMessageMap.current.has(sender)) {
-			return true;
-		}
-
-		// retrieves the message that the stream is ending on
-		// retries 3 times, handles edge case where messages are streamed and ended instantaneously
-		const messageId = streamMessageMap.current.get(sender);
-		let message;
-		for (let i = 0; i < 3; i++) {
-			const msg = messagesRef.current.find(msg => msg.id === messageId);
-			if (msg) {
-				message = msg;
-			}
-			await new Promise((res) => setTimeout(res, 10));
-		}
-
-		// handles stop stream message event
-		if (settings.event?.rcbStopStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, {message});
-			if (event.defaultPrevented) {
-				return false;
-			}
-		}
-
-		// remove sender from streaming list and save messages
-		streamMessageMap.current.delete(sender);
-		saveChatHistory(messagesRef.current);
-		return true;
-	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap])
-
-	/**
 	 * Handles post messages updates such as saving chat history, scrolling to bottom
 	 * and playing notification sound.
 	 * 
@@ -350,7 +58,7 @@ export const useMessagesInternal = () => {
 	 * @param updatedMessages messages after update
 	 * @param isRepeatedStreamMessage boolean indicating whether to update scroll position
 	 */
-	const handlePostMessagesUpdate = (updatedMessages: Array<Message>, isRepeatedStreamMessage: boolean = false) => {
+	const handlePostMessagesUpdate = useCallback((updatedMessages: Message[], isRepeatedStreamMessage = false) => {
 		saveChatHistory(updatedMessages);
 
 		// tracks if notification should be played
@@ -374,7 +82,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// if chatbot is open and user is not scrolling or is repeated stream message, no need to notify
-		if (isChatWindowOpen && !isScrollingRef.current || isRepeatedStreamMessage) {
+		if ((isChatWindowOpen && !isScrollingRef.current) || isRepeatedStreamMessage) {
 			shouldNotify = false;
 		}
 
@@ -385,15 +93,263 @@ export const useMessagesInternal = () => {
 		if (
 			!isRepeatedStreamMessage &&
 			((sender !== "USER" && settings.chatWindow?.autoJumpToBottom) ||
-			sender === "USER" || !isScrollingRef.current)
+				sender === "USER" || !isScrollingRef.current)
 		) {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
-			setTimeout(() => {
-				scrollToBottom();
-			}, 1)
+			setTimeout(() => scrollToBottom(), 1);
 		}
-	}
+	}, [settings, chatBodyRef, isChatWindowOpen, isScrollingRef, playNotificationSound, scrollToBottom]);
+
+	/**
+	 * Simulates the streaming of a message from the bot.
+	 * 
+	 * @param content message string to simulate stream for
+	 * @param sender sender of the message, defaults to bot
+	 * @param simulateStreamChunker function to override chunking of string for streaming simulation
+	 */
+	const simulateStreamMessage = useCallback(async (content: string,
+		sender = "BOT", simulateStreamChunker: ((content: string) => Array<string>) | null = null
+	): Promise<string | null> => {
+		if (typeof content !== "string") {
+			throw new Error("Content must be of type string to simulate stream.");
+		}
+
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
+
+		let message = createMessage(content, sender);
+		if (settings.event?.rcbStartSimulateStreamMessage) {
+			const event = await callRcbEvent(
+				RcbEvent.START_SIMULATE_STREAM_MESSAGE,
+				{ message }
+			);
+			if (event.defaultPrevented) return null;
+			simulateStreamChunker =
+				event.data.simulateStreamChunker || simulateStreamChunker;
+			message = event.data.message;
+		}
+
+		// stop bot typing when simulating stream
+		setIsBotTyping(false);
+		
+
+		let streamSpeed = 30;
+		if (sender === "BOT") {
+			streamSpeed = settings.botBubble?.streamSpeed as number;
+		} else {
+			streamSpeed = settings.userBubble?.streamSpeed as number;
+		}
+
+		// set an initial empty message to be used for simulating streaming
+		const placeholderMessage = { ...message, content: "" };
+		dispatch({ type: "ADD", payload: placeholderMessage });
+		handlePostMessagesUpdate([...messagesRef.current, placeholderMessage]);
+
+		// initialize default message to empty with stream index position 0
+		let streamMessage: string | string[] = message.content as string;
+		if (simulateStreamChunker) {
+			streamMessage = simulateStreamChunker(streamMessage as string);
+		}
+		let streamIndex = 0;
+		const endStreamIndex = streamMessage.length;
+
+		// speak audio if conditions are met
+		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
+			if (typeof message.content === "string" && message.content.trim() !== "") {
+				speakAudio(message.content);
+			}
+		}
+
+		const simulateStreamDoneTask: Promise<void> = new Promise((resolve) => {
+			const intervalId = setInterval(() => {
+				// consider streaming done once end index is reached or exceeded
+				// when streaming is done, remove task and resolve the promise
+				if (streamIndex >= endStreamIndex) {
+					clearInterval(intervalId);
+					resolve();
+					return;
+				}
+				dispatch({
+					type: "UPDATE",
+					payload: {
+						...placeholderMessage,
+						content: placeholderMessage.content + (streamMessage as string[])[streamIndex]
+					}
+				});
+				placeholderMessage.content += (streamMessage as string[])[streamIndex];
+				streamIndex++;
+			}, streamSpeed);
+		});
+
+		setUnreadCount((prev) => prev + 1);
+		await simulateStreamDoneTask;
+		saveChatHistory(messagesRef.current);
+
+		// handles stop stream message event
+		if (settings.event?.rcbStopSimulateStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
+			if (event.defaultPrevented) {
+				return message.id;
+			}
+		}
+		return message.id;
+	}, [settings, callRcbEvent, dispatch, handlePostMessagesUpdate, messagesRef,
+		setIsBotTyping, setUnreadCount, isChatWindowOpen, speakAudio
+	]);
+
+	/**
+	 * Injects a message at the end of the messages array.
+	 * 
+	 * @param content message content to inject
+	 * @param sender sender of the message, defaults to bot
+	 */
+	const injectMessage = useCallback(async (content: string | JSX.Element,
+		sender = "BOT"): Promise<string | null> => {
+
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
+		
+		let message = createMessage(content, sender);
+		if (settings.event?.rcbPreInjectMessage) {
+			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, { message });
+			if (event.defaultPrevented) return null;
+			message = event.data.message;
+		}
+
+		// speak audio if conditions are met
+		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
+			if (typeof message.content === "string" && message.content.trim() !== "") {
+				speakAudio(message.content);
+			}
+		}
+
+		// handles post-message inject event
+		setUnreadCount((prev) => prev + 1);
+		if (settings.event?.rcbPostInjectMessage) {
+			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, { message });
+		}
+
+		dispatch({ type: "ADD", payload: message });
+		handlePostMessagesUpdate([...messagesRef.current, message]);
+		return message.id;
+	}, [settings, callRcbEvent, dispatch, handlePostMessagesUpdate,
+		messagesRef, isChatWindowOpen, speakAudio, setUnreadCount
+	]);
+
+	/**
+	 * Removes a message with the given id.
+	 * 
+	 * @param messageId id of message to remove
+	 */
+	const removeMessage = useCallback(async (messageId: string): Promise<string | null> => {
+		const message = messagesRef.current.find((m) => m.id === messageId);
+
+		// nothing to remove if no such message
+		if (!message) {
+			return null;
+		}
+
+		// handles remove message event
+		if (settings.event?.rcbRemoveMessage) {
+			const event = await callRcbEvent(RcbEvent.REMOVE_MESSAGE, { message });
+			if (event.defaultPrevented) return null;
+		}
+
+		dispatch({ type: "REMOVE", payload: messageId });
+		handlePostMessagesUpdate(messagesRef.current.filter((m) => m.id !== messageId));
+		setUnreadCount((prev) => Math.max(prev - 1, 0));
+		return messageId;
+	}, [callRcbEvent, settings.event?.rcbRemoveMessage, dispatch,
+		handlePostMessagesUpdate, messagesRef, setUnreadCount
+	]);
+
+	/**
+	 * Streams data into the last message at the end of the messages array with given type.
+	 * 
+	 * @param content message content to inject
+	 * @param sender sender of the message, defaults to bot
+	 */
+	const streamMessage = useCallback(async (content: string | JSX.Element,
+		sender = "BOT"): Promise<string | null> => {
+
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
+
+		if (!streamMessageMap.current.has(sender)) {
+			const message = createMessage(content, sender);
+
+			// handles start stream message event
+			if (settings.event?.rcbStartStreamMessage) {
+				const event = await callRcbEvent(RcbEvent.START_STREAM_MESSAGE, { message });
+				if (event.defaultPrevented) return null;
+			}
+
+			setIsBotTyping(false);
+			dispatch({ type: "ADD", payload: message });
+			handlePostMessagesUpdate([...messagesRef.current, message]);
+			streamMessageMap.current.set(sender, message.id);
+			setUnreadCount((prev) => prev + 1);
+			return message.id;
+		}
+
+		const message = { ...createMessage(content, sender), id: streamMessageMap.current.get(sender)! };
+		// handles chunk stream message event
+		if (settings.event?.rcbChunkStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, { message });
+			if (event.defaultPrevented) return null;
+		}
+		dispatch({ type: "UPDATE", payload: message });
+		handlePostMessagesUpdate(messagesRef.current, true);
+		return streamMessageMap.current.get(sender)!;
+	}, [callRcbEvent, settings.event, dispatch, handlePostMessagesUpdate,
+		messagesRef, setIsBotTyping, setUnreadCount, streamMessageMap
+	]);
+
+	/**
+	 * Sets the streaming mode of the chatbot.
+	 * 
+	 * @param sender sender whose stream is being ended
+	 * 
+	 * Note: This is currently not critical to the functioning of `params.streamMessage` as the chatbot
+	 * automatically sets stream mode to true, and defaults to setting stream mode to false whenever a path
+	 * change is detected. This is however not ideal, because it results in lossy saving of chat history
+	 * for stream messages (cannot detect end stream accurately) and introduces unnecessary logic handling.
+	 * The matter of fact is that users know best when a stream ends so the ideal use case would be for users
+	 * to call `endStreamMessage()` when they're done with `params.streamMessage`. In v3, this behavior will
+	 * be made mandatory. Another key implication of not using `endStreamMessage` in v2 is that the stop stream
+	 * message event will not be emitted, which may be problematic for logic (or plugins) that rely on this event.
+	 */
+	const endStreamMessage = useCallback(async (sender = "BOT"): Promise<boolean> => {
+		// always convert to uppercase for checks
+		sender = sender.toUpperCase();
+
+		// nothing to end if not streaming
+		if (!streamMessageMap.current.has(sender)) {
+			return true;
+		}
+		const messageId = streamMessageMap.current.get(sender)!;
+
+		// retrieves the message that the stream is ending on
+		// retries 3 times, handles edge case where messages are streamed and ended instantaneously
+		let message;
+		for (let i = 0; i < 3; i++) {
+			const msg = messagesRef.current.find((m) => m.id === messageId);
+			if (msg) message = msg;
+			await new Promise((res) => setTimeout(res, 20));
+		}
+
+		// handles stop stream message event
+		if (settings.event?.rcbStopStreamMessage) {
+			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, { message });
+			if (event.defaultPrevented) return false;
+		}
+
+		// remove sender from streaming list and save messages
+		streamMessageMap.current.delete(sender);
+		saveChatHistory(messagesRef.current);
+		return true;
+	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap]);
 
 	/**
 	 * Replaces (overwrites entirely) the current messages with the new messages.
@@ -401,17 +357,17 @@ export const useMessagesInternal = () => {
 	 * @param newMessages new messages to set/replace
 	 */
 	const replaceMessages = useCallback((newMessages: Array<Message>) => {
+		dispatch({ type: "REPLACE", payload: newMessages });
 		handlePostMessagesUpdate(newMessages);
-		setMessages(newMessages);
-	}, [handlePostMessagesUpdate])
+	}, [dispatch, handlePostMessagesUpdate])
 
 	return {
-		endStreamMessage,
+		simulateStreamMessage,
 		injectMessage,
 		removeMessage,
-		simulateStreamMessage,
 		streamMessage,
+		endStreamMessage,
+		replaceMessages,
 		messages,
-		replaceMessages
 	};
 };

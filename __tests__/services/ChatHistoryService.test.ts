@@ -8,6 +8,7 @@ import {
 } from "../../src/services/ChatHistoryService";
 import { Message } from "../../src/types/Message";
 import { Settings } from "../../src/types/Settings";
+import { Dispatch } from "react";
 
 jest.useFakeTimers();
 
@@ -39,7 +40,6 @@ describe("ChatHistoryService", () => {
 		global.Storage.prototype.removeItem = jest.fn();
 	});
 
-	
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
@@ -50,8 +50,8 @@ describe("ChatHistoryService", () => {
 	});
 
 	describe.each([
-		[ "LOCAL_STORAGE", localStorage ],
-		[ "SESSION_STORAGE", sessionStorage ],
+		["LOCAL_STORAGE", localStorage],
+		["SESSION_STORAGE", sessionStorage],
 	])("saveChatHistory in %s", (storageType, storage) => {
 		it("should not save history if disabled", async () => {
 			const settings = {
@@ -80,9 +80,9 @@ describe("ChatHistoryService", () => {
 		it("should limit the number of messages saved according to maxEntries", async () => {
 			const maxEntriesSettings = {
 				...mockSettings(storageType),
-				chatHistory: 
-				{ ...mockSettings(storageType).chatHistory,
-					maxEntries: 1 
+				chatHistory: {
+					...mockSettings(storageType).chatHistory,
+					maxEntries: 1
 				},
 			};
 			setHistoryStorageValues(maxEntriesSettings);
@@ -97,57 +97,59 @@ describe("ChatHistoryService", () => {
 	});
 
 	describe.each([
-		[ "LOCAL_STORAGE", localStorage ],
-		[ "SESSION_STORAGE", sessionStorage ],
+		["LOCAL_STORAGE", localStorage],
+		["SESSION_STORAGE", sessionStorage],
 	])("loadChatHistory", (storageType, storage) => {
 		it("should load history and display messages", () => {
-			const setMessages = jest.fn();
+			const dispatch = jest.fn();
+			const messagesRef = { current: [mockMessage] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
-			
+
 			// Mock the div element for chatBodyRef
 			const divElement = document.createElement("div");
 			Object.defineProperty(divElement, "scrollHeight", { value: 1000 });
 			divElement.scrollTop = 500;
-		
+
 			const chatBodyRef = {
 				current: divElement
 			};
-		
+
 			loadChatHistory(
 				mockSettings(storageType),
 				{},
 				[mockMessage],
-				setMessages,
+				dispatch,
+				messagesRef,
 				chatBodyRef,
 				1000,
 				setIsLoadingChatHistory,
 				setHasChatHistoryLoaded
 			);
-		
-			// Fast-forward until all timers have been executed
+
 			jest.runAllTimers();
-		
-			expect(setMessages).toHaveBeenCalled();
+
+			expect(dispatch).toHaveBeenCalled();
 			expect(setIsLoadingChatHistory).toHaveBeenCalledWith(false);
 			expect(setHasChatHistoryLoaded).toHaveBeenCalledWith(true);
 		});
 
 		it("should handle corrupted data by clearing it from storage", () => {
 			storage.setItem("rcb-history", "not_json_format");
-	
-			const setMessages = jest.fn();
+
+			const dispatch = jest.fn();
+			const messagesRef = { current: [] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
-	
-			// verify it doesn't throw
+
 			expect(() =>
 				loadChatHistory(
 					mockSettings(storageType),
 					{},
 					[],
-					setMessages,
+					dispatch,
+					messagesRef,
 					chatBodyRef,
 					1000,
 					setIsLoadingChatHistory,
@@ -157,42 +159,46 @@ describe("ChatHistoryService", () => {
 		});
 
 		it("does not do anything if chat history is null", () => {
-			const setMessages = jest.fn();
+			const dispatch = jest.fn();
+			const messagesRef = { current: [] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
-	
+
 			loadChatHistory(
 				mockSettings(storageType),
 				{},
 				null as unknown as Message[],
-				setMessages,
+				dispatch,
+				messagesRef,
 				chatBodyRef,
 				1000,
 				setIsLoadingChatHistory,
 				setHasChatHistoryLoaded
 			);
-	
-			expect(setMessages).not.toHaveBeenCalled();
+
+			expect(dispatch).not.toHaveBeenCalled();
 		});
 
 		it("handles errors gracefully and removes chat history on error", () => {
-			const setMessages = () => { throw new Error("Error setting messages"); };
+			const dispatch = () => { throw new Error("Error setting messages"); };
+			const messagesRef = { current: [] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
-	
+
 			loadChatHistory(
 				mockSettings(storageType),
 				{},
 				[],
-				setMessages,
+				dispatch as Dispatch<any>,
+				messagesRef,
 				chatBodyRef,
 				1000,
 				setIsLoadingChatHistory,
 				setHasChatHistoryLoaded,
 			);
-	
+
 			expect(storage.removeItem).toHaveBeenCalledWith(mockSettings(storageType).chatHistory?.storageKey);
 		});
 	});
@@ -208,8 +214,8 @@ describe("ChatHistoryService", () => {
 
 	describe("setHistoryStorageValues", () => {
 		it.each([
-			[ "LOCAL_STORAGE", localStorage ],
-			[ "SESSION_STORAGE", sessionStorage ],
+			["LOCAL_STORAGE", localStorage],
+			["SESSION_STORAGE", sessionStorage],
 		])("should set storage values correctly in %s", (storageType, storage) => {
 			setHistoryStorageValues(mockSettings(storageType));
 
@@ -217,15 +223,16 @@ describe("ChatHistoryService", () => {
 		});
 
 		it("should handle invalid storage type by defaulting to local storage", () => {
-			const invalidSettings = { 
-				...mockSettings, chatHistory: 
-				{ ...mockSettings("INVALID_TYPE").chatHistory } 
+			const invalidSettings = {
+				...mockSettings,
+				chatHistory: {
+					...mockSettings("INVALID_TYPE").chatHistory
+				}
 			};
 
 			setHistoryStorageValues(invalidSettings);
 
-			// Defaults to localStorage
-			expect(localStorage.getItem).toHaveBeenCalledWith("rcb-history");  
+			expect(localStorage.getItem).toHaveBeenCalledWith("rcb-history");
 		});
 	});
 
@@ -240,8 +247,8 @@ describe("ChatHistoryService", () => {
 	});
 
 	describe.each([
-		[ "LOCAL_STORAGE", localStorage ],
-		[ "SESSION_STORAGE", sessionStorage ],
+		["LOCAL_STORAGE", localStorage],
+		["SESSION_STORAGE", sessionStorage],
 	])("setHistoryMessages in %s", (storageType, storage) => {
 		it("should set history messages", () => {
 			setHistoryStorageValues(mockSettings(storageType));

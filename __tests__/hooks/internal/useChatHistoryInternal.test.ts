@@ -1,7 +1,10 @@
 import { renderHook, act } from "@testing-library/react";
 import { expect } from "@jest/globals";
 
-import { getHistoryMessages, loadChatHistory } from "../../../src/services/ChatHistoryService";
+import {
+	getHistoryMessages,
+	loadChatHistory,
+} from "../../../src/services/ChatHistoryService";
 import { generateSecureUUID } from "../../../src/utils/idGenerator";
 import { useChatHistoryInternal } from "../../../src/hooks/internal/useChatHistoryInternal";
 import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
@@ -12,10 +15,16 @@ import { MockDefaultSettings } from "../../__mocks__/constants";
 
 // mocks internal hooks and services
 jest.mock("../../../src/hooks/internal/useRcbEventInternal");
-const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<typeof useRcbEventInternal>;
+const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<
+	typeof useRcbEventInternal
+>;
 jest.mock("../../../src/services/ChatHistoryService");
-const mockGetHistoryMessages = getHistoryMessages as jest.MockedFunction<typeof getHistoryMessages>;
-const mockLoadChatHistory = loadChatHistory as jest.MockedFunction<typeof loadChatHistory>;
+const mockGetHistoryMessages = getHistoryMessages as jest.MockedFunction<
+	typeof getHistoryMessages
+>;
+const mockLoadChatHistory = loadChatHistory as jest.MockedFunction<
+	typeof loadChatHistory
+>;
 
 /**
  * Test for useChatHistoryInternal hook.
@@ -48,7 +57,7 @@ describe("useChatHistoryInternal Hook", () => {
 
 	it("should load chat history correctly, change state and emit rcb-load-chat-history event", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const callRcbEventMock = jest.fn().mockResolvedValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
 			callRcbEvent: callRcbEventMock,
 		});
@@ -56,10 +65,12 @@ describe("useChatHistoryInternal Hook", () => {
 		// mocks getHistoryMessages to return initialChatHistory
 		mockGetHistoryMessages.mockReturnValue(initialChatHistory);
 
-		// mocks loadChatHistory to resolve successfully
+		// mocks loadChatHistory to simulate success and invoke dispatch
 		mockLoadChatHistory.mockImplementation(
-			(settings, styles, chatHistory, setMessages) => {
-				setMessages(chatHistory);
+			(settings, styles, chatHistory, dispatch, messagesRef) => {
+				// simulate state change
+				dispatch({ type: "REPLACE", payload: chatHistory });
+				messagesRef.current = chatHistory;
 				return Promise.resolve();
 			}
 		);
@@ -77,9 +88,6 @@ describe("useChatHistoryInternal Hook", () => {
 			await result.current.showChatHistory();
 		});
 
-		// checks if loading state is true
-		expect(result.current.isLoadingChatHistory).toBe(true);
-
 		// checks if get history messages was called
 		expect(mockGetHistoryMessages).toHaveBeenCalledTimes(1);
 
@@ -89,22 +97,23 @@ describe("useChatHistoryInternal Hook", () => {
 		// checks if load chat history was called
 		expect(mockLoadChatHistory).toHaveBeenCalledWith(
 			MockDefaultSettings,
-			expect.any(Object),
+			expect.any(Object), // styles
 			initialChatHistory,
-			expect.any(Function),
-			expect.any(Object),
-			expect.any(Number),
-			expect.any(Function),
-			expect.any(Function),
+			expect.any(Function), // dispatch
+			expect.any(Object), // messagesRef
+			expect.any(Object), // chatBodyRef
+			expect.any(Number), // scroll height
+			expect.any(Function), // setLoading
+			expect.any(Function)  // setHasLoaded
 		);
 
-		// checks if history is being loaded
+		// isLoadingChatHistory should be true while load is in progress
 		expect(result.current.isLoadingChatHistory).toBe(true);
 	});
 
 	it("should prevent loading when LOAD_CHAT_HISTORY event is defaultPrevented", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
+		const callRcbEventMock = jest.fn().mockResolvedValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
 			callRcbEvent: callRcbEventMock,
 		});
@@ -121,8 +130,8 @@ describe("useChatHistoryInternal Hook", () => {
 		expect(result.current.isLoadingChatHistory).toBe(initialIsLoadingChatHistory);
 
 		// simulates clicking on load chat history button
-		act(() => {
-			result.current.showChatHistory();
+		await act(async () => {
+			await result.current.showChatHistory();
 		});
 
 		// checks if get history messages was called
@@ -134,7 +143,7 @@ describe("useChatHistoryInternal Hook", () => {
 		// checks if load chat history was not called
 		expect(mockLoadChatHistory).not.toHaveBeenCalled();
 
-		// checks if history is being loaded
+		// checks that isLoadingChatHistory remains unchanged
 		expect(result.current.isLoadingChatHistory).toBe(false);
 	});
 });

@@ -17,16 +17,19 @@ jest.mock("../../../src/services/AudioService");
 jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useMessagesInternal", () => {
-	const mockSetMessages = jest.fn();
+	const dispatchMock = jest.fn();
 	const mockSetIsBotTyping = jest.fn();
 	const mockSetUnreadCount = jest.fn();
 	const mockCallRcbEvent = jest.fn();
 	const mockStreamMessageMap = { current: new Map() };
 	const mockMessages: Message[] = [];
+	const mockMessagesRef = { current: mockMessages };
 	const mockIsScrollingRef = { current: false };
+	const mockChatBodyRef = { current: null };
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
 				botBubble: { dangerouslySetInnerHtml: false, simulateStream: false },
@@ -34,20 +37,26 @@ describe("useMessagesInternal", () => {
 				event: {},
 			},
 		});
+
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: mockMessages,
-			setMessages: mockSetMessages,
+			dispatch: dispatchMock,
+			messagesRef: mockMessagesRef,
 		});
+
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			audioToggledOn: false,
 			isChatWindowOpen: true,
 			setIsBotTyping: mockSetIsBotTyping,
 			setUnreadCount: mockSetUnreadCount,
 		});
+
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			streamMessageMap: mockStreamMessageMap,
 			isScrollingRef: mockIsScrollingRef,
+			chatBodyRef: mockChatBodyRef,
 		});
+
 		(useRcbEventInternal as jest.Mock).mockReturnValue({
 			callRcbEvent: mockCallRcbEvent,
 		});
@@ -72,17 +81,25 @@ describe("useMessagesInternal", () => {
 			expect(messageId).toBeTruthy();
 		});
 
-		expect(mockSetMessages).toHaveBeenCalled();
+		expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({ type: "ADD" }));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 	});
 
 	it("should remove a message correctly", async () => {
 		const mockMessageId = "test-id";
-		const mockMessage: Message = { id: mockMessageId, content: "Test", sender: "BOT", type: "text",
-			timestamp: String(Date.now()), tags: [] };
+		const mockMessage: Message = {
+			id: mockMessageId,
+			content: "Test",
+			sender: "BOT",
+			type: "text",
+			timestamp: String(Date.now()),
+			tags: [],
+		};
+
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: [mockMessage],
-			setMessages: mockSetMessages,
+			dispatch: dispatchMock,
+			messagesRef: { current: [mockMessage] },
 		});
 
 		const { result } = renderHook(() => useMessagesInternal());
@@ -92,7 +109,7 @@ describe("useMessagesInternal", () => {
 			expect(removedId).toBe(mockMessageId);
 		});
 
-		expect(mockSetMessages).toHaveBeenCalled();
+		expect(dispatchMock).toHaveBeenCalledWith({ type: "REMOVE", payload: mockMessageId });
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 	});
 
@@ -104,13 +121,29 @@ describe("useMessagesInternal", () => {
 			expect(messageId).toBeTruthy();
 		});
 
-		expect(mockSetMessages).toHaveBeenCalled();
+		expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({ type: "ADD" }));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockStreamMessageMap.current.has("BOT")).toBeTruthy();
 	});
 
 	it("should end stream message correctly", async () => {
-		mockStreamMessageMap.current.set("BOT", "test-id");
+		const message: Message = {
+			id: "test-id",
+			content: "streaming...",
+			sender: "BOT",
+			type: "text",
+			timestamp: String(Date.now()),
+			tags: [],
+		};
+
+		mockStreamMessageMap.current.set("BOT", message.id);
+
+		(useMessagesContext as jest.Mock).mockReturnValue({
+			messages: [message],
+			dispatch: dispatchMock,
+			messagesRef: { current: [message] },
+		});
+
 		const { result } = renderHook(() => useMessagesInternal());
 
 		await act(async () => {
@@ -120,5 +153,4 @@ describe("useMessagesInternal", () => {
 
 		expect(mockStreamMessageMap.current.has("BOT")).toBeFalsy();
 	});
-
 });

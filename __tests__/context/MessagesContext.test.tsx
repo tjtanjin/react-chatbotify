@@ -1,21 +1,24 @@
-import React from 'react'
+import React from 'react';
 
-import { expect } from '@jest/globals'
-import { act, render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom/jest-globals'
+import { expect } from '@jest/globals';
+import { act, render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/jest-globals';
 
 import {
 	useMessagesContext,
 	MessagesProvider,
-} from '../../src/context/MessagesContext'
+} from '../../src/context/MessagesContext';
 
+/**
+ * Test component using reducer-based dispatch
+ */
 const TestComponent = () => {
-	const { messages, setMessages } = useMessagesContext()
+	const { messages, dispatch } = useMessagesContext();
 
 	const handleAddMessage = () => {
-		setMessages([
-			...messages,
-			{
+		dispatch({
+			type: 'ADD',
+			payload: {
 				id: '1',
 				content: 'Hello World!',
 				sender: 'user1',
@@ -23,12 +26,12 @@ const TestComponent = () => {
 				timestamp: new Date().toUTCString(),
 				tags: [],
 			},
-		])
-	}
+		});
+	};
 
 	const handleClearMessage = () => {
-		setMessages([])
-	}
+		dispatch({ type: 'REPLACE', payload: [] });
+	};
 
 	return (
 		<div>
@@ -40,8 +43,8 @@ const TestComponent = () => {
 			<button onClick={handleAddMessage}>Add Message</button>
 			<button onClick={handleClearMessage}>Clear Message</button>
 		</div>
-	)
-}
+	);
+};
 
 describe('MessagesContext', () => {
 	it('provides the correct default values', () => {
@@ -49,68 +52,68 @@ describe('MessagesContext', () => {
 			<MessagesProvider>
 				<TestComponent />
 			</MessagesProvider>
-		)
+		);
 
-		expect(screen.getByTestId('messages')).toHaveTextContent(`Messages:`)
+		expect(screen.getByTestId('messages')).toHaveTextContent(`Messages:`);
 		expect(screen.getByTestId('messagesCount')).toHaveTextContent(
 			`Messages Count: 0`
-		)
-	})
+		);
+	});
 
 	it('allows adding messages in the context', () => {
 		render(
 			<MessagesProvider>
 				<TestComponent />
 			</MessagesProvider>
-		)
+		);
 
-		const addMessageBtn = screen.getByText('Add Message')
+		const addMessageBtn = screen.getByText('Add Message');
 
 		act(() => {
-			addMessageBtn.click()
-		})
+			addMessageBtn.click();
+		});
 
 		expect(screen.getByTestId('messages')).toHaveTextContent(
 			`Messages: Hello World!`
-		)
+		);
 		expect(screen.getByTestId('messagesCount')).toHaveTextContent(
 			`Messages Count: 1`
-		)
+		);
 
 		act(() => {
-			addMessageBtn.click()
-		})
+			addMessageBtn.click();
+		});
 
 		expect(screen.getByTestId('messagesCount')).toHaveTextContent(
 			`Messages Count: 2`
-		)
-	})
+		);
+	});
 
 	it('allows updating messages in the context', () => {
 		render(
 			<MessagesProvider>
 				<TestComponent />
 			</MessagesProvider>
-		)
+		);
 
-		const clearMessageBtn = screen.getByText('Clear Message')
-		const addMessageBtn = screen.getByText('Add Message')
+		const clearMessageBtn = screen.getByText('Clear Message');
+		const addMessageBtn = screen.getByText('Add Message');
 
 		act(() => {
-			clearMessageBtn.click()
-		})
+			clearMessageBtn.click();
+		});
 
-		expect(screen.getByTestId('messages')).toHaveTextContent(`Messages:`)
+		expect(screen.getByTestId('messages')).toHaveTextContent(`Messages:`);
 		expect(screen.getByTestId('messagesCount')).toHaveTextContent(
 			`Messages Count: 0`
-		)
+		);
 
 		act(() => {
-			addMessageBtn.click()
-		})
+			addMessageBtn.click();
+		});
 
 		expect(screen.getByTestId('messagesCount')).toHaveTextContent(
 			`Messages Count: 1`
-		)
-	})
-})
+		);
+	});
+});

@@ -1,4 +1,4 @@
-import { createElement, isValidElement, Dispatch, SetStateAction, ReactNode, CSSProperties } from "react";
+import { createElement, isValidElement, Dispatch, ReactNode, CSSProperties } from "react";
 import ReactDOMServer from "react-dom/server";
 
 import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistoryLineBreak";
@@ -7,6 +7,7 @@ import { createMessage } from "../utils/messageBuilder";
 import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
+import { MessagesAction } from "../types/internal/MessageAction";
 
 // variables used to track history, updated when settings.chatHistory value changes
 let storage: Storage;
@@ -149,31 +150,37 @@ const parseMessageToString = (message: Message) => {
 
 /**
  * Loads chat history into the chat window for user view.
- * 
+ *
  * @param settings settings provided to the bot
  * @param styles styles provided to the bot
  * @param chatHistory chat history to show
- * @param setMessages setter for updating messages
+ * @param dispatch reducer dispatch for updating messages
+ * @param messagesRef live ref of current messages array
  * @param chatBodyRef reference to the chat body
  * @param chatScrollHeight current chat scroll height
  * @param setIsLoadingChatHistory setter for whether chat history is loading
  * @param setHasChatHistoryLoaded setter for indicating if chat history is loaded
  */
-const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Message[],
-	setMessages: Dispatch<SetStateAction<Message[]>>, chatBodyRef: React.RefObject<HTMLDivElement | null>,
-	chatScrollHeight: number, setIsLoadingChatHistory: Dispatch<SetStateAction<boolean>>,
-	setHasChatHistoryLoaded: Dispatch<SetStateAction<boolean>>) => {
-
+const loadChatHistory = (
+	settings: Settings,
+	styles: Styles,
+	chatHistory: Message[],
+	dispatch: Dispatch<MessagesAction>,
+	messagesRef: React.MutableRefObject<Message[]>,
+	chatBodyRef: React.RefObject<HTMLDivElement | null>,
+	chatScrollHeight: number,
+	setIsLoadingChatHistory: Dispatch<boolean>,
+	setHasChatHistoryLoaded: Dispatch<boolean>
+) => {
 	historyLoaded = true;
 	if (chatHistory != null) {
 		try {
-			setMessages((prevMessages) => {
-				const loaderMessage = createMessage(<LoadingSpinner/>, "SYSTEM");
-				prevMessages.shift();
-				return [loaderMessage, ...prevMessages];
-			});
+			// insert loader
+			const loaderMessage = createMessage(<LoadingSpinner/>, "SYSTEM");
+			const base = messagesRef.current.slice(1);
+			dispatch({ type: "REPLACE", payload: [loaderMessage, ...base] });
 
-			const parsedMessages = chatHistory.map((message: Message) => {
+			const parsedMessages = chatHistory.map((message) => {
 				if (message.type === "object") {
 					const element = renderHTML(message.content as string, settings, styles);
 					return { ...message, content: element };
@@ -182,19 +189,18 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 			}) as Message[];
 
 			setTimeout(() => {
-				setMessages((prevMessages) => {
-					prevMessages.shift();
-					// if autoload, line break is invisible
-					let lineBreakMessage;
-					if (settings.chatHistory?.autoLoad) {
-						lineBreakMessage = createMessage(<></>, "SYSTEM")
-					} else {
-						lineBreakMessage = createMessage(<ChatHistoryLineBreak/>, "SYSTEM")
-					}
-					return [...parsedMessages, lineBreakMessage, ...prevMessages];
+				const rest = messagesRef.current.slice(1);
+
+				// if autoload, line break is invisible
+				let lineBreakMessage = settings.chatHistory?.autoLoad
+					? createMessage(<></>, "SYSTEM")
+					: createMessage(<ChatHistoryLineBreak/>, "SYSTEM");
+				dispatch({
+					type: "REPLACE",
+					payload: [...parsedMessages, lineBreakMessage, ...rest],
 				});
 				setHasChatHistoryLoaded(true);
-			}, 500)
+			}, 500);
 
 			// slight delay afterwards to maintain scroll position
 			setTimeout(() => {
@@ -202,16 +208,16 @@ const loadChatHistory = (settings: Settings, styles: Styles, chatHistory: Messag
 					return;
 				}
 				const { scrollHeight } = chatBodyRef.current;
-				const scrollDifference = scrollHeight - chatScrollHeight;
-				chatBodyRef.current.scrollTop = chatBodyRef.current.scrollTop + scrollDifference;
+				const diff = scrollHeight - chatScrollHeight;
+				chatBodyRef.current.scrollTop += diff;
 				setIsLoadingChatHistory(false);
-			}, 510)
+			}, 510);
 		} catch {
 			// remove chat history on error (to address corrupted storage values)
 			storage.removeItem(settings.chatHistory?.storageKey as string);
 		}
 	}
-}
+};
 
 /**
  * Renders html string to a react node.

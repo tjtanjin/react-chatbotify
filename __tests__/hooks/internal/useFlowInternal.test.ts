@@ -19,7 +19,7 @@ jest.mock("../../../src/context/SettingsContext");
 jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useFlowInternal Hook", () => {
-	const setMessagesMock = jest.fn();
+	const dispatchMock = jest.fn();
 	const setPathsMock = jest.fn();
 	const setToastsMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
@@ -36,18 +36,19 @@ describe("useFlowInternal Hook", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 
-		(useMessagesContext as jest.Mock).mockReturnValue({ setMessages: setMessagesMock });
+		(useMessagesContext as jest.Mock).mockReturnValue({
+			dispatch: dispatchMock,
+		});
 		(usePathsContext as jest.Mock).mockReturnValue({ setPaths: setPathsMock });
 		(useToastsContext as jest.Mock).mockReturnValue({ setToasts: setToastsMock });
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: flowRefMock,
 			isScrollingRef: isScrollingRefMock,
-			pathsRef: pathsRefMock
+			pathsRef: pathsRefMock,
 		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({ hasFlowStarted: hasFlowStartedMock });
 		(useSettingsContext as jest.Mock).mockReturnValue({ settings: mockSettings });
 	});
-
 
 	// Test to ensure initial values (hasFlowStarted and flowRef) are returned correctly from the hook
 	it("should return initial values from context", () => {
@@ -65,11 +66,15 @@ describe("useFlowInternal Hook", () => {
 			result.current.restartFlow();
 		});
 
-		expect(setMessagesMock).toHaveBeenCalledWith([]);
+		expect(dispatchMock).toHaveBeenCalledWith({ type: "REPLACE", payload: [] });
 		expect(setToastsMock).toHaveBeenCalledWith([]);
 		expect(setPathsMock).toHaveBeenCalledWith(["start"]);
-		expect(setHistoryStorageValues)
-			.toHaveBeenCalledWith({ chatHistory: { storageType: "localStorage", storageKey: "rcb-history" } });
+		expect(setHistoryStorageValues).toHaveBeenCalledWith({
+			chatHistory: {
+				storageType: "localStorage",
+				storageKey: "rcb-history",
+			},
+		});
 	});
 
 	// Test to ensure that getFlow returns the current flow from flowRef
@@ -92,7 +97,7 @@ describe("useFlowInternal Hook", () => {
 			result.current.restartFlow();
 		});
 
-		expect(setMessagesMock).toHaveBeenCalledTimes(2);
+		expect(dispatchMock).toHaveBeenCalledTimes(2);
 		expect(setToastsMock).toHaveBeenCalledTimes(2);
 		expect(setPathsMock).toHaveBeenCalledTimes(2);
 	});
@@ -113,7 +118,7 @@ describe("useFlowInternal Hook", () => {
 			result.current.restartFlow();
 		});
 
-		expect(setMessagesMock).toHaveBeenCalledWith([]);
+		expect(dispatchMock).toHaveBeenCalledWith({ type: "REPLACE", payload: [] });
 		expect(setToastsMock).toHaveBeenCalledWith([]);
 		expect(setPathsMock).toHaveBeenCalledWith(["start"]);
 	});

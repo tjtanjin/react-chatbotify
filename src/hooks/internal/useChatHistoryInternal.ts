@@ -19,8 +19,8 @@ export const useChatHistoryInternal = () => {
 	// handles styles
 	const { styles } = useStylesContext();
 
-	// handles setting messages
-	const { setMessages } = useMessagesContext();
+	// handles messages
+	const { dispatch, messagesRef } = useMessagesContext();
 
 	// handles bot states
 	const {
@@ -56,10 +56,19 @@ export const useChatHistoryInternal = () => {
 		}
 		setIsLoadingChatHistory(true);
 		const chatScrollHeight = chatBodyRef.current?.scrollHeight ?? 0;
-		loadChatHistory(settings, styles, chatHistory, setMessages,
+		loadChatHistory(settings, styles, chatHistory, dispatch, messagesRef,
 			chatBodyRef, chatScrollHeight, setIsLoadingChatHistory, setHasChatHistoryLoaded,
 		);
-	}, [settings, styles, setMessages]);
+	}, [
+		settings,
+		styles,
+		callRcbEvent,
+		dispatch,
+		messagesRef,
+		chatBodyRef,
+		setIsLoadingChatHistory,
+		setHasChatHistoryLoaded
+	]);
 
 	return { isLoadingChatHistory, setIsLoadingChatHistory, hasChatHistoryLoaded, showChatHistory };
 };
