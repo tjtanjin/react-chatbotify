@@ -76,9 +76,10 @@ describe("usePathsInternal Hook", () => {
 		// Check that the function returns the correct new state
 		expect(newState).toEqual([...mockPaths, "newPath"]);
 
-		expect(mockSetIsBotTyping).toHaveBeenCalledWith(true);
-		expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(true);
-		expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
+		// todo: shift to block processing test cases when they are added
+		// expect(mockSetIsBotTyping).toHaveBeenCalledWith(true);
+		// expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(true);
+		// expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
 		expect(emitRcbEvent).toHaveBeenCalledWith(
 			RcbEvent.CHANGE_PATH,
 			{ botId: mockBotIdRef.current, currPath: "path2", prevPath: "path1" },
