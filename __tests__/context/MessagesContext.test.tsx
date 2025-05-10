@@ -13,24 +13,22 @@ import {
  * Test component using reducer-based dispatch
  */
 const TestComponent = () => {
-	const { messages, dispatch } = useMessagesContext();
+	const { messages, setSyncMessages } = useMessagesContext();
 
 	const handleAddMessage = () => {
-		dispatch({
-			type: 'ADD',
-			payload: {
-				id: '1',
-				content: 'Hello World!',
-				sender: 'user1',
-				type: 'message',
-				timestamp: new Date().toUTCString(),
-				tags: [],
-			},
-		});
+		const message = {
+			id: '1',
+			content: 'Hello World!',
+			sender: 'user1',
+			type: 'message',
+			timestamp: new Date().toUTCString(),
+			tags: [],
+		}
+		setSyncMessages(prev => [...prev, message]);
 	};
 
 	const handleClearMessage = () => {
-		dispatch({ type: 'REPLACE', payload: [] });
+		setSyncMessages([]);
 	};
 
 	return (

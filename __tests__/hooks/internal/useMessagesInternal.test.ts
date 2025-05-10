@@ -17,13 +17,13 @@ jest.mock("../../../src/services/AudioService");
 jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useMessagesInternal", () => {
-	const dispatchMock = jest.fn();
+	const setSyncMessagesMock = jest.fn();
 	const mockSetIsBotTyping = jest.fn();
 	const mockSetUnreadCount = jest.fn();
 	const mockCallRcbEvent = jest.fn();
 	const mockStreamMessageMap = { current: new Map() };
 	const mockMessages: Message[] = [];
-	const mockMessagesRef = { current: mockMessages };
+	const mockMessagesSyncRef = { current: mockMessages };
 	const mockIsScrollingRef = { current: false };
 	const mockChatBodyRef = { current: null };
 
@@ -40,8 +40,8 @@ describe("useMessagesInternal", () => {
 
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: mockMessages,
-			dispatch: dispatchMock,
-			messagesRef: mockMessagesRef,
+			setSyncMessages: setSyncMessagesMock,
+			messagesSyncRef: mockMessagesSyncRef,
 		});
 
 		(useBotStatesContext as jest.Mock).mockReturnValue({
@@ -81,7 +81,7 @@ describe("useMessagesInternal", () => {
 			expect(message).toBeTruthy();
 		});
 
-		expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({ type: "ADD" }));
+		expect(setSyncMessagesMock).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 	});
 
@@ -98,8 +98,8 @@ describe("useMessagesInternal", () => {
 
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: [mockMessage],
-			dispatch: dispatchMock,
-			messagesRef: { current: [mockMessage] },
+			setSyncMessages: setSyncMessagesMock,
+			messagesSyncRef: { current: [mockMessage] },
 		});
 
 		const { result } = renderHook(() => useMessagesInternal());
@@ -109,7 +109,7 @@ describe("useMessagesInternal", () => {
 			expect(removed).toBe(mockMessage);
 		});
 
-		expect(dispatchMock).toHaveBeenCalledWith({ type: "REMOVE", payload: mockMessageId });
+		expect(setSyncMessagesMock).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 	});
 
@@ -121,7 +121,7 @@ describe("useMessagesInternal", () => {
 			expect(message).toBeTruthy();
 		});
 
-		expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({ type: "ADD" }));
+		expect(setSyncMessagesMock).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockStreamMessageMap.current.has("BOT")).toBeTruthy();
 	});
@@ -140,8 +140,8 @@ describe("useMessagesInternal", () => {
 
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: [message],
-			dispatch: dispatchMock,
-			messagesRef: { current: [message] },
+			setSyncMessages: setSyncMessagesMock,
+			messagesSyncRef: { current: [message] },
 		});
 
 		const { result } = renderHook(() => useMessagesInternal());

@@ -21,8 +21,8 @@ export const useMessagesInternal = () => {
 	// handles settings
 	const { settings } = useSettingsContext();
 
-	// handles messages (now using reducer dispatch)
-	const { messages, dispatch, messagesRef } = useMessagesContext();
+	// handles messages
+	const { messages, setSyncMessages, messagesSyncRef } = useMessagesContext();
 
 	// handles bot states
 	const {
@@ -144,8 +144,8 @@ export const useMessagesInternal = () => {
 
 		// set an initial empty message to be used for simulating streaming
 		const placeholderMessage = { ...message, content: "" };
-		dispatch({ type: "ADD", payload: placeholderMessage });
-		handlePostMessagesUpdate([...messagesRef.current, placeholderMessage]);
+		setSyncMessages(prev => [...prev, placeholderMessage]);
+		handlePostMessagesUpdate(messagesSyncRef.current);
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage: string | string[] = message.content as string;
@@ -171,28 +171,35 @@ export const useMessagesInternal = () => {
 					resolve();
 					return;
 				}
-				dispatch({
-					type: "UPDATE",
-					payload: {
-						...placeholderMessage,
-						content: placeholderMessage.content + (streamMessage as string[])[streamIndex]
+
+				setSyncMessages((prevMessages) => {
+					const updatedMessages = [...prevMessages];
+					for (let i = updatedMessages.length - 1; i >= 0; i--) {
+						if (updatedMessages[i].id === placeholderMessage.id) {
+							const character = streamMessage[streamIndex];
+							if (character) {
+								placeholderMessage.content += character;
+								updatedMessages[i] = placeholderMessage;
+							}
+							streamIndex++;
+							break;
+						}
 					}
+					return updatedMessages;
 				});
-				placeholderMessage.content += (streamMessage as string[])[streamIndex];
-				streamIndex++;
 			}, streamSpeed);
 		});
 
 		setUnreadCount((prev) => prev + 1);
 		await simulateStreamDoneTask;
-		saveChatHistory(messagesRef.current);
+		saveChatHistory(messagesSyncRef.current);
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopSimulateStreamMessage) {
 			await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
 		}
 		return message;
-	}, [settings, callRcbEvent, dispatch, handlePostMessagesUpdate, messagesRef,
+	}, [settings, callRcbEvent, handlePostMessagesUpdate, messagesSyncRef,
 		setIsBotTyping, setUnreadCount, isChatWindowOpen, speakAudio
 	]);
 
@@ -230,11 +237,11 @@ export const useMessagesInternal = () => {
 			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, { message });
 		}
 
-		dispatch({ type: "ADD", payload: message });
-		handlePostMessagesUpdate([...messagesRef.current, message]);
+		setSyncMessages(prev => [...prev, message]);
+		handlePostMessagesUpdate(messagesSyncRef.current);
 		return message;
-	}, [settings, callRcbEvent, dispatch, handlePostMessagesUpdate,
-		messagesRef, isChatWindowOpen, speakAudio, setUnreadCount
+	}, [settings, callRcbEvent, handlePostMessagesUpdate,
+		messagesSyncRef, isChatWindowOpen, speakAudio, setUnreadCount
 	]);
 
 	/**
@@ -243,7 +250,7 @@ export const useMessagesInternal = () => {
 	 * @param messageId id of message to remove
 	 */
 	const removeMessage = useCallback(async (messageId: string): Promise<Message | null> => {
-		const message = messagesRef.current.find((m) => m.id === messageId);
+		const message = messagesSyncRef.current.find((m) => m.id === messageId);
 
 		// nothing to remove if no such message
 		if (!message) {
@@ -258,12 +265,14 @@ export const useMessagesInternal = () => {
 			}
 		}
 
-		dispatch({ type: "REMOVE", payload: messageId });
-		handlePostMessagesUpdate(messagesRef.current.filter((m) => m.id !== messageId));
+		setSyncMessages(prev =>
+			prev.filter(m => m.id !== messageId)
+		);
+		handlePostMessagesUpdate(messagesSyncRef.current);
 		setUnreadCount((prev) => Math.max(prev - 1, 0));
 		return message;
-	}, [callRcbEvent, settings.event?.rcbRemoveMessage, dispatch,
-		handlePostMessagesUpdate, messagesRef, setUnreadCount
+	}, [callRcbEvent, settings.event?.rcbRemoveMessage, handlePostMessagesUpdate,
+		messagesSyncRef, setUnreadCount
 	]);
 
 	/**
@@ -290,8 +299,8 @@ export const useMessagesInternal = () => {
 			}
 
 			setIsBotTyping(false);
-			dispatch({ type: "ADD", payload: message });
-			handlePostMessagesUpdate([...messagesRef.current, message]);
+			setSyncMessages(prev => [...prev, message]);
+			handlePostMessagesUpdate(messagesSyncRef.current);
 			streamMessageMap.current.set(sender, message.id);
 			setUnreadCount((prev) => prev + 1);
 			return message;
@@ -305,11 +314,13 @@ export const useMessagesInternal = () => {
 				return null;
 			}
 		}
-		dispatch({ type: "UPDATE", payload: message });
-		handlePostMessagesUpdate(messagesRef.current, true);
+		setSyncMessages(prev =>
+			prev.map(m => m.id === message.id ? message : m)
+		);
+		handlePostMessagesUpdate(messagesSyncRef.current, true);
 		return message;
-	}, [callRcbEvent, settings.event, dispatch, handlePostMessagesUpdate,
-		messagesRef, setIsBotTyping, setUnreadCount, streamMessageMap
+	}, [callRcbEvent, settings.event, handlePostMessagesUpdate,
+		messagesSyncRef, setIsBotTyping, setUnreadCount, streamMessageMap
 	]);
 
 	/**
@@ -340,7 +351,7 @@ export const useMessagesInternal = () => {
 		// retries 3 times, handles edge case where messages are streamed and ended instantaneously
 		let message;
 		for (let i = 0; i < 3; i++) {
-			const msg = messagesRef.current.find((m) => m.id === messageId);
+			const msg = messagesSyncRef.current.find((m) => m.id === messageId);
 			if (msg) message = msg;
 			await new Promise((res) => setTimeout(res, 20));
 		}
@@ -355,7 +366,7 @@ export const useMessagesInternal = () => {
 
 		// remove sender from streaming list and save messages
 		streamMessageMap.current.delete(sender);
-		saveChatHistory(messagesRef.current);
+		saveChatHistory(messagesSyncRef.current);
 		return true;
 	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap]);
 
@@ -365,9 +376,9 @@ export const useMessagesInternal = () => {
 	 * @param newMessages new messages to set/replace
 	 */
 	const replaceMessages = useCallback((newMessages: Array<Message>) => {
-		dispatch({ type: "REPLACE", payload: newMessages });
+		setSyncMessages(newMessages);
 		handlePostMessagesUpdate(newMessages);
-	}, [dispatch, handlePostMessagesUpdate])
+	}, [handlePostMessagesUpdate])
 
 	return {
 		simulateStreamMessage,

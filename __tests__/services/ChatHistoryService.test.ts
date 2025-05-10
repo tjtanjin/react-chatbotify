@@ -102,7 +102,7 @@ describe("ChatHistoryService", () => {
 	])("loadChatHistory", (storageType, storage) => {
 		it("should load history and display messages", () => {
 			const dispatch = jest.fn();
-			const messagesRef = { current: [mockMessage] };
+			const messagesSyncRef = { current: [mockMessage] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 
@@ -120,7 +120,7 @@ describe("ChatHistoryService", () => {
 				{},
 				[mockMessage],
 				dispatch,
-				messagesRef,
+				messagesSyncRef,
 				chatBodyRef,
 				1000,
 				setIsLoadingChatHistory,
@@ -138,7 +138,7 @@ describe("ChatHistoryService", () => {
 			storage.setItem("rcb-history", "not_json_format");
 
 			const dispatch = jest.fn();
-			const messagesRef = { current: [] };
+			const messagesSyncRef = { current: [] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
@@ -149,7 +149,7 @@ describe("ChatHistoryService", () => {
 					{},
 					[],
 					dispatch,
-					messagesRef,
+					messagesSyncRef,
 					chatBodyRef,
 					1000,
 					setIsLoadingChatHistory,
@@ -160,7 +160,7 @@ describe("ChatHistoryService", () => {
 
 		it("does not do anything if chat history is null", () => {
 			const dispatch = jest.fn();
-			const messagesRef = { current: [] };
+			const messagesSyncRef = { current: [] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
@@ -170,7 +170,7 @@ describe("ChatHistoryService", () => {
 				{},
 				null as unknown as Message[],
 				dispatch,
-				messagesRef,
+				messagesSyncRef,
 				chatBodyRef,
 				1000,
 				setIsLoadingChatHistory,
@@ -182,7 +182,7 @@ describe("ChatHistoryService", () => {
 
 		it("handles errors gracefully and removes chat history on error", () => {
 			const dispatch = () => { throw new Error("Error setting messages"); };
-			const messagesRef = { current: [] };
+			const messagesSyncRef = { current: [] };
 			const setIsLoadingChatHistory = jest.fn();
 			const setHasChatHistoryLoaded = jest.fn();
 			const chatBodyRef = { current: document.createElement("div") };
@@ -192,7 +192,7 @@ describe("ChatHistoryService", () => {
 				{},
 				[],
 				dispatch as Dispatch<any>,
-				messagesRef,
+				messagesSyncRef,
 				chatBodyRef,
 				1000,
 				setIsLoadingChatHistory,

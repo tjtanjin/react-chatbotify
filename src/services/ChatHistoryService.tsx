@@ -1,4 +1,4 @@
-import { createElement, isValidElement, Dispatch, ReactNode, CSSProperties } from "react";
+import { createElement, isValidElement, Dispatch, ReactNode, CSSProperties, SetStateAction } from "react";
 import ReactDOMServer from "react-dom/server";
 
 import ChatHistoryLineBreak from "../components/ChatHistoryLineBreak/ChatHistoryLineBreak";
@@ -7,7 +7,6 @@ import { createMessage } from "../utils/messageBuilder";
 import { Message } from "../types/Message";
 import { Settings } from "../types/Settings";
 import { Styles } from "../types/Styles";
-import { MessagesAction } from "../types/internal/MessageAction";
 
 // variables used to track history, updated when settings.chatHistory value changes
 let storage: Storage;
@@ -154,8 +153,8 @@ const parseMessageToString = (message: Message) => {
  * @param settings settings provided to the bot
  * @param styles styles provided to the bot
  * @param chatHistory chat history to show
- * @param dispatch reducer dispatch for updating messages
- * @param messagesRef live ref of current messages array
+ * @param setSyncMessages sync ref and state setter for messages
+ * @param messagesSyncRef live ref of current messages array
  * @param chatBodyRef reference to the chat body
  * @param chatScrollHeight current chat scroll height
  * @param setIsLoadingChatHistory setter for whether chat history is loading
@@ -165,8 +164,8 @@ const loadChatHistory = (
 	settings: Settings,
 	styles: Styles,
 	chatHistory: Message[],
-	dispatch: Dispatch<MessagesAction>,
-	messagesRef: React.MutableRefObject<Message[]>,
+	setSyncMessages: Dispatch<SetStateAction<Message[]>>,
+	messagesSyncRef: React.MutableRefObject<Message[]>,
 	chatBodyRef: React.RefObject<HTMLDivElement | null>,
 	chatScrollHeight: number,
 	setIsLoadingChatHistory: Dispatch<boolean>,
@@ -177,8 +176,8 @@ const loadChatHistory = (
 		try {
 			// insert loader
 			const loaderMessage = createMessage(<LoadingSpinner/>, "SYSTEM");
-			const base = messagesRef.current.slice(1);
-			dispatch({ type: "REPLACE", payload: [loaderMessage, ...base] });
+			const base = messagesSyncRef.current.slice(1);
+			setSyncMessages([loaderMessage, ...base]);
 
 			const parsedMessages = chatHistory.map((message) => {
 				if (message.type === "object") {
@@ -189,16 +188,13 @@ const loadChatHistory = (
 			}) as Message[];
 
 			setTimeout(() => {
-				const rest = messagesRef.current.slice(1);
+				const rest = messagesSyncRef.current.slice(1);
 
 				// if autoload, line break is invisible
 				let lineBreakMessage = settings.chatHistory?.autoLoad
 					? createMessage(<></>, "SYSTEM")
 					: createMessage(<ChatHistoryLineBreak/>, "SYSTEM");
-				dispatch({
-					type: "REPLACE",
-					payload: [...parsedMessages, lineBreakMessage, ...rest],
-				});
+				setSyncMessages([...parsedMessages, lineBreakMessage, ...rest]);
 				setHasChatHistoryLoaded(true);
 			}, 500);
 
