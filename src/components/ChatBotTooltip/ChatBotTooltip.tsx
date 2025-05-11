@@ -21,7 +21,7 @@ const ChatBotTooltip = () => {
 	const { styles } = useStylesContext();
 
 	// handles chat window
-	const { isChatWindowOpen, toggleChatWindow } = useChatWindowInternal();
+	const { isChatWindowOpen, toggleChatWindowOpen } = useChatWindowInternal();
 
 	// tracks whether to show tooltip
 	const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -90,7 +90,7 @@ const ChatBotTooltip = () => {
 					data-testid="chat-tooltip"
 					style={tooltipStyle}
 					className={`rcb-chat-tooltip ${showTooltip ? "rcb-tooltip-show" : "rcb-tooltip-hide"}`}
-					onClick={() => toggleChatWindow(true)}
+					onClick={() => toggleChatWindowOpen(true)}
 				>
 					<span>{settings.tooltip?.text}</span>
 					<span className="rcb-chat-tooltip-tail" style={tooltipTailStyle}></span>

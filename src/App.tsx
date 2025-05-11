@@ -100,7 +100,7 @@ function App() {
 				if (params.userInput.toLowerCase() != "black") {
 					return "incorrect_answer"
 				} else {
-					await params.toggleChatWindow(false);
+					await params.toggleChatWindowOpen(false);
 					return "close_chat";
 				}
 			},

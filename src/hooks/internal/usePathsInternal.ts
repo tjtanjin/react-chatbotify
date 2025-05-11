@@ -54,7 +54,7 @@ export const usePathsInternal = () => {
 	const { showToast, dismissToast } = useToastsInternal();
 
 	// handles chat window
-	const { toggleChatWindow } = useChatWindowInternal();
+	const { toggleChatWindowOpen } = useChatWindowInternal();
 
 	// handles input text area
 	const { updateTextAreaFocus, setTextAreaValue } = useTextAreaInternal();
@@ -130,7 +130,7 @@ export const usePathsInternal = () => {
 			removeMessage,
 			simulateStreamMessage,
 			streamMessage,
-			toggleChatWindow,
+			toggleChatWindowOpen,
 			showToast,
 			dismissToast
 		};
@@ -178,7 +178,7 @@ export const usePathsInternal = () => {
 		removeMessage,
 		simulateStreamMessage,
 		streamMessage,
-		toggleChatWindow,
+		toggleChatWindowOpen,
 		showToast,
 		dismissToast,
 		keepVoiceOnRef,

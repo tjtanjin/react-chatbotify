@@ -60,7 +60,7 @@ describe("BlockService", () => {
 		endStreamMessage: jest.fn(),
 		showToast: jest.fn(),
 		dismissToast: jest.fn(),
-		toggleChatWindow: jest.fn(),
+		toggleChatWindowOpen: jest.fn(),
 	};
 
 	const mockSetTextAreaDisabled = jest.fn();

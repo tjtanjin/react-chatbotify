@@ -16,7 +16,7 @@ const params: Params = {
 	endStreamMessage: jest.fn(),
 	showToast: jest.fn(),
 	dismissToast: jest.fn(),
-	toggleChatWindow: jest.fn()
+	toggleChatWindowOpen: jest.fn()
 };
 
 describe("PathService.processPath", () => {
