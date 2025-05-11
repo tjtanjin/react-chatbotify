@@ -21,8 +21,9 @@ export const useTextAreaInternal = () => {
 		textAreaDisabled,
 		setSyncedTextAreaDisabled,
 		textAreaSensitiveMode,
-		setTextAreaSensitiveMode,
+		setSyncedTextAreaSensitiveMode,
 		syncedTextAreaDisabledRef,
+		syncedTextAreaSensitiveModeRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -145,19 +146,19 @@ export const useTextAreaInternal = () => {
 	 */
 	const toggleTextAreaSensitiveMode = useCallback((active?: boolean) => {
 		// nothing to do if state is as desired
-		if (active === textAreaSensitiveMode) {
+		if (active === syncedTextAreaSensitiveModeRef.current) {
 			return;
 		}
 
-		setTextAreaSensitiveMode(prev => !prev);
-	}, [textAreaSensitiveMode])
+		setSyncedTextAreaSensitiveMode(prev => !prev);
+	}, [syncedTextAreaSensitiveModeRef])
 
 	// todo: we can just standardize to export and use toggles, clean up in future
 	return {
 		textAreaDisabled,
 		setSyncedTextAreaDisabled,
 		textAreaSensitiveMode,
-		setTextAreaSensitiveMode,
+		setSyncedTextAreaSensitiveMode,
 		inputLength,
 		setInputLength,
 		getTextAreaValue,

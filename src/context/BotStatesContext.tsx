@@ -42,7 +42,8 @@ export type BotStatesContextType = {
 	syncedTextAreaDisabledRef: MutableRefObject<boolean>;
 
 	textAreaSensitiveMode: boolean;
-	setTextAreaSensitiveMode: Dispatch<SetStateAction<boolean>>;
+	setSyncedTextAreaSensitiveMode: Dispatch<SetStateAction<boolean>>;
+	syncedTextAreaSensitiveModeRef: MutableRefObject<boolean>;
 
 	hasInteractedPage: boolean;
 	setHasInteractedPage: Dispatch<SetStateAction<boolean>>;
@@ -103,7 +104,11 @@ const BotStatesProvider = ({
 	const [hasChatHistoryLoaded, setHasChatHistoryLoaded] = useState<boolean>(false);
 	const [isScrolling, setSyncedIsScrolling, syncedIsScrollingRef] = useSyncedRefState<boolean>(false);
 	const [textAreaDisabled, setSyncedTextAreaDisabled, syncedTextAreaDisabledRef] = useSyncedRefState<boolean>(true);
-	const [textAreaSensitiveMode, setTextAreaSensitiveMode] = useState<boolean>(false);
+	const [
+		textAreaSensitiveMode,
+		setSyncedTextAreaSensitiveMode,
+		syncedTextAreaSensitiveModeRef
+	] = useSyncedRefState<boolean>(false);
 	const [hasInteractedPage, setHasInteractedPage] = useState<boolean>(false);
 	const [hasFlowStarted, setHasFlowStarted] = useState<boolean>(false);
 	const [unreadCount, setUnreadCount] = useState<number>(0);
@@ -145,7 +150,8 @@ const BotStatesProvider = ({
 			setSyncedTextAreaDisabled,
 			syncedTextAreaDisabledRef,
 			textAreaSensitiveMode,
-			setTextAreaSensitiveMode,
+			setSyncedTextAreaSensitiveMode,
+			syncedTextAreaSensitiveModeRef,
 			hasInteractedPage,
 			setHasInteractedPage,
 			hasFlowStarted,

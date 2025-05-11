@@ -39,13 +39,13 @@ export const useSubmitInputInternal = () => {
 	// handles bot states
 	const {
 		timeoutId,
-		setTextAreaSensitiveMode,
-		textAreaSensitiveMode,
+		setSyncedTextAreaSensitiveMode,
 		setSyncedTextAreaDisabled,
 		setSyncedIsBotTyping,
 		setBlockAllowsAttachment,
 		setInputLength,
 		syncedVoiceToggledOnRef,
+		syncedTextAreaSensitiveModeRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -82,7 +82,7 @@ export const useSubmitInputInternal = () => {
 			return;
 		}
 
-		if (textAreaSensitiveMode) {
+		if (syncedTextAreaSensitiveModeRef.current) {
 			if (settings?.sensitiveInput?.hideInUserBubble) {
 				return;
 			} else if (settings?.sensitiveInput?.maskInUserBubble) {
@@ -103,7 +103,7 @@ export const useSubmitInputInternal = () => {
 		} else {
 			await injectMessage(userInput, "USER");
 		}
-	}, [flowRef, getCurrPath, settings, injectMessage, simulateStreamMessage, textAreaSensitiveMode]);
+	}, [flowRef, getCurrPath, settings, injectMessage, simulateStreamMessage, syncedTextAreaSensitiveModeRef]);
 
 	/**
 	 * Handles action input from the user which includes text, files and emoji.
@@ -169,7 +169,7 @@ export const useSubmitInputInternal = () => {
 
 		// after user sends input, set sensitive mode to false first (default)
 		// will be overriden if next block also has isSensitive attribute
-		setTextAreaSensitiveMode(false);
+		setSyncedTextAreaSensitiveMode(false);
 
 		setTimeout(async () => {
 			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue, userInput, 
@@ -185,7 +185,7 @@ export const useSubmitInputInternal = () => {
 				} else {
 					setSyncedTextAreaDisabled(!!settings.chatInput?.disabled);
 				}
-				processIsSensitive(block, params, setTextAreaSensitiveMode);
+				processIsSensitive(block, params, setSyncedTextAreaSensitiveMode);
 				setBlockAllowsAttachment(typeof block.file === "function");
 				syncVoice(keepVoiceOnRef.current);
 				setSyncedIsBotTyping(false);

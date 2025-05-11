@@ -37,7 +37,9 @@ export const useBotStatesContext = jest.fn<BotStatesContextType, []>(() => ({
 	syncedTextAreaDisabledRef: {current: false},
 
 	textAreaSensitiveMode: false,
-	setTextAreaSensitiveMode: jest.fn(),
+	setSyncedTextAreaSensitiveMode: jest.fn(),
+	syncedTextAreaSensitiveModeRef: {current: false},
+
 
 	hasInteractedPage: false,
 	setHasInteractedPage: jest.fn(),

@@ -6,14 +6,14 @@ import { Params } from "../../types/Params";
  * 
  * @param block current block being processed
  * @param params contains parameters that can be used/passed into attributes
- * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
+ * @param setSyncedTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  */
 export const processIsSensitive = async (block: Block, params: Params,
-	setTextAreaSensitiveMode: (inputDisabled: boolean) => void) => {
+	setSyncedTextAreaSensitiveMode: (inputDisabled: boolean) => void) => {
 
 	const isSensitive = block.isSensitive;
 	if (!isSensitive) {
-		setTextAreaSensitiveMode(false);
+		setSyncedTextAreaSensitiveMode(false);
 		return;
 	}
 
@@ -27,5 +27,5 @@ export const processIsSensitive = async (block: Block, params: Params,
 		parsedIsSensitive = isSensitive;
 	}
 
-	setTextAreaSensitiveMode(parsedIsSensitive);
+	setSyncedTextAreaSensitiveMode(parsedIsSensitive);
 }

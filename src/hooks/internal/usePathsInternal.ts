@@ -32,7 +32,7 @@ export const usePathsInternal = () => {
 	const {
 		setSyncedIsBotTyping,
 		setSyncedTextAreaDisabled,
-		setTextAreaSensitiveMode,
+		setSyncedTextAreaSensitiveMode,
 		blockAllowsAttachment,
 		setBlockAllowsAttachment,
 		setTimeoutId,
@@ -117,7 +117,7 @@ export const usePathsInternal = () => {
 		if (settings.chatInput?.blockSpam) {
 			setSyncedTextAreaDisabled(true);
 		}
-		setTextAreaSensitiveMode(false);
+		setSyncedTextAreaSensitiveMode(false);
 
 		const params = {
 			prevPath,
@@ -139,7 +139,7 @@ export const usePathsInternal = () => {
 			params,
 			settings.botBubble?.simulateStream ?? false,
 			setSyncedTextAreaDisabled,
-			setTextAreaSensitiveMode,
+			setSyncedTextAreaSensitiveMode,
 			setTimeoutId,
 			firePostProcessBlockEvent,
 		);
@@ -152,7 +152,7 @@ export const usePathsInternal = () => {
 		}
 	
 		if (!("isSensitive" in block)) {
-			setTextAreaSensitiveMode(false);
+			setSyncedTextAreaSensitiveMode(false);
 		}
 	
 		setBlockAllowsAttachment(typeof block.file === "function");
