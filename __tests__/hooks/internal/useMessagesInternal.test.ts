@@ -18,13 +18,14 @@ jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useMessagesInternal", () => {
 	const setSyncedMessagesMock = jest.fn();
-	const mockSetIsBotTyping = jest.fn();
+	const mockSetSyncedIsBotTyping = jest.fn();
 	const mockSetUnreadCount = jest.fn();
 	const mockCallRcbEvent = jest.fn();
 	const mockStreamMessageMap = { current: new Map() };
 	const mockMessages: Message[] = [];
 	const mockMessagesSyncRef = { current: mockMessages };
 	const mockSyncedIsScrollingRef = { current: false };
+	const mockSyncedIsChatWindowOpenRef = { current: false };
 	const mockChatBodyRef = { current: null };
 
 	beforeEach(() => {
@@ -47,9 +48,10 @@ describe("useMessagesInternal", () => {
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			audioToggledOn: false,
 			isChatWindowOpen: true,
-			setIsBotTyping: mockSetIsBotTyping,
+			setSyncedIsBotTyping: mockSetSyncedIsBotTyping,
 			setUnreadCount: mockSetUnreadCount,
 			syncedIsScrollingRef: mockSyncedIsScrollingRef,
+			syncedIsChatWindowOpenRef: mockSyncedIsChatWindowOpenRef,
 		});
 
 		(useBotRefsContext as jest.Mock).mockReturnValue({

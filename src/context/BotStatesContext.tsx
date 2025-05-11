@@ -8,10 +8,12 @@ import { Settings } from "../types/Settings";
  */
 export type BotStatesContextType = {
 	isBotTyping: boolean;
-	setIsBotTyping: Dispatch<SetStateAction<boolean>>;
+	setSyncedIsBotTyping: Dispatch<SetStateAction<boolean>>;
+	syncedIsBotTypingRef: MutableRefObject<boolean>;
 	
 	isChatWindowOpen: boolean;
-	setIsChatWindowOpen: Dispatch<SetStateAction<boolean>>;
+	setSyncedIsChatWindowOpen: Dispatch<SetStateAction<boolean>>;
+	syncedIsChatWindowOpenRef: MutableRefObject<boolean>;
 
 	audioToggledOn: boolean;
 	setAudioToggledOn: Dispatch<SetStateAction<boolean>>;
@@ -76,8 +78,10 @@ const BotStatesProvider = ({
 	children: React.ReactNode;
 	settings?: Settings;
 }) => {
-	const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
-	const [isChatWindowOpen, setIsChatWindowOpen] = useState<boolean>(settings?.chatWindow?.defaultOpen ?? false);
+	const [isBotTyping, setSyncedIsBotTyping, syncedIsBotTypingRef] = useSyncedRefState<boolean>(false);
+	const [isChatWindowOpen, setSyncedIsChatWindowOpen, syncedIsChatWindowOpenRef] = useSyncedRefState<boolean>(
+		settings?.chatWindow?.defaultOpen ?? false
+	);
 	const [audioToggledOn, setAudioToggledOn] = useState<boolean>(settings?.audio?.defaultToggledOn ?? false);
 	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(settings?.voice?.defaultToggledOn ?? false);
 	const [notificationsToggledOn, setNotificationsToggledOn] = useState<boolean>(
@@ -104,9 +108,11 @@ const BotStatesProvider = ({
 	return (
 		<BotStatesContext.Provider value={{
 			isBotTyping,
-			setIsBotTyping,
+			setSyncedIsBotTyping,
+			syncedIsBotTypingRef,
 			isChatWindowOpen,
-			setIsChatWindowOpen,
+			setSyncedIsChatWindowOpen,
+			syncedIsChatWindowOpenRef,
 			audioToggledOn,
 			setAudioToggledOn,
 			voiceToggledOn,

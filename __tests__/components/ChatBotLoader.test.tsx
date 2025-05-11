@@ -77,7 +77,7 @@ describe("ChatBotLoader Component", () => {
 			setHasFlowStarted: jest.fn(),
 			setUnreadCount: jest.fn(),
 			setTextAreaDisabled: jest.fn(),
-			setIsChatWindowOpen: jest.fn(),
+			setSyncedIsChatWindowOpen: jest.fn(),
 			setAudioToggledOn: jest.fn(),
 		});
 		(useSettingsContext as jest.Mock).mockReturnValue({

@@ -43,7 +43,7 @@ export const useSubmitInputInternal = () => {
 		setTextAreaSensitiveMode,
 		textAreaSensitiveMode,
 		setTextAreaDisabled,
-		setIsBotTyping,
+		setSyncedIsBotTyping,
 		setBlockAllowsAttachment,
 		setInputLength
 	} = useBotStatesContext();
@@ -164,7 +164,7 @@ export const useSubmitInputInternal = () => {
 		
 		// shows bot typing indicator
 		setTimeout(() => {
-			setIsBotTyping(true);
+			setSyncedIsBotTyping(true);
 		}, 400);
 
 		// after user sends input, set sensitive mode to false first (default)
@@ -188,7 +188,7 @@ export const useSubmitInputInternal = () => {
 				processIsSensitive(block, params, setTextAreaSensitiveMode);
 				setBlockAllowsAttachment(typeof block.file === "function");
 				syncVoice(keepVoiceOnRef.current);
-				setIsBotTyping(false);
+				setSyncedIsBotTyping(false);
 			}
 		}, settings.chatInput?.botDelay);
 

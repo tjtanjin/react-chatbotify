@@ -8,19 +8,19 @@ import '@testing-library/jest-dom';
 const TestComponent = () => {
 	const {
 		isBotTyping,
-		setIsBotTyping,
+		setSyncedIsBotTyping,
 		isChatWindowOpen,
-		setIsChatWindowOpen,
+		setSyncedIsChatWindowOpen,
 	} = useBotStatesContext();
 
 	return (
 		<div>
 			<p>Bot Typing: {isBotTyping ? 'Yes' : 'No'}</p>
-			<button onClick={() => setIsBotTyping(!isBotTyping)}>
+			<button onClick={() => setSyncedIsBotTyping(!isBotTyping)}>
 				Toggle Bot Typing
 			</button>
 			<p>Chat Window Open: {isChatWindowOpen ? 'Yes' : 'No'}</p>
-			<button onClick={() => setIsChatWindowOpen(!isChatWindowOpen)}>
+			<button onClick={() => setSyncedIsChatWindowOpen(!isChatWindowOpen)}>
 				Toggle Chat Window
 			</button>
 		</div>

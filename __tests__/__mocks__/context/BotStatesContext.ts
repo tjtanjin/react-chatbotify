@@ -3,10 +3,12 @@ import { BotStatesContextType } from '../../../src/context/BotStatesContext'; //
 // Mock implementation of the `useBotStatesContext` function
 export const useBotStatesContext = jest.fn<BotStatesContextType, []>(() => ({
 	isBotTyping: false,
-	setIsBotTyping: jest.fn(),
+	setSyncedIsBotTyping: jest.fn(),
+	syncedIsBotTypingRef: {current: false},
 
 	isChatWindowOpen: false,
-	setIsChatWindowOpen: jest.fn(),
+	setSyncedIsChatWindowOpen: jest.fn(),
+	syncedIsChatWindowOpenRef: {current: false},
 
 	audioToggledOn: false,
 	setAudioToggledOn: jest.fn(),

@@ -16,14 +16,16 @@ export const useChatWindowInternal = () => {
 	// handles bot states
 	const {
 		isChatWindowOpen,
-		setIsChatWindowOpen,
+		setSyncedIsChatWindowOpen,
 		viewportHeight,
 		setViewportHeight,
 		viewportWidth,
 		setViewportWidth,
 		setUnreadCount,
-		setIsBotTyping,
+		setSyncedIsBotTyping,
 		setSyncedIsScrolling,
+		syncedIsBotTypingRef,
+		syncedIsChatWindowOpenRef,
 	} = useBotStatesContext();
 
 	const { chatBodyRef } = useBotRefsContext();
@@ -38,7 +40,7 @@ export const useChatWindowInternal = () => {
 	 */
 	const toggleChatWindow = useCallback(async (active?: boolean) => {
 		// nothing to do if state is as desired
-		if (active === isChatWindowOpen) {
+		if (active === syncedIsChatWindowOpenRef.current) {
 			return;
 		}
 
@@ -46,33 +48,36 @@ export const useChatWindowInternal = () => {
 		if (settings.event?.rcbToggleChatWindow) {
 			const event = await callRcbEvent(
 				RcbEvent.TOGGLE_CHAT_WINDOW,
-				{currState: isChatWindowOpen, newState: !isChatWindowOpen}
+				{
+					currState: syncedIsChatWindowOpenRef.current,
+					newState: !syncedIsChatWindowOpenRef.current
+				}
 			);
 			if (event.defaultPrevented) {
 				return;
 			}
 		}
-		setIsChatWindowOpen(prev => {
+		setSyncedIsChatWindowOpen(prev => {
 			// if currently false means opening so set unread count to 0
 			if (!prev) {
 				setUnreadCount(0);
 			}
 			return !prev;
 		});
-	}, [isChatWindowOpen]);
+	}, [syncedIsChatWindowOpenRef]);
 
 	/**
 	 * Forces state for showing typing indicator.
 	 * 
 	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleTypingIndicator = useCallback(async (active?: boolean) => {
-		if (active !== undefined) {
-			setIsBotTyping(active);
-		} else {
-			setIsBotTyping(prev =>  !prev);
+	const toggleIsBotTyping = useCallback(async (active?: boolean) => {
+		if (active === syncedIsBotTypingRef.current) {
+			return
 		}
+		setSyncedIsBotTyping(prev => !prev);
 	}, [])
+
 	/**
 	 * Helper function for custom scrolling.
 	 */
@@ -124,13 +129,13 @@ export const useChatWindowInternal = () => {
 
 	return {
 		isChatWindowOpen,
-		setIsChatWindowOpen,
+		setSyncedIsChatWindowOpen,
 		toggleChatWindow,
 		viewportHeight,
 		setViewportHeight,
 		viewportWidth,
 		setViewportWidth,
-		toggleTypingIndicator,
+		toggleIsBotTyping,
 		scrollToBottom,
 	};
 };

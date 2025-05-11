@@ -41,7 +41,7 @@ export const useBotEffectsInternal = () => {
 		isBotTyping,
 		isChatWindowOpen,
 		hasFlowStarted,
-		setIsChatWindowOpen,
+		setSyncedIsChatWindowOpen,
 		setTextAreaDisabled,
 		setAudioToggledOn,
 		setVoiceToggledOn,
@@ -82,7 +82,7 @@ export const useBotEffectsInternal = () => {
 	// default setup for text area, chat window, audio and voice
 	useEffect(() => {
 		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
-		setIsChatWindowOpen(settings.chatWindow?.defaultOpen as boolean);
+		setSyncedIsChatWindowOpen(settings.chatWindow?.defaultOpen as boolean);
 		setAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
 
 		// delay required for default voice toggled on to work if it is set to true

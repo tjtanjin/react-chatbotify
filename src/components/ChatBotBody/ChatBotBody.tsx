@@ -27,7 +27,7 @@ const ChatBotBody = () => {
 	const { messages } = useMessagesContext();
 
 	// handles chat window
-	const { isChatWindowOpen, scrollToBottom } = useChatWindowInternal();
+	const { scrollToBottom } = useChatWindowInternal();
 
 	// handles bot states
 	const {
@@ -35,6 +35,7 @@ const ChatBotBody = () => {
 		setSyncedIsScrolling,
 		syncedIsScrollingRef,
 		setUnreadCount,
+		syncedIsChatWindowOpenRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -82,7 +83,7 @@ const ChatBotBody = () => {
 				if (scrollTop + clientHeight >= scrollHeight - 1) {
 					chatBodyRef.current.scrollTop = scrollHeight - clientHeight - 1;
 				}
-				if (isChatWindowOpen || settings.general?.embedded) {
+				if (syncedIsChatWindowOpenRef.current || settings.general?.embedded) {
 					setUnreadCount(0);
 				}
 			}

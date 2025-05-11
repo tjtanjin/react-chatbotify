@@ -16,7 +16,7 @@ jest.mock("../../../src/services/RcbEventService");
 
 describe("usePathsInternal Hook", () => {
 	const mockSetSyncedPaths = jest.fn();
-	const mockSetIsBotTyping = jest.fn();
+	const mockSetSyncedIsBotTyping = jest.fn();
 	const mockSetTextAreaDisabled = jest.fn();
 	const mockSetTextAreaSensitiveMode = jest.fn();
 	const mockSetBlockAllowsAttachment = jest.fn();
@@ -40,7 +40,7 @@ describe("usePathsInternal Hook", () => {
 			syncedPathsRef: mockSyncedPathsRef,
 		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({
-			setIsBotTyping: mockSetIsBotTyping,
+			setSyncedIsBotTyping: mockSetSyncedIsBotTyping,
 			setTextAreaDisabled: mockSetTextAreaDisabled,
 			setTextAreaSensitiveMode: mockSetTextAreaSensitiveMode,
 			blockAllowsAttachment: false,
@@ -78,7 +78,7 @@ describe("usePathsInternal Hook", () => {
 		expect(newState).toEqual([...mockPaths, "newPath"]);
 
 		// todo: shift to block processing test cases when they are added
-		// expect(mockSetIsBotTyping).toHaveBeenCalledWith(true);
+		// expect(mockSetSyncedIsBotTyping).toHaveBeenCalledWith(true);
 		// expect(mockSetTextAreaDisabled).toHaveBeenCalledWith(true);
 		// expect(mockSetTextAreaSensitiveMode).toHaveBeenCalledWith(false);
 		expect(emitRcbEvent).toHaveBeenCalledWith(

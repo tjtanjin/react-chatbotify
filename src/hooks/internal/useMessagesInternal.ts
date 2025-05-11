@@ -26,10 +26,10 @@ export const useMessagesInternal = () => {
 
 	// handles bot states
 	const {
-		isChatWindowOpen,
-		setIsBotTyping,
+		setSyncedIsBotTyping,
 		setUnreadCount,
 		syncedIsScrollingRef,
+		syncedIsChatWindowOpenRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -83,7 +83,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// if chatbot is open and user is not scrolling or is repeated stream message, no need to notify
-		if ((isChatWindowOpen && !syncedIsScrollingRef.current) || isRepeatedStreamMessage) {
+		if ((syncedIsChatWindowOpenRef.current && !syncedIsScrollingRef.current) || isRepeatedStreamMessage) {
 			shouldNotify = false;
 		}
 
@@ -100,7 +100,7 @@ export const useMessagesInternal = () => {
 			// and the scrolling does not properly reach the bottom
 			setTimeout(() => scrollToBottom(), 1);
 		}
-	}, [settings, chatBodyRef, isChatWindowOpen, syncedIsScrollingRef, playNotificationSound, scrollToBottom]);
+	}, [settings, chatBodyRef, syncedIsChatWindowOpenRef, syncedIsScrollingRef, playNotificationSound, scrollToBottom]);
 
 	/**
 	 * Simulates the streaming of a message from the bot.
@@ -133,7 +133,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// stop bot typing when simulating stream
-		setIsBotTyping(false);
+		setSyncedIsBotTyping(false);
 		
 
 		let streamSpeed = 30;
@@ -157,7 +157,8 @@ export const useMessagesInternal = () => {
 		const endStreamIndex = streamMessage.length;
 
 		// speak audio if conditions are met
-		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
+		if (message.sender.toUpperCase() === "BOT" &&
+			(syncedIsChatWindowOpenRef.current || settings.general?.embedded)) {
 			if (typeof message.content === "string" && message.content.trim() !== "") {
 				speakAudio(message.content);
 			}
@@ -201,7 +202,7 @@ export const useMessagesInternal = () => {
 		}
 		return message;
 	}, [settings, callRcbEvent, handlePostMessagesUpdate, syncedMessagesRef,
-		setIsBotTyping, setUnreadCount, isChatWindowOpen, speakAudio
+		setSyncedIsBotTyping, setUnreadCount, syncedIsChatWindowOpenRef, speakAudio
 	]);
 
 	/**
@@ -226,7 +227,8 @@ export const useMessagesInternal = () => {
 		}
 
 		// speak audio if conditions are met
-		if (message.sender.toUpperCase() === "BOT" && (isChatWindowOpen || settings.general?.embedded)) {
+		if (message.sender.toUpperCase() === "BOT" &&
+			(syncedIsChatWindowOpenRef.current || settings.general?.embedded)) {
 			if (typeof message.content === "string" && message.content.trim() !== "") {
 				speakAudio(message.content);
 			}
@@ -242,7 +244,7 @@ export const useMessagesInternal = () => {
 		handlePostMessagesUpdate(syncedMessagesRef.current);
 		return message;
 	}, [settings, callRcbEvent, handlePostMessagesUpdate,
-		syncedMessagesRef, isChatWindowOpen, speakAudio, setUnreadCount
+		syncedMessagesRef, syncedIsChatWindowOpenRef, speakAudio, setUnreadCount
 	]);
 
 	/**
@@ -299,7 +301,7 @@ export const useMessagesInternal = () => {
 				}
 			}
 
-			setIsBotTyping(false);
+			setSyncedIsBotTyping(false);
 			setSyncedMessages(prev => [...prev, message]);
 			handlePostMessagesUpdate(syncedMessagesRef.current);
 			streamMessageMap.current.set(sender, message.id);
@@ -321,7 +323,7 @@ export const useMessagesInternal = () => {
 		handlePostMessagesUpdate(syncedMessagesRef.current, true);
 		return message;
 	}, [callRcbEvent, settings.event, handlePostMessagesUpdate,
-		syncedMessagesRef, setIsBotTyping, setUnreadCount, streamMessageMap
+		syncedMessagesRef, setSyncedIsBotTyping, setUnreadCount, streamMessageMap
 	]);
 
 	/**

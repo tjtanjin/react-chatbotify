@@ -30,7 +30,7 @@ export const usePathsInternal = () => {
 
 	// handles bot states
 	const {
-		setIsBotTyping,
+		setSyncedIsBotTyping,
 		setTextAreaDisabled,
 		setTextAreaSensitiveMode,
 		blockAllowsAttachment,
@@ -97,7 +97,7 @@ export const usePathsInternal = () => {
 		// if block is invalid, nothing to process (i.e. becomes dead end!)
 		let block = (flowRef.current as Flow)[currPath];
 		if (!block) {
-			setIsBotTyping(false);
+			setSyncedIsBotTyping(false);
 			return;
 		}
 	
@@ -113,7 +113,7 @@ export const usePathsInternal = () => {
 
 		// ***** start of preprocessing logic *****
 
-		setIsBotTyping(true);
+		setSyncedIsBotTyping(true);
 		if (settings.chatInput?.blockSpam) {
 			setTextAreaDisabled(true);
 		}
@@ -145,7 +145,7 @@ export const usePathsInternal = () => {
 		);
 	
 		// cleanup logic after preprocessing of a block
-		setIsBotTyping(false);
+		setSyncedIsBotTyping(false);
 	
 		if (!("chatDisabled" in block)) {
 			setTextAreaDisabled(settings.chatInput?.disabled as boolean);
