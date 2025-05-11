@@ -14,6 +14,7 @@ import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { Flow } from "../../types/Flow";
 import { RcbEvent } from "../../constants/RcbEvent";
+import { usePathsContext } from "../../context/PathsContext";
 
 /**
  * Internal custom hook for managing user input submissions.
@@ -32,6 +33,7 @@ export const useSubmitInputInternal = () => {
 	} = useMessagesInternal();
 
 	// handles paths
+	const { syncedPathsRef } = usePathsContext();
 	const { getCurrPath, getPrevPath, goToPath, firePostProcessBlockEvent } = usePathsInternal();
 
 	// handles bot states
@@ -47,7 +49,7 @@ export const useSubmitInputInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, pathsRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
+	const { flowRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
 
 	// handles toasts
 	const { showToast, dismissToast } = useToastsInternal();
@@ -174,10 +176,10 @@ export const useSubmitInputInternal = () => {
 				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
 				showToast, dismissToast
 			};
-			const currNumPaths = pathsRef.current.length;
+			const currNumPaths = syncedPathsRef.current.length;
 			await postProcessBlock(finalBlock, params);
 			// if same length, means post-processing did not path to a block and if so, reset to current block states
-			if (pathsRef.current.length === currNumPaths) {
+			if (syncedPathsRef.current.length === currNumPaths) {
 				if ("chatDisabled" in block) {
 					setTextAreaDisabled(!!block.chatDisabled);
 				} else {

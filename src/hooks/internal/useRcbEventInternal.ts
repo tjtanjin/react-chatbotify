@@ -3,13 +3,17 @@ import { useCallback } from "react";
 import { emitRcbEvent } from "../../services/RcbEventService";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { RcbEvent } from "../../constants/RcbEvent";
+import { usePathsContext } from "../../context/PathsContext";
 
 /**
  * Internal custom hook for managing firing of rcb events.
  */
 export const useRcbEventInternal = () => {
+	// handles bot refs
+	const { botIdRef } = useBotRefsContext();
+
 	// handles paths
-	const { pathsRef } = useBotRefsContext();
+	const { syncedPathsRef } = usePathsContext();
 
 	/**
 	 * Retrieves current path for user. Note that this function is duplicated from usePathsInternal
@@ -17,7 +21,7 @@ export const useRcbEventInternal = () => {
 	 * to supply path details by default.
 	 */
 	const getCurrPath = useCallback(() => {
-		return pathsRef.current.length > 0 ? pathsRef.current.at(-1) ?? null : null;
+		return syncedPathsRef.current.length > 0 ? syncedPathsRef.current.at(-1) ?? null : null;
 	}, []);
 
 	/**
@@ -26,11 +30,8 @@ export const useRcbEventInternal = () => {
 	 * to supply path details by default.
 	 */
 	const getPrevPath = useCallback(() => {
-		return pathsRef.current.length > 1 ? pathsRef.current.at(-2) ?? null : null;
+		return syncedPathsRef.current.length > 1 ? syncedPathsRef.current.at(-2) ?? null : null;
 	}, []);
-
-	// handles bot refs
-	const { botIdRef } = useBotRefsContext();
 
 	/**
 	 * Consolidates the information required to call and emit a specific event.

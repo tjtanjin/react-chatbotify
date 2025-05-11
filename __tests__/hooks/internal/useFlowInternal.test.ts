@@ -20,10 +20,10 @@ jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useFlowInternal Hook", () => {
 	const setSyncedMessagesMock = jest.fn();
-	const setPathsMock = jest.fn();
+	const setSyncedPathsMock = jest.fn();
 	const setToastsMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
-	const pathsRefMock = { current: ["start"] };
+	const syncedPathsRefMock = { current: ["start"] };
 	const isScrollingRefMock = { current: false };
 	const hasFlowStartedMock = true;
 	const mockSettings = {
@@ -39,12 +39,12 @@ describe("useFlowInternal Hook", () => {
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			setSyncedMessages: setSyncedMessagesMock,
 		});
-		(usePathsContext as jest.Mock).mockReturnValue({ setPaths: setPathsMock });
+		(usePathsContext as jest.Mock).mockReturnValue({ setSyncedPaths: setSyncedPathsMock });
 		(useToastsContext as jest.Mock).mockReturnValue({ setToasts: setToastsMock });
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: flowRefMock,
 			isScrollingRef: isScrollingRefMock,
-			pathsRef: pathsRefMock,
+			syncedPathsRef: syncedPathsRefMock,
 		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({ hasFlowStarted: hasFlowStartedMock });
 		(useSettingsContext as jest.Mock).mockReturnValue({ settings: mockSettings });
@@ -68,7 +68,7 @@ describe("useFlowInternal Hook", () => {
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledWith([]);
 		expect(setToastsMock).toHaveBeenCalledWith([]);
-		expect(setPathsMock).toHaveBeenCalledWith(["start"]);
+		expect(setSyncedPathsMock).toHaveBeenCalledWith(["start"]);
 		expect(setHistoryStorageValues).toHaveBeenCalledWith({
 			chatHistory: {
 				storageType: "localStorage",
@@ -99,7 +99,7 @@ describe("useFlowInternal Hook", () => {
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledTimes(2);
 		expect(setToastsMock).toHaveBeenCalledTimes(2);
-		expect(setPathsMock).toHaveBeenCalledTimes(2);
+		expect(setSyncedPathsMock).toHaveBeenCalledTimes(2);
 	});
 
 	// Test to check flow state when hasFlowStarted is false
@@ -120,7 +120,7 @@ describe("useFlowInternal Hook", () => {
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledWith([]);
 		expect(setToastsMock).toHaveBeenCalledWith([]);
-		expect(setPathsMock).toHaveBeenCalledWith(["start"]);
+		expect(setSyncedPathsMock).toHaveBeenCalledWith(["start"]);
 	});
 
 	// Test to check that getFlow returns different flowRef values correctly

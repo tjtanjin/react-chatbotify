@@ -15,14 +15,14 @@ jest.mock("../../../src/context/BotRefsContext");
 jest.mock("../../../src/services/RcbEventService");
 
 describe("usePathsInternal Hook", () => {
-	const mockSetPaths = jest.fn();
+	const mockSetSyncedPaths = jest.fn();
 	const mockSetIsBotTyping = jest.fn();
 	const mockSetTextAreaDisabled = jest.fn();
 	const mockSetTextAreaSensitiveMode = jest.fn();
 	const mockSetBlockAllowsAttachment = jest.fn();
 	const mockBotIdRef = { current: "bot-1" };
 	const mockFlowRef = { current: { id: "test-flow" } };
-	const mockPathsRef = { current: ["path1", "path2"] };
+	const mockSyncedPathsRef = { current: ["path1", "path2"] };
 	const mockIsScrollingRef = { current: false };
 	const mockPaths = ["path1", "path2"];
 
@@ -36,7 +36,8 @@ describe("usePathsInternal Hook", () => {
 		});
 		(usePathsContext as jest.Mock).mockReturnValue({
 			paths: mockPaths,
-			setPaths: mockSetPaths,
+			setSyncedPaths: mockSetSyncedPaths,
+			syncedPathsRef: mockSyncedPathsRef,
 		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			setIsBotTyping: mockSetIsBotTyping,
@@ -48,7 +49,7 @@ describe("usePathsInternal Hook", () => {
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			botIdRef: mockBotIdRef,
 			flowRef: mockFlowRef,
-			pathsRef: mockPathsRef,
+			syncedPathsRef: mockSyncedPathsRef,
 			isScrollingRef: mockIsScrollingRef,
 		});
 
@@ -66,12 +67,12 @@ describe("usePathsInternal Hook", () => {
 			expect(success).toBe(true);
 		});
 
-		// Check that mockSetPaths was called with a function
-		expect(mockSetPaths).toHaveBeenCalledWith(expect.any(Function));
+		// Check that mockSetSyncedPaths was called with a function
+		expect(mockSetSyncedPaths).toHaveBeenCalledWith(expect.any(Function));
 
 		// Simulate calling the function with previous state
-		const setPathsCallback = mockSetPaths.mock.calls[0][0]; // Get the first call's first argument
-		const newState = setPathsCallback(mockPaths); // Simulate previous state being passed to the function
+		const setSyncedPathsCallback = mockSetSyncedPaths.mock.calls[0][0]; // Get the first call's first argument
+		const newState = setSyncedPathsCallback(mockPaths); // Simulate previous state being passed to the function
 
 		// Check that the function returns the correct new state
 		expect(newState).toEqual([...mockPaths, "newPath"]);
@@ -99,6 +100,6 @@ describe("usePathsInternal Hook", () => {
 			expect(success).toBe(false);
 		});
 
-		expect(mockSetPaths).not.toHaveBeenCalled();
+		expect(mockSetSyncedPaths).not.toHaveBeenCalled();
 	});
 });

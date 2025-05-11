@@ -65,7 +65,7 @@ describe("ChatBotContainer Component", () => {
 
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: { current: {} },
-			pathsRef: { current: ["start"] },
+			syncedPathsRef: { current: ["start"] },
 			isScrollingRef: { current: false },
 			chatBodyRef: { current: document.createElement('div') },
 			streamMessageMap: new Map(),

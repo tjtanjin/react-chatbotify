@@ -34,7 +34,7 @@ export const useBotEffectsInternal = () => {
 	} = useMessagesInternal();
 
 	// handles paths
-	const { paths, goToPath } = usePathsInternal();
+	const { goToPath } = usePathsInternal();
 
 	// handles bot states
 	const {
@@ -48,7 +48,7 @@ export const useBotEffectsInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef, isScrollingRef, pathsRef } = useBotRefsContext();
+	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
 
 	// handles chat window
 	const { viewportHeight, setViewportHeight, setViewportWidth, scrollToBottom } = useChatWindowInternal();
@@ -77,11 +77,6 @@ export const useBotEffectsInternal = () => {
 			window.removeEventListener("touchstart", handleFirstInteraction);
 		};
 	}, []);
-
-	// default syncing of paths ref
-	useEffect(() => {
-		pathsRef.current = paths;
-	}, [paths]);
 
 	// default setup for text area, chat window, audio and voice
 	useEffect(() => {

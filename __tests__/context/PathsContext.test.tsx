@@ -7,14 +7,14 @@ import '@testing-library/jest-dom/jest-globals'
 import { usePathsContext, PathsProvider } from '../../src/context/PathsContext'
 
 const TestComponent = () => {
-	const { paths, setPaths } = usePathsContext()
+	const { paths, setSyncedPaths } = usePathsContext()
 
 	const handleAddPath = () => {
-		setPaths([...paths, '/path/to/1'])
+		setSyncedPaths([...paths, '/path/to/1'])
 	}
 
 	const handleClearPaths = () => {
-		setPaths([])
+		setSyncedPaths([])
 	}
 
 	return (

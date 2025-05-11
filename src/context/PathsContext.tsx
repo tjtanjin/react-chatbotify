@@ -1,15 +1,21 @@
-import { useContext, createContext, Dispatch, SetStateAction, useState } from "react";
+import { useContext, createContext, Dispatch, SetStateAction, MutableRefObject } from "react";
 
 import { Flow } from "../types/Flow";
+import { useSyncedRefState } from "../hooks/internal/useSyncedRefState";
 
 /**
  * Creates the usePathsContext() context hook to manage user paths.
  */
 type PathsContextType = {
 	paths: (keyof Flow)[];
-	setPaths: Dispatch<SetStateAction<string[]>>;
+	setSyncedPaths: Dispatch<SetStateAction<string[]>>;
+	syncedPathsRef: MutableRefObject<string[]>;
 };
-const PathsContext = createContext<PathsContextType>({paths: [], setPaths: () => null});
+const PathsContext = createContext<PathsContextType>({
+	paths: [],
+	setSyncedPaths: () => {},
+	syncedPathsRef: {current: []}
+});
 const usePathsContext = () => useContext(PathsContext);
 
 /**
@@ -17,10 +23,10 @@ const usePathsContext = () => useContext(PathsContext);
  */
 const PathsProvider = ({ children }: { children: React.ReactNode }) => {
 	// handles paths of the user
-	const [paths, setPaths] = useState<string[]>([]);
+	const [paths, setSyncedPaths, syncedPathsRef] = useSyncedRefState<string[]>([]);
 
 	return (
-		<PathsContext.Provider value={{ paths, setPaths }}>
+		<PathsContext.Provider value={{ paths, setSyncedPaths, syncedPathsRef }}>
 			{children}
 		</PathsContext.Provider>
 	);

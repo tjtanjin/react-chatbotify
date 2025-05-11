@@ -23,10 +23,10 @@ export const usePathsInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles paths
-	const { paths, setPaths } = usePathsContext();
+	const { paths, setSyncedPaths, syncedPathsRef } = usePathsContext();
 
 	// handles bot refs
-	const { flowRef, pathsRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
 
 	// handles bot states
 	const {
@@ -189,14 +189,14 @@ export const usePathsInternal = () => {
 	 * Retrieves current path for user.
 	 */
 	const getCurrPath = useCallback(() => {
-		return pathsRef.current.length > 0 ? pathsRef.current.at(-1) ?? null : null;
+		return syncedPathsRef.current.length > 0 ? syncedPathsRef.current.at(-1) ?? null : null;
 	}, []);
 
 	/**
 	 * Retrieves previous path for user.
 	 */
 	const getPrevPath = useCallback(() => {
-		return pathsRef.current.length > 1 ? pathsRef.current.at(-2) ?? null : null;
+		return syncedPathsRef.current.length > 1 ? syncedPathsRef.current.at(-2) ?? null : null;
 	}, []);
 
 	/**
@@ -221,15 +221,11 @@ export const usePathsInternal = () => {
 		}
 
 		// update paths and trigger path change handling
-		setPaths(prev => {
-			const next = [...prev, pathToGo];
-			pathsRef.current = next;
-			return next;
-		});
+		setSyncedPaths(prev => [...prev, pathToGo]);
 
 		await handlePathChange(pathToGo, currPath);
 		return true;
-	}, [setPaths, settings.chatInput?.blockSpam, settings.event?.rcbChangePath, handlePathChange, callRcbEvent]);
+	}, [settings.chatInput?.blockSpam, settings.event?.rcbChangePath, handlePathChange, callRcbEvent]);
 
 	/**
 	 * Replaces (overwrites entirely) the current paths with the new paths.
@@ -239,8 +235,7 @@ export const usePathsInternal = () => {
 	 * @param newPaths new paths to set/replace
 	 */
 	const replacePaths = useCallback((newPaths: Array<string>) => {
-		pathsRef.current = newPaths;
-		setPaths(newPaths);
+		setSyncedPaths(newPaths);
 	}, []);
 
 	return {
