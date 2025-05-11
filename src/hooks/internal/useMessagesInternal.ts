@@ -22,7 +22,7 @@ export const useMessagesInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles messages
-	const { messages, setSyncMessages, messagesSyncRef } = useMessagesContext();
+	const { messages, setSyncedMessages, syncedMessagesRef } = useMessagesContext();
 
 	// handles bot states
 	const {
@@ -144,8 +144,8 @@ export const useMessagesInternal = () => {
 
 		// set an initial empty message to be used for simulating streaming
 		const placeholderMessage = { ...message, content: "" };
-		setSyncMessages(prev => [...prev, placeholderMessage]);
-		handlePostMessagesUpdate(messagesSyncRef.current);
+		setSyncedMessages(prev => [...prev, placeholderMessage]);
+		handlePostMessagesUpdate(syncedMessagesRef.current);
 
 		// initialize default message to empty with stream index position 0
 		let streamMessage: string | string[] = message.content as string;
@@ -172,7 +172,7 @@ export const useMessagesInternal = () => {
 					return;
 				}
 
-				setSyncMessages((prevMessages) => {
+				setSyncedMessages((prevMessages) => {
 					const updatedMessages = [...prevMessages];
 					for (let i = updatedMessages.length - 1; i >= 0; i--) {
 						if (updatedMessages[i].id === placeholderMessage.id) {
@@ -192,14 +192,14 @@ export const useMessagesInternal = () => {
 
 		setUnreadCount((prev) => prev + 1);
 		await simulateStreamDoneTask;
-		saveChatHistory(messagesSyncRef.current);
+		saveChatHistory(syncedMessagesRef.current);
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopSimulateStreamMessage) {
 			await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
 		}
 		return message;
-	}, [settings, callRcbEvent, handlePostMessagesUpdate, messagesSyncRef,
+	}, [settings, callRcbEvent, handlePostMessagesUpdate, syncedMessagesRef,
 		setIsBotTyping, setUnreadCount, isChatWindowOpen, speakAudio
 	]);
 
@@ -237,11 +237,11 @@ export const useMessagesInternal = () => {
 			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, { message });
 		}
 
-		setSyncMessages(prev => [...prev, message]);
-		handlePostMessagesUpdate(messagesSyncRef.current);
+		setSyncedMessages(prev => [...prev, message]);
+		handlePostMessagesUpdate(syncedMessagesRef.current);
 		return message;
 	}, [settings, callRcbEvent, handlePostMessagesUpdate,
-		messagesSyncRef, isChatWindowOpen, speakAudio, setUnreadCount
+		syncedMessagesRef, isChatWindowOpen, speakAudio, setUnreadCount
 	]);
 
 	/**
@@ -250,7 +250,7 @@ export const useMessagesInternal = () => {
 	 * @param messageId id of message to remove
 	 */
 	const removeMessage = useCallback(async (messageId: string): Promise<Message | null> => {
-		const message = messagesSyncRef.current.find((m) => m.id === messageId);
+		const message = syncedMessagesRef.current.find((m) => m.id === messageId);
 
 		// nothing to remove if no such message
 		if (!message) {
@@ -265,14 +265,14 @@ export const useMessagesInternal = () => {
 			}
 		}
 
-		setSyncMessages(prev =>
+		setSyncedMessages(prev =>
 			prev.filter(m => m.id !== messageId)
 		);
-		handlePostMessagesUpdate(messagesSyncRef.current);
+		handlePostMessagesUpdate(syncedMessagesRef.current);
 		setUnreadCount((prev) => Math.max(prev - 1, 0));
 		return message;
 	}, [callRcbEvent, settings.event?.rcbRemoveMessage, handlePostMessagesUpdate,
-		messagesSyncRef, setUnreadCount
+		syncedMessagesRef, setUnreadCount
 	]);
 
 	/**
@@ -299,8 +299,8 @@ export const useMessagesInternal = () => {
 			}
 
 			setIsBotTyping(false);
-			setSyncMessages(prev => [...prev, message]);
-			handlePostMessagesUpdate(messagesSyncRef.current);
+			setSyncedMessages(prev => [...prev, message]);
+			handlePostMessagesUpdate(syncedMessagesRef.current);
 			streamMessageMap.current.set(sender, message.id);
 			setUnreadCount((prev) => prev + 1);
 			return message;
@@ -314,13 +314,13 @@ export const useMessagesInternal = () => {
 				return null;
 			}
 		}
-		setSyncMessages(prev =>
+		setSyncedMessages(prev =>
 			prev.map(m => m.id === message.id ? message : m)
 		);
-		handlePostMessagesUpdate(messagesSyncRef.current, true);
+		handlePostMessagesUpdate(syncedMessagesRef.current, true);
 		return message;
 	}, [callRcbEvent, settings.event, handlePostMessagesUpdate,
-		messagesSyncRef, setIsBotTyping, setUnreadCount, streamMessageMap
+		syncedMessagesRef, setIsBotTyping, setUnreadCount, streamMessageMap
 	]);
 
 	/**
@@ -351,7 +351,7 @@ export const useMessagesInternal = () => {
 		// retries 3 times, handles edge case where messages are streamed and ended instantaneously
 		let message;
 		for (let i = 0; i < 3; i++) {
-			const msg = messagesSyncRef.current.find((m) => m.id === messageId);
+			const msg = syncedMessagesRef.current.find((m) => m.id === messageId);
 			if (msg) message = msg;
 			await new Promise((res) => setTimeout(res, 20));
 		}
@@ -366,7 +366,7 @@ export const useMessagesInternal = () => {
 
 		// remove sender from streaming list and save messages
 		streamMessageMap.current.delete(sender);
-		saveChatHistory(messagesSyncRef.current);
+		saveChatHistory(syncedMessagesRef.current);
 		return true;
 	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap]);
 
@@ -376,7 +376,7 @@ export const useMessagesInternal = () => {
 	 * @param newMessages new messages to set/replace
 	 */
 	const replaceMessages = useCallback((newMessages: Array<Message>) => {
-		setSyncMessages(newMessages);
+		setSyncedMessages(newMessages);
 		handlePostMessagesUpdate(newMessages);
 	}, [handlePostMessagesUpdate])
 

@@ -17,7 +17,7 @@ jest.mock("../../../src/services/AudioService");
 jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useMessagesInternal", () => {
-	const setSyncMessagesMock = jest.fn();
+	const setSyncedMessagesMock = jest.fn();
 	const mockSetIsBotTyping = jest.fn();
 	const mockSetUnreadCount = jest.fn();
 	const mockCallRcbEvent = jest.fn();
@@ -40,8 +40,8 @@ describe("useMessagesInternal", () => {
 
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: mockMessages,
-			setSyncMessages: setSyncMessagesMock,
-			messagesSyncRef: mockMessagesSyncRef,
+			setSyncedMessages: setSyncedMessagesMock,
+			syncedMessagesRef: mockMessagesSyncRef,
 		});
 
 		(useBotStatesContext as jest.Mock).mockReturnValue({
@@ -81,7 +81,7 @@ describe("useMessagesInternal", () => {
 			expect(message).toBeTruthy();
 		});
 
-		expect(setSyncMessagesMock).toHaveBeenCalledWith(expect.any(Function));
+		expect(setSyncedMessagesMock).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 	});
 
@@ -98,8 +98,8 @@ describe("useMessagesInternal", () => {
 
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: [mockMessage],
-			setSyncMessages: setSyncMessagesMock,
-			messagesSyncRef: { current: [mockMessage] },
+			setSyncedMessages: setSyncedMessagesMock,
+			syncedMessagesRef: { current: [mockMessage] },
 		});
 
 		const { result } = renderHook(() => useMessagesInternal());
@@ -109,7 +109,7 @@ describe("useMessagesInternal", () => {
 			expect(removed).toBe(mockMessage);
 		});
 
-		expect(setSyncMessagesMock).toHaveBeenCalledWith(expect.any(Function));
+		expect(setSyncedMessagesMock).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 	});
 
@@ -121,7 +121,7 @@ describe("useMessagesInternal", () => {
 			expect(message).toBeTruthy();
 		});
 
-		expect(setSyncMessagesMock).toHaveBeenCalledWith(expect.any(Function));
+		expect(setSyncedMessagesMock).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockSetUnreadCount).toHaveBeenCalledWith(expect.any(Function));
 		expect(mockStreamMessageMap.current.has("BOT")).toBeTruthy();
 	});
@@ -140,8 +140,8 @@ describe("useMessagesInternal", () => {
 
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			messages: [message],
-			setSyncMessages: setSyncMessagesMock,
-			messagesSyncRef: { current: [message] },
+			setSyncedMessages: setSyncedMessagesMock,
+			syncedMessagesRef: { current: [message] },
 		});
 
 		const { result } = renderHook(() => useMessagesInternal());

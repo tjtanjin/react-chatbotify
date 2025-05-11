@@ -13,7 +13,7 @@ import {
  * Test component using reducer-based dispatch
  */
 const TestComponent = () => {
-	const { messages, setSyncMessages } = useMessagesContext();
+	const { messages, setSyncedMessages } = useMessagesContext();
 
 	const handleAddMessage = () => {
 		const message = {
@@ -24,11 +24,11 @@ const TestComponent = () => {
 			timestamp: new Date().toUTCString(),
 			tags: [],
 		}
-		setSyncMessages(prev => [...prev, message]);
+		setSyncedMessages(prev => [...prev, message]);
 	};
 
 	const handleClearMessage = () => {
-		setSyncMessages([]);
+		setSyncedMessages([]);
 	};
 
 	return (

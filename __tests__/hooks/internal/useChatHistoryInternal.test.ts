@@ -65,11 +65,11 @@ describe("useChatHistoryInternal Hook", () => {
 		// mocks getHistoryMessages to return initialChatHistory
 		mockGetHistoryMessages.mockReturnValue(initialChatHistory);
 
-		// mocks loadChatHistory to simulate success and invoke setSyncMessages
+		// mocks loadChatHistory to simulate success and invoke setSyncedMessages
 		mockLoadChatHistory.mockImplementation(
-			(settings, styles, chatHistory, setSyncMessages) => {
+			(settings, styles, chatHistory, setSyncedMessages) => {
 				// simulate state change
-				setSyncMessages(chatHistory);
+				setSyncedMessages(chatHistory);
 				return Promise.resolve();
 			}
 		);
@@ -98,8 +98,8 @@ describe("useChatHistoryInternal Hook", () => {
 			MockDefaultSettings,
 			expect.any(Object), // styles
 			initialChatHistory,
-			expect.any(Function), // setSyncMessages
-			expect.any(Object), // messagesSyncRef
+			expect.any(Function), // setSyncedMessages
+			expect.any(Object), // syncedMessagesRef
 			expect.any(Object), // chatBodyRef
 			expect.any(Number), // scroll height
 			expect.any(Function), // setLoading

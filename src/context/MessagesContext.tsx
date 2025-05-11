@@ -8,13 +8,13 @@ import { useSyncedRefState } from "../hooks/internal/useSyncedRefState";
  */
 type MessagesContextType = {
 	messages: Message[];
-	setSyncMessages: Dispatch<SetStateAction<Message[]>>;
-	messagesSyncRef: MutableRefObject<Message[]>;
+	setSyncedMessages: Dispatch<SetStateAction<Message[]>>;
+	syncedMessagesRef: MutableRefObject<Message[]>;
 };
 const MessagesContext = createContext<MessagesContextType>({
 	messages: [],
-	setSyncMessages: () => {},
-	messagesSyncRef: {current: []}
+	setSyncedMessages: () => {},
+	syncedMessagesRef: {current: []}
 });
 const useMessagesContext = () => useContext(MessagesContext);
 
@@ -22,9 +22,9 @@ const useMessagesContext = () => useContext(MessagesContext);
  * Creates provider to wrap the chatbot container.
  */
 const MessagesProvider = ({ children }: { children: React.ReactNode }) => {
-	const [messages, setSyncMessages, messagesSyncRef] = useSyncedRefState<Message[]>([]);
+	const [messages, setSyncedMessages, syncedMessagesRef] = useSyncedRefState<Message[]>([]);
 	return (
-		<MessagesContext.Provider value={{ messages, setSyncMessages, messagesSyncRef }}>
+		<MessagesContext.Provider value={{ messages, setSyncedMessages, syncedMessagesRef }}>
 			{children}
 		</MessagesContext.Provider>
 	);

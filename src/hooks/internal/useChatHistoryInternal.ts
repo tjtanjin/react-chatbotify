@@ -20,7 +20,7 @@ export const useChatHistoryInternal = () => {
 	const { styles } = useStylesContext();
 
 	// handles messages
-	const { setSyncMessages, messagesSyncRef } = useMessagesContext();
+	const { setSyncedMessages, syncedMessagesRef } = useMessagesContext();
 
 	// handles bot states
 	const {
@@ -56,14 +56,14 @@ export const useChatHistoryInternal = () => {
 		}
 		setIsLoadingChatHistory(true);
 		const chatScrollHeight = chatBodyRef.current?.scrollHeight ?? 0;
-		loadChatHistory(settings, styles, chatHistory, setSyncMessages, messagesSyncRef,
+		loadChatHistory(settings, styles, chatHistory, setSyncedMessages, syncedMessagesRef,
 			chatBodyRef, chatScrollHeight, setIsLoadingChatHistory, setHasChatHistoryLoaded,
 		);
 	}, [
 		settings,
 		styles,
 		callRcbEvent,
-		messagesSyncRef,
+		syncedMessagesRef,
 		chatBodyRef,
 		setIsLoadingChatHistory,
 		setHasChatHistoryLoaded

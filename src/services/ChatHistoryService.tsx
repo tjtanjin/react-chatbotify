@@ -153,8 +153,8 @@ const parseMessageToString = (message: Message) => {
  * @param settings settings provided to the bot
  * @param styles styles provided to the bot
  * @param chatHistory chat history to show
- * @param setSyncMessages sync ref and state setter for messages
- * @param messagesSyncRef live ref of current messages array
+ * @param setSyncedMessages sync ref and state setter for messages
+ * @param syncedMessagesRef live ref of current messages array
  * @param chatBodyRef reference to the chat body
  * @param chatScrollHeight current chat scroll height
  * @param setIsLoadingChatHistory setter for whether chat history is loading
@@ -164,8 +164,8 @@ const loadChatHistory = (
 	settings: Settings,
 	styles: Styles,
 	chatHistory: Message[],
-	setSyncMessages: Dispatch<SetStateAction<Message[]>>,
-	messagesSyncRef: React.MutableRefObject<Message[]>,
+	setSyncedMessages: Dispatch<SetStateAction<Message[]>>,
+	syncedMessagesRef: React.MutableRefObject<Message[]>,
 	chatBodyRef: React.RefObject<HTMLDivElement | null>,
 	chatScrollHeight: number,
 	setIsLoadingChatHistory: Dispatch<boolean>,
@@ -176,8 +176,8 @@ const loadChatHistory = (
 		try {
 			// insert loader
 			const loaderMessage = createMessage(<LoadingSpinner/>, "SYSTEM");
-			const base = messagesSyncRef.current.slice(1);
-			setSyncMessages([loaderMessage, ...base]);
+			const base = syncedMessagesRef.current.slice(1);
+			setSyncedMessages([loaderMessage, ...base]);
 
 			const parsedMessages = chatHistory.map((message) => {
 				if (message.type === "object") {
@@ -188,13 +188,13 @@ const loadChatHistory = (
 			}) as Message[];
 
 			setTimeout(() => {
-				const rest = messagesSyncRef.current.slice(1);
+				const rest = syncedMessagesRef.current.slice(1);
 
 				// if autoload, line break is invisible
 				let lineBreakMessage = settings.chatHistory?.autoLoad
 					? createMessage(<></>, "SYSTEM")
 					: createMessage(<ChatHistoryLineBreak/>, "SYSTEM");
-				setSyncMessages([...parsedMessages, lineBreakMessage, ...rest]);
+				setSyncedMessages([...parsedMessages, lineBreakMessage, ...rest]);
 				setHasChatHistoryLoaded(true);
 			}, 500);
 
