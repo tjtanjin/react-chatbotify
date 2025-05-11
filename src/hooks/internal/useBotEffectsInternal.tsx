@@ -44,7 +44,7 @@ export const useBotEffectsInternal = () => {
 		setSyncedIsChatWindowOpen,
 		setTextAreaDisabled,
 		setSyncedAudioToggledOn,
-		setVoiceToggledOn,
+		setSyncedVoiceToggledOn,
 		syncedIsScrollingRef,
 	} = useBotStatesContext();
 
@@ -87,7 +87,7 @@ export const useBotEffectsInternal = () => {
 
 		// delay required for default voice toggled on to work if it is set to true
 		setTimeout(() => {
-			setVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
+			setSyncedVoiceToggledOn(settings.voice?.defaultToggledOn as boolean);
 		}, 1)
 	}, [])
 

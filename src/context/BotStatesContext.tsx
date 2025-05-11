@@ -20,7 +20,8 @@ export type BotStatesContextType = {
 	syncedAudioToggledOnRef: MutableRefObject<boolean>;
 
 	voiceToggledOn: boolean;
-	setVoiceToggledOn: Dispatch<SetStateAction<boolean>>;
+	setSyncedVoiceToggledOn: Dispatch<SetStateAction<boolean>>;
+	syncedVoiceToggledOnRef: MutableRefObject<boolean>;
 
 	notificationsToggledOn: boolean;
 	setNotificationsToggledOn: Dispatch<SetStateAction<boolean>>;
@@ -86,7 +87,9 @@ const BotStatesProvider = ({
 	const [audioToggledOn, setSyncedAudioToggledOn, syncedAudioToggledOnRef] = useSyncedRefState<boolean>(
 		settings?.audio?.defaultToggledOn ?? false
 	);
-	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(settings?.voice?.defaultToggledOn ?? false);
+	const [voiceToggledOn, setSyncedVoiceToggledOn, syncedVoiceToggledOnRef] = useSyncedRefState<boolean>(
+		settings?.voice?.defaultToggledOn ?? false
+	);
 	const [notificationsToggledOn, setNotificationsToggledOn] = useState<boolean>(
 		settings?.notification?.defaultToggledOn ?? true
 	);
@@ -120,7 +123,8 @@ const BotStatesProvider = ({
 			setSyncedAudioToggledOn,
 			syncedAudioToggledOnRef,
 			voiceToggledOn,
-			setVoiceToggledOn,
+			setSyncedVoiceToggledOn,
+			syncedVoiceToggledOnRef,
 			notificationsToggledOn,
 			setNotificationsToggledOn,
 			isLoadingChatHistory,

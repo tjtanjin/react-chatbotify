@@ -39,13 +39,13 @@ export const useSubmitInputInternal = () => {
 	// handles bot states
 	const {
 		timeoutId,
-		voiceToggledOn,
 		setTextAreaSensitiveMode,
 		textAreaSensitiveMode,
 		setTextAreaDisabled,
 		setSyncedIsBotTyping,
 		setBlockAllowsAttachment,
-		setInputLength
+		setInputLength,
+		syncedVoiceToggledOnRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -159,7 +159,7 @@ export const useSubmitInputInternal = () => {
 		}
 
 		// tracks if voice is to be kept on later
-		keepVoiceOnRef.current = voiceToggledOn;
+		keepVoiceOnRef.current = syncedVoiceToggledOnRef.current;
 		syncVoice(false);
 		
 		// shows bot typing indicator
@@ -195,7 +195,7 @@ export const useSubmitInputInternal = () => {
 		// ***** end of postprocessing logic *****
 
 	}, [timeoutId, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
-		keepVoiceOnRef, voiceToggledOn, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
+		keepVoiceOnRef, syncedVoiceToggledOnRef, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
 		injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
 		showToast, dismissToast, flowRef
 	]);

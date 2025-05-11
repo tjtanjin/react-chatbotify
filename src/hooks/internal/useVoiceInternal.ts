@@ -14,7 +14,7 @@ export const useVoiceInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles bot states
-	const { voiceToggledOn, setVoiceToggledOn } = useBotStatesContext();
+	const { voiceToggledOn, setSyncedVoiceToggledOn, syncedVoiceToggledOnRef } = useBotStatesContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -26,21 +26,24 @@ export const useVoiceInternal = () => {
 	 */
 	const toggleVoice = useCallback(async (active?: boolean) => {
 		// nothing to do if state is as desired
-		if (active === voiceToggledOn) {
+		if (active === syncedVoiceToggledOnRef.current) {
 			return;
 		}
 
 		// handles toggle voice event
 		if (settings.event?.rcbToggleVoice) {
 			const event = await callRcbEvent(
-				RcbEvent.TOGGLE_VOICE, {currState: voiceToggledOn, newState: !voiceToggledOn}
+				RcbEvent.TOGGLE_VOICE, {
+					currState: syncedVoiceToggledOnRef.current,
+					newState: !syncedVoiceToggledOnRef.current
+				}
 			);
 			if (event.defaultPrevented) {
 				return;
 			}
 		}
-		setVoiceToggledOn(prev => !prev);
-	}, [voiceToggledOn]);
+		setSyncedVoiceToggledOn(prev => !prev);
+	}, [syncedVoiceToggledOnRef]);
 
 	/**
 	 * Sync voice with chat input based on whether voice should be kept toggled on.
