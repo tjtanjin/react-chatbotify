@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback } from "react";
 
 import { generateSecureUUID } from "../../utils/idGenerator";
 import { useRcbEventInternal } from "./useRcbEventInternal";
@@ -15,16 +15,10 @@ export const useToastsInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles toasts
-	const { toasts, setToasts } = useToastsContext();
+	const { toasts, setSyncedToasts, syncedToastsRef } = useToastsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
-
-	// tracks the toast state
-	const toastsRef = useRef<Array<Toast>>(toasts);
-	useEffect(() => {
-		toastsRef.current = toasts;
-	}, [toasts]);
 
 	/**
 	 * Injecs a new toast.
@@ -34,7 +28,7 @@ export const useToastsInternal = () => {
 	 */
 	const showToast = useCallback(async (content: string | JSX.Element, timeout?: number): Promise<string | null> => {
 		let id = null;
-		const currentToasts = toastsRef.current;
+		const currentToasts = syncedToastsRef.current;
 		const numToast = currentToasts.length;
 
 		if (numToast >= (settings.toast?.maxCount ?? 3)) {
@@ -52,7 +46,7 @@ export const useToastsInternal = () => {
 				}
 				toast = event.data.toast;
 			}
-			setToasts(prevToasts => [...prevToasts.slice(1), toast]);
+			setSyncedToasts(prevToasts => [...prevToasts.slice(1), toast]);
 			return id;
 		}
 		id = generateSecureUUID();
@@ -67,9 +61,9 @@ export const useToastsInternal = () => {
 			toast = event.data.toast;
 		}
 
-		setToasts(prevToasts => [...prevToasts, toast]);
+		setSyncedToasts(prevToasts => [...prevToasts, toast]);
 		return id;
-	}, [settings, callRcbEvent, setToasts]);
+	}, [settings, callRcbEvent]);
 
 	/**
 	 * Removes a toast.
@@ -77,7 +71,7 @@ export const useToastsInternal = () => {
 	 * @param id id of toast to remove
 	 */
 	const dismissToast = useCallback(async (id: string): Promise<string | null> => {
-		const toastToRemove = toasts.find((toast) => toast.id === id);
+		const toastToRemove = syncedToastsRef.current.find((toast) => toast.id === id);
 
 		// if cannot find toast, nothing to remove
 		if (!toastToRemove) {
@@ -94,9 +88,9 @@ export const useToastsInternal = () => {
 		}
 
 		// dismiss toast
-		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+		setSyncedToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
 		return id;
-	}, [callRcbEvent, setToasts]);
+	}, [callRcbEvent]);
 
 	/**
 	 * Replaces (overwrites entirely) the current toasts with the new toasts.
@@ -104,7 +98,7 @@ export const useToastsInternal = () => {
 	 * @param newToasts new toasts to set/replace
 	 */
 	const replaceToasts = useCallback((newToasts: Array<Toast>) => {
-		setToasts(newToasts);
+		setSyncedToasts(newToasts);
 	}, [])
 
 	return {

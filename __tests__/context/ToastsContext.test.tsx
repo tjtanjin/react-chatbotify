@@ -7,11 +7,11 @@ import "@testing-library/jest-dom/jest-globals";
 import { useToastsContext, ToastsProvider } from "../../src/context/ToastsContext";
 
 const TestComponent = () => {
-	const { toasts, setToasts } = useToastsContext();
+	const { toasts, setSyncedToasts } = useToastsContext();
 
 	const addToast = () => {
 		const newId = toasts.length > 0 ? String(Number(toasts[toasts.length - 1].id) + 1) : '1';
-		setToasts([...toasts, { id: newId, content: "New Toast" }]);
+		setSyncedToasts([...toasts, { id: newId, content: "New Toast" }]);
 	};
 
 	return (
@@ -60,15 +60,15 @@ describe("ToastsContext", () => {
 		expect(screen.getByTestId("toastsCount")).toHaveTextContent("Toasts count: 3");
 	});
 
-	it("allows updating toasts through setToasts", () => {
+	it("allows updating toasts through setSyncedToasts", () => {
 		const TestComponentWithUpdate = () => {
-			const { toasts, setToasts } = useToastsContext();
+			const { toasts, setSyncedToasts } = useToastsContext();
 
 			return (
 				<div>
 					<p data-testid="toastsCount">Toasts count: {toasts.length}</p>
-					<button onClick={() => setToasts([])}>Clear Toasts</button>
-					<button onClick={() => setToasts([{ id: '1', content: "Test Toast" }])}>Set One Toast</button>
+					<button onClick={() => setSyncedToasts([])}>Clear Toasts</button>
+					<button onClick={() => setSyncedToasts([{ id: '1', content: "Test Toast" }])}>Set One Toast</button>
 				</div>
 			);
 		};

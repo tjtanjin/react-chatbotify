@@ -21,7 +21,7 @@ jest.mock("../../../src/services/ChatHistoryService");
 describe("useFlowInternal Hook", () => {
 	const setSyncedMessagesMock = jest.fn();
 	const setSyncedPathsMock = jest.fn();
-	const setToastsMock = jest.fn();
+	const setSyncedToastsMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
 	const syncedPathsRefMock = { current: ["start"] };
 	const isScrollingRefMock = { current: false };
@@ -40,7 +40,7 @@ describe("useFlowInternal Hook", () => {
 			setSyncedMessages: setSyncedMessagesMock,
 		});
 		(usePathsContext as jest.Mock).mockReturnValue({ setSyncedPaths: setSyncedPathsMock });
-		(useToastsContext as jest.Mock).mockReturnValue({ setToasts: setToastsMock });
+		(useToastsContext as jest.Mock).mockReturnValue({ setSyncedToasts: setSyncedToastsMock });
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: flowRefMock,
 			isScrollingRef: isScrollingRefMock,
@@ -67,7 +67,7 @@ describe("useFlowInternal Hook", () => {
 		});
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledWith([]);
-		expect(setToastsMock).toHaveBeenCalledWith([]);
+		expect(setSyncedToastsMock).toHaveBeenCalledWith([]);
 		expect(setSyncedPathsMock).toHaveBeenCalledWith(["start"]);
 		expect(setHistoryStorageValues).toHaveBeenCalledWith({
 			chatHistory: {
@@ -98,7 +98,7 @@ describe("useFlowInternal Hook", () => {
 		});
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledTimes(2);
-		expect(setToastsMock).toHaveBeenCalledTimes(2);
+		expect(setSyncedToastsMock).toHaveBeenCalledTimes(2);
 		expect(setSyncedPathsMock).toHaveBeenCalledTimes(2);
 	});
 
@@ -119,7 +119,7 @@ describe("useFlowInternal Hook", () => {
 		});
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledWith([]);
-		expect(setToastsMock).toHaveBeenCalledWith([]);
+		expect(setSyncedToastsMock).toHaveBeenCalledWith([]);
 		expect(setSyncedPathsMock).toHaveBeenCalledWith(["start"]);
 	});
 
