@@ -16,7 +16,8 @@ export type BotStatesContextType = {
 	syncedIsChatWindowOpenRef: MutableRefObject<boolean>;
 
 	audioToggledOn: boolean;
-	setAudioToggledOn: Dispatch<SetStateAction<boolean>>;
+	setSyncedAudioToggledOn: Dispatch<SetStateAction<boolean>>;
+	syncedAudioToggledOnRef: MutableRefObject<boolean>;
 
 	voiceToggledOn: boolean;
 	setVoiceToggledOn: Dispatch<SetStateAction<boolean>>;
@@ -82,7 +83,9 @@ const BotStatesProvider = ({
 	const [isChatWindowOpen, setSyncedIsChatWindowOpen, syncedIsChatWindowOpenRef] = useSyncedRefState<boolean>(
 		settings?.chatWindow?.defaultOpen ?? false
 	);
-	const [audioToggledOn, setAudioToggledOn] = useState<boolean>(settings?.audio?.defaultToggledOn ?? false);
+	const [audioToggledOn, setSyncedAudioToggledOn, syncedAudioToggledOnRef] = useSyncedRefState<boolean>(
+		settings?.audio?.defaultToggledOn ?? false
+	);
 	const [voiceToggledOn, setVoiceToggledOn] = useState<boolean>(settings?.voice?.defaultToggledOn ?? false);
 	const [notificationsToggledOn, setNotificationsToggledOn] = useState<boolean>(
 		settings?.notification?.defaultToggledOn ?? true
@@ -114,7 +117,8 @@ const BotStatesProvider = ({
 			setSyncedIsChatWindowOpen,
 			syncedIsChatWindowOpenRef,
 			audioToggledOn,
-			setAudioToggledOn,
+			setSyncedAudioToggledOn,
+			syncedAudioToggledOnRef,
 			voiceToggledOn,
 			setVoiceToggledOn,
 			notificationsToggledOn,

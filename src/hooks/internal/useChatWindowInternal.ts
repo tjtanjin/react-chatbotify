@@ -76,7 +76,7 @@ export const useChatWindowInternal = () => {
 			return
 		}
 		setSyncedIsBotTyping(prev => !prev);
-	}, [])
+	}, [syncedIsBotTypingRef])
 
 	/**
 	 * Helper function for custom scrolling.

@@ -54,7 +54,7 @@ describe("ChatBotContainer Component", () => {
 			setUnreadCount: jest.fn(),
 			setTextAreaDisabled: jest.fn(), 
 			setSyncedIsChatWindowOpen: jest.fn(),
-			setAudioToggledOn: jest.fn(),
+			setSyncedAudioToggledOn: jest.fn(),
 			syncedIsScrollingRef: { current: false },
 		});
 
@@ -166,7 +166,7 @@ describe("ChatBotContainer Component", () => {
 		const setUnreadCount = jest.fn(); // Mock function for setUnreadCount
 		const setTextAreaDisabled = jest.fn(); // Mock function for setTextAreaDisabled
 		const setSyncedIsChatWindowOpen = jest.fn(); // Mock function for setSyncedIsChatWindowOpen
-		const setAudioToggledOn = jest.fn(); // Mock function for setAudioToggledOn
+		const setSyncedAudioToggledOn = jest.fn(); // Mock function for setSyncedAudioToggledOn
 
 		(useSettingsContext as jest.Mock).mockReturnValue({
 			settings: {
@@ -186,7 +186,7 @@ describe("ChatBotContainer Component", () => {
 			setUnreadCount,
 			setTextAreaDisabled,
 			setSyncedIsChatWindowOpen,
-			setAudioToggledOn,
+			setSyncedAudioToggledOn,
 			syncedIsScrollingRef: { current: false },
 		});
 

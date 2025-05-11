@@ -13,7 +13,7 @@ export const useAudioInternal = () => {
 	const { settings } = useSettingsContext();
 
 	// handles bot states
-	const { audioToggledOn, setAudioToggledOn } = useBotStatesContext();
+	const { audioToggledOn, setSyncedAudioToggledOn, syncedAudioToggledOnRef } = useBotStatesContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
@@ -25,21 +25,24 @@ export const useAudioInternal = () => {
 	 */
 	const toggleAudio = useCallback(async (active?: boolean) => {
 		// nothing to do if state is as desired
-		if (active === audioToggledOn) {
+		if (active === syncedAudioToggledOnRef.current) {
 			return;
 		}
 
 		// handles toggle audio event
 		if (settings.event?.rcbToggleAudio) {
 			const event = await callRcbEvent(
-				RcbEvent.TOGGLE_AUDIO, {currState: audioToggledOn, newState: !audioToggledOn}
+				RcbEvent.TOGGLE_AUDIO, {
+					currState: syncedAudioToggledOnRef.current,
+					newState: !syncedAudioToggledOnRef.current
+				}
 			);
 			if (event.defaultPrevented) {
 				return;
 			}
 		}
-		setAudioToggledOn(prev => !prev);
-	}, [audioToggledOn]);
+		setSyncedAudioToggledOn(prev => !prev);
+	}, [syncedAudioToggledOnRef]);
 
 	/**
 	 * Speaks out (reads aloud) a given message.
@@ -47,7 +50,7 @@ export const useAudioInternal = () => {
 	 * @param message message to read out
 	 */
 	const speakAudio = useCallback(async (text: string) => {
-		if (settings.audio?.disabled || !audioToggledOn) {
+		if (settings.audio?.disabled || !syncedAudioToggledOnRef.current) {
 			return;
 		}
 
@@ -61,7 +64,7 @@ export const useAudioInternal = () => {
 			
 		}
 		processAudio(settings, textToRead);
-	}, [settings, audioToggledOn]);
+	}, [settings, syncedAudioToggledOnRef]);
 
 	return {
 		audioToggledOn,
