@@ -67,10 +67,9 @@ describe("useChatHistoryInternal Hook", () => {
 
 		// mocks loadChatHistory to simulate success and invoke setSyncMessages
 		mockLoadChatHistory.mockImplementation(
-			(settings, styles, chatHistory, setSyncMessages, messagesSyncRef) => {
+			(settings, styles, chatHistory, setSyncMessages) => {
 				// simulate state change
 				setSyncMessages(chatHistory);
-				messagesSyncRef.current = chatHistory;
 				return Promise.resolve();
 			}
 		);
