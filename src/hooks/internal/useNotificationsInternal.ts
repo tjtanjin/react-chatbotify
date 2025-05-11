@@ -16,10 +16,11 @@ export const useNotificationInternal = () => {
 	// handles bot states
 	const {
 		notificationsToggledOn,
-		setNotificationsToggledOn,
+		setSyncedNotificationsToggledOn,
 		hasInteractedPage,
 		unreadCount,
-		setUnreadCount
+		setUnreadCount,
+		syncedNotificationsToggledOnRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -59,7 +60,7 @@ export const useNotificationInternal = () => {
 	 * Plays notification sound.
 	 */
 	const playNotificationSound = useCallback(() => {
-		if (settings.notification?.disabled || !notificationsToggledOn || !hasInteractedPage) {
+		if (settings.notification?.disabled || !syncedNotificationsToggledOnRef.current || !hasInteractedPage) {
 			return;
 		}
 
@@ -71,7 +72,7 @@ export const useNotificationInternal = () => {
 		source.buffer = audioBufferRef.current;
 		source.connect(gainNodeRef.current as AudioNode).connect(audioContextRef.current.destination);
 		source.start();
-	}, [settings.notification, notificationsToggledOn, hasInteractedPage, audioContextRef,
+	}, [settings.notification, syncedNotificationsToggledOnRef, hasInteractedPage, audioContextRef,
 		audioBufferRef, gainNodeRef]);
 
 	/**
@@ -81,22 +82,24 @@ export const useNotificationInternal = () => {
 	 */
 	const toggleNotifications = useCallback(async (active?: boolean) => {
 		// nothing to do if state is as desired
-		if (active === notificationsToggledOn) {
+		if (active === syncedNotificationsToggledOnRef.current) {
 			return;
 		}
 
 		// handles toggle notifications event
 		if (settings.event?.rcbToggleNotifications) {
 			const event = await callRcbEvent(
-				RcbEvent.TOGGLE_NOTIFICATIONS,
-				{currState: notificationsToggledOn, newState: !notificationsToggledOn}
+				RcbEvent.TOGGLE_NOTIFICATIONS, {
+					currState: syncedNotificationsToggledOnRef.current,
+					newState: !syncedNotificationsToggledOnRef.current
+				}
 			);
 			if (event.defaultPrevented) {
 				return;
 			}
 		}
-		setNotificationsToggledOn(prev => !prev);
-	}, [notificationsToggledOn]);
+		setSyncedNotificationsToggledOn(prev => !prev);
+	}, [syncedNotificationsToggledOnRef]);
 
 	return {
 		unreadCount,

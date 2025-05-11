@@ -26,6 +26,7 @@ describe("useMessagesInternal", () => {
 	const mockMessagesSyncRef = { current: mockMessages };
 	const mockSyncedIsScrollingRef = { current: false };
 	const mockSyncedIsChatWindowOpenRef = { current: false };
+	const mockSyncedNotificationsToggledOnRef = { current: false };
 	const mockChatBodyRef = { current: null };
 
 	beforeEach(() => {
@@ -52,6 +53,7 @@ describe("useMessagesInternal", () => {
 			setUnreadCount: mockSetUnreadCount,
 			syncedIsScrollingRef: mockSyncedIsScrollingRef,
 			syncedIsChatWindowOpenRef: mockSyncedIsChatWindowOpenRef,
+			syncedNotificationsToggledOnRef: mockSyncedNotificationsToggledOnRef,
 		});
 
 		(useBotRefsContext as jest.Mock).mockReturnValue({

@@ -19,7 +19,8 @@ export const useBotStatesContext = jest.fn<BotStatesContextType, []>(() => ({
 	syncedVoiceToggledOnRef: {current: false},
 
 	notificationsToggledOn: true,
-	setNotificationsToggledOn: jest.fn(),
+	setSyncedNotificationsToggledOn: jest.fn(),
+	syncedNotificationsToggledOnRef: {current: false},
 
 	isLoadingChatHistory: false,
 	setIsLoadingChatHistory: jest.fn(),
