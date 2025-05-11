@@ -28,11 +28,12 @@ export const useMessagesInternal = () => {
 	const {
 		isChatWindowOpen,
 		setIsBotTyping,
-		setUnreadCount
+		setUnreadCount,
+		syncedIsScrollingRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { streamMessageMap, isScrollingRef, chatBodyRef } = useBotRefsContext();
+	const { streamMessageMap, chatBodyRef } = useBotRefsContext();
 
 	// handles chat window
 	const { scrollToBottom } = useChatWindowInternal();
@@ -82,7 +83,7 @@ export const useMessagesInternal = () => {
 		}
 
 		// if chatbot is open and user is not scrolling or is repeated stream message, no need to notify
-		if ((isChatWindowOpen && !isScrollingRef.current) || isRepeatedStreamMessage) {
+		if ((isChatWindowOpen && !syncedIsScrollingRef.current) || isRepeatedStreamMessage) {
 			shouldNotify = false;
 		}
 
@@ -93,13 +94,13 @@ export const useMessagesInternal = () => {
 		if (
 			!isRepeatedStreamMessage &&
 			((sender !== "USER" && settings.chatWindow?.autoJumpToBottom) ||
-				sender === "USER" || !isScrollingRef.current)
+				sender === "USER" || !syncedIsScrollingRef.current)
 		) {
 			// defer update to next event loop, handles edge case where messages are sent too fast
 			// and the scrolling does not properly reach the bottom
 			setTimeout(() => scrollToBottom(), 1);
 		}
-	}, [settings, chatBodyRef, isChatWindowOpen, isScrollingRef, playNotificationSound, scrollToBottom]);
+	}, [settings, chatBodyRef, isChatWindowOpen, syncedIsScrollingRef, playNotificationSound, scrollToBottom]);
 
 	/**
 	 * Simulates the streaming of a message from the bot.

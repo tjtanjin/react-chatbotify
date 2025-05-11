@@ -45,10 +45,11 @@ export const useBotEffectsInternal = () => {
 		setTextAreaDisabled,
 		setAudioToggledOn,
 		setVoiceToggledOn,
+		syncedIsScrollingRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
+	const { chatBodyRef } = useBotRefsContext();
 
 	// handles chat window
 	const { viewportHeight, setViewportHeight, setViewportWidth, scrollToBottom } = useChatWindowInternal();
@@ -100,7 +101,7 @@ export const useBotEffectsInternal = () => {
 
 	// scrolls to bottom if bot is typing and user is not scrolling
 	useEffect(() => {
-		if (!isScrollingRef.current && chatBodyRef?.current) {
+		if (!syncedIsScrollingRef.current && chatBodyRef?.current) {
 			scrollToBottom();
 		}
 	}, [isBotTyping])

@@ -29,7 +29,7 @@ jest.mock("../../../src/context/BotRefsContext", () => ({
 	useBotRefsContext: jest.fn(() => ({
 		botIdRef: { current: "testBotId" },
 		flowRef: { current: { currentPath: { file: jest.fn() } } },
-		isScrollingRef: { current: false },
+		syncedIsScrollingRef: { current: false },
 	})),
 }));
 

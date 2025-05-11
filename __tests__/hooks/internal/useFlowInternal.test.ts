@@ -24,7 +24,7 @@ describe("useFlowInternal Hook", () => {
 	const setSyncedToastsMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
 	const syncedPathsRefMock = { current: ["start"] };
-	const isScrollingRefMock = { current: false };
+	const syncedIsScrollingRefMock = { current: false };
 	const hasFlowStartedMock = true;
 	const mockSettings = {
 		chatHistory: {
@@ -43,7 +43,7 @@ describe("useFlowInternal Hook", () => {
 		(useToastsContext as jest.Mock).mockReturnValue({ setSyncedToasts: setSyncedToastsMock });
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: flowRefMock,
-			isScrollingRef: isScrollingRefMock,
+			syncedIsScrollingRef: syncedIsScrollingRefMock,
 			syncedPathsRef: syncedPathsRefMock,
 		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({ hasFlowStarted: hasFlowStartedMock });
@@ -128,7 +128,7 @@ describe("useFlowInternal Hook", () => {
 		const differentFlowRefMock = { current: { id: "different-flow" } };
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: differentFlowRefMock,
-			isScrollingRef: isScrollingRefMock,
+			syncedIsScrollingRef: syncedIsScrollingRefMock,
 		});
 		const { result } = renderHook(() => useFlowInternal());
 

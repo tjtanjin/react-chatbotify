@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { useRcbEventInternal } from "./useRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -16,7 +16,6 @@ export const useChatWindowInternal = () => {
 	// handles bot states
 	const {
 		isChatWindowOpen,
-		isScrolling,
 		setIsChatWindowOpen,
 		viewportHeight,
 		setViewportHeight,
@@ -24,17 +23,13 @@ export const useChatWindowInternal = () => {
 		setViewportWidth,
 		setUnreadCount,
 		setIsBotTyping,
-		setIsScrolling,
+		setSyncedIsScrolling,
 	} = useBotStatesContext();
 
-	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
+	const { chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
 	const { callRcbEvent } = useRcbEventInternal();
-
-	useEffect(() => {
-		isScrollingRef.current = isScrolling;
-	}, [isScrolling]);
 
 	/**
 	 * Toggles chat window.
@@ -101,7 +96,7 @@ export const useChatWindowInternal = () => {
 		const end = chatBodyRef.current.scrollHeight - chatBodyRef.current.clientHeight;
 		if (duration <= 0) {
 			chatBodyRef.current.scrollTop = end;
-			setIsScrolling(false);
+			setSyncedIsScrolling(false);
 			return;
 		}
 
@@ -120,7 +115,7 @@ export const useChatWindowInternal = () => {
 			if (currentTime < duration) {
 				requestAnimationFrame(animateScroll);
 			} else {
-				setIsScrolling(false);
+				setSyncedIsScrolling(false);
 			}
 		}
 		

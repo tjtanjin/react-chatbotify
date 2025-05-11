@@ -1,5 +1,6 @@
-import { useContext, createContext, Dispatch, SetStateAction, useState } from "react";
+import { useContext, createContext, Dispatch, SetStateAction, useState, MutableRefObject } from "react";
 
+import { useSyncedRefState } from "../hooks/internal/useSyncedRefState";
 import { Settings } from "../types/Settings";
 
 /**
@@ -28,7 +29,8 @@ export type BotStatesContextType = {
 	setHasChatHistoryLoaded: Dispatch<SetStateAction<boolean>>;
 
 	isScrolling: boolean;
-	setIsScrolling: Dispatch<SetStateAction<boolean>>;
+	setSyncedIsScrolling: Dispatch<SetStateAction<boolean>>;
+	syncedIsScrollingRef: MutableRefObject<boolean>;
 
 	textAreaDisabled: boolean;
 	setTextAreaDisabled: Dispatch<SetStateAction<boolean>>;
@@ -83,7 +85,7 @@ const BotStatesProvider = ({
 	);
 	const [isLoadingChatHistory, setIsLoadingChatHistory] = useState<boolean>(false);
 	const [hasChatHistoryLoaded, setHasChatHistoryLoaded] = useState<boolean>(false);
-	const [isScrolling, setIsScrolling] = useState<boolean>(false);
+	const [isScrolling, setSyncedIsScrolling, syncedIsScrollingRef] = useSyncedRefState<boolean>(false);
 	const [textAreaDisabled, setTextAreaDisabled] = useState<boolean>(true);
 	const [textAreaSensitiveMode, setTextAreaSensitiveMode] = useState<boolean>(false);
 	const [hasInteractedPage, setHasInteractedPage] = useState<boolean>(false);
@@ -116,7 +118,8 @@ const BotStatesProvider = ({
 			hasChatHistoryLoaded,
 			setHasChatHistoryLoaded,
 			isScrolling,
-			setIsScrolling,
+			setSyncedIsScrolling,
+			syncedIsScrollingRef,
 			textAreaDisabled,
 			setTextAreaDisabled,
 			textAreaSensitiveMode,

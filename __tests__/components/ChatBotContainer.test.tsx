@@ -55,6 +55,7 @@ describe("ChatBotContainer Component", () => {
 			setTextAreaDisabled: jest.fn(), 
 			setIsChatWindowOpen: jest.fn(),
 			setAudioToggledOn: jest.fn(),
+			syncedIsScrollingRef: { current: false },
 		});
 
 		(useStylesContext as jest.Mock).mockReturnValue({
@@ -66,7 +67,6 @@ describe("ChatBotContainer Component", () => {
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: { current: {} },
 			syncedPathsRef: { current: ["start"] },
-			isScrollingRef: { current: false },
 			chatBodyRef: { current: document.createElement('div') },
 			streamMessageMap: new Map(),
 			paramsInputRef: { current: null },
@@ -187,7 +187,7 @@ describe("ChatBotContainer Component", () => {
 			setTextAreaDisabled,
 			setIsChatWindowOpen,
 			setAudioToggledOn,
-			// Add other necessary mock return values here
+			syncedIsScrollingRef: { current: false },
 		});
 
 		render(<ChatBotContainer />);

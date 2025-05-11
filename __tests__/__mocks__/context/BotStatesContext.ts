@@ -21,7 +21,8 @@ export const useBotStatesContext = jest.fn<BotStatesContextType, []>(() => ({
 	setIsLoadingChatHistory: jest.fn(),
 
 	isScrolling: false,
-	setIsScrolling: jest.fn(),
+	setSyncedIsScrolling: jest.fn(),
+	syncedIsScrollingRef: {current: false},
 
 	textAreaDisabled: true,
 	setTextAreaDisabled: jest.fn(),

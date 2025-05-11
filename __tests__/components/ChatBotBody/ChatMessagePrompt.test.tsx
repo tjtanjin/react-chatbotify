@@ -14,7 +14,7 @@ jest.mock("../../../src/context/BotRefsContext", () => ({
 				clientHeight: 400,
 			},
 		},
-		isScrollingRef: { current: false },
+		syncedIsScrollingRef: { current: false },
 	})),
 }));
 
@@ -44,7 +44,7 @@ jest.mock("../../../src/context/StylesContext", () => ({
 }));
 
 describe("ChatMessagePrompt Component", () => {
-	const mockSetIsScrolling = jest.fn();
+	const mockSetSyncedIsScrolling = jest.fn();
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -62,7 +62,7 @@ describe("ChatMessagePrompt Component", () => {
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			unreadCount: 0,
 			isScrolling: false,
-			setIsScrolling: mockSetIsScrolling,
+			setSyncedIsScrolling: mockSetSyncedIsScrolling,
 		});
 
 		renderComponent();
@@ -74,7 +74,7 @@ describe("ChatMessagePrompt Component", () => {
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			unreadCount: 2,
 			isScrolling: true,
-			setIsScrolling: mockSetIsScrolling,
+			setSyncedIsScrolling: mockSetSyncedIsScrolling,
 		});
 
 		renderComponent();
@@ -86,7 +86,7 @@ describe("ChatMessagePrompt Component", () => {
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			unreadCount: 0,
 			isScrolling: false,
-			setIsScrolling: mockSetIsScrolling,
+			setSyncedIsScrolling: mockSetSyncedIsScrolling,
 		});
 
 		renderComponent();
@@ -98,7 +98,7 @@ describe("ChatMessagePrompt Component", () => {
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			unreadCount: 2,
 			isScrolling: true,
-			setIsScrolling: mockSetIsScrolling,
+			setSyncedIsScrolling: mockSetSyncedIsScrolling,
 		});
 
 		renderComponent();
@@ -120,7 +120,7 @@ describe("ChatMessagePrompt Component", () => {
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			unreadCount: 2,
 			isScrolling: true,
-			setIsScrolling: mockSetIsScrolling,
+			setSyncedIsScrolling: mockSetSyncedIsScrolling,
 		});
 
 		renderComponent();
@@ -131,7 +131,7 @@ describe("ChatMessagePrompt Component", () => {
 		// Simulate scrolling completion
 		jest.advanceTimersByTime(600);
 
-		// Verify that setIsScrolling was called
-		expect(mockSetIsScrolling).toHaveBeenCalledWith(false);
+		// Verify that setSyncedIsScrolling was called
+		expect(mockSetSyncedIsScrolling).toHaveBeenCalledWith(false);
 	});
 });

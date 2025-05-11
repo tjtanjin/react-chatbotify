@@ -32,12 +32,13 @@ const ChatBotBody = () => {
 	// handles bot states
 	const {
 		isBotTyping,
-		setIsScrolling,
+		setSyncedIsScrolling,
+		syncedIsScrollingRef,
 		setUnreadCount,
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { chatBodyRef, isScrollingRef } = useBotRefsContext();
+	const { chatBodyRef } = useBotRefsContext();
 
 	// handles throttling for scroll event
 	const scrollThrottleRef = useRef(false);
@@ -50,7 +51,7 @@ const ChatBotBody = () => {
 
 	// shifts scroll position when scroll height changes and determines if a user is scrolling in chat window.
 	useEffect(() => {
-		if (!isScrollingRef.current) {
+		if (!syncedIsScrollingRef.current) {
 			scrollToBottom();
 		}
 	}, [chatBodyRef.current?.scrollHeight]);
@@ -72,8 +73,8 @@ const ChatBotBody = () => {
 			const { scrollTop, clientHeight, scrollHeight } = chatBodyRef.current;
 			const isScrolling = scrollTop + clientHeight < scrollHeight - 
 				(settings.chatWindow?.messagePromptOffset ?? 30);
-			setIsScrolling(isScrolling);
-			isScrollingRef.current = isScrolling;
+			setSyncedIsScrolling(isScrolling);
+			syncedIsScrollingRef.current = isScrolling;
 
 			// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
 			// this is necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom

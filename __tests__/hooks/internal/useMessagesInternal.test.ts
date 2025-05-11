@@ -24,7 +24,7 @@ describe("useMessagesInternal", () => {
 	const mockStreamMessageMap = { current: new Map() };
 	const mockMessages: Message[] = [];
 	const mockMessagesSyncRef = { current: mockMessages };
-	const mockIsScrollingRef = { current: false };
+	const mockSyncedIsScrollingRef = { current: false };
 	const mockChatBodyRef = { current: null };
 
 	beforeEach(() => {
@@ -49,11 +49,11 @@ describe("useMessagesInternal", () => {
 			isChatWindowOpen: true,
 			setIsBotTyping: mockSetIsBotTyping,
 			setUnreadCount: mockSetUnreadCount,
+			syncedIsScrollingRef: mockSyncedIsScrollingRef,
 		});
 
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			streamMessageMap: mockStreamMessageMap,
-			isScrollingRef: mockIsScrollingRef,
 			chatBodyRef: mockChatBodyRef,
 		});
 
