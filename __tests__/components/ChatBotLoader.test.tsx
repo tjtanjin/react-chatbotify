@@ -76,7 +76,7 @@ describe("ChatBotLoader Component", () => {
 			hasFlowStarted: false,
 			setHasFlowStarted: jest.fn(),
 			setUnreadCount: jest.fn(),
-			setTextAreaDisabled: jest.fn(),
+			setSyncedTextAreaDisabled: jest.fn(),
 			setSyncedIsChatWindowOpen: jest.fn(),
 			setSyncedAudioToggledOn: jest.fn(),
 		});

@@ -41,7 +41,7 @@ describe("usePathsInternal Hook", () => {
 		});
 		(useBotStatesContext as jest.Mock).mockReturnValue({
 			setSyncedIsBotTyping: mockSetSyncedIsBotTyping,
-			setTextAreaDisabled: mockSetTextAreaDisabled,
+			setSyncedTextAreaDisabled: mockSetTextAreaDisabled,
 			setTextAreaSensitiveMode: mockSetTextAreaSensitiveMode,
 			blockAllowsAttachment: false,
 			setBlockAllowsAttachment: mockSetBlockAllowsAttachment,

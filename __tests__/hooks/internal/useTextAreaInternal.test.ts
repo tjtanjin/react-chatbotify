@@ -32,7 +32,8 @@ describe("useTextAreaInternal Hook", () => {
 		mocksettingsPreventDefault = { event: { rcbTextAreaChangeValue: true } };
 		(require("../../../src/context/BotStatesContext").useBotStatesContext as jest.Mock).mockReturnValue({
 			textAreaDisabled: false,
-			setTextAreaDisabled: jest.fn(),
+			setSyncedTextAreaDisabled: jest.fn(),
+			syncedTextAreaDisabledRef: { current: false },
 		});
 
     

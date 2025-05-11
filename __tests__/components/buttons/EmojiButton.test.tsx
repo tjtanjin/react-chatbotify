@@ -6,11 +6,13 @@ import "@testing-library/jest-dom/jest-globals";
 
 import EmojiButton from "../../../src/components/Buttons/EmojiButton/EmojiButton";
 import { useTextAreaInternal } from "../../../src/hooks/internal/useTextAreaInternal";
+import { useBotStatesContext } from "../../../src/context/BotStatesContext";
 import { useBotRefsContext } from "../../../src/context/BotRefsContext";
 import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { DefaultSettings } from "../../../src/constants/internal/DefaultSettings";
 import { useStylesContext } from "../../../src/context/StylesContext";
 import { actionDisabledIcon, emojiIcon } from "../../__mocks__/fileMock";
+jest.mock("../../../src/context/BotStatesContext");
 jest.mock("../../../src/context/BotRefsContext");
 jest.mock("../../../src/context/SettingsContext");
 jest.mock("../../../src/hooks/internal/useTextAreaInternal");
@@ -18,6 +20,7 @@ jest.mock("../../../src/context/StylesContext");
 
 describe("EmojiButton component", () => {
 	const mockInputRef = { current: document.createElement("input") };
+	const mockSyncedTextAreaDisabledRef = { current: false };
 	mockInputRef.current.value = "";
 
 	const mockSetTextAreaValue = jest.fn();
@@ -26,6 +29,9 @@ describe("EmojiButton component", () => {
 		(useTextAreaInternal as jest.Mock).mockReturnValue({
 			textAreaDisabled: false,
 			setTextAreaValue: mockSetTextAreaValue
+		});
+		(useBotStatesContext as jest.Mock).mockReturnValue({
+			syncedTextAreaDisabledRef: mockSyncedTextAreaDisabledRef,
 		});
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			inputRef: mockInputRef
@@ -145,6 +151,10 @@ describe("EmojiButton component", () => {
 		(useTextAreaInternal as jest.Mock).mockReturnValue({
 			textAreaDisabled: true,
 		});
+		(useBotStatesContext as jest.Mock).mockReturnValue({
+			syncedTextAreaDisabledRef: { current: true },
+		});
+
 
 		render(<EmojiButton />);
 

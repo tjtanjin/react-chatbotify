@@ -52,7 +52,7 @@ describe("ChatBotContainer Component", () => {
 			hasFlowStarted: false,
 			setHasFlowStarted: jest.fn(),
 			setUnreadCount: jest.fn(),
-			setTextAreaDisabled: jest.fn(), 
+			setSyncedTextAreaDisabled: jest.fn(), 
 			setSyncedIsChatWindowOpen: jest.fn(),
 			setSyncedAudioToggledOn: jest.fn(),
 			syncedIsScrollingRef: { current: false },
@@ -164,7 +164,7 @@ describe("ChatBotContainer Component", () => {
 	it("sets flow started on mouse down if it hasn't started", () => {
 		const setHasFlowStarted = jest.fn(); // Mock function for setHasFlowStarted
 		const setUnreadCount = jest.fn(); // Mock function for setUnreadCount
-		const setTextAreaDisabled = jest.fn(); // Mock function for setTextAreaDisabled
+		const setSyncedTextAreaDisabled = jest.fn(); // Mock function for setSyncedTextAreaDisabled
 		const setSyncedIsChatWindowOpen = jest.fn(); // Mock function for setSyncedIsChatWindowOpen
 		const setSyncedAudioToggledOn = jest.fn(); // Mock function for setSyncedAudioToggledOn
 
@@ -184,7 +184,7 @@ describe("ChatBotContainer Component", () => {
 			hasFlowStarted: false,
 			setHasFlowStarted,
 			setUnreadCount,
-			setTextAreaDisabled,
+			setSyncedTextAreaDisabled,
 			setSyncedIsChatWindowOpen,
 			setSyncedAudioToggledOn,
 			syncedIsScrollingRef: { current: false },

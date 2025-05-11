@@ -6,10 +6,10 @@ import { Params } from "../../types/Params";
  * 
  * @param block current block being processed
  * @param params contains parameters that can be used/passed into attributes
- * @param setTextAreaDisabled sets the state of the textarea for user input
+ * @param setSyncedTextAreaDisabled sets the state of the textarea for user input
  */
 export const processChatDisabled = async (block: Block, params: Params,
-	setTextAreaDisabled: (inputDisabled: boolean) => void) => {
+	setSyncedTextAreaDisabled: (inputDisabled: boolean) => void) => {
 
 	const chatDisabled = block.chatDisabled;
 	if (chatDisabled == null) {
@@ -26,5 +26,5 @@ export const processChatDisabled = async (block: Block, params: Params,
 		parsedChatDisabled = chatDisabled;
 	}
 
-	setTextAreaDisabled(parsedChatDisabled);
+	setSyncedTextAreaDisabled(parsedChatDisabled);
 }

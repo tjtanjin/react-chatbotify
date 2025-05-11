@@ -15,13 +15,14 @@ import { processIsSensitive } from "./IsSensitiveProcessor";
  * 
  * @param block block to pre-process
  * @param params contains parameters that can be used/passed into attributes
- * @param setTextAreaDisabled sets the state of the textarea for user input
+ * @param setSyncedTextAreaDisabled sets the state of the textarea for user input
  * @param setTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
  * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param firePostProcessBlockEvent handles post processing block for transition attribute
  */
 export const preProcessBlock = async (block: Block, params: Params, botSimulateStreamEnabled: boolean,
-	setTextAreaDisabled: (inputDisabled: boolean) => void, setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
+	setSyncedTextAreaDisabled: (inputDisabled: boolean) => void,
+	setTextAreaSensitiveMode: (inputDisabled: boolean) => void,
 	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void,
 	firePostProcessBlockEvent: (block: Block) => Promise<Block | null>) => {
 
@@ -49,7 +50,7 @@ export const preProcessBlock = async (block: Block, params: Params, botSimulateS
 			break;
 		
 		case "chatDisabled":
-			await processChatDisabled(block, params, setTextAreaDisabled);
+			await processChatDisabled(block, params, setSyncedTextAreaDisabled);
 			break;
 
 		case "isSensitive":

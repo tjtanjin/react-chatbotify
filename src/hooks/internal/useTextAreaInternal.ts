@@ -19,9 +19,10 @@ export const useTextAreaInternal = () => {
 		inputLength,
 		setInputLength,
 		textAreaDisabled,
-		setTextAreaDisabled,
+		setSyncedTextAreaDisabled,
 		textAreaSensitiveMode,
-		setTextAreaSensitiveMode
+		setTextAreaSensitiveMode,
+		syncedTextAreaDisabledRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -36,7 +37,7 @@ export const useTextAreaInternal = () => {
 	 * @param value value to set
 	 */
 	const setTextAreaValue = useCallback(async (value: string): Promise<void> => {
-		if (textAreaDisabled && inputRef.current) {
+		if (syncedTextAreaDisabledRef.current && inputRef.current) {
 			// prevent input and keep current value
 			inputRef.current.value = "";
 			return;
@@ -70,7 +71,7 @@ export const useTextAreaInternal = () => {
 			}
 			prevInputRef.current = inputRef.current.value;
 		}
-	}, [textAreaDisabled, inputRef, prevInputRef, settings, callRcbEvent])
+	}, [syncedTextAreaDisabledRef, inputRef, prevInputRef, settings, callRcbEvent])
 
 	/**
 	 * Updates text area focus based on current block's text area.
@@ -130,12 +131,12 @@ export const useTextAreaInternal = () => {
 	 */
 	const toggleTextAreaDisabled = useCallback((active?: boolean) => {
 		// nothing to do if state is as desired
-		if (active === textAreaDisabled) {
+		if (active === syncedTextAreaDisabledRef.current) {
 			return;
 		}
 
-		setTextAreaDisabled(prev => !prev);
-	}, [textAreaDisabled])
+		setSyncedTextAreaDisabled(prev => !prev);
+	}, [syncedTextAreaDisabledRef])
 
 	/**
 	 * Toggles text area sensitive mode.
@@ -154,7 +155,7 @@ export const useTextAreaInternal = () => {
 	// todo: we can just standardize to export and use toggles, clean up in future
 	return {
 		textAreaDisabled,
-		setTextAreaDisabled,
+		setSyncedTextAreaDisabled,
 		textAreaSensitiveMode,
 		setTextAreaSensitiveMode,
 		inputLength,

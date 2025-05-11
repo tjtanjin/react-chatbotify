@@ -31,7 +31,7 @@ export const usePathsInternal = () => {
 	// handles bot states
 	const {
 		setSyncedIsBotTyping,
-		setTextAreaDisabled,
+		setSyncedTextAreaDisabled,
 		setTextAreaSensitiveMode,
 		blockAllowsAttachment,
 		setBlockAllowsAttachment,
@@ -115,7 +115,7 @@ export const usePathsInternal = () => {
 
 		setSyncedIsBotTyping(true);
 		if (settings.chatInput?.blockSpam) {
-			setTextAreaDisabled(true);
+			setSyncedTextAreaDisabled(true);
 		}
 		setTextAreaSensitiveMode(false);
 
@@ -138,7 +138,7 @@ export const usePathsInternal = () => {
 			block,
 			params,
 			settings.botBubble?.simulateStream ?? false,
-			setTextAreaDisabled,
+			setSyncedTextAreaDisabled,
 			setTextAreaSensitiveMode,
 			setTimeoutId,
 			firePostProcessBlockEvent,
@@ -148,7 +148,7 @@ export const usePathsInternal = () => {
 		setSyncedIsBotTyping(false);
 	
 		if (!("chatDisabled" in block)) {
-			setTextAreaDisabled(settings.chatInput?.disabled as boolean);
+			setSyncedTextAreaDisabled(settings.chatInput?.disabled as boolean);
 		}
 	
 		if (!("isSensitive" in block)) {

@@ -41,7 +41,7 @@ export const useSubmitInputInternal = () => {
 		timeoutId,
 		setTextAreaSensitiveMode,
 		textAreaSensitiveMode,
-		setTextAreaDisabled,
+		setSyncedTextAreaDisabled,
 		setSyncedIsBotTyping,
 		setBlockAllowsAttachment,
 		setInputLength,
@@ -155,7 +155,7 @@ export const useSubmitInputInternal = () => {
 
 		// disables text area if block spam is true
 		if (settings.chatInput?.blockSpam) {
-			setTextAreaDisabled(true);
+			setSyncedTextAreaDisabled(true);
 		}
 
 		// tracks if voice is to be kept on later
@@ -181,9 +181,9 @@ export const useSubmitInputInternal = () => {
 			// if same length, means post-processing did not path to a block and if so, reset to current block states
 			if (syncedPathsRef.current.length === currNumPaths) {
 				if ("chatDisabled" in block) {
-					setTextAreaDisabled(!!block.chatDisabled);
+					setSyncedTextAreaDisabled(!!block.chatDisabled);
 				} else {
-					setTextAreaDisabled(!!settings.chatInput?.disabled);
+					setSyncedTextAreaDisabled(!!settings.chatInput?.disabled);
 				}
 				processIsSensitive(block, params, setTextAreaSensitiveMode);
 				setBlockAllowsAttachment(typeof block.file === "function");

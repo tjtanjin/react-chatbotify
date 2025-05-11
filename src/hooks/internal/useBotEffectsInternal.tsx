@@ -42,7 +42,7 @@ export const useBotEffectsInternal = () => {
 		isChatWindowOpen,
 		hasFlowStarted,
 		setSyncedIsChatWindowOpen,
-		setTextAreaDisabled,
+		setSyncedTextAreaDisabled,
 		setSyncedAudioToggledOn,
 		setSyncedVoiceToggledOn,
 		syncedIsScrollingRef,
@@ -81,7 +81,7 @@ export const useBotEffectsInternal = () => {
 
 	// default setup for text area, chat window, audio and voice
 	useEffect(() => {
-		setTextAreaDisabled(settings.chatInput?.disabled as boolean);
+		setSyncedTextAreaDisabled(settings.chatInput?.disabled as boolean);
 		setSyncedIsChatWindowOpen(settings.chatWindow?.defaultOpen as boolean);
 		setSyncedAudioToggledOn(settings.audio?.defaultToggledOn as boolean);
 

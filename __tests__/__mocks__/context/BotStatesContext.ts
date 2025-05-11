@@ -33,7 +33,8 @@ export const useBotStatesContext = jest.fn<BotStatesContextType, []>(() => ({
 	syncedIsScrollingRef: {current: false},
 
 	textAreaDisabled: true,
-	setTextAreaDisabled: jest.fn(),
+	setSyncedTextAreaDisabled: jest.fn(),
+	syncedTextAreaDisabledRef: {current: false},
 
 	textAreaSensitiveMode: false,
 	setTextAreaSensitiveMode: jest.fn(),

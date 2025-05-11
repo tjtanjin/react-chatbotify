@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 import { useTextAreaInternal } from "../../../hooks/internal/useTextAreaInternal";
+import { useBotStatesContext } from "../../../context/BotStatesContext";
 import { useBotRefsContext } from "../../../context/BotRefsContext";
 import { useSettingsContext } from "../../../context/SettingsContext";
 import { useStylesContext } from "../../../context/StylesContext";
@@ -17,6 +18,9 @@ const EmojiButton = () => {
 
 	// handles styles
 	const { styles } = useStylesContext();
+
+	// handles bot states
+	const { syncedTextAreaDisabledRef } = useBotStatesContext();
 
 	// handles bot refs
 	const { inputRef } = useBotRefsContext();
@@ -122,10 +126,10 @@ const EmojiButton = () => {
 	 */
 	const togglePopup = (event: React.MouseEvent) => {
 		event.preventDefault();
-		if (textAreaDisabled) {
+		if (syncedTextAreaDisabledRef.current) {
 			setShowPopup(false);
 		} else {
-			setShowPopup(!showPopup);
+			setShowPopup(prev => !prev);
 		}
 	};
 
