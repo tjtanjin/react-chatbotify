@@ -1,5 +1,27 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.34 (13-05-2025)
+
+**Important:**
+- This version introduces integration with the `LLM Connector Plugin` and with that, successfully provides out-of-the-box integration with LLMs! The LLM Connector plugin is ready and will be made available [**on NPM**](https://www.npmjs.com/package/@rcb-plugins/llm-connector) soon.
+
+**Breaking Changes:**
+- Renamed `params.openChat` to `params.toggleChatWindow` for consistency with the `useChatWindow` hook
+- The `injectMessage`, `streamMessage`, `simulateStreamMessage` and `removeMessage` functions now return the entire `Message` object instead of just the `id`
+
+**Fixed:**
+- Fixed an issue where `streamMessage` prevents users from scrolling away
+- Fixed an issue where message processing may fail due to a missing type check
+- Fixed an issue where rendering messages in code blocks can occasionally cause contents to be cut-off
+- Fixed an issue where `endStreamMessage` did not properly emit the message data in its event
+- Fixed an issue with audio not playing in simulate message stream due to changes in the previous version
+- Optimized all toggle states (resolves rare scenarios where toggles don't work correctly)
+
+**Added:**
+- Added `scrollToBottom` and `toggleIsBotTyping` utility functions to the `useChatWindow` hook
+- Enhanced all toggle functions (`toggleAudio`, `toggleVoice`, `toggleNotifications`, `toggleChatWindow`, `toggleTextAreaDisabled`, `toggleTextAreaSensitiveMode`) to allow an optional `active` parameter which basically specifies desired end state (if no parameter is passed in, it continues to function just as a simple toggle)
+- Added `rcb-pre-process-block` and `rcb-post-process-block` events
+
 ## v2.0.0-beta.33 (23-04-2025)
 
 **Breaking Change:**
