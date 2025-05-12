@@ -50,7 +50,7 @@ const FileAttachmentButton = () => {
 	const { callRcbEvent } = useRcbEventInternal();
 
 	// handles chat window
-	const { toggleChatWindowOpen } = useChatWindowInternal();
+	const { toggleChatWindow } = useChatWindowInternal();
 
 	// handles input text area
 	const { setTextAreaValue } = useTextAreaInternal();
@@ -130,7 +130,7 @@ const FileAttachmentButton = () => {
 			await handleSubmitText("📄 " + fileNames.join(", "), settings.fileAttachment?.sendFileName);
 			await fileHandler({userInput: inputRef.current?.value as string, prevPath: getPrevPath(),
 				currPath: getCurrPath(), goToPath, setTextAreaValue, injectMessage, simulateStreamMessage,
-				streamMessage, removeMessage, endStreamMessage, toggleChatWindowOpen, showToast, dismissToast, files
+				streamMessage, removeMessage, endStreamMessage, toggleChatWindow, showToast, dismissToast, files
 			});
 		}
 	};

@@ -19,5 +19,5 @@ export type Params = {
 	endStreamMessage: (sender: string) => Promise<boolean>;
 	showToast: (content: string | JSX.Element, timeout?: number) => Promise<string | null>;
 	dismissToast: (id: string) => Promise<string | null>;
-	toggleChatWindowOpen: (isOpen: boolean) => Promise<void>;
+	toggleChatWindow: (isOpen: boolean) => Promise<void>;
 }

@@ -6,11 +6,11 @@ import { useChatWindowInternal } from "./internal/useChatWindowInternal";
  */
 export const useChatWindow = () => {
 	// handles chat window
-	const { isChatWindowOpen, toggleChatWindowOpen, toggleIsBotTyping, scrollToBottom } = useChatWindowInternal();
+	const { isChatWindowOpen, toggleChatWindow, toggleIsBotTyping, scrollToBottom } = useChatWindowInternal();
 
 	return {
 		isChatWindowOpen,
-		toggleChatWindowOpen,
+		toggleChatWindow,
 		toggleIsBotTyping,
 		scrollToBottom,
 	};

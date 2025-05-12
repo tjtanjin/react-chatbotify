@@ -40,7 +40,7 @@ describe("useChatWindowInternal Hook", () => {
 
 		// simulates clicking the toggle action
 		await act(async () => {
-			await result.current.toggleChatWindowOpen();
+			await result.current.toggleChatWindow();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -54,7 +54,7 @@ describe("useChatWindowInternal Hook", () => {
 
 		// simulates clicking the toggle action
 		await act(async () => {
-			await result.current.toggleChatWindowOpen();
+			await result.current.toggleChatWindow();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -84,7 +84,7 @@ describe("useChatWindowInternal Hook", () => {
 
 		// simulates clicking the toggle action
 		await act(async () => {
-			await result.current.toggleChatWindowOpen();
+			await result.current.toggleChatWindow();
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -97,7 +97,7 @@ describe("useChatWindowInternal Hook", () => {
 		expect(result.current.isChatWindowOpen).toBe(initialChatWindowOpen);
 	});
 
-	it("should call toggleChatWindowOpen with correct parameters to open and close the chat window", async () => {
+	it("should call toggleChatWindow with correct parameters to open and close the chat window", async () => {
 		// mocks rcb event handler
 		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
@@ -114,7 +114,7 @@ describe("useChatWindowInternal Hook", () => {
 
 		// opens the chat window
 		await act(async () => {
-			await result.current.toggleChatWindowOpen(true);
+			await result.current.toggleChatWindow(true);
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
@@ -128,7 +128,7 @@ describe("useChatWindowInternal Hook", () => {
 
 		// closes the chat window
 		await act(async () => {
-			await result.current.toggleChatWindowOpen(false);
+			await result.current.toggleChatWindow(false);
 		});
 
 		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments

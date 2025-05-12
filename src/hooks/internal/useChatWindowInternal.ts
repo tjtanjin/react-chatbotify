@@ -38,7 +38,7 @@ export const useChatWindowInternal = () => {
 	 * 
 	 * @param active boolean indicating desired state (if not specified, just flips existing state)
 	 */
-	const toggleChatWindowOpen = useCallback(async (active?: boolean) => {
+	const toggleChatWindow = useCallback(async (active?: boolean) => {
 		// nothing to do if state is as desired
 		if (active === syncedIsChatWindowOpenRef.current) {
 			return;
@@ -130,7 +130,7 @@ export const useChatWindowInternal = () => {
 	return {
 		isChatWindowOpen,
 		setSyncedIsChatWindowOpen,
-		toggleChatWindowOpen,
+		toggleChatWindow,
 		viewportHeight,
 		setViewportHeight,
 		viewportWidth,

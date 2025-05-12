@@ -17,7 +17,7 @@ const CloseChatButton = () => {
 	const { styles } = useStylesContext();
 
 	// handles chat window
-	const { toggleChatWindowOpen } = useChatWindowInternal();
+	const { toggleChatWindow } = useChatWindowInternal();
 
 	// styles for close chat icon
 	const closeChatIconStyle: React.CSSProperties = {
@@ -55,7 +55,7 @@ const CloseChatButton = () => {
 			role="button" 
 			onMouseDown={(event: MouseEvent) => {
 				event.stopPropagation();
-				toggleChatWindowOpen(false);
+				toggleChatWindow(false);
 			}}
 			style={{...styles.closeChatButtonStyle}}
 		>

@@ -21,12 +21,12 @@ jest.mock("../../../src/context/StylesContext");
  * Test for CloseChatButton component.
  */
 describe("CloseChatButton", () => {
-	const toggleChatWindowOpenMock = jest.fn();
+	const toggleChatWindowMock = jest.fn();
 
 	beforeEach(() => {
 		// Mock the return value of useChatWindowInternal hook
 		(useChatWindowInternal as jest.Mock).mockReturnValue({
-			toggleChatWindowOpen: toggleChatWindowOpenMock,
+			toggleChatWindow: toggleChatWindowMock,
 		});
 
 		// Mock the return value of useSettingsContext hook
@@ -109,15 +109,15 @@ describe("CloseChatButton", () => {
 		expect(icon).toHaveStyle("fill: #e8eaed");
 	});
 
-	it("calls toggleChatWindowOpen(false) when the button is clicked", () => {
+	it("calls toggleChatWindow(false) when the button is clicked", () => {
 		// Render the CloseChatButton component
 		render(<CloseChatButton />);
 		// Get the button element by its role
 		const button = screen.getByRole("button");
 		// Fire the mouseDown event on the button
 		fireEvent.mouseDown(button);
-		// Assert that toggleChatWindowOpenMock was called with false
-		expect(toggleChatWindowOpenMock).toHaveBeenCalledWith(false);
+		// Assert that toggleChatWindowMock was called with false
+		expect(toggleChatWindowMock).toHaveBeenCalledWith(false);
 	});
 
 	it("stops propagation of mouse down event", () => {

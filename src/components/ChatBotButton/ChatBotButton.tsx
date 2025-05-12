@@ -19,7 +19,7 @@ const ChatBotButton = () => {
 	const { unreadCount } = useBotStatesContext();
 
 	// handles chat window
-	const { isChatWindowOpen, toggleChatWindowOpen } = useChatWindowInternal();
+	const { isChatWindowOpen, toggleChatWindow } = useChatWindowInternal();
 
 	// styles for chat button
 	const chatButtonStyle: React.CSSProperties = {
@@ -66,7 +66,7 @@ const ChatBotButton = () => {
 					role="button"
 					style={chatButtonStyle}
 					className={`rcb-toggle-button ${isChatWindowOpen ? "rcb-button-hide" : "rcb-button-show"}`}
-					onClick={() => toggleChatWindowOpen(true)}
+					onClick={() => toggleChatWindow(true)}
 				>
 					{renderButton()}
 					{!settings.notification?.disabled && settings.notification?.showCount &&
