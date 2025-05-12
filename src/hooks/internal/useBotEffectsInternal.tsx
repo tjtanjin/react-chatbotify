@@ -41,11 +41,14 @@ export const useBotEffectsInternal = () => {
 		isBotTyping,
 		isChatWindowOpen,
 		hasFlowStarted,
+		setUnreadCount,
 		setSyncedIsChatWindowOpen,
 		setSyncedTextAreaDisabled,
 		setSyncedAudioToggledOn,
 		setSyncedVoiceToggledOn,
+		setSyncedIsScrolling,
 		syncedIsScrollingRef,
+		syncedIsChatWindowOpenRef,
 	} = useBotStatesContext();
 
 	// handles bot refs
@@ -63,8 +66,9 @@ export const useBotEffectsInternal = () => {
 	// handles chat history
 	const { showChatHistory } = useChatHistoryInternal();
 
-	// tracks scroll position
+	// tracks scroll position and throttling for scroll event
 	const scrollPositionRef = useRef<number>(0);
+	const scrollThrottleRef = useRef<boolean>(false);
 
 	// adds listeners for first interaction
 	useEffect(() => {
@@ -76,6 +80,54 @@ export const useBotEffectsInternal = () => {
 			window.removeEventListener("click", handleFirstInteraction);
 			window.removeEventListener("keydown", handleFirstInteraction);
 			window.removeEventListener("touchstart", handleFirstInteraction);
+		};
+	}, []);
+
+	// adds listeners to check and update if user is scrolling
+	useEffect(() => {
+		const element = chatBodyRef.current;
+		if (!element) {
+			return;
+		}
+
+		const handleUserScroll = () => {
+			if (scrollThrottleRef.current) {
+				return;
+			}
+	
+			scrollThrottleRef.current = true;
+			requestAnimationFrame(() => {
+				if (!element) {
+					return;
+				}
+	
+				const { scrollTop, clientHeight, scrollHeight } = element;
+				const isScrolling = scrollTop + clientHeight < scrollHeight - 
+					(settings.chatWindow?.messagePromptOffset ?? 30);
+				setSyncedIsScrolling(isScrolling);
+				syncedIsScrollingRef.current = isScrolling;
+	
+				// workaround to ensure user never truly scrolls to bottom by introducing a 1 pixel offset
+				// necessary to prevent unexpected scroll behaviors of the chat window when user reaches the bottom
+				if (!isScrolling) {
+					if (scrollTop + clientHeight >= scrollHeight - 1) {
+						element.scrollTop = scrollHeight - clientHeight - 1;
+					}
+					if (syncedIsChatWindowOpenRef.current || settings.general?.embedded) {
+						setUnreadCount(0);
+					}
+				}
+	
+				scrollThrottleRef.current = false;
+			});
+		};
+
+		element.addEventListener("wheel", handleUserScroll, { passive: true });
+		element.addEventListener("touchmove", handleUserScroll, { passive: true });
+
+		return () => {
+			element.removeEventListener("wheel", handleUserScroll);
+			element.removeEventListener("touchmove", handleUserScroll);
 		};
 	}, []);
 
