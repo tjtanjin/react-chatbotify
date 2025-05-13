@@ -33,7 +33,7 @@ export const useMessagesInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { streamMessageMap, chatBodyRef } = useBotRefsContext();
+	const { streamMessageMap, chatBodyRef, paramsInputRef } = useBotRefsContext();
 
 	// handles chat window
 	const { scrollToBottom } = useChatWindowInternal();
@@ -200,8 +200,13 @@ export const useMessagesInternal = () => {
 		if (settings.event?.rcbStopSimulateStreamMessage) {
 			await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
 		}
+
+		// update params.userInput if sender is user
+		if (sender === "USER") {
+			paramsInputRef.current = content;
+		}
 		return message;
-	}, [settings, callRcbEvent, handlePostMessagesUpdate, syncedMessagesRef,
+	}, [settings, callRcbEvent, handlePostMessagesUpdate, syncedMessagesRef, paramsInputRef,
 		setSyncedIsBotTyping, setUnreadCount, syncedIsChatWindowOpenRef, speakAudio
 	]);
 
@@ -242,8 +247,13 @@ export const useMessagesInternal = () => {
 
 		setSyncedMessages(prev => [...prev, message]);
 		handlePostMessagesUpdate(syncedMessagesRef.current);
+
+		// update params.userInput if sender is user
+		if (sender === "USER" && typeof content === "string") {
+			paramsInputRef.current = content;
+		}
 		return message;
-	}, [settings, callRcbEvent, handlePostMessagesUpdate,
+	}, [settings, callRcbEvent, handlePostMessagesUpdate, paramsInputRef,
 		syncedMessagesRef, syncedIsChatWindowOpenRef, speakAudio, setUnreadCount
 	]);
 
@@ -370,8 +380,13 @@ export const useMessagesInternal = () => {
 		// remove sender from streaming list and save messages
 		streamMessageMap.current.delete(sender);
 		saveChatHistory(syncedMessagesRef.current);
+
+		// update params.userInput if sender is user
+		if (sender === "USER" && typeof message?.content === "string") {
+			paramsInputRef.current = message.content;
+		}
 		return true;
-	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap]);
+	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap, paramsInputRef]);
 
 	/**
 	 * Replaces (overwrites entirely) the current messages with the new messages.

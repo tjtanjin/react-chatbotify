@@ -127,9 +127,6 @@ export const useSubmitInputInternal = () => {
 			clearTimeout(timeoutId);
 		}
 
-		// keeps a reference to current input for use in attribute params
-		paramsInputRef.current = userInput;
-
 		// clears input field
 		if (inputRef.current) {
 			setTextAreaValue("");
@@ -172,9 +169,9 @@ export const useSubmitInputInternal = () => {
 		setSyncedTextAreaSensitiveMode(false);
 
 		setTimeout(async () => {
-			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue, userInput, 
-				injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage,
-				toggleChatWindow, showToast, dismissToast
+			const params = {prevPath: getPrevPath(), currPath: getCurrPath(), goToPath, setTextAreaValue,
+				userInput: paramsInputRef.current, injectMessage, simulateStreamMessage, streamMessage,
+				removeMessage, endStreamMessage, toggleChatWindow, showToast, dismissToast
 			};
 			const currNumPaths = syncedPathsRef.current.length;
 			await postProcessBlock(finalBlock, params);
