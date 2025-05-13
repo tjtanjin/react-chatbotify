@@ -5,6 +5,7 @@
 **Fixed:**
 - Fixed an issue where messages removed are still persisted in chat history storage
 - Fixed an issue where `params.userInput` is not updated when user messages are added through utility functions
+- Fixed an issue where notifications count for unread messages may be inaccurate
 
 ## v2.0.0-beta.34 (13-05-2025)
 
