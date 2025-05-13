@@ -7,12 +7,13 @@
     "chatbot",
     "conversational-bot",
     "conversational-ui",
-    "frontend-library"
+    "frontend-library",
+    "react-chatbotify"
   ],
   "files": [
     "./dist"
   ],
-  "version": "2.0.0-beta.34",
+  "version": "2.0.0-beta.35",
   "description": "A modern React library for creating flexible and extensible chatbots.",
   "type": "module",
   "main": "./dist/index.cjs",
