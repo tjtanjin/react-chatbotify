@@ -192,7 +192,10 @@ export const useMessagesInternal = () => {
 			}, streamSpeed);
 		});
 
-		setUnreadCount((prev) => prev + 1);
+		// if user is scrolling or window is closed, add 1 to unread count
+		if (syncedIsScrollingRef.current || !syncedIsChatWindowOpenRef.current) {
+			setUnreadCount((prev) => prev + 1);
+		}
 		await simulateStreamDoneTask;
 		saveChatHistory(syncedMessagesRef.current);
 
@@ -239,8 +242,12 @@ export const useMessagesInternal = () => {
 			}
 		}
 
+		// if user is scrolling or window is closed, add 1 to unread count
+		if (syncedIsScrollingRef.current || !syncedIsChatWindowOpenRef.current) {
+			setUnreadCount((prev) => prev + 1);
+		}
+
 		// handles post-message inject event
-		setUnreadCount((prev) => prev + 1);
 		if (settings.event?.rcbPostInjectMessage) {
 			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, { message });
 		}
@@ -315,7 +322,10 @@ export const useMessagesInternal = () => {
 			setSyncedMessages(prev => [...prev, message]);
 			handlePostMessagesUpdate(syncedMessagesRef.current);
 			streamMessageMap.current.set(sender, message.id);
-			setUnreadCount((prev) => prev + 1);
+			// if user is scrolling or window is closed, add 1 to unread count
+			if (syncedIsScrollingRef.current || !syncedIsChatWindowOpenRef.current) {
+				setUnreadCount((prev) => prev + 1);
+			}
 			return message;
 		}
 
