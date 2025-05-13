@@ -29,7 +29,7 @@
   <img height="400px" src="https://github.com/user-attachments/assets/6153cd2e-dc21-4c8a-8d91-388fc01d974b" />
 </p>
 
-Welcome to [**React ChatBotify**](https://react-chatbotify.com), an intuitive and versatile library that allows you to build responsive chatbots with ease. Whether you're aiming to create a [**simple FAQ bot**](https://tjtanjin.medium.com/building-a-faq-bot-a-react-chatbotify-guide-part-3-7ce13d09933e) or a sophisticated conversational interface [**integrated with Large Language Models (LLMs)**](https://tjtanjin.medium.com/how-to-build-and-integrate-a-react-chatbot-with-llms-a-react-chatbotify-guide-part-4-b40cd59fd6e6), React ChatBotify provides the tools and flexibility you need to bring your vision to life.
+Welcome to [**React ChatBotify**](https://react-chatbotify.com), an intuitive and versatile library that allows you to build responsive chatbots with ease. Whether you're aiming to create a [**simple FAQ bot**](https://tjtanjin.medium.com/building-a-faq-bot-a-react-chatbotify-guide-part-3-7ce13d09933e) or a sophisticated conversational interface [**integrated with Large Language Models (LLMs)**](https://tjtanjin.medium.com/how-to-build-and-integrate-a-react-chatbot-with-llms-a-react-chatbotify-guide-part-4-b40cd59fd6e6) such as [**OpenAI**](https://react-chatbotify.com/docs/examples/openai_integration) or [**Google Gemini**](https://react-chatbotify.com/docs/examples/gemini_integration), React ChatBotify provides the tools and flexibility you need to bring your vision to life.
 
 Designed with developers in mind, React ChatBotify simplifies the chatbot development process without compromising on functionality. Its intuitive API and comprehensive customization options allow you to tailor your chatbot to meet specific project requirements seamlessly. From handling basic interactions to managing complex and advanced conversational flows, our library empowers you to deliver engaging user experiences. Head over to our [**community showcases**](https://github.com/tjtanjin/react-chatbotify/blob/main/SHOWCASES.md) or join [**our discord**](https://discord.gg/6R4DK4G5Zh) to get inspired and start crafting your chatbot today!
 
@@ -37,14 +37,14 @@ React ChatBotify is currently compatible with **React versions 16, 17, 18, and 1
 
 `npm install react-chatbotify --save`
 
-Note that this repository contains the code for the **core library**. If you're looking for the repositories of other React ChatBotify projects, you may look [**here**](#other-relevant-repositories).
+Note that this repository contains the code for the **core library**. If you're looking for the repositories of other React ChatBotify projects, you may look [**here**](#other-associated-projects).
 
 ### Features
 
 React ChatBotify is packed with a comprehensive set of features designed to elevate your chatbot development experience. Explore some of its standout capabilities:
 
 - **Themes:** Customize the chatbot's appearance with a wide variety of community themes, or combine multiple themes to achieve your desired look and feel.
-- **Plugins:** Extend your chatbot's functionality with numerous custom plugins, or create your own to meet specific needs.
+- **Plugins:** Extend your chatbot's functionality with numerous custom plugins (e.g. [LLM Connector](https://www.npmjs.com/package/@rcb-plugins/llm-connector)), or create your own to meet specific needs.
 - **Dynamic Outputs:** Craft interactive conversations by dynamically generating messages and defining multiple dialogue paths based on user inputs.
 - **Custom Components:** Easily integrate your own custom components into the chatbot interface to boast your application's unique design and functionality.
 - **Stream Responses:** Connect with Large Language Models (LLMs) and custom endpoints to stream/simulate bot responses, enhancing user engagement and experience.
