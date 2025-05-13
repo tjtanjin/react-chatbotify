@@ -32,8 +32,9 @@ const saveChatHistory = async (messages: Message[]) => {
 	for (let i = messages.length - 1; i >= offset; i--) {
 		const message = messages[i];
 
+		// skip past system messages
 		if (message.sender.toUpperCase() === "SYSTEM") {
-			break;
+			continue;
 		}
 
 		if (message.content !== "") {
