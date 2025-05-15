@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## v2.0.0-beta.35 (16-05-2025)
+## v2.0.0-beta.36 (16-05-2025)
 
 **Fixed:**
 - Fixed an issue with `restartFlow` not triggering the `start` block again
