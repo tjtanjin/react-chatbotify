@@ -86,10 +86,15 @@ const FileAttachmentButton = () => {
 	 * @param event file upload event
 	 */
 	const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-		const files = event.target.files;
-		if (!files) {
+		const fileList = event.target.files;
+		if (!fileList) {
 			return;
 		}
+
+		// freeze files
+		const files = Array.from(fileList);
+		// reset uploads field
+		event.target.value = "";
 
 		// handles user file upload event
 		if (settings.event?.rcbUserUploadFile) {
