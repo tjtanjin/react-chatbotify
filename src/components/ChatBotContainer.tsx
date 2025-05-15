@@ -1,4 +1,4 @@
-import { MouseEvent, useMemo } from "react";
+import { MouseEvent, useEffect, useMemo } from "react";
 
 import ChatBotHeader from "./ChatBotHeader/ChatBotHeader";
 import ChatBotBody from "./ChatBotBody/ChatBotBody";
@@ -9,6 +9,7 @@ import ChatBotTooltip from "./ChatBotTooltip/ChatBotTooltip";
 import ToastContainer from "./ChatBotToast/ToastContainer/ToastContainer";
 import { useButtonInternal } from "../hooks/internal/useButtonsInternal";
 import { useChatWindowInternal } from "../hooks/internal/useChatWindowInternal";
+import { usePathsInternal } from "../hooks/internal/usePathsInternal";
 import { useBotEffectsInternal } from "../hooks/internal/useBotEffectsInternal";
 import { useIsDesktopInternal } from "../hooks/internal/useIsDesktopInternal";
 import { usePluginsInternal } from "../hooks/internal/usePluginsInternal";
@@ -52,6 +53,9 @@ const ChatBotContainer = ({
 		isChatWindowOpen,
 	} = useChatWindowInternal();
 
+	// handles paths
+	const { goToPath } = usePathsInternal();
+
 	// buttons to show in header, chat input and footer
 	const { headerButtons, chatInputButtons, footerButtons } = useButtonInternal();
 
@@ -60,6 +64,13 @@ const ChatBotContainer = ({
 
 	// loads plugins
 	usePluginsInternal(plugins);
+
+	// adds start path when flow is started
+	useEffect(() => {
+		if (hasFlowStarted || settings.general?.flowStartTrigger === "ON_LOAD") {
+			goToPath("start");
+		}
+	}, [hasFlowStarted, settings.general?.flowStartTrigger]);
 
 	/**
 	 * Retrieves class name for window state.

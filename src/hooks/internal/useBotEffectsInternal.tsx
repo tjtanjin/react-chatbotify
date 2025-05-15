@@ -12,7 +12,6 @@ import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useNotificationInternal } from "./useNotificationsInternal";
 import { useFirstInteractionInternal } from "./useFirstInteractionInternal";
 import { useChatHistoryInternal } from "./useChatHistoryInternal";
-import { usePathsInternal } from "./usePathsInternal";
 import { useMessagesInternal } from "./useMessagesInternal";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -33,14 +32,10 @@ export const useBotEffectsInternal = () => {
 		replaceMessages,
 	} = useMessagesInternal();
 
-	// handles paths
-	const { goToPath } = usePathsInternal();
-
 	// handles bot states
 	const {
 		isBotTyping,
 		isChatWindowOpen,
-		hasFlowStarted,
 		setUnreadCount,
 		setSyncedIsChatWindowOpen,
 		setSyncedTextAreaDisabled,
@@ -252,11 +247,4 @@ export const useBotEffectsInternal = () => {
 
 		return cleanupScrollEventListeners;
 	}, [isChatWindowOpen, isDesktop]);
-
-	// adds start path when flow is started
-	useEffect(() => {
-		if (hasFlowStarted || settings.general?.flowStartTrigger === "ON_LOAD") {
-			goToPath("start");
-		}
-	}, [hasFlowStarted, settings.general?.flowStartTrigger]);
 };
