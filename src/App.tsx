@@ -28,13 +28,19 @@ function App() {
 				if (params.userInput.length !== 6) {
 					return "incorrect_answer"
 				} else {
-					return "ask_age_group";
+					return "ask_room_pref";
 				}
 			},
 		},
+		ask_room_pref: {
+        			message: () => `Hey ${name}!, Your account got verified, May i know your preference room?`,
+        			options: ["High", "BeachSide", "RoadSide"],
+        			chatDisabled: true,
+        			path: () => "ask_age_group",
+        		},
 		ask_age_group: {
-			message: () => `Hey ${name}!, Your account got verified, May i know your age group?`,
-			options: ["child", "teen", "adult"],
+			message: () => `Hey ${name}!, May i know if you need accessories ?`,
+			options: ["ToothBrush", "Extra shampoo", "Comb"],
 			chatDisabled: true,
 			path: () => "ask_math_question",
 		},
