@@ -17,16 +17,16 @@ jest.useFakeTimers();
 // Test suite for the processTransition function
 describe("processTransition", () => {
 	// Mock variables for dependencies and inputs
+	let mockTimeoutIdRef: {current: null};
 	let mockGoToPath: jest.Mock;
-	let mockSetTimeoutId: jest.Mock;
 	let mockFirePostProcessBlockEvent: jest.Mock;
 	let mockBlock: Block;
 	let mockParams: Params;
 
 	// Setup function to reset mocks before each test
 	beforeEach(() => {
+		mockTimeoutIdRef = {current: null};
 		mockGoToPath = jest.fn();
-		mockSetTimeoutId = jest.fn();
 		mockFirePostProcessBlockEvent = jest.fn();
 		mockBlock = {
 			transition: { duration: 1000, interruptable: false },
@@ -49,7 +49,7 @@ describe("processTransition", () => {
 		mockBlock.transition = undefined;
 		mockParams.currPath = "start";
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		expect(mockGoToPath).not.toHaveBeenCalled();
 		expect(postProcessBlock).not.toHaveBeenCalled();
@@ -60,7 +60,7 @@ describe("processTransition", () => {
 		mockBlock.transition = async () => ({ duration: 1000 });
 		mockParams.currPath = "start";
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		expect(postProcessBlock).not.toHaveBeenCalled();
 	});
@@ -72,7 +72,7 @@ describe("processTransition", () => {
 		mockParams.currPath = "start";
 		mockFirePostProcessBlockEvent.mockResolvedValue(mockBlock);
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), transitionDetails.duration);
 
@@ -87,10 +87,10 @@ describe("processTransition", () => {
 		mockBlock.transition = transitionDetails;
 		mockParams.currPath = "start";
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		jest.runAllTimers();
-		expect(mockSetTimeoutId).toHaveBeenCalled();
+		expect(mockTimeoutIdRef.current).not.toBeNull();
 	});
 
 	// Test: Does not set timeout ID when transition is not interruptable
@@ -99,10 +99,10 @@ describe("processTransition", () => {
 		mockBlock.transition = transitionDetails;
 		mockParams.currPath = "start";
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		jest.runAllTimers();
-		expect(mockSetTimeoutId).not.toHaveBeenCalled();
+		expect(mockTimeoutIdRef.current).toBeNull();
 	});
 
 	// Test: Transforms numeric transition to an object with default values
@@ -111,7 +111,7 @@ describe("processTransition", () => {
 		mockParams.currPath = "start";
 		mockFirePostProcessBlockEvent.mockResolvedValue(mockBlock);
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		// Check setTimeout was called with correct duration
 		expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 2000);
@@ -128,7 +128,7 @@ describe("processTransition", () => {
 		mockParams.currPath = "start";
         
 		if (!isNaN(transitionDetails.duration)) {
-			await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+			await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 		}
 
         
@@ -141,10 +141,10 @@ describe("processTransition", () => {
 		mockBlock.transition = { duration: 1000 };
 		mockParams.currPath = "start";
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		jest.runAllTimers();
-		expect(mockSetTimeoutId).not.toHaveBeenCalled(); 
+		expect(mockTimeoutIdRef.current).toBeNull();
 	});
 
 	// Test: Executes transition details function if provided
@@ -154,7 +154,7 @@ describe("processTransition", () => {
 		mockParams.currPath = "start";
 		mockFirePostProcessBlockEvent.mockResolvedValue(mockBlock);
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		expect(mockTransitionFunction).toHaveBeenCalledWith(mockParams);
 		jest.runAllTimers();
@@ -169,7 +169,7 @@ describe("processTransition", () => {
 		mockParams.currPath = "start";
 		mockFirePostProcessBlockEvent.mockResolvedValue(mockBlock);
 
-		await processTransition(mockBlock, mockParams, mockSetTimeoutId, mockFirePostProcessBlockEvent);
+		await processTransition(mockBlock, mockParams, mockTimeoutIdRef, mockFirePostProcessBlockEvent);
 
 		expect(mockTransitionFunction).toHaveBeenCalledWith(mockParams); 
 		jest.runAllTimers();

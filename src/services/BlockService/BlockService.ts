@@ -1,3 +1,5 @@
+import { MutableRefObject } from "react";
+
 import { processCheckboxes } from "./CheckboxProcessor";
 import { processFunction } from "./FunctionProcessor";
 import { processMessage } from "./MessageProcessor";
@@ -15,15 +17,16 @@ import { processIsSensitive } from "./IsSensitiveProcessor";
  * 
  * @param block block to pre-process
  * @param params contains parameters that can be used/passed into attributes
+ * @param botSimulateStreamEnabled indicates if bot simulating stream is enabled
+ * @param timeoutIdRef ref to the timeout id for transition attribute
  * @param setSyncedTextAreaDisabled sets the state of the textarea for user input
  * @param setSyncedTextAreaSensitiveMode sets the sensitive mode of the textarea for user input
- * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
  * @param firePostProcessBlockEvent handles post processing block for transition attribute
  */
 export const preProcessBlock = async (block: Block, params: Params, botSimulateStreamEnabled: boolean,
+	timeoutIdRef: MutableRefObject<ReturnType<typeof setTimeout> | null>,
 	setSyncedTextAreaDisabled: (inputDisabled: boolean) => void,
 	setSyncedTextAreaSensitiveMode: (inputDisabled: boolean) => void,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void,
 	firePostProcessBlockEvent: (block: Block) => Promise<Block | null>) => {
 
 	if (!block) {
@@ -58,7 +61,7 @@ export const preProcessBlock = async (block: Block, params: Params, botSimulateS
 			break;
 
 		case "transition":
-			await processTransition(block, params, setTimeoutId, firePostProcessBlockEvent);
+			await processTransition(block, params, timeoutIdRef, firePostProcessBlockEvent);
 		}
 	}
 }

@@ -16,7 +16,7 @@ export const useFlowInternal = () => {
 	const { replaceMessages } = useMessagesInternal();
 	
 	// handles paths
-	const { replacePaths } = usePathsInternal();
+	const { replacePaths, goToPath } = usePathsInternal();
 
 	// handles toasts
 	const { replaceToasts } = useToastsInternal();
@@ -25,7 +25,7 @@ export const useFlowInternal = () => {
 	const { hasFlowStarted } = useBotStatesContext();
 	
 	// handles bot refs
-	const { flowRef } = useBotRefsContext();
+	const { flowRef, timeoutIdRef } = useBotRefsContext();
 
 	// handles bot settings
 	const { settings } = useSettingsContext();
@@ -33,14 +33,20 @@ export const useFlowInternal = () => {
 	/**
 	 * Restarts the conversation flow for the chatbot.
 	 */
-	const restartFlow = useCallback(() => {
+	const restartFlow = useCallback(async () => {
 		// reloads the chat history from storage
 		setHistoryStorageValues(settings)
 
+		// if an interruptable transition is present, clear it too
+		if (timeoutIdRef.current) {
+			clearTimeout(timeoutIdRef.current);
+		}
+
 		replaceMessages([]);
 		replaceToasts([]);
-		replacePaths(["start"]);
-	}, [replaceMessages, replaceToasts, replacePaths, setHistoryStorageValues]);
+		replacePaths([]);
+		await goToPath("start");
+	}, [timeoutIdRef, settings, replaceMessages, replaceToasts, replacePaths, setHistoryStorageValues, goToPath]);
 	
 	/**
 	 * Retrieves the conversation flow for the chatbot.

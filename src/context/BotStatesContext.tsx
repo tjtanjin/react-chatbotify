@@ -60,9 +60,6 @@ export type BotStatesContextType = {
 	blockAllowsAttachment: boolean;
 	setBlockAllowsAttachment: Dispatch<SetStateAction<boolean>>;
 
-	timeoutId: ReturnType<typeof setTimeout> | null;
-	setTimeoutId: Dispatch<SetStateAction<ReturnType<typeof setTimeout> | null>>;
-
 	viewportHeight: number;
 	setViewportHeight: Dispatch<SetStateAction<number>>;
 
@@ -114,8 +111,6 @@ const BotStatesProvider = ({
 	const [unreadCount, setUnreadCount] = useState<number>(0);
 	const [inputLength, setInputLength] = useState<number>(0);
 	const [blockAllowsAttachment, setBlockAllowsAttachment] = useState<boolean>(false);
-	// tracks block timeout if transition is interruptable
-	const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
 	// tracks view port height and width (for auto-resizing on mobile view)
 	const [viewportHeight, setViewportHeight] = useState<number>(window.visualViewport?.height as number
 		?? window.innerHeight);
@@ -162,8 +157,6 @@ const BotStatesProvider = ({
 			setInputLength,
 			blockAllowsAttachment,
 			setBlockAllowsAttachment,
-			timeoutId,
-			setTimeoutId,
 			viewportHeight,
 			setViewportHeight,
 			viewportWidth,

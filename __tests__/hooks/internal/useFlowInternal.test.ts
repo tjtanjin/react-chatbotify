@@ -19,9 +19,11 @@ jest.mock("../../../src/context/SettingsContext");
 jest.mock("../../../src/services/ChatHistoryService");
 
 describe("useFlowInternal Hook", () => {
+	const mockTimeoutIdRef = { current: null };
 	const setSyncedMessagesMock = jest.fn();
 	const setSyncedPathsMock = jest.fn();
 	const setSyncedToastsMock = jest.fn();
+	const setSyncedIsBotTypingMock = jest.fn();
 	const flowRefMock = { current: { id: "test-flow" } };
 	const syncedPathsRefMock = { current: ["start"] };
 	const syncedIsScrollingRefMock = { current: false };
@@ -39,14 +41,20 @@ describe("useFlowInternal Hook", () => {
 		(useMessagesContext as jest.Mock).mockReturnValue({
 			setSyncedMessages: setSyncedMessagesMock,
 		});
-		(usePathsContext as jest.Mock).mockReturnValue({ setSyncedPaths: setSyncedPathsMock });
+		(usePathsContext as jest.Mock).mockReturnValue({
+			setSyncedPaths: setSyncedPathsMock,
+			syncedPathsRef: syncedPathsRefMock,
+		});
 		(useToastsContext as jest.Mock).mockReturnValue({ setSyncedToasts: setSyncedToastsMock });
 		(useBotRefsContext as jest.Mock).mockReturnValue({
 			flowRef: flowRefMock,
+			timeoutIdRef: mockTimeoutIdRef,
 			syncedIsScrollingRef: syncedIsScrollingRefMock,
-			syncedPathsRef: syncedPathsRefMock,
 		});
-		(useBotStatesContext as jest.Mock).mockReturnValue({ hasFlowStarted: hasFlowStartedMock });
+		(useBotStatesContext as jest.Mock).mockReturnValue({
+			hasFlowStarted: hasFlowStartedMock,
+			setSyncedIsBotTyping: setSyncedIsBotTypingMock,
+		});
 		(useSettingsContext as jest.Mock).mockReturnValue({ settings: mockSettings });
 	});
 
@@ -59,16 +67,19 @@ describe("useFlowInternal Hook", () => {
 	});
 
 	// Test to ensure that restartFlow clears messages, toasts, and resets paths
-	it("should restart the flow by clearing messages, toasts, resetting paths and loading history", () => {
+	it("should restart the flow by clearing messages, toasts, resetting paths and loading history", async () => {
 		const { result } = renderHook(() => useFlowInternal());
 
-		act(() => {
-			result.current.restartFlow();
+		await act(async () => {
+			await result.current.restartFlow();
 		});
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledWith([]);
 		expect(setSyncedToastsMock).toHaveBeenCalledWith([]);
-		expect(setSyncedPathsMock).toHaveBeenCalledWith(["start"]);
+		expect(typeof setSyncedPathsMock.mock.calls[1][0]).toBe("function");
+		const updaterFn = setSyncedPathsMock.mock.calls[1][0];
+		const output = updaterFn([]);
+		expect(output).toEqual(["start"]);
 		expect(setHistoryStorageValues).toHaveBeenCalledWith({
 			chatHistory: {
 				storageType: "localStorage",
@@ -86,20 +97,20 @@ describe("useFlowInternal Hook", () => {
 	});
 
 	// Test to ensure that calling restartFlow multiple times works correctly
-	it("should handle multiple restarts correctly", () => {
+	it("should handle multiple restarts correctly", async () => {
 		const { result } = renderHook(() => useFlowInternal());
 
-		act(() => {
-			result.current.restartFlow();
+		await act(async () => {
+			await result.current.restartFlow();
 		});
 
-		act(() => {
-			result.current.restartFlow();
+		await act(async () => {
+			await result.current.restartFlow();
 		});
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledTimes(2);
 		expect(setSyncedToastsMock).toHaveBeenCalledTimes(2);
-		expect(setSyncedPathsMock).toHaveBeenCalledTimes(2);
+		expect(setSyncedPathsMock).toHaveBeenCalledTimes(4);
 	});
 
 	// Test to check flow state when hasFlowStarted is false
@@ -111,16 +122,19 @@ describe("useFlowInternal Hook", () => {
 	});
 
 	// Test to ensure messages, toasts, and paths are initialized correctly when restarting the flow
-	it("should initialize messages, toasts, and paths correctly", () => {
+	it("should initialize messages, toasts, and paths correctly", async () => {
 		const { result } = renderHook(() => useFlowInternal());
 
-		act(() => {
-			result.current.restartFlow();
+		await act(async () => {
+			await result.current.restartFlow();
 		});
 
 		expect(setSyncedMessagesMock).toHaveBeenCalledWith([]);
 		expect(setSyncedToastsMock).toHaveBeenCalledWith([]);
-		expect(setSyncedPathsMock).toHaveBeenCalledWith(["start"]);
+		expect(typeof setSyncedPathsMock.mock.calls[1][0]).toBe("function");
+		const updaterFn = setSyncedPathsMock.mock.calls[1][0];
+		const output = updaterFn([]);
+		expect(output).toEqual(["start"]);
 	});
 
 	// Test to check that getFlow returns different flowRef values correctly

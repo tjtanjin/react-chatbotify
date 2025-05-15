@@ -63,9 +63,9 @@ describe("BlockService", () => {
 		toggleChatWindow: jest.fn(),
 	};
 
+	const mockTimeoutIdRef = {current: null};
 	const mockSetTextAreaDisabled = jest.fn();
 	const mockSetTextAreaSensitiveMode = jest.fn();
-	const mockSetTimeoutId = jest.fn();
 	const mockFirePostProcessBlockEvent = jest.fn();
 
 	beforeEach(() => {
@@ -78,9 +78,9 @@ describe("BlockService", () => {
 				mockBlock,
 				mockParams,
 				false,
+				mockTimeoutIdRef,
 				mockSetTextAreaDisabled,
 				mockSetTextAreaSensitiveMode,
-				mockSetTimeoutId,
 				mockFirePostProcessBlockEvent,
 			);
 
@@ -99,9 +99,9 @@ describe("BlockService", () => {
 					mockInvalidBlock,
 					mockParams,
 					false,
+					mockTimeoutIdRef,
 					mockSetTextAreaDisabled,
 					mockSetTextAreaSensitiveMode,
-					mockSetTimeoutId,
 					mockFirePostProcessBlockEvent,
 				)
 			).rejects.toThrow("Block is not valid.");
