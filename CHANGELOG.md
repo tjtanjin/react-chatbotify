@@ -1,5 +1,13 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.35 (16-05-2025)
+
+**Fixed:**
+- Fixed an issue with `restartFlow` not triggering the `start` block again
+- Fixed an issue where an interruptable `transition` is not respected in `restartFlow`
+- Fixed an issue where events emitted may be missed during the initial loading of the chatbot
+- Fixed an issue with file uploads not resetting properly (**note that the files type was updated from `FileList` to `Array<File>`**)
+
 ## v2.0.0-beta.35 (13-05-2025)
 
 **Fixed:**
