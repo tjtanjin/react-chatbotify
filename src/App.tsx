@@ -36,11 +36,11 @@ function App() {
         			message: () => `Hey ${name}!, Your account got verified, May i know your preference room?`,
         			options: ["High", "BeachSide", "RoadSide"],
         			chatDisabled: true,
-        			path: () => "ask_age_group",
+        			path: () => "ask_acc",
         		},
-		ask_age_group: {
+		ask_acc: {
 			message: () => `Hey ${name}!, May i know if you need accessories ?`,
-			options: ["ToothBrush", "Extra shampoo", "Comb"],
+			options: ["ToothBrush", "Extra Shampoo", "Combs"],
 			chatDisabled: true,
 			path: () => "ask_math_question",
 		},
