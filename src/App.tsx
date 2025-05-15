@@ -39,8 +39,9 @@ function App() {
         			path: () => "ask_acc",
         		},
 		ask_acc: {
-			message: () => `Hey ${name}!, May i know if you need accessories ?`,
-			options: ["ToothBrush", "Extra Shampoo", "Combs"],
+			message: "Interesting! Pick any any things needed for the trip below.",
+			checkboxes: {items: ["Breakfast","Pillows", "WaterBottles", "Shampoo", "ToothPaste"], min:1, max: 3},
+			function: (params: Params) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
 			chatDisabled: true,
 			path: () => "ask_math_question",
 		},
