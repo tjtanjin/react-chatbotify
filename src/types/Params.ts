@@ -8,7 +8,7 @@ export type Params = {
 	userInput: string;
 	currPath: keyof Flow | null;
 	prevPath: keyof Flow | null;
-	files?: File[];
+	files?: Array<File>;
 	goToPath: (pathToGo: keyof Flow) => Promise<boolean>;
 	setTextAreaValue: (value: string) => Promise<void>;
 	injectMessage: (content: string | JSX.Element, sender?: string) => Promise<Message | null>;
