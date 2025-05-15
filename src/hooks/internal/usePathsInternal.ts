@@ -26,7 +26,7 @@ export const usePathsInternal = () => {
 	const { paths, setSyncedPaths, syncedPathsRef } = usePathsContext();
 
 	// handles bot refs
-	const { flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef } = useBotRefsContext();
+	const { flowRef, streamMessageMap, paramsInputRef, keepVoiceOnRef, timeoutIdRef } = useBotRefsContext();
 
 	// handles bot states
 	const {
@@ -35,7 +35,6 @@ export const usePathsInternal = () => {
 		setSyncedTextAreaSensitiveMode,
 		blockAllowsAttachment,
 		setBlockAllowsAttachment,
-		setTimeoutId,
 	} = useBotStatesContext();
 
 	// handles rcb events
@@ -138,9 +137,9 @@ export const usePathsInternal = () => {
 			block,
 			params,
 			settings.botBubble?.simulateStream ?? false,
+			timeoutIdRef,
 			setSyncedTextAreaDisabled,
 			setSyncedTextAreaSensitiveMode,
-			setTimeoutId,
 			firePostProcessBlockEvent,
 		);
 	

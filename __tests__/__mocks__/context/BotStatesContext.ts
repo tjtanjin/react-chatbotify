@@ -56,9 +56,6 @@ export const useBotStatesContext = jest.fn<BotStatesContextType, []>(() => ({
 	blockAllowsAttachment: false,
 	setBlockAllowsAttachment: jest.fn(),
 
-	timeoutId: null,
-	setTimeoutId: jest.fn(),
-
 	viewportHeight: window.innerHeight,
 	setViewportHeight: jest.fn(),
 

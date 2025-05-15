@@ -253,7 +253,7 @@ export const useBotEffectsInternal = () => {
 		return cleanupScrollEventListeners;
 	}, [isChatWindowOpen, isDesktop]);
 
-	// adds start path when folow is started
+	// adds start path when flow is started
 	useEffect(() => {
 		if (hasFlowStarted || settings.general?.flowStartTrigger === "ON_LOAD") {
 			goToPath("start");

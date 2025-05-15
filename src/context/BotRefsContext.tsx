@@ -10,6 +10,7 @@ type BotRefsContextType = {
 	flowRef: React.MutableRefObject<Flow>;
 	inputRef: React.RefObject<HTMLTextAreaElement | HTMLInputElement | null>;
 	prevInputRef: React.MutableRefObject<string>;
+	timeoutIdRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>;
 	streamMessageMap: React.MutableRefObject<Map<string, string>>;
 	chatBodyRef: React.RefObject<HTMLDivElement | null>;
 	paramsInputRef: React.MutableRefObject<string>;
@@ -35,6 +36,7 @@ const BotRefsProvider = ({
 }) => {
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
 	const prevInputRef = useRef<string>("");
+	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const streamMessageMap = useRef<Map<string, string>>(new Map());
 	const chatBodyRef = useRef<HTMLDivElement | null>(null);
 	const paramsInputRef = useRef<string>("");
@@ -48,6 +50,7 @@ const BotRefsProvider = ({
 			botIdRef,
 			flowRef,
 			inputRef,
+			timeoutIdRef,
 			streamMessageMap,
 			chatBodyRef,
 			paramsInputRef,

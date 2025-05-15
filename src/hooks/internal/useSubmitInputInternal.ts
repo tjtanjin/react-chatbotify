@@ -38,7 +38,6 @@ export const useSubmitInputInternal = () => {
 
 	// handles bot states
 	const {
-		timeoutId,
 		setSyncedTextAreaSensitiveMode,
 		setSyncedTextAreaDisabled,
 		setSyncedIsBotTyping,
@@ -49,7 +48,7 @@ export const useSubmitInputInternal = () => {
 	} = useBotStatesContext();
 
 	// handles bot refs
-	const { flowRef, inputRef, keepVoiceOnRef, paramsInputRef } = useBotRefsContext();
+	const { flowRef, inputRef, keepVoiceOnRef, paramsInputRef, timeoutIdRef } = useBotRefsContext();
 
 	// handles toasts
 	const { showToast, dismissToast } = useToastsInternal();
@@ -123,8 +122,8 @@ export const useSubmitInputInternal = () => {
 		}
 
 		// if transition attribute was used, clear timeout
-		if (timeoutId) {
-			clearTimeout(timeoutId);
+		if (timeoutIdRef.current) {
+			clearTimeout(timeoutIdRef.current);
 		}
 
 		// clears input field
@@ -191,7 +190,7 @@ export const useSubmitInputInternal = () => {
 
 		// ***** end of postprocessing logic *****
 
-	}, [timeoutId, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
+	}, [timeoutIdRef, settings.chatInput?.blockSpam, settings.chatInput?.botDelay, settings.chatInput?.disabled,
 		keepVoiceOnRef, syncedVoiceToggledOnRef, syncVoice, handleSendUserInput, getPrevPath, getCurrPath, goToPath,
 		injectMessage, simulateStreamMessage, streamMessage, removeMessage, endStreamMessage, toggleChatWindow,
 		showToast, dismissToast, flowRef

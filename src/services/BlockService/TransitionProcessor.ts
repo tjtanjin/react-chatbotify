@@ -1,3 +1,5 @@
+import { MutableRefObject } from "react";
+
 import { Params } from "../../types/Params";
 import { Block } from "../../types/Block";
 import { postProcessBlock } from "./BlockService";
@@ -7,11 +9,11 @@ import { postProcessBlock } from "./BlockService";
  *
  * @param block current block to transition for
  * @param params contains parameters that can be used/passed into attributes
- * @param setTimeoutId sets the timeout id for the transition attribute if it is interruptable
+ * @param timeoutIdRef ref to the timeout id for transition attribute
  * @param firePostProcessBlockEvent handles post processing block for transition attribute
  */
 export const processTransition = async (block: Block, params: Params,
-	setTimeoutId: (timeoutId: ReturnType<typeof setTimeout>) => void,
+	timeoutIdRef: MutableRefObject<ReturnType<typeof setTimeout> | null>,
 	firePostProcessBlockEvent: (block: Block) => Promise<Block | null>) => {
 
 	const transitionAttr = block.transition;
@@ -55,6 +57,6 @@ export const processTransition = async (block: Block, params: Params,
 		}
 	}, transitionDetails.duration);
 	if (transitionDetails.interruptable) {
-		setTimeoutId(timeoutId);
+		timeoutIdRef.current = timeoutId;
 	}
 }
