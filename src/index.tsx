@@ -18,7 +18,6 @@ import { Settings } from "./types/Settings";
 import { Styles } from "./types/Styles";
 import { Toast } from "./types/Toast";
 import { Theme } from "./types/Theme";
-import { Button } from "./constants/Button";
 
 // event imports
 import { RcbLoadChatHistoryEvent } from "./types/events/RcbLoadChatHistoryEvent";
@@ -61,6 +60,10 @@ import { useTextArea } from "./hooks/useTextArea";
 import { useToasts } from "./hooks/useToasts";
 import { useVoice } from "./hooks/useVoice";
 import { useChatHistory } from "./hooks/useChatHistory";
+
+// constant imports
+import { Button } from "./constants/Button";
+import { RcbEvent } from "./constants/RcbEvent";
 
 // util exports
 export {
@@ -111,7 +114,8 @@ export type {
 
 // constant exports
 export {
-	Button
+	Button,
+	RcbEvent,
 };
 
 // hook exports

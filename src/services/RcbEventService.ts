@@ -3,7 +3,7 @@ import { RcbBaseEvent } from "../types/internal/events/RcbBaseEvent";
 import { RcbEvent } from "../constants/RcbEvent";
 
 // tracks if an event is cancellable
-const cancellableMap = {
+const cancellableMap: Record<RcbEvent, boolean> = {
 	[RcbEvent.START_SPEAK_AUDIO]: true,
 	[RcbEvent.TOGGLE_AUDIO]: true,
 	[RcbEvent.TOGGLE_VOICE]: true,
@@ -18,6 +18,7 @@ const cancellableMap = {
 	[RcbEvent.START_STREAM_MESSAGE]: true,
 	[RcbEvent.CHUNK_STREAM_MESSAGE]: true,
 	[RcbEvent.STOP_STREAM_MESSAGE]: true,
+	[RcbEvent.REMOVE_MESSAGE]: true,
 	[RcbEvent.LOAD_CHAT_HISTORY]: true,
 	[RcbEvent.CHANGE_PATH]: true,
 	[RcbEvent.SHOW_TOAST]: true,
@@ -35,7 +36,7 @@ const cancellableMap = {
  * @param eventName name of the event to emit
  * @param eventDetail additional data to include with the event.
  */
-export const emitRcbEvent = async (eventName: typeof RcbEvent[keyof typeof RcbEvent],
+export const emitRcbEvent = async (eventName: RcbEvent,
 	eventDetail: EventDetail, data: object): Promise<RcbBaseEvent> => {
 
 	// Create a custom event with the provided name and detail
