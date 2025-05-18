@@ -10,14 +10,14 @@ import { useBotId } from './useBotId';
  * @param handler callback that receives the event with `detail` containing botId and path info
  */
 export const useOnRcbEvent = (eventName: RcbEvent, handler: (event: RcbBaseEvent) => void) => {
-    const { getBotId } = useBotId();
+	const { getBotId } = useBotId();
 
 	useEffect(() => {
 		const listener = (event: RcbBaseEvent) => {
-            // ensures chatbots only respond to their own events
-            if (event.detail.botId !== getBotId()) {
-                return;
-            }
+			// ensures chatbots only respond to their own events
+			if (event.detail.botId !== getBotId()) {
+				return;
+			}
 			handler(event);
 		};
 
