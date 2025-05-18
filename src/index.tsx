@@ -53,6 +53,7 @@ import { useFirstInteraction } from "./hooks/useFirstInteraction";
 import { useFlow } from "./hooks/useFlow";
 import { useMessages } from "./hooks/useMessages";
 import { useNotifications } from "./hooks/useNotifications";
+import { useOnRcbEvent } from "./hooks/useOnRcbEvent";
 import { usePaths } from "./hooks/usePaths";
 import { useSettings } from "./hooks/useSettings";
 import { useStyles } from "./hooks/useStyles";
@@ -127,6 +128,7 @@ export {
 	useFlow,
 	useMessages,
 	useNotifications,
+	useOnRcbEvent,
 	usePaths,
 	useSettings,
 	useStyles,
