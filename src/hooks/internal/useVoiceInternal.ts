@@ -17,7 +17,7 @@ export const useVoiceInternal = () => {
 	const { voiceToggledOn, setSyncedVoiceToggledOn, syncedVoiceToggledOnRef } = useBotStatesContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Toggles voice feature.
@@ -32,7 +32,7 @@ export const useVoiceInternal = () => {
 
 		// handles toggle voice event
 		if (settings.event?.rcbToggleVoice) {
-			const event = await callRcbEvent(
+			const event = await dispatchRcbEvent(
 				RcbEvent.TOGGLE_VOICE, {
 					currState: syncedVoiceToggledOnRef.current,
 					newState: !syncedVoiceToggledOnRef.current

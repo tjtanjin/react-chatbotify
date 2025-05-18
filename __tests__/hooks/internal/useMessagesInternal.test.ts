@@ -62,7 +62,7 @@ describe("useMessagesInternal", () => {
 		});
 
 		(useRcbEventInternal as jest.Mock).mockReturnValue({
-			callRcbEvent: mockCallRcbEvent,
+			dispatchRcbEvent: mockCallRcbEvent,
 		});
 	});
 

@@ -25,9 +25,9 @@ describe("useChatWindowInternal Hook", () => {
 
 	it("should toggle chat window correctly, change state and emit rcb-toggle-chat-window event", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -43,8 +43,8 @@ describe("useChatWindowInternal Hook", () => {
 			await result.current.toggleChatWindow();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-chat-window and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
 			currState: initialChatWindowOpen,
 			newState: !initialChatWindowOpen,
 		});
@@ -57,8 +57,8 @@ describe("useChatWindowInternal Hook", () => {
 			await result.current.toggleChatWindow();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-chat-window and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
 			currState: !initialChatWindowOpen,
 			newState: initialChatWindowOpen,
 		});
@@ -69,9 +69,9 @@ describe("useChatWindowInternal Hook", () => {
 
 	it("should prevent toggling when event is defaultPrevented", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -87,8 +87,8 @@ describe("useChatWindowInternal Hook", () => {
 			await result.current.toggleChatWindow();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-chat-window and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
 			currState: initialChatWindowOpen,
 			newState: !initialChatWindowOpen,
 		});
@@ -99,9 +99,9 @@ describe("useChatWindowInternal Hook", () => {
 
 	it("should call toggleChatWindow with correct parameters to open and close the chat window", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -117,8 +117,8 @@ describe("useChatWindowInternal Hook", () => {
 			await result.current.toggleChatWindow(true);
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-chat-window and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
 			currState: initialChatWindowOpen,
 			newState: !initialChatWindowOpen,
 		});
@@ -131,8 +131,8 @@ describe("useChatWindowInternal Hook", () => {
 			await result.current.toggleChatWindow(false);
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-chat-window and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-chat-window and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_CHAT_WINDOW, {
 			currState: result.current.isChatWindowOpen,
 			newState: !result.current.isChatWindowOpen,
 		});

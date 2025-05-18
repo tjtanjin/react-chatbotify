@@ -16,7 +16,7 @@ export const useAudioInternal = () => {
 	const { audioToggledOn, setSyncedAudioToggledOn, syncedAudioToggledOnRef } = useBotStatesContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Toggles audio feature.
@@ -31,7 +31,7 @@ export const useAudioInternal = () => {
 
 		// handles toggle audio event
 		if (settings.event?.rcbToggleAudio) {
-			const event = await callRcbEvent(
+			const event = await dispatchRcbEvent(
 				RcbEvent.TOGGLE_AUDIO, {
 					currState: syncedAudioToggledOnRef.current,
 					newState: !syncedAudioToggledOnRef.current
@@ -56,7 +56,7 @@ export const useAudioInternal = () => {
 
 		let textToRead = text;
 		if (settings.event?.rcbStartSpeakAudio) {
-			const event = await callRcbEvent(RcbEvent.START_SPEAK_AUDIO, {textToRead});
+			const event = await dispatchRcbEvent(RcbEvent.START_SPEAK_AUDIO, {textToRead});
 			if (event.defaultPrevented) {
 				return;
 			}

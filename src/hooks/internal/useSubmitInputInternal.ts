@@ -54,7 +54,7 @@ export const useSubmitInputInternal = () => {
 	const { showToast, dismissToast } = useToastsInternal();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	// handles voice
 	const { syncVoice } = useVoiceInternal();
@@ -207,7 +207,7 @@ export const useSubmitInputInternal = () => {
 
 		// handles user send text event
 		if (settings.event?.rcbUserSubmitText) {
-			const event = await callRcbEvent(RcbEvent.USER_SUBMIT_TEXT, {inputText, sendInChat});
+			const event = await dispatchRcbEvent(RcbEvent.USER_SUBMIT_TEXT, {inputText, sendInChat});
 			if (event.defaultPrevented) {
 				return;
 			}
@@ -218,7 +218,7 @@ export const useSubmitInputInternal = () => {
 			return;
 		}
 		handleActionInput(inputText, sendInChat);
-	}, [callRcbEvent, getCurrPath, handleActionInput, inputRef, settings.event?.rcbUserSubmitText])
+	}, [dispatchRcbEvent, getCurrPath, handleActionInput, inputRef, settings.event?.rcbUserSubmitText])
 
 	return { handleSubmitText }
 };

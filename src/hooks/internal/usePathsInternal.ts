@@ -38,7 +38,7 @@ export const usePathsInternal = () => {
 	} = useBotStatesContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	// handles messages
 	const {
@@ -68,7 +68,7 @@ export const usePathsInternal = () => {
 	 */
 	const firePostProcessBlockEvent = useCallback(async (block: Block): Promise<Block | null> => {
 		if (settings.event?.rcbPostProcessBlock) {
-			const event = await callRcbEvent(RcbEvent.POST_PROCESS_BLOCK, {
+			const event = await dispatchRcbEvent(RcbEvent.POST_PROCESS_BLOCK, {
 				block,
 			});
 			if (event.defaultPrevented) {
@@ -77,7 +77,7 @@ export const usePathsInternal = () => {
 			block = event.data.block;
 		}
 		return block;
-	}, [settings.event?.rcbPostProcessBlock, callRcbEvent])
+	}, [settings.event?.rcbPostProcessBlock, dispatchRcbEvent])
 
 	/**
 	 * Handles processing of new block upon path change.
@@ -101,7 +101,7 @@ export const usePathsInternal = () => {
 		}
 	
 		if (settings.event?.rcbPreProcessBlock) {
-			const event = await callRcbEvent(RcbEvent.PRE_PROCESS_BLOCK, {
+			const event = await dispatchRcbEvent(RcbEvent.PRE_PROCESS_BLOCK, {
 				block,
 			});
 			if (event.defaultPrevented) {
@@ -209,7 +209,7 @@ export const usePathsInternal = () => {
 
 		// handles path change event
 		if (settings.event?.rcbChangePath) {
-			const event = await callRcbEvent(RcbEvent.CHANGE_PATH, {
+			const event = await dispatchRcbEvent(RcbEvent.CHANGE_PATH, {
 				currPath,
 				prevPath,
 				nextPath: pathToGo,
@@ -224,7 +224,7 @@ export const usePathsInternal = () => {
 
 		await handlePathChange(pathToGo, currPath);
 		return true;
-	}, [settings.chatInput?.blockSpam, settings.event?.rcbChangePath, handlePathChange, callRcbEvent]);
+	}, [settings.chatInput?.blockSpam, settings.event?.rcbChangePath, handlePathChange, dispatchRcbEvent]);
 
 	/**
 	 * Replaces (overwrites entirely) the current paths with the new paths.

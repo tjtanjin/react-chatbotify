@@ -57,9 +57,9 @@ describe("useChatHistoryInternal Hook", () => {
 
 	it("should load chat history correctly, change state and emit rcb-load-chat-history event", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockResolvedValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockResolvedValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// mocks getHistoryMessages to return initialChatHistory
@@ -90,8 +90,8 @@ describe("useChatHistoryInternal Hook", () => {
 		// checks if get history messages was called
 		expect(mockGetHistoryMessages).toHaveBeenCalledTimes(1);
 
-		// checks if callRcbEvent was called with rcb-load-chat-history and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.LOAD_CHAT_HISTORY, {});
+		// checks if dispatchRcbEvent was called with rcb-load-chat-history and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.LOAD_CHAT_HISTORY, {});
 
 		// checks if load chat history was called
 		expect(mockLoadChatHistory).toHaveBeenCalledWith(
@@ -112,9 +112,9 @@ describe("useChatHistoryInternal Hook", () => {
 
 	it("should prevent loading when LOAD_CHAT_HISTORY event is defaultPrevented", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockResolvedValue({ defaultPrevented: true });
+		const dispatchRcbEventMock = jest.fn().mockResolvedValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// mocks getHistoryMessages to return initialChatHistory
@@ -136,8 +136,8 @@ describe("useChatHistoryInternal Hook", () => {
 		// checks if get history messages was called
 		expect(mockGetHistoryMessages).toHaveBeenCalledTimes(1);
 
-		// checks if callRcbEvent was called with rcb-load-chat-history and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.LOAD_CHAT_HISTORY, {});
+		// checks if dispatchRcbEvent was called with rcb-load-chat-history and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.LOAD_CHAT_HISTORY, {});
 
 		// checks if load chat history was not called
 		expect(mockLoadChatHistory).not.toHaveBeenCalled();

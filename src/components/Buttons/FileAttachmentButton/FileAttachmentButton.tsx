@@ -47,7 +47,7 @@ const FileAttachmentButton = () => {
 	const { showToast, dismissToast } = useToastsInternal();
 	
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	// handles chat window
 	const { toggleChatWindow } = useChatWindowInternal();
@@ -98,7 +98,7 @@ const FileAttachmentButton = () => {
 
 		// handles user file upload event
 		if (settings.event?.rcbUserUploadFile) {
-			const event = await callRcbEvent(RcbEvent.USER_UPLOAD_FILE, {files});
+			const event = await dispatchRcbEvent(RcbEvent.USER_UPLOAD_FILE, {files});
 			if (event.defaultPrevented) {
 				return;
 			}

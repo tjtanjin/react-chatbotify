@@ -27,7 +27,7 @@ type MockToastsContextType = {
     setSyncedToasts: jest.Mock;
 	syncedToastsRef: MutableRefObject<Toast[]>;
 }; 
-type MockRcbEventInternalType = { callRcbEvent: jest.Mock;};
+type MockRcbEventInternalType = { dispatchRcbEvent: jest.Mock;};
 
 
 describe('useToastsInternal', () => {
@@ -68,7 +68,7 @@ describe('useToastsInternal', () => {
 		(useToastsContext as jest.Mock).mockReturnValue(mockToastsContext);
 
 		mockRcbEventInternal = {
-			callRcbEvent: jest.fn(),
+			dispatchRcbEvent: jest.fn(),
 		};
 		(useRcbEventInternal as jest.Mock).mockReturnValue(mockRcbEventInternal);
 
@@ -84,7 +84,7 @@ describe('useToastsInternal', () => {
 		// Test adding a toast when maxCount is not reached
 		mockToastsContext.toasts = [];
 		mockToastsContext.syncedToastsRef = {current: []};
-		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false, 
+		mockRcbEventInternal.dispatchRcbEvent.mockReturnValue({ defaultPrevented: false, 
 			data: { toast: { id: 'mocked-uuid', content: 'New toast content', timeout: undefined } 
 			} });
 		const { result } = renderHook(() => useToastsInternal());
@@ -111,7 +111,7 @@ describe('useToastsInternal', () => {
 	it('should remove the oldest toast and add a new one if maxCount is reached but forbidOnMax is false', async () => {
 		// Test replacing oldest toast if maxCount reached and forbidOnMax is false
 		mockSettingsContext.settings.toast.forbidOnMax = false;
-		mockRcbEventInternal.callRcbEvent.mockReturnValue({ 
+		mockRcbEventInternal.dispatchRcbEvent.mockReturnValue({ 
 			defaultPrevented: false, data: { toast: { id: 'mocked-uuid', 
 				content: 'New toast content', timeout: undefined } 
 			} });
@@ -134,7 +134,7 @@ describe('useToastsInternal', () => {
 		const toast = { id: 'toast-1', content: 'Toast to dismiss' };
 		mockToastsContext.toasts = [toast];
 		mockToastsContext.syncedToastsRef = {current: [toast]};
-		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false });
+		mockRcbEventInternal.dispatchRcbEvent.mockReturnValue({ defaultPrevented: false });
 		const { result } = renderHook(() => useToastsInternal());
 		await act(async () => {
 			await result.current.dismissToast('toast-1');
@@ -158,7 +158,7 @@ describe('useToastsInternal', () => {
 
 	it('should not show toast if rcbShowToast event is prevented', async () => {
 		// Test prevention of toast display by event
-		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: true });
+		mockRcbEventInternal.dispatchRcbEvent.mockReturnValue({ defaultPrevented: true });
 		const { result } = renderHook(() => useToastsInternal());
 		const resultId = await result.current.showToast('Prevented toast');
 		expect(resultId).toBeNull();
@@ -170,11 +170,11 @@ describe('useToastsInternal', () => {
 		const toast = { id: 'toast-1', content: 'Toast to dismiss' };
 		mockToastsContext.toasts = [toast];
 		mockToastsContext.syncedToastsRef = {current: [toast]};
-		mockRcbEventInternal.callRcbEvent.mockReturnValue({ defaultPrevented: false });
+		mockRcbEventInternal.dispatchRcbEvent.mockReturnValue({ defaultPrevented: false });
 		const { result } = renderHook(() => useToastsInternal());
 		await act(async () => {
 			await result.current.dismissToast('toast-1');
 		});
-		expect(mockRcbEventInternal.callRcbEvent).toHaveBeenCalledWith(RcbEvent.DISMISS_TOAST, { toast });
+		expect(mockRcbEventInternal.dispatchRcbEvent).toHaveBeenCalledWith(RcbEvent.DISMISS_TOAST, { toast });
 	});
 });

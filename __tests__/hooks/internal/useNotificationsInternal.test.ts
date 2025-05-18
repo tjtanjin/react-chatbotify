@@ -25,9 +25,9 @@ describe("useNotificationsInternal Hook", () => {
 
 	it("should toggle notifications correctly, change state and emit rcb-toggle-notifications event", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -43,8 +43,8 @@ describe("useNotificationsInternal Hook", () => {
 			await result.current.toggleNotifications();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-notifications and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-notifications and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
 			currState: initialNotificationsToggledOn,
 			newState: !initialNotificationsToggledOn,
 		});
@@ -57,8 +57,8 @@ describe("useNotificationsInternal Hook", () => {
 			await result.current.toggleNotifications();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-notifications and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-notifications and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
 			currState: !initialNotificationsToggledOn,
 			newState: initialNotificationsToggledOn,
 		});
@@ -69,9 +69,9 @@ describe("useNotificationsInternal Hook", () => {
 
 	it("should prevent toggling when event is defaultPrevented", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -87,8 +87,8 @@ describe("useNotificationsInternal Hook", () => {
 			await result.current.toggleNotifications();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-notifications and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-notifications and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_NOTIFICATIONS, {
 			currState: initialNotificationsToggledOn,
 			newState: !initialNotificationsToggledOn,
 		});

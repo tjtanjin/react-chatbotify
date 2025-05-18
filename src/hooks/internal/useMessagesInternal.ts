@@ -39,7 +39,7 @@ export const useMessagesInternal = () => {
 	const { scrollToBottom } = useChatWindowInternal();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	// handles audio
 	const { speakAudio } = useAudioInternal();
@@ -121,7 +121,7 @@ export const useMessagesInternal = () => {
 
 		let message = createMessage(content, sender);
 		if (settings.event?.rcbStartSimulateStreamMessage) {
-			const event = await callRcbEvent(
+			const event = await dispatchRcbEvent(
 				RcbEvent.START_SIMULATE_STREAM_MESSAGE,
 				{ message }
 			);
@@ -201,7 +201,7 @@ export const useMessagesInternal = () => {
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopSimulateStreamMessage) {
-			await callRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
+			await dispatchRcbEvent(RcbEvent.STOP_SIMULATE_STREAM_MESSAGE, { message });
 		}
 
 		// update params.userInput if sender is user
@@ -209,7 +209,7 @@ export const useMessagesInternal = () => {
 			paramsInputRef.current = content;
 		}
 		return message;
-	}, [settings, callRcbEvent, handlePostMessagesUpdate, syncedMessagesRef, paramsInputRef,
+	}, [settings, dispatchRcbEvent, handlePostMessagesUpdate, syncedMessagesRef, paramsInputRef,
 		setSyncedIsBotTyping, setUnreadCount, syncedIsChatWindowOpenRef, speakAudio
 	]);
 
@@ -227,7 +227,7 @@ export const useMessagesInternal = () => {
 		
 		let message = createMessage(content, sender);
 		if (settings.event?.rcbPreInjectMessage) {
-			const event = await callRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, { message });
+			const event = await dispatchRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, { message });
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -249,7 +249,7 @@ export const useMessagesInternal = () => {
 
 		// handles post-message inject event
 		if (settings.event?.rcbPostInjectMessage) {
-			await callRcbEvent(RcbEvent.POST_INJECT_MESSAGE, { message });
+			await dispatchRcbEvent(RcbEvent.POST_INJECT_MESSAGE, { message });
 		}
 
 		setSyncedMessages(prev => [...prev, message]);
@@ -260,7 +260,7 @@ export const useMessagesInternal = () => {
 			paramsInputRef.current = content;
 		}
 		return message;
-	}, [settings, callRcbEvent, handlePostMessagesUpdate, paramsInputRef,
+	}, [settings, dispatchRcbEvent, handlePostMessagesUpdate, paramsInputRef,
 		syncedMessagesRef, syncedIsChatWindowOpenRef, speakAudio, setUnreadCount
 	]);
 
@@ -279,7 +279,7 @@ export const useMessagesInternal = () => {
 
 		// handles remove message event
 		if (settings.event?.rcbRemoveMessage) {
-			const event = await callRcbEvent(RcbEvent.REMOVE_MESSAGE, { message });
+			const event = await dispatchRcbEvent(RcbEvent.REMOVE_MESSAGE, { message });
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -291,7 +291,7 @@ export const useMessagesInternal = () => {
 		handlePostMessagesUpdate(syncedMessagesRef.current);
 		setUnreadCount((prev) => Math.max(prev - 1, 0));
 		return message;
-	}, [callRcbEvent, settings.event?.rcbRemoveMessage, handlePostMessagesUpdate,
+	}, [dispatchRcbEvent, settings.event?.rcbRemoveMessage, handlePostMessagesUpdate,
 		syncedMessagesRef, setUnreadCount
 	]);
 
@@ -312,7 +312,7 @@ export const useMessagesInternal = () => {
 
 			// handles start stream message event
 			if (settings.event?.rcbStartStreamMessage) {
-				const event = await callRcbEvent(RcbEvent.START_STREAM_MESSAGE, { message });
+				const event = await dispatchRcbEvent(RcbEvent.START_STREAM_MESSAGE, { message });
 				if (event.defaultPrevented) {
 					return null;
 				}
@@ -332,7 +332,7 @@ export const useMessagesInternal = () => {
 		const message = { ...createMessage(content, sender), id: streamMessageMap.current.get(sender)! };
 		// handles chunk stream message event
 		if (settings.event?.rcbChunkStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, { message });
+			const event = await dispatchRcbEvent(RcbEvent.CHUNK_STREAM_MESSAGE, { message });
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -342,7 +342,7 @@ export const useMessagesInternal = () => {
 		);
 		handlePostMessagesUpdate(syncedMessagesRef.current, true);
 		return message;
-	}, [callRcbEvent, settings.event, handlePostMessagesUpdate,
+	}, [dispatchRcbEvent, settings.event, handlePostMessagesUpdate,
 		syncedMessagesRef, setSyncedIsBotTyping, setUnreadCount, streamMessageMap
 	]);
 
@@ -381,7 +381,7 @@ export const useMessagesInternal = () => {
 
 		// handles stop stream message event
 		if (settings.event?.rcbStopStreamMessage) {
-			const event = await callRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, { message });
+			const event = await dispatchRcbEvent(RcbEvent.STOP_STREAM_MESSAGE, { message });
 			if (event.defaultPrevented) {
 				return false;
 			}
@@ -396,7 +396,7 @@ export const useMessagesInternal = () => {
 			paramsInputRef.current = message.content;
 		}
 		return true;
-	}, [callRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap, paramsInputRef]);
+	}, [dispatchRcbEvent, settings.event?.rcbStopStreamMessage, streamMessageMap, paramsInputRef]);
 
 	/**
 	 * Replaces (overwrites entirely) the current messages with the new messages.

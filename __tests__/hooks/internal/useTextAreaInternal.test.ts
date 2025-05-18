@@ -49,9 +49,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should set text area value with newline allowed", () => {
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		(useSettingsContext as jest.Mock).mockReturnValue({
@@ -68,9 +68,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should remove newlines when not allowed", () => {
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		(useSettingsContext as jest.Mock).mockReturnValue({
@@ -87,9 +87,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should respect character limit if set", () => {
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		(useSettingsContext as jest.Mock).mockReturnValue({
@@ -106,9 +106,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should handle unlimited character input when characterLimit is -1", () => {
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		(useSettingsContext as jest.Mock).mockReturnValue({
@@ -126,9 +126,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should prevent setting value if event is defaultPrevented", async () => {
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		(useSettingsContext as jest.Mock).mockReturnValue({
@@ -145,9 +145,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should focus on text area when focusTextArea is called", () => {
-		const callRcbEventMock = jest.fn();
+		const dispatchRcbEventMock = jest.fn();
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		const { result } = renderHook(() => useTextAreaInternal());
@@ -160,9 +160,9 @@ describe("useTextAreaInternal Hook", () => {
 	});
 
 	it("should blur on text area when blurTextArea is called", () => {
-		const callRcbEventMock = jest.fn();
+		const dispatchRcbEventMock = jest.fn();
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		const { result } = renderHook(() => useTextAreaInternal());
@@ -178,9 +178,9 @@ describe("useTextAreaInternal Hook", () => {
 
 	/* it("should toggle textAreaDisabled state", () => {
     // mocks rcb event handler
-    const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+    const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
     mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
+      dispatchRcbEvent: dispatchRcbEventMock,
     });
 
     // renders the hook within the TestChatBotProvider
@@ -204,9 +204,9 @@ describe("useTextAreaInternal Hook", () => {
 
 	/*
   it("should toggle textAreaSensitiveMode state", () => {
-    const callRcbEventMock = jest.fn();
+    const dispatchRcbEventMock = jest.fn();
     mockUseRcbEventInternal.mockReturnValue({
-      callRcbEvent: callRcbEventMock,
+      dispatchRcbEvent: dispatchRcbEventMock,
     });
 
     const { result } = renderHook(() => useTextAreaInternal(),{
@@ -224,9 +224,9 @@ describe("useTextAreaInternal Hook", () => {
 */
 
 	it("should update focus based on visibility", () => {
-		const callRcbEventMock = jest.fn();
+		const dispatchRcbEventMock = jest.fn();
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		const { result } = renderHook(() => useTextAreaInternal());
@@ -236,6 +236,6 @@ describe("useTextAreaInternal Hook", () => {
 		});
 
 		// Assume focus happens correctly, verify it updated focus (mocks internal behavior)
-		expect(callRcbEventMock).not.toHaveBeenCalledWith(RcbEvent.TEXT_AREA_CHANGE_VALUE);
+		expect(dispatchRcbEventMock).not.toHaveBeenCalledWith(RcbEvent.TEXT_AREA_CHANGE_VALUE);
 	});
 });

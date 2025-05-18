@@ -27,7 +27,7 @@ export const useNotificationInternal = () => {
 	const { audioBufferRef, audioContextRef, gainNodeRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Sets up the notifications feature (initial toggle status and sound).
@@ -88,7 +88,7 @@ export const useNotificationInternal = () => {
 
 		// handles toggle notifications event
 		if (settings.event?.rcbToggleNotifications) {
-			const event = await callRcbEvent(
+			const event = await dispatchRcbEvent(
 				RcbEvent.TOGGLE_NOTIFICATIONS, {
 					currState: syncedNotificationsToggledOnRef.current,
 					newState: !syncedNotificationsToggledOnRef.current

@@ -31,7 +31,7 @@ export const useChatWindowInternal = () => {
 	const { chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Toggles chat window.
@@ -46,7 +46,7 @@ export const useChatWindowInternal = () => {
 
 		// handles toggle chat window event
 		if (settings.event?.rcbToggleChatWindow) {
-			const event = await callRcbEvent(
+			const event = await dispatchRcbEvent(
 				RcbEvent.TOGGLE_CHAT_WINDOW,
 				{
 					currState: syncedIsChatWindowOpenRef.current,

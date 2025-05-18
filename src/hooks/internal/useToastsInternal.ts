@@ -18,7 +18,7 @@ export const useToastsInternal = () => {
 	const { toasts, setSyncedToasts, syncedToastsRef } = useToastsContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Injecs a new toast.
@@ -40,7 +40,7 @@ export const useToastsInternal = () => {
 
 			// handles show toast event
 			if (settings.event?.rcbShowToast) {
-				const event = await callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
+				const event = await dispatchRcbEvent(RcbEvent.SHOW_TOAST, { toast });
 				if (event.defaultPrevented) {
 					return null;
 				}
@@ -54,7 +54,7 @@ export const useToastsInternal = () => {
 
 		// handles show toast event
 		if (settings.event?.rcbShowToast) {
-			const event = await callRcbEvent(RcbEvent.SHOW_TOAST, { toast });
+			const event = await dispatchRcbEvent(RcbEvent.SHOW_TOAST, { toast });
 			if (event.defaultPrevented) {
 				return null;
 			}
@@ -63,7 +63,7 @@ export const useToastsInternal = () => {
 
 		setSyncedToasts(prevToasts => [...prevToasts, toast]);
 		return id;
-	}, [settings, callRcbEvent]);
+	}, [settings, dispatchRcbEvent]);
 
 	/**
 	 * Removes a toast.
@@ -80,7 +80,7 @@ export const useToastsInternal = () => {
 
 		// handles dismiss toast event
 		if (settings.event?.rcbDismissToast) {
-			const event = await callRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
+			const event = await dispatchRcbEvent(RcbEvent.DISMISS_TOAST, { toast: toastToRemove });
 			// if prevented, don't dismiss
 			if (event.defaultPrevented) {
 				return null;
@@ -90,7 +90,7 @@ export const useToastsInternal = () => {
 		// dismiss toast
 		setSyncedToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
 		return id;
-	}, [callRcbEvent]);
+	}, [dispatchRcbEvent]);
 
 	/**
 	 * Replaces (overwrites entirely) the current toasts with the new toasts.

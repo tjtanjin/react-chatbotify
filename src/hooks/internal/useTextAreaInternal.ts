@@ -30,7 +30,7 @@ export const useTextAreaInternal = () => {
 	const { inputRef, chatBodyRef, prevInputRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Sets the text area value.
@@ -61,7 +61,7 @@ export const useTextAreaInternal = () => {
 
 			// handles text area change value event
 			if (settings.event?.rcbTextAreaChangeValue) {
-				const event = await callRcbEvent(
+				const event = await dispatchRcbEvent(
 					RcbEvent.TEXT_AREA_CHANGE_VALUE,
 					{currValue: inputRef.current.value, prevValue: prevInputRef.current}
 				);
@@ -72,7 +72,7 @@ export const useTextAreaInternal = () => {
 			}
 			prevInputRef.current = inputRef.current.value;
 		}
-	}, [syncedTextAreaDisabledRef, inputRef, prevInputRef, settings, callRcbEvent])
+	}, [syncedTextAreaDisabledRef, inputRef, prevInputRef, settings, dispatchRcbEvent])
 
 	/**
 	 * Updates text area focus based on current block's text area.

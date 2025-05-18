@@ -25,9 +25,9 @@ describe("useAudioInternal Hook", () => {
 	
 	it("should toggle audio correctly, change state and emit rcb-toggle-audio event", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: false });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -43,8 +43,8 @@ describe("useAudioInternal Hook", () => {
 			await result.current.toggleAudio();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-audio and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
 			currState: initialAudioToggledOn,
 			newState: !initialAudioToggledOn,
 		});
@@ -57,8 +57,8 @@ describe("useAudioInternal Hook", () => {
 			await result.current.toggleAudio();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-audio and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
 			currState: !initialAudioToggledOn,
 			newState: initialAudioToggledOn,
 		});
@@ -69,9 +69,9 @@ describe("useAudioInternal Hook", () => {
 
 	it("should prevent toggling when event is defaultPrevented", async () => {
 		// mocks rcb event handler
-		const callRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
+		const dispatchRcbEventMock = jest.fn().mockReturnValue({ defaultPrevented: true });
 		mockUseRcbEventInternal.mockReturnValue({
-			callRcbEvent: callRcbEventMock,
+			dispatchRcbEvent: dispatchRcbEventMock,
 		});
 
 		// renders the hook within the TestChatBotProvider
@@ -87,8 +87,8 @@ describe("useAudioInternal Hook", () => {
 			await result.current.toggleAudio();
 		});
 
-		// checks if callRcbEvent was called with rcb-toggle-audio and correct arguments
-		expect(callRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
+		// checks if dispatchRcbEvent was called with rcb-toggle-audio and correct arguments
+		expect(dispatchRcbEventMock).toHaveBeenCalledWith(RcbEvent.TOGGLE_AUDIO, {
 			currState: initialAudioToggledOn,
 			newState: !initialAudioToggledOn,
 		});

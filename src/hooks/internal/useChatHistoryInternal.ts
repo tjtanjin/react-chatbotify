@@ -34,7 +34,7 @@ export const useChatHistoryInternal = () => {
 	const { chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { callRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useRcbEventInternal();
 
 	/**
 	 * Loads and shows chat history in the chat window.
@@ -49,7 +49,7 @@ export const useChatHistoryInternal = () => {
 
 		// handles load chat history event
 		if (settings.event?.rcbLoadChatHistory) {
-			const event = await callRcbEvent(RcbEvent.LOAD_CHAT_HISTORY, {});
+			const event = await dispatchRcbEvent(RcbEvent.LOAD_CHAT_HISTORY, {});
 			if (event.defaultPrevented) {
 				return;
 			}
@@ -62,7 +62,7 @@ export const useChatHistoryInternal = () => {
 	}, [
 		settings,
 		styles,
-		callRcbEvent,
+		dispatchRcbEvent,
 		syncedMessagesRef,
 		chatBodyRef,
 		setIsLoadingChatHistory,
