@@ -1,5 +1,18 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.37 (19-05-2025)
+
+**Added:**
+- Added a new export `RcbEvent` that is an enum for all React ChatBotify events
+- Added a new `useOnRcbEvent` that accepts `RcbEvent` as the first parameter and an event handler as the second parameter
+
+**Note:**
+This update is primarily meant for **plugin developers**. The addition of `useOnRcbEvent` should make registering of events much
+cleaner (especially within plugins). Filtering of bot ids is handled automatically within this hook, which means multi-bot
+users (and plugin developers) no longer have to check for bot ids to prevent chatbot events being caught by each other. A custom
+CLI tool will also be released soon to facilitate setups for developing plugins, themes etc. These changes are all part of an
+overall effort to improve developer experience.
+
 ## v2.0.0-beta.36 (16-05-2025)
 
 **Fixed:**
