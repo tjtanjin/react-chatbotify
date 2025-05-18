@@ -12,7 +12,7 @@ import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
 import { useToastsInternal } from "./useToastsInternal";
 import { preProcessBlock } from "../../services/BlockService/BlockService";
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { Block } from "../../types/Block";
 
 /**
@@ -38,7 +38,7 @@ export const usePathsInternal = () => {
 	} = useBotStatesContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	// handles messages
 	const {

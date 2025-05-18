@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
@@ -31,7 +31,7 @@ export const useChatWindowInternal = () => {
 	const { chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	/**
 	 * Toggles chat window.

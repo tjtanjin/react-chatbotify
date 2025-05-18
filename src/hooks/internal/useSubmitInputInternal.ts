@@ -4,7 +4,7 @@ import { postProcessBlock } from "../../services/BlockService/BlockService";
 import { processIsSensitive } from "../../services/BlockService/IsSensitiveProcessor";
 import { usePathsInternal } from "./usePathsInternal";
 import { useMessagesInternal } from "./useMessagesInternal";
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { useVoiceInternal } from "./useVoiceInternal";
 import { useTextAreaInternal } from "./useTextAreaInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
@@ -54,7 +54,7 @@ export const useSubmitInputInternal = () => {
 	const { showToast, dismissToast } = useToastsInternal();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	// handles voice
 	const { syncVoice } = useVoiceInternal();

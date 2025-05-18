@@ -5,14 +5,14 @@ import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { useMessagesContext } from "../../../src/context/MessagesContext";
 import { useBotStatesContext } from "../../../src/context/BotStatesContext";
 import { useBotRefsContext } from "../../../src/context/BotRefsContext";
-import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "../../../src/hooks/internal/useDispatchRcbEventInternal";
 import { Message } from "../../../src/types/Message";
 
 jest.mock("../../../src/context/SettingsContext");
 jest.mock("../../../src/context/MessagesContext");
 jest.mock("../../../src/context/BotStatesContext");
 jest.mock("../../../src/context/BotRefsContext");
-jest.mock("../../../src/hooks/internal/useRcbEventInternal");
+jest.mock("../../../src/hooks/internal/useDispatchRcbEventInternal");
 jest.mock("../../../src/services/AudioService");
 jest.mock("../../../src/services/ChatHistoryService");
 
@@ -61,7 +61,7 @@ describe("useMessagesInternal", () => {
 			chatBodyRef: mockChatBodyRef,
 		});
 
-		(useRcbEventInternal as jest.Mock).mockReturnValue({
+		(useDispatchRcbEventInternal as jest.Mock).mockReturnValue({
 			dispatchRcbEvent: mockCallRcbEvent,
 		});
 	});

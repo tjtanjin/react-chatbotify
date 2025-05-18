@@ -1,13 +1,13 @@
 import { renderHook, act } from "@testing-library/react";
 import { useTextAreaInternal } from "../../../src/hooks/internal/useTextAreaInternal";
-import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "../../../src/hooks/internal/useDispatchRcbEventInternal";
 import { RcbEvent } from "../../../src/constants/RcbEvent";
 import { useBotRefsContext } from "../../../src/context/BotRefsContext";
 import { useSettingsContext } from "../../../src/context/SettingsContext";
 import { expect } from "@jest/globals"
 
-jest.mock("../../../src/hooks/internal/useRcbEventInternal");
-const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<typeof useRcbEventInternal>;
+jest.mock("../../../src/hooks/internal/useDispatchRcbEventInternal");
+const mockUseRcbEventInternal = useDispatchRcbEventInternal as jest.MockedFunction<typeof useDispatchRcbEventInternal>;
 
 jest.mock("../../../src/context/BotRefsContext");
 jest.mock("../../../src/context/SettingsContext");

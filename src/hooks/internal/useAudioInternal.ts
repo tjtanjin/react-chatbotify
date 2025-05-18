@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { RcbEvent } from "../../constants/RcbEvent";
@@ -16,7 +16,7 @@ export const useAudioInternal = () => {
 	const { audioToggledOn, setSyncedAudioToggledOn, syncedAudioToggledOnRef } = useBotStatesContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	/**
 	 * Toggles audio feature.

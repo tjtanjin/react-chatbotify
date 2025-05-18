@@ -8,7 +8,7 @@ import { usePathsContext } from "../../context/PathsContext";
 /**
  * Internal custom hook for managing firing of rcb events.
  */
-export const useRcbEventInternal = () => {
+export const useDispatchRcbEventInternal = () => {
 	// handles bot refs
 	const { botIdRef } = useBotRefsContext();
 

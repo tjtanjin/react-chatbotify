@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { generateSecureUUID } from "../../utils/idGenerator";
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { useToastsContext } from "../../context/ToastsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { Toast } from "../../types/Toast";
@@ -18,7 +18,7 @@ export const useToastsInternal = () => {
 	const { toasts, setSyncedToasts, syncedToastsRef } = useToastsContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	/**
 	 * Injecs a new toast.

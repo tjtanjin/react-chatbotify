@@ -3,7 +3,7 @@ import { renderHook, act } from "@testing-library/react";
 import { useToastsInternal } from '../../../src/hooks/internal/useToastsInternal';
 import { useSettingsContext } from '../../../src/context/SettingsContext';
 import { useToastsContext } from '../../../src/context/ToastsContext';
-import { useRcbEventInternal } from '../../../src/hooks/internal/useRcbEventInternal';
+import { useDispatchRcbEventInternal } from '../../../src/hooks/internal/useDispatchRcbEventInternal';
 import { RcbEvent } from '../../../src/constants/RcbEvent';
 import { generateSecureUUID } from '../../../src/utils/idGenerator';
 import { Toast } from "../../../src/types/Toast";
@@ -12,7 +12,7 @@ import { MutableRefObject } from "react";
 // Mock dependencies used in the tests
 jest.mock('../../../src/context/SettingsContext');
 jest.mock('../../../src/context/ToastsContext');
-jest.mock('../../../src/hooks/internal/useRcbEventInternal');
+jest.mock('../../../src/hooks/internal/useDispatchRcbEventInternal');
 jest.mock('../../../src/utils/idGenerator', () => ({
 	generateSecureUUID: jest.fn(),
 }));
@@ -70,7 +70,7 @@ describe('useToastsInternal', () => {
 		mockRcbEventInternal = {
 			dispatchRcbEvent: jest.fn(),
 		};
-		(useRcbEventInternal as jest.Mock).mockReturnValue(mockRcbEventInternal);
+		(useDispatchRcbEventInternal as jest.Mock).mockReturnValue(mockRcbEventInternal);
 
 		(generateSecureUUID as jest.Mock).mockReturnValue('mocked-uuid');
 	});

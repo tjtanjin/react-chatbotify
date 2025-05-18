@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { getHistoryMessages, loadChatHistory } from "../../services/ChatHistoryService";
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useMessagesContext } from "../../context/MessagesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
@@ -34,7 +34,7 @@ export const useChatHistoryInternal = () => {
 	const { chatBodyRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	/**
 	 * Loads and shows chat history in the chat window.

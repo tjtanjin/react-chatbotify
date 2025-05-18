@@ -7,16 +7,16 @@ import {
 } from "../../../src/services/ChatHistoryService";
 import { generateSecureUUID } from "../../../src/utils/idGenerator";
 import { useChatHistoryInternal } from "../../../src/hooks/internal/useChatHistoryInternal";
-import { useRcbEventInternal } from "../../../src/hooks/internal/useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "../../../src/hooks/internal/useDispatchRcbEventInternal";
 import { RcbEvent } from "../../../src/constants/RcbEvent";
 
 import { TestChatBotProvider } from "../../__mocks__/TestChatBotContext";
 import { MockDefaultSettings } from "../../__mocks__/constants";
 
 // mocks internal hooks and services
-jest.mock("../../../src/hooks/internal/useRcbEventInternal");
-const mockUseRcbEventInternal = useRcbEventInternal as jest.MockedFunction<
-	typeof useRcbEventInternal
+jest.mock("../../../src/hooks/internal/useDispatchRcbEventInternal");
+const mockUseRcbEventInternal = useDispatchRcbEventInternal as jest.MockedFunction<
+	typeof useDispatchRcbEventInternal
 >;
 jest.mock("../../../src/services/ChatHistoryService");
 const mockGetHistoryMessages = getHistoryMessages as jest.MockedFunction<

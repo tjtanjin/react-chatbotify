@@ -1,3 +1,3 @@
-export const useRcbEventInternal = jest.fn(() => ({
+export const useDispatchRcbEventInternal = jest.fn(() => ({
 	dispatchRcbEvent: jest.fn().mockReturnValue({ defaultPrevented: false }),
 }));

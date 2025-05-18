@@ -7,7 +7,7 @@ import { useChatWindowInternal } from "../../../hooks/internal/useChatWindowInte
 import { useSubmitInputInternal } from "../../../hooks/internal/useSubmitInputInternal";
 import { useMessagesInternal } from "../../../hooks/internal/useMessagesInternal";
 import { usePathsInternal } from "../../../hooks/internal/usePathsInternal";
-import { useRcbEventInternal } from "../../../hooks/internal/useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "../../../hooks/internal/useDispatchRcbEventInternal";
 import { useTextAreaInternal } from "../../../hooks/internal/useTextAreaInternal";
 import { useBotRefsContext } from "../../../context/BotRefsContext";
 import { useSettingsContext } from "../../../context/SettingsContext";
@@ -47,7 +47,7 @@ const FileAttachmentButton = () => {
 	const { showToast, dismissToast } = useToastsInternal();
 	
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	// handles chat window
 	const { toggleChatWindow } = useChatWindowInternal();

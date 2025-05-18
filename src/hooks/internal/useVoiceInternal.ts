@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { syncVoiceWithChatInput } from "../../services/VoiceService";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
@@ -17,7 +17,7 @@ export const useVoiceInternal = () => {
 	const { voiceToggledOn, setSyncedVoiceToggledOn, syncedVoiceToggledOnRef } = useBotStatesContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	/**
 	 * Toggles voice feature.

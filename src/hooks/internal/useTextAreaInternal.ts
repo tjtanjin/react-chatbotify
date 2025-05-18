@@ -4,7 +4,7 @@ import { isChatBotVisible } from "../../utils/displayChecker";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { RcbEvent } from "../../constants/RcbEvent";
 
 /**
@@ -30,7 +30,7 @@ export const useTextAreaInternal = () => {
 	const { inputRef, chatBodyRef, prevInputRef } = useBotRefsContext();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	/**
 	 * Sets the text area value.

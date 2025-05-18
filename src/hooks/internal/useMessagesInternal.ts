@@ -8,7 +8,7 @@ import { useMessagesContext } from "../../context/MessagesContext";
 import { useBotStatesContext } from "../../context/BotStatesContext";
 import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useNotificationInternal } from "./useNotificationsInternal";
-import { useRcbEventInternal } from "./useRcbEventInternal";
+import { useDispatchRcbEventInternal } from "./useDispatchRcbEventInternal";
 import { useAudioInternal } from "./useAudioInternal";
 import { useChatWindowInternal } from "./useChatWindowInternal";
 import { Message } from "../../types/Message";
@@ -39,7 +39,7 @@ export const useMessagesInternal = () => {
 	const { scrollToBottom } = useChatWindowInternal();
 
 	// handles rcb events
-	const { dispatchRcbEvent } = useRcbEventInternal();
+	const { dispatchRcbEvent } = useDispatchRcbEventInternal();
 
 	// handles audio
 	const { speakAudio } = useAudioInternal();
