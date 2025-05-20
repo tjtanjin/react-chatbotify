@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## v2.0.0-beta.37 (19-05-2025)
+## v2.0.0-beta.37 (20-05-2025)
 
 **Added:**
 - Added a new export `RcbEvent` that is an enum for all React ChatBotify events
