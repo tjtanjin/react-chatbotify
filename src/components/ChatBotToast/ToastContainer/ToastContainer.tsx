@@ -17,13 +17,21 @@ const ToastContainer = () => {
 	// handles toasts
 	const { toasts } = useToastsContext();
 
+	// todo: this is pretty verbose, consider tidying this up in future
 	// styles for toast prompt container
 	const toastPromptContainerStyle: CSSProperties = {
-		bottom: (styles.footerStyle?.height as number ?? 50) +
-			(styles.chatInputContainerStyle?.height as number ?? 70) + 20,
+		bottom: `calc(${typeof styles.footerStyle?.height === 'number'
+			? `${styles.footerStyle?.height}px`
+			: styles.footerStyle?.height ?? '50px'} + ${typeof styles.chatInputContainerStyle?.height === 'number'
+			? `${styles.chatInputContainerStyle?.height}px`
+			: styles.chatInputContainerStyle?.height ?? '70px'} + 20px)`,
 		width: 300,
-		minWidth: (styles.chatWindowStyle?.width as number ?? 375) / 2,
-		maxWidth: (styles.chatWindowStyle?.width as number ?? 375) - 50,
+		minWidth: `calc(${typeof styles.chatWindowStyle?.width === 'number'
+			? `${styles.chatWindowStyle?.width}px`
+			: styles.chatWindowStyle?.width ?? '375px'} / 2)`,
+		maxWidth: `calc(${typeof styles.chatWindowStyle?.width === 'number'
+			? `${styles.chatWindowStyle?.width}px`
+			: styles.chatWindowStyle?.width ?? '375px'} - 50px)`,
 		...styles.toastPromptContainerStyle
 	};
 

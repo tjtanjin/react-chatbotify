@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { useIsDesktopInternal } from "../../hooks/internal/useIsDesktopInternal";
 import { useChatWindowInternal } from "../../hooks/internal/useChatWindowInternal";
+import { useBotRefsContext } from "../../context/BotRefsContext";
 import { useSettingsContext } from "../../context/SettingsContext";
 import { useStylesContext } from "../../context/StylesContext";
 
@@ -19,6 +20,9 @@ const ChatBotTooltip = () => {
 
 	// handles styles
 	const { styles } = useStylesContext();
+
+	// handles bot refs
+	const { chatBodyRef } = useBotRefsContext();
 
 	// handles chat window
 	const { isChatWindowOpen, toggleChatWindow } = useChatWindowInternal();
@@ -39,8 +43,10 @@ const ChatBotTooltip = () => {
 			if (isDesktop) {
 				let offset;
 				if (isChatWindowOpen) {
-					offset = (styles.chatWindowStyle?.width as number ?? 375) -
-					(styles.chatButtonStyle?.width as number ?? 75)
+					offset = (chatBodyRef.current?.offsetWidth ?? 375) -
+						(typeof styles.chatButtonStyle?.width === 'number'
+							? styles.chatButtonStyle.width
+							: 75)
 				} else {
 					offset = 0;
 				}
