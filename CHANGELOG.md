@@ -1,5 +1,10 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.38 (23-05-2025)
+
+**Fixed:**
+- Fixed an issue where dimensions provided in strings to styles were not handled correctly for internal calculations
+
 ## v2.0.0-beta.37 (20-05-2025)
 
 **Added:**
